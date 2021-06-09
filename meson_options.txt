@@ -1,0 +1,2 @@
+option('enable-snap', type : 'boolean', value : false, description : 'support snap packages')
+option('enable-flatpak', type : 'boolean', value : false, description : 'support flatpak packages')
