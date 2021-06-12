@@ -1614,9 +1614,6 @@ namespace Pamac {
 			while (to_build_queue.length > 0) {
 				string pkgname = to_build_queue.pop_head ();
 				build_cancellable.reset ();
-				emit_script_output ("");
-				emit_action (dgettext (null, "Building %s").printf (pkgname) + "...");
-				important_details_outpout (false);
 				var built_pkgs_path = new GenericArray<string> ();
 				string pkgdir;
 				bool as_root = Posix.geteuid () == 0;
@@ -1656,6 +1653,8 @@ namespace Pamac {
 					cmdline += "PKGDEST=%s".printf (pkgdir);
 					cmdline += "PKGEXT=.pkg.tar";
 				}
+				emit_script_output ("");
+				emit_action (dgettext (null, "Building %s").printf (pkgname) + "...");
 				important_details_outpout (false);
 				int status = yield run_cmd_line_async (cmdline, pkgdir, build_cancellable);
 				if (build_cancellable.is_cancelled ()) {
