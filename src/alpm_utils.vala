@@ -574,7 +574,11 @@ namespace Pamac {
 			if (pkg == null) {
 				if (emit_error) {
 					Alpm.Errno err_no = alpm_handle.errno ();
-					do_emit_error (_("Failed to prepare transaction"), {_("target not found: %s").printf (pkgname)});
+					if (err_no == Alpm.Errno.PKG_IGNORED) {
+						do_emit_error (_("Failed to prepare transaction"), {Alpm.strerror (err_no)});
+					} else {
+						do_emit_error (_("Failed to prepare transaction"), {_("target not found: %s").printf (pkgname)});
+					}
 				}
 				return false;
 			} else {
