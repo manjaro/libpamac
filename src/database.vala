@@ -1086,7 +1086,7 @@ namespace Pamac {
 					unowned string name = pkg.name;
 					unowned string desc = pkg.desc;
 					// check name as plain text AND pattern
-					if (name != null && (targ == name || (regex != null && regex.match (name)))) {
+					if (name != null && (targ == name || targ == name.down () || (regex != null && regex.match (name)))) {
 						matched = true;
 					}
 					// check if desc contains targ
