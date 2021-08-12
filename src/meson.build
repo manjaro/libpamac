@@ -37,7 +37,7 @@ if get_option('enable-snap')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, snapd, gmodule],
-		version: '11',
+		version: '11.1',
 		install: true,
 		install_dir: [true, true, true])
 
@@ -52,7 +52,7 @@ if get_option('enable-flatpak')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, flatpak, appstream, gmodule],
-		version: '11',
+		version: '11.1',
 		install: true,
 		install_dir: [true, true, true])
 
@@ -64,7 +64,7 @@ libpamac = library('pamac',
 	dependencies: libpamac_dependencies,
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
-	version: '11',
+	version: '11.1',
 	vala_gir: 'Pamac-11.gir',
 	install: true,
 	install_dir: [true, true, true, true])
@@ -84,7 +84,7 @@ custom_target('pamac typelib', command: [g_ir_compiler, '--shared-library', 'lib
 
 daemon_sources = ['version.vala', 'package.vala', 'alpm_package.vala', 'aur.vala', 'alpm_utils.vala',
 				'alpm_config.vala', 'pamac_config_daemon.vala', 'daemon.vala', 'plugin_loader.vala',
-				'snap_interface.vala', 'flatpak_interface.vala']
+				'database.vala', 'snap_interface.vala', 'flatpak_interface.vala']
 daemon_dependencies = [vala_deps, alpm_deps, json, math, libsoup, polkit, appstream, gmodule]
 
 executable('pamac-daemon',

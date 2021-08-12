@@ -22,7 +22,7 @@ namespace Pamac {
 		public abstract async bool get_authorization () throws Error;
 		public abstract void remove_authorization () throws Error;
 		public abstract async void generate_mirrors_list (string country) throws Error;
-		public abstract async bool clean_cache (string[] filenames) throws Error;
+		public abstract async bool clean_cache (GenericArray<string> filenames) throws Error;
 		public abstract async bool clean_build_files (string aur_build_dir) throws Error;
 		public abstract async bool set_pkgreason (string pkgname, uint reason) throws Error;
 		public abstract async void download_updates () throws Error;
@@ -32,12 +32,12 @@ namespace Pamac {
 										bool simple_install,
 										bool keep_built_pkgs,
 										int trans_flags,
-										string[] to_install,
-										string[] to_remove,
-										string[] to_load,
-										string[] to_install_as_dep,
-										string[] ignorepkgs,
-										string[] overwrite_files) throws Error;
+										GenericArray<string> to_install,
+										GenericArray<string> to_remove,
+										GenericArray<string> to_load,
+										GenericArray<string> to_install_as_dep,
+										GenericArray<string> ignorepkgs,
+										GenericArray<string> overwrite_files) throws Error;
 		public abstract void trans_cancel () throws Error;
 		public abstract void quit_daemon () throws Error;
 		public signal void emit_action (string action);
@@ -50,11 +50,11 @@ namespace Pamac {
 		public signal void emit_hook_progress (string action, string details, string status, double progress);
 		public signal void emit_script_output (string message);
 		public signal void emit_warning (string message);
-		public signal void emit_error (string message, string[] details);
+		public signal void emit_error (string message, GenericArray<string> details);
 		public signal void important_details_outpout (bool must_show);
 		public signal void generate_mirrors_list_data (string line);
-		public abstract async bool snap_trans_run (string[] to_install, string[] to_remove) throws Error;
+		public abstract async bool snap_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove) throws Error;
 		public abstract async bool snap_switch_channel (string snap_name, string channel) throws Error;
-		public abstract async bool flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade) throws Error;
+		public abstract async bool flatpak_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove, GenericArray<string> to_upgrade) throws Error;
 	}
 }

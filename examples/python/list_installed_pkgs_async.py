@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import gi
-gi.require_version('Pamac', '10.0')
+gi.require_version('Pamac', '11')
 from gi.repository import GLib, Pamac
 
 def on_installed_pkgs_ready_callback(source_object, result, user_data):

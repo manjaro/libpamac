@@ -106,7 +106,7 @@ namespace Pamac {
 			}
 		}
 		// AlpmPackage
-		public abstract uint64 build_date { get;  }
+		public abstract DateTime? build_date { get;  }
 		public abstract string? packager { get; }
 		public abstract string? reason { get; }
 		public abstract string? has_signature { get; }
@@ -124,6 +124,10 @@ namespace Pamac {
 
 		internal AlpmPackage () {}
 
+		public abstract unowned GenericArray<string> get_files ();
+
+		public abstract async unowned GenericArray<string> get_files_async ();
+
 		internal void set_as_app (As.App? as_app) {
 			_as_app = as_app;
 		}
@@ -135,7 +139,7 @@ namespace Pamac {
 
 	internal class AlpmPackageLinked : AlpmPackage {
 		// common
-		unowned Alpm.Handle? alpm_handle;
+		unowned Database database;
 		unowned Alpm.Package? alpm_pkg;
 		unowned Alpm.Package? local_pkg;
 		unowned Alpm.Package? sync_pkg;
@@ -160,9 +164,9 @@ namespace Pamac {
 		unowned string? _url;
 		uint64 _installed_size;
 		uint64 _download_size;
-		uint64 _install_date;
+		DateTime? _install_date;
 		// AlpmPackage
-		uint64 _build_date;
+		DateTime? _build_date;
 		unowned string? _packager;
 		unowned string? _reason;
 		unowned string? _has_signature;
@@ -177,6 +181,7 @@ namespace Pamac {
 		GenericArray<string> _replaces;
 		GenericArray<string> _conflicts;
 		GenericArray<string> _backups;
+		GenericArray<string> _files;
 
 		// Package
 		public override string name {
@@ -302,24 +307,24 @@ namespace Pamac {
 				return _download_size;
 			}
 		}
-		public override uint64 install_date {
+		public override DateTime? install_date {
 			get {
 				if (!install_date_set) {
 					install_date_set = true;
 					found_local_pkg ();
 					if (local_pkg != null) {
-						_install_date = local_pkg.installdate;
+						_install_date = new DateTime.from_unix_local (local_pkg.installdate);
 					}
 				}
 				return _install_date;
 			}
 		}
 		// AlpmPackage
-		public override uint64 build_date {
+		public override DateTime? build_date {
 			get {
-				if (_build_date == 0) {
+				if (_build_date == null) {
 					if (alpm_pkg != null) {
-						_build_date = alpm_pkg.builddate;
+						_build_date = new DateTime.from_unix_local (alpm_pkg.builddate);
 					}
 				}
 				return _build_date;
@@ -439,6 +444,7 @@ namespace Pamac {
 			get {
 				if (_requiredby == null) {
 					_requiredby = new GenericArray<string> ();
+					found_local_pkg ();
 					if (local_pkg != null) {
 						Alpm.List<string> owned_list = local_pkg.compute_requiredby ();
 						unowned Alpm.List<string*> list = owned_list;
@@ -455,6 +461,7 @@ namespace Pamac {
 			get {
 				if (_optionalfor == null) {
 					_optionalfor = new GenericArray<string> ();
+					found_local_pkg ();
 					if (local_pkg != null) {
 						Alpm.List<string> owned_list = local_pkg.compute_optionalfor ();
 						unowned Alpm.List<string*> list = owned_list;
@@ -513,6 +520,7 @@ namespace Pamac {
 			get {
 				if (_backups == null) {
 					_backups = new GenericArray<string> ();
+					found_local_pkg ();
 					if (local_pkg != null) {
 						unowned Alpm.List<unowned Alpm.Backup> list = local_pkg.backups;
 						while (list != null) {
@@ -529,9 +537,9 @@ namespace Pamac {
 
 		internal AlpmPackageLinked () {}
 
-		internal AlpmPackageLinked.from_alpm (Alpm.Package? alpm_pkg, Alpm.Handle? alpm_handle) {
+		internal AlpmPackageLinked.from_alpm (Alpm.Package? alpm_pkg, Database database) {
 			this.alpm_pkg = alpm_pkg;
-			this.alpm_handle = alpm_handle;
+			this.database = database;
 		}
 
 		internal void set_alpm_pkg (Alpm.Package? alpm_pkg) {
@@ -554,8 +562,8 @@ namespace Pamac {
 				if (alpm_pkg != null) {
 					if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
 						local_pkg = alpm_pkg;
-					} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB && alpm_handle != null) {
-						local_pkg = alpm_handle.localdb.get_pkg (alpm_pkg.name);
+					} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
+						local_pkg = database.intern_get_local_pkg (alpm_pkg.name);
 					}
 				}
 			}
@@ -566,7 +574,7 @@ namespace Pamac {
 				sync_pkg_set = true;
 				if (alpm_pkg != null) {
 					if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
-						sync_pkg = get_sync_pkg (alpm_pkg.name);
+						sync_pkg = database.intern_get_syncpkg (alpm_pkg.name);
 					} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
 						sync_pkg = alpm_pkg;
 					}
@@ -574,20 +582,20 @@ namespace Pamac {
 			}
 		}
 
-		unowned Alpm.Package? get_sync_pkg (string pkgname) {
-			unowned Alpm.Package? pkg = null;
-			if (alpm_handle != null) {
-				unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
-				while (syncdbs != null) {
-					unowned Alpm.DB db = syncdbs.data;
-					pkg = db.get_pkg (pkgname);
-					if (pkg != null) {
-						break;
-					}
-					syncdbs.next ();
-				}
+		public override unowned GenericArray<string> get_files () {
+			if (_files == null) {
+				found_local_pkg ();
+				_files = database.get_pkg_files (name, local_pkg);
 			}
-			return pkg;
+			return _files;
+		}
+
+		public override async unowned GenericArray<string> get_files_async () {
+			if (_files == null) {
+				found_local_pkg ();
+				_files = yield database.get_pkg_files_async (name, local_pkg);
+			}
+			return _files;
 		}
 	}
 
@@ -644,12 +652,12 @@ namespace Pamac {
 			// download size
 			val = download_size;
 			// build date
-			val = build_date;
+			DateTime date = build_date;
 			if (local_pkg != null) {
 				// installed version
 				_installed_version = local_pkg.version;
 				// installed date
-				val = install_date;
+				date = install_date;
 				// reason
 				str = reason;
 				// requiredby
@@ -705,7 +713,8 @@ namespace Pamac {
 				// installed version
 				_installed_version = local_pkg.version;
 				// installed date
-				val = install_date;
+				DateTime date = install_date;
+				date = null;
 			}
 			if (sync_pkg != null) {
 				// repo
@@ -727,9 +736,9 @@ namespace Pamac {
 		public abstract string? packagebase { get; internal set; }
 		public abstract string? maintainer { get; }
 		public abstract double popularity { get; }
-		public abstract uint64 lastmodified { get; }
-		public abstract uint64 outofdate { get; }
-		public abstract uint64 firstsubmitted { get; }
+		public abstract DateTime lastmodified { get; }
+		public abstract DateTime? outofdate { get; }
+		public abstract DateTime firstsubmitted { get; }
 		public abstract uint64 numvotes  { get; }
 
 		internal AURPackage () {}
@@ -740,6 +749,7 @@ namespace Pamac {
 		Json.Object? json_object;
 		AUR? aur;
 		unowned Alpm.Package? local_pkg;
+		unowned Database database;
 		bool is_update;
 		bool installed_version_set;
 		bool install_date_set;
@@ -760,9 +770,9 @@ namespace Pamac {
 		unowned string? _url;
 		uint64 _installed_size;
 		uint64 _download_size;
-		uint64 _install_date;
+		DateTime? _install_date;
 		// AlpmPackage
-		uint64 _build_date;
+		DateTime? _build_date;
 		unowned string? _packager;
 		unowned string? _reason;
 		GenericArray<string> _groups;
@@ -776,13 +786,14 @@ namespace Pamac {
 		GenericArray<string> _replaces;
 		GenericArray<string> _conflicts;
 		GenericArray<string> _backups;
+		GenericArray<string> _files;
 		// AURPackage
 		unowned string? _packagebase;
 		unowned string? _maintainer;
 		double _popularity;
-		uint64 _lastmodified;
-		uint64 _outofdate;
-		uint64 _firstsubmitted;
+		DateTime _lastmodified;
+		DateTime? _outofdate;
+		DateTime _firstsubmitted;
 		uint64 _numvotes;
 
 		// Package
@@ -929,24 +940,24 @@ namespace Pamac {
 				return _download_size;
 			}
 		}
-		public override uint64 install_date {
+		public override DateTime? install_date {
 			get {
 				if (!install_date_set) {
 					install_date_set = true;
 					if (local_pkg != null) {
-						_install_date = local_pkg.installdate;
+						_install_date = new DateTime.from_unix_local (local_pkg.installdate);
 					}
 				}
 				return _install_date;
 			}
 		}
 		// AlpmPackage
-		public override uint64 build_date {
+		public override DateTime? build_date {
 			get {
 				if (!build_date_set) {
 					build_date_set = true;
 					if (local_pkg != null) {
-						_build_date = local_pkg.builddate;
+						_build_date = new DateTime.from_unix_local (local_pkg.builddate);
 					}
 				}
 				return _build_date;
@@ -1235,29 +1246,29 @@ namespace Pamac {
 				return _popularity;
 			}
 		}
-		public override uint64 lastmodified {
+		public override DateTime lastmodified {
 			get {
-				if (_lastmodified == 0) {
-					_lastmodified = (uint64) json_object.get_int_member ("LastModified");
+				if (_lastmodified == null) {
+					_lastmodified = new DateTime.from_unix_local (json_object.get_int_member ("LastModified"));
 				}
 				return _lastmodified;
 			}
 		}
-		public override uint64 outofdate {
+		public override DateTime? outofdate {
 			get {
-				if (_outofdate == 0) {
+				if (_outofdate == null) {
 					unowned Json.Node? node = json_object.get_member ("OutOfDate");
 					if (!node.is_null ()) {
-						_outofdate = (uint64) node.get_int ();
+						_outofdate = new DateTime.from_unix_local (node.get_int ());
 					}
 				}
 				return _outofdate;
 			}
 		}
-		public override uint64 firstsubmitted {
+		public override DateTime firstsubmitted {
 			get {
-				if (_firstsubmitted == 0) {
-					_firstsubmitted = (uint64) json_object.get_int_member ("FirstSubmitted");
+				if (_firstsubmitted == null) {
+					_firstsubmitted = new DateTime.from_unix_local (json_object.get_int_member ("FirstSubmitted"));
 				}
 				return _firstsubmitted;
 			}
@@ -1273,17 +1284,12 @@ namespace Pamac {
 
 		internal AURPackageLinked () {}
 
-		internal void initialise_from_json (Json.Object? json_object, AUR? aur, Alpm.Package? local_pkg, bool is_update = false) {
+		internal void initialise_from_json (Json.Object? json_object, AUR? aur, Alpm.Package? local_pkg, Database database, bool is_update = false) {
 			this.json_object = json_object;
 			this.aur = aur;
-			this.is_update = is_update;
-			if (local_pkg != null) {
-				set_local_pkg (local_pkg);
-			}
-		}
-
-		void set_local_pkg (Alpm.Package? local_pkg) {
 			this.local_pkg = local_pkg;
+			this.database = database;
+			this.is_update = is_update;
 		}
 
 		void populate_array (Json.Array? json_array, ref GenericArray<string> array) {
@@ -1293,6 +1299,28 @@ namespace Pamac {
 					array.add (json_array.get_string_element (i));
 				}
 			}
+		}
+
+		public override unowned GenericArray<string> get_files () {
+			if (_files == null) {
+				if (local_pkg == null) {
+					_files = new GenericArray<string> ();
+				} else {
+					_files = database.get_pkg_files (local_pkg.name, local_pkg);
+				}
+			}
+			return _files;
+		}
+
+		public override async unowned GenericArray<string> get_files_async () {
+			if (_files == null) {
+				if (local_pkg == null) {
+					_files = new GenericArray<string> ();
+				} else {
+					_files = yield database.get_pkg_files_async (local_pkg.name, local_pkg);
+				}
+			}
+			return _files;
 		}
 	}
 
@@ -1334,7 +1362,7 @@ namespace Pamac {
 		public GenericArray<Package> to_remove { get; internal set; default = new GenericArray<Package> (); }
 		public GenericArray<Package> conflicts_to_remove { get; internal set; default = new GenericArray<Package> (); }
 		public GenericArray<Package> to_build { get; internal set; default = new GenericArray<Package> (); }
-		public GenericArray<string> aur_pkgbases_to_build { get; internal set; default = new GenericArray<string> (); }
+		public GenericArray<string> aur_pkgbases_to_build { internal get; internal set; default = new GenericArray<string> (); }
 		public GenericArray<string> to_load { internal get; internal set; default = new GenericArray<string> (); }
 
 		internal TransactionSummary () {}
@@ -1346,7 +1374,7 @@ namespace Pamac {
 		public GenericArray<AURPackage> aur_updates { get; internal set; default = new GenericArray<AURPackage> (); }
 		public GenericArray<AURPackage> ignored_aur_updates { get; internal set; default = new GenericArray<AURPackage> (); }
 		public GenericArray<AURPackage> outofdate { get; internal set; default = new GenericArray<AURPackage> (); }
-		public GenericArray<unowned FlatpakPackage> flatpak_updates { get; internal set; default = new GenericArray<unowned FlatpakPackage> (); }
+		public GenericArray<FlatpakPackage> flatpak_updates { get; internal set; default = new GenericArray<FlatpakPackage> (); }
 
 		internal Updates () {}
 	}

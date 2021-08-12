@@ -30,8 +30,8 @@ namespace Pamac {
 		public abstract void search_snaps (string search_string, ref GenericArray<unowned SnapPackage> pkgs);
 		public abstract void search_uninstalled_snaps_sync (string search_string, ref GenericArray<unowned SnapPackage> pkgs);
 		public abstract bool is_installed_snap (string name);
-		public abstract SnapPackage? get_snap (string name);
-		public abstract SnapPackage? get_snap_by_app_id (string app_id);
+		public abstract unowned SnapPackage? get_snap (string name);
+		public abstract unowned SnapPackage? get_snap_by_app_id (string app_id);
 		public abstract void get_installed_snaps (ref GenericArray<unowned SnapPackage> pkgs);
 		public abstract string get_installed_snap_icon (string name) throws Error;
 		public abstract void get_category_snaps (string category, ref GenericArray<unowned SnapPackage> pkgs);

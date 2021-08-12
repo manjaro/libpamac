@@ -22,16 +22,19 @@ namespace Pamac {
 		// AUR urls
 		const string rpc_url = "https://aur.archlinux.org/rpc/?v=5";
 		const string rpc_search = "&type=search&arg=";
+		const string rpc_suggest = "&type=suggest&arg=";
 		const string rpc_multiinfo = "&type=info";
 		const string rpc_multiinfo_arg = "&arg[]=";
 		Soup.Session session;
 		HashTable<unowned string, Json.Object> cached_infos;
 		HashTable<string, Json.Array> search_results;
+		HashTable<string, Json.Array> suggest_results;
 
 		public AUR (Soup.Session session) {
 			this.session = session;
 			cached_infos = new HashTable<unowned string, Json.Object> (str_hash, str_equal);
 			search_results = new HashTable<string, Json.Array> (str_hash, str_equal);
+			suggest_results = new HashTable<string, Json.Array> (str_hash, str_equal);
 		}
 
 		Json.Array? rpc_query (string uri) {
@@ -61,7 +64,7 @@ namespace Pamac {
 			return null;
 		}
 
-		Json.Array? multiinfo (string[] pkgnames) {
+		Json.Array? multiinfo (GenericArray<string> pkgnames) {
 			// query pkgnames hundred by hundred to avoid too long uri error
 			// example: ros-lunar-desktop
 			if (pkgnames.length <= 200) {
@@ -103,7 +106,9 @@ namespace Pamac {
 		public unowned Json.Object? get_infos (string pkgname) {
 			unowned Json.Object? json_object = cached_infos.lookup (pkgname);
 			if (json_object == null) {
-				Json.Array? results = multiinfo ({pkgname});
+				var to_query = new GenericArray<string> ();
+				to_query.add (pkgname);
+				Json.Array? results = multiinfo (to_query);
 				if (results != null && results.get_length () == 1) {
 					lock (cached_infos) {
 						json_object = results.get_object_element (0);
@@ -116,7 +121,7 @@ namespace Pamac {
 			return json_object;
 		}
 
-		public GenericArray<Json.Object> get_multi_infos (string[] pkgnames) {
+		public GenericArray<Json.Object> get_multi_infos (GenericArray<string> pkgnames) {
 			var result = new GenericArray<Json.Object> ();
 			var to_query = new GenericArray<string> ();
 			lock (cached_infos) {
@@ -130,7 +135,7 @@ namespace Pamac {
 				}
 			}
 			if (to_query.length > 0) {
-				Json.Array? results = multiinfo (to_query.data);
+				Json.Array? results = multiinfo (to_query);
 				if (results != null) {
 					lock (cached_infos) {
 						uint results_length = results.get_length ();
@@ -143,6 +148,39 @@ namespace Pamac {
 				}
 			}
 			return result;
+		}
+
+		public Json.Array? suggest (string search_string) {
+			var result = new GenericArray<Json.Object> ();
+			Json.Array? suggest_array;
+			lock (suggest_results) {
+				suggest_array = suggest_results.lookup (search_string);
+			}
+			if (suggest_array == null) {
+				var builder = new StringBuilder (rpc_url);
+				builder.append (rpc_suggest);
+				builder.append (Uri.escape_string (search_string));
+				// special query because it return an array of string
+				try {
+					var message = new Soup.Message ("GET", builder.str);
+					InputStream input_stream = session.send (message);
+					uint status_code = message.status_code;
+					if (status_code >= 400) {
+						stderr.printf ("Failed to query %s from AUR: error %u\n", builder.str, status_code);
+					} else {
+						var parser = new Json.Parser.immutable_new ();
+						parser.load_from_stream (input_stream);
+						unowned Json.Node? root = parser.get_root ();
+						if (root != null) {
+							suggest_array = root.get_array ();
+							suggest_results.insert (search_string, suggest_array);
+						}
+					}
+				} catch (Error e) {
+					stderr.printf ("Failed to query %s from AUR: %s\n", builder.str, e.message);
+				}
+			}
+			return suggest_array;
 		}
 
 		public GenericArray<Json.Object> search (string search_string) {

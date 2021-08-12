@@ -34,7 +34,7 @@ namespace Pamac {
 		public abstract string? icon { get; }
 		public abstract uint64 installed_size { get; }
 		public abstract uint64 download_size { get; }
-		public abstract uint64 install_date { get; }
+		public abstract DateTime? install_date { get; }
 		public abstract GenericArray<string> screenshots { get; }
 
 		internal Package () {}

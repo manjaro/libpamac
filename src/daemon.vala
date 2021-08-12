@@ -122,7 +122,7 @@ namespace Pamac {
 				emit_warning (sender, message);
 			});
 			alpm_utils.emit_error.connect ((sender, message, details) => {
-				emit_error (sender, message, details);
+				emit_error (sender, message, details.data);
 			});
 			alpm_utils.important_details_outpout.connect ((sender, must_show) => {
 				important_details_outpout (sender, must_show);

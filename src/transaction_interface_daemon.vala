@@ -100,10 +100,10 @@ namespace Pamac {
 			}
 		}
 
-		public async bool clean_cache (string[] filenames) throws Error {
+		public async bool clean_cache (GenericArray<string> filenames) throws Error {
 			clean_cache_callback = clean_cache.callback;
 			try {
-				system_daemon.start_clean_cache (filenames);
+				system_daemon.start_clean_cache (filenames.data);
 				yield;
 				return clean_cache_success;
 			} catch (Error e) {
@@ -194,12 +194,12 @@ namespace Pamac {
 								bool simple_install,
 								bool keep_built_pkgs,
 								int trans_flags,
-								string[] to_install,
-								string[] to_remove,
-								string[] to_load,
-								string[] to_install_as_dep,
-								string[] ignorepkgs,
-								string[] overwrite_files) throws Error {
+								GenericArray<string> to_install,
+								GenericArray<string> to_remove,
+								GenericArray<string> to_load,
+								GenericArray<string> to_install_as_dep,
+								GenericArray<string> ignorepkgs,
+								GenericArray<string> overwrite_files) throws Error {
 			trans_run_callback = trans_run.callback;
 			try {
 				system_daemon.start_trans_run (sysupgrade,
@@ -207,12 +207,12 @@ namespace Pamac {
 												simple_install,
 												keep_built_pkgs,
 												trans_flags,
-												to_install,
-												to_remove,
-												to_load,
-												to_install_as_dep,
-												ignorepkgs,
-												overwrite_files);
+												to_install.data,
+												to_remove.data,
+												to_load.data,
+												to_install_as_dep.data,
+												ignorepkgs.data,
+												overwrite_files.data);
 				yield;
 				return trans_run_success;
 			} catch (Error e) {
@@ -236,10 +236,10 @@ namespace Pamac {
 			}
 		}
 
-		public async bool snap_trans_run (string[] to_install, string[] to_remove) throws Error {
+		public async bool snap_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove) throws Error {
 			snap_trans_run_callback = snap_trans_run.callback;
 			try {
-				system_daemon.start_snap_trans_run (to_install, to_remove);
+				system_daemon.start_snap_trans_run (to_install.data, to_remove.data);
 				yield;
 				return snap_trans_run_success;
 			} catch (Error e) {
@@ -274,10 +274,10 @@ namespace Pamac {
 			snap_switch_channel_callback ();
 		}
 
-		public async bool flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade) throws Error {
+		public async bool flatpak_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove, GenericArray<string> to_upgrade) throws Error {
 			flatpak_trans_run_callback = flatpak_trans_run.callback;
 			try {
-				system_daemon.start_flatpak_trans_run (to_install, to_remove, to_upgrade);
+				system_daemon.start_flatpak_trans_run (to_install.data, to_remove.data, to_upgrade.data);
 				yield;
 				return flatpak_trans_run_success;
 			} catch (Error e) {
@@ -339,7 +339,11 @@ namespace Pamac {
 
 		void on_emit_error (string sender, string message, string[] details) {
 			if (sender == this.sender) {
-				emit_error (message, details);
+				var details_array = new GenericArray<string> (details.length);
+				foreach (unowned string detail in details) {
+					details_array.add (detail);
+				}
+				emit_error (message, details_array);
 			}
 		}
 

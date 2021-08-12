@@ -20,14 +20,23 @@
 namespace Pamac {
 	public class Config: Object {
 		public string conf_path { get; construct; }
+		public uint64 refresh_period { get; set; }
+		public bool enable_aur { get; set; }
 		public bool support_snap { get; set; }
 		public bool enable_snap { get; set; }
 		PluginLoader<SnapPlugin> snap_plugin_loader;
 		public bool support_flatpak{ get; set; }
 		public bool enable_flatpak { get; set; }
+		public bool check_flatpak_updates { get; set; }
 		PluginLoader<FlatpakPlugin> flatpak_plugin_loader;
 		public string aur_build_dir { get; set; }
+		public bool check_aur_updates { get; set; }
+		public bool check_aur_vcs_updates { get; set; }
 		public uint64 max_parallel_downloads { get; set; }
+		public uint64 clean_keep_num_pkgs { get;  set; }
+		public bool clean_rm_only_uninstalled { get; set; }
+		// Alpm Config
+		public GenericSet<string?> ignorepkgs { get {return alpm_config.ignorepkgs;} }
 
 		internal AlpmConfig alpm_config { get; private set; }
 

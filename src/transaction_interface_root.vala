@@ -56,8 +56,8 @@ namespace Pamac {
 			alpm_utils.alpm_config.reload ();
 		}
 
-		public async bool clean_cache (string[] filenames) {
-			return alpm_utils.clean_cache (filenames);
+		public async bool clean_cache (GenericArray<string> filenames) {
+			return alpm_utils.clean_cache (filenames.data);
 		}
 
 		public async bool clean_build_files (string aur_build_dir) {
@@ -151,12 +151,12 @@ namespace Pamac {
 							bool simple_install,
 							bool keep_built_pkgs,
 							int trans_flags,
-							string[] to_install,
-							string[] to_remove,
-							string[] to_load,
-							string[] to_install_as_dep,
-							string[] ignorepkgs,
-							string[] overwrite_files) {
+							GenericArray<string> to_install,
+							GenericArray<string> to_remove,
+							GenericArray<string> to_load,
+							GenericArray<string> to_install_as_dep,
+							GenericArray<string> ignorepkgs,
+							GenericArray<string> overwrite_files) {
 			bool success = yield wait_for_lock ();
 			if (!success) {
 				// cancelled
@@ -171,12 +171,12 @@ namespace Pamac {
 															simple_install,
 															keep_built_pkgs,
 															trans_flags,
-															to_install,
-															to_remove,
-															to_load,
-															to_install_as_dep,
-															ignorepkgs,
-															overwrite_files);
+															to_install.data,
+															to_remove.data,
+															to_load.data,
+															to_install_as_dep.data,
+															ignorepkgs.data,
+															overwrite_files.data);
 					context.invoke (trans_run_real.callback);
 					return 0;
 				});
@@ -192,18 +192,12 @@ namespace Pamac {
 								bool simple_install,
 								bool keep_built_pkgs,
 								int trans_flags,
-								string[] to_install,
-								string[] to_remove,
-								string[] to_load,
-								string[] to_install_as_dep,
-								string[] ignorepkgs,
-								string[] overwrite_files) {
-			string[] to_install_copy = to_install;
-			string[] to_remove_copy = to_remove;
-			string[] to_load_copy = to_load;
-			string[] to_install_as_dep_copy = to_install_as_dep;
-			string[] ignorepkgs_copy = ignorepkgs;
-			string[] overwrite_files_copy = overwrite_files;
+								GenericArray<string> to_install,
+								GenericArray<string> to_remove,
+								GenericArray<string> to_load,
+								GenericArray<string> to_install_as_dep,
+								GenericArray<string> ignorepkgs,
+								GenericArray<string> overwrite_files) {
 			if (alpm_utils.downloading_updates) {
 				alpm_utils.cancellable.cancel ();
 				// let time to cancel download updates
@@ -220,16 +214,16 @@ namespace Pamac {
 								simple_install,
 								keep_built_pkgs,
 								trans_flags,
-								to_install_copy,
-								to_remove_copy,
-								to_load_copy,
-								to_install_as_dep_copy,
-								ignorepkgs_copy,
-								overwrite_files_copy);
+								to_install,
+								to_remove,
+								to_load,
+								to_install_as_dep,
+								ignorepkgs,
+								overwrite_files);
 			return trans_run_success;
 		}
 
-		public async bool snap_trans_run (string[] to_install, string[] to_remove) {
+		public async bool snap_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove) {
 			// not implemented
 			return false;
 		}
@@ -239,7 +233,7 @@ namespace Pamac {
 			return false;
 		}
 
-		public async bool flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade) {
+		public async bool flatpak_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove, GenericArray<string> to_upgrade) {
 			// not implemented
 			return false;
 		}

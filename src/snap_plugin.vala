@@ -70,12 +70,12 @@ namespace Pamac {
 		public override uint64 download_size {
 			get { return snap.download_size; }
 		}
-		public override uint64 install_date {
+		public override DateTime? install_date {
 			get {
 				if (installed_snap != null) {
-					return installed_snap.install_date.to_unix ();
+					return installed_snap.install_date;
 				}
-				return 0;
+				return null;
 			}
 		}
 		public override string? app_name { get { return snap.title; } }
@@ -248,8 +248,8 @@ namespace Pamac {
 			return primary_app;
 		}
 
-		SnapPackage initialize_snap (Snapd.Snap snap) {
-			SnapPackageLinked? pkg = null;
+		unowned SnapPackage initialize_snap (Snapd.Snap snap) {
+			unowned SnapPackageLinked? pkg = null;
 			lock (pkgs_cache) {
 				pkg = pkgs_cache.lookup ("Snap/%s".printf (snap.name));
 				if (pkg != null) {
@@ -264,8 +264,9 @@ namespace Pamac {
 					installed_snap = get_local_snap (snap.name);
 					store_snap = snap;
 				}
-				pkg = new SnapPackageLinked (snap, installed_snap, store_snap);
-				pkgs_cache.insert (pkg.id, pkg);
+				var new_pkg = new SnapPackageLinked (snap, installed_snap, store_snap);
+				pkg = new_pkg;
+				pkgs_cache.insert (pkg.id, new_pkg);
 			} 
 			return pkg;
 		}
@@ -312,8 +313,8 @@ namespace Pamac {
 			return get_local_snap (name) != null;
 		}
 
-		public SnapPackage? get_snap (string name) {
-			SnapPackage? pkg = null;
+		public unowned SnapPackage? get_snap (string name) {
+			unowned SnapPackage? pkg = null;
 			Snapd.Snap? found = get_local_snap (name);
 			if (found == null) {
 				found = get_store_snap (name);
@@ -324,8 +325,8 @@ namespace Pamac {
 			return pkg;
 		}
 
-		public SnapPackage? get_snap_by_app_id (string app_id) {
-			SnapPackage? pkg = null;
+		public unowned SnapPackage? get_snap_by_app_id (string app_id) {
+			unowned SnapPackage? pkg = null;
 			try {
 				GenericArray<unowned Snapd.Snap> snaps = client.get_snaps_sync (Snapd.GetSnapsFlags.NONE, null, null);
 				foreach (unowned Snapd.Snap snap in snaps) {
