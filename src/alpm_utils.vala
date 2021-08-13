@@ -1836,7 +1836,7 @@ namespace Pamac {
 
 		bool need_reboot (Alpm.Handle? alpm_handle) {
 			bool reboot_needed = false;
-			string[] prefix = {"linux-", "nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
+			string[] prefix = {"linux-", "linux4", "linux5", "nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
 			string[] contains = {"mesa", "wayland"};
 			string[] full = {"cryptsetup"};
 			string[] suffix = {"-ucode"};
