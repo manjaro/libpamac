@@ -151,7 +151,6 @@ namespace Pamac {
 		}
 
 		public Json.Array? suggest (string search_string) {
-			var result = new GenericArray<Json.Object> ();
 			Json.Array? suggest_array;
 			lock (suggest_results) {
 				suggest_array = suggest_results.lookup (search_string);

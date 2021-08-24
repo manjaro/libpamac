@@ -145,6 +145,7 @@ namespace Pamac {
 		unowned Alpm.Package? sync_pkg;
 		bool local_pkg_set;
 		bool sync_pkg_set;
+		bool version_set;
 		bool installed_version_set;
 		bool repo_set;
 		bool license_set;
@@ -209,8 +210,14 @@ namespace Pamac {
 		}
 		public override string version {
 			get {
-				if (_version == null) {
-					_version = alpm_pkg.version;
+				if (!version_set) {
+					version_set = true;
+					found_sync_pkg ();
+					if (sync_pkg != null) {
+						_version = sync_pkg.version;
+					} else {
+						_version = alpm_pkg.version;
+					}
 				}
 				return _version;
 			}
@@ -668,6 +675,8 @@ namespace Pamac {
 				list = backups;
 			}
 			if (sync_pkg != null) {
+				// overwrite version
+				_version = sync_pkg.version;
 				// repo
 				_repo = sync_pkg.db.name;
 				// signature
@@ -717,6 +726,8 @@ namespace Pamac {
 				date = null;
 			}
 			if (sync_pkg != null) {
+				// overwrite version
+				_version = sync_pkg.version;
 				// repo
 				// transaction pkg
 				if (sync_pkg.db.name == "pamac_aur") {
@@ -736,9 +747,9 @@ namespace Pamac {
 		public abstract string? packagebase { get; internal set; }
 		public abstract string? maintainer { get; }
 		public abstract double popularity { get; }
-		public abstract DateTime lastmodified { get; }
+		public abstract DateTime? lastmodified { get; }
 		public abstract DateTime? outofdate { get; }
-		public abstract DateTime firstsubmitted { get; }
+		public abstract DateTime? firstsubmitted { get; }
 		public abstract uint64 numvotes  { get; }
 
 		internal AURPackage () {}
@@ -762,7 +773,7 @@ namespace Pamac {
 		// Package
 		string _name;
 		string _id;
-		unowned string _version;
+		string _version;
 		unowned string? _installed_version;
 		unowned string? _desc;
 		unowned string? _repo;
@@ -817,12 +828,8 @@ namespace Pamac {
 		}
 		public override string version {
 			get {
-				if (_version == null) {
-					if (!is_update && local_pkg != null) {
-						_version = local_pkg.version;
-					} else {
-						_version = json_object.get_string_member ("Version");
-					}
+				if (_version == null && json_object != null) {
+					_version = json_object.get_string_member ("Version");
 				}
 				return _version;
 			}
@@ -845,7 +852,7 @@ namespace Pamac {
 				if (_desc == null) {
 					if (!is_update && local_pkg != null) {
 						_desc = local_pkg.desc;
-					} else {
+					} else if (json_object != null) {
 						unowned Json.Node? node = json_object.get_member ("Description");
 						if (!node.is_null ()) {
 							_desc = node.get_string ();
@@ -1223,7 +1230,7 @@ namespace Pamac {
 		// AURPackage
 		public override string? packagebase {
 			get {
-				if (_packagebase == null) {
+				if (_packagebase == null && json_object != null) {
 					_packagebase = json_object.get_string_member ("PackageBase");
 				}
 				return _packagebase;
@@ -1232,7 +1239,7 @@ namespace Pamac {
 		}
 		public override string? maintainer {
 			get {
-				if (_maintainer == null) {
+				if (_maintainer == null && json_object != null) {
 					_maintainer = json_object.get_string_member ("Maintainer");
 				}
 				return _maintainer;
@@ -1240,15 +1247,15 @@ namespace Pamac {
 		}
 		public override double popularity {
 			get {
-				if (_popularity == 0) {
+				if (_popularity == 0 && json_object != null) {
 					_popularity = json_object.get_double_member ("Popularity");
 				}
 				return _popularity;
 			}
 		}
-		public override DateTime lastmodified {
+		public override DateTime? lastmodified {
 			get {
-				if (_lastmodified == null) {
+				if (_lastmodified == null && json_object != null) {
 					_lastmodified = new DateTime.from_unix_local (json_object.get_int_member ("LastModified"));
 				}
 				return _lastmodified;
@@ -1256,7 +1263,7 @@ namespace Pamac {
 		}
 		public override DateTime? outofdate {
 			get {
-				if (_outofdate == null) {
+				if (_outofdate == null && json_object != null) {
 					unowned Json.Node? node = json_object.get_member ("OutOfDate");
 					if (!node.is_null ()) {
 						_outofdate = new DateTime.from_unix_local (node.get_int ());
@@ -1265,9 +1272,9 @@ namespace Pamac {
 				return _outofdate;
 			}
 		}
-		public override DateTime firstsubmitted {
+		public override DateTime? firstsubmitted {
 			get {
-				if (_firstsubmitted == null) {
+				if (_firstsubmitted == null && json_object != null) {
 					_firstsubmitted = new DateTime.from_unix_local (json_object.get_int_member ("FirstSubmitted"));
 				}
 				return _firstsubmitted;
@@ -1326,21 +1333,11 @@ namespace Pamac {
 
 	internal class AURPackageData : AURPackageLinked {
 		// Package
-		string _version;
-		string? _installed_version;
 		string? _desc;
 		// AURPackage
 		string? _packagebase;
 
 		// Package
-		public override string version {
-			get { return _version; }
-			internal set { _version = value; }
-		}
-		public override string? installed_version {
-			get { return _installed_version; }
-			internal set { _installed_version = value; }
-		}
 		public override string? desc {
 			get { return _desc; }
 			internal set { _desc = value; }
