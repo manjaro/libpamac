@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-05-04 21:13+0000\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-08-05 14:39+0000\n"
 "Last-Translator: Tomáš Marhoun <tmarhoun@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/manjarolinux/manjaro-pamac/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -607,6 +607,10 @@ msgstr[2] "%u nevyřízených operací"
 msgstr[3] "%u nevyřízených operací"
 
 #: src/manager_window.vala
+msgid "Pending"
+msgstr "Nevyřízené"
+
+#: src/manager_window.vala
 msgid "All"
 msgstr "Vše"
 
@@ -684,7 +688,7 @@ msgstr "Skupiny"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Packager"
-msgstr "Balíčkovač"
+msgstr "Autor balíčku"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Build Date"

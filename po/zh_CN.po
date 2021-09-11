@@ -5,6 +5,7 @@
 # 
 # Translators:
 # Zkdc, 2020
+# 11f4f694e402d57b7e0189d84859c97d_a26fb2a <e870bc520042eebcf806116686ce2037_757335>, 2018
 # CaoMu <icaomu@gmail.com>, 2018
 # Daetalus <daetalusun@gmail.com>, 2014
 # Daetalus <daetalusun@gmail.com>, 2014
@@ -14,6 +15,7 @@
 # Dingzhong Chen <wsxy162@gmail.com>, 2015-2017
 # f h <hffqyd@sina.com>, 2018
 # Tramsifex <sunnycode@protonmail.com>, 2019
+# gee Lar <hola0_o@qq.com>, 2021
 # philm <philm@manjaro.org>, 2015
 # 11f4f694e402d57b7e0189d84859c97d_a26fb2a <e870bc520042eebcf806116686ce2037_757335>, 2018
 # song day <songday@yeah.net>, 2018
@@ -23,13 +25,14 @@
 # Zkdc, 2020
 # 吴会欢（Nicholas） <whhxp1028@gmail.com>, 2018
 # 家鳖大帝 <Z4HD@outlook.com>, 2020
+# 林凌儿 <308627244@qq.com>, 2021
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 13:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-08-12 07:13+0000\n"
+"Last-Translator: 林凌儿 <308627244@qq.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,11 +42,11 @@ msgstr ""
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
-msgstr "安装、更新或删除软件包"
+msgstr "安装、更新或移除软件包"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
-msgstr "安装、更新或删除软件包需要身份验证"
+msgstr "安装、更新或移除软件包需要身份验证"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
@@ -79,7 +82,7 @@ msgstr "软件包 %s 没有适用的架构"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%s' required by %s"
-msgstr "无法满足 %s 要求的依赖项 \"%s\""
+msgstr "无法满足 %s 要求的依赖项 “%s”"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -89,22 +92,22 @@ msgstr "警告"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %s (%s) breaks dependency '%s' required by %s"
-msgstr "安装 %s (%s) 破坏了依赖关系，'%s' 被 %s 所需要"
+msgstr "安装 %s（%s）破坏了依赖关系，“%s” 被 %s 所需要"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
 msgid "Add %s to remove"
-msgstr "添加%s以移除"
+msgstr "添加 %s 以移除"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "if possible, remove %s and retry"
-msgstr "如果可能，移除%s并重试"
+msgstr "如果可能，移除 %s 并重试"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s breaks dependency '%s' required by %s"
-msgstr "移除 %s 破坏了依赖关系，'%s' 被 %s 所需要"
+msgstr "移除 %s 破坏了依赖关系，“%s” 被 %s 所需要"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -118,12 +121,12 @@ msgstr "%s 需要移除但被锁定"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
-msgstr "初始化AUR数据失败"
+msgstr "初始化 AUR 数据失败"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s from target list"
-msgstr "正在从目标列表移除%s"
+msgstr "正在从目标列表移除 %s"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
@@ -141,7 +144,7 @@ msgstr "%s 同时存在于 %s 和 %s 中"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s: %s already exists in filesystem (owned by %s)"
-msgstr "%s：%s 已经存在于文件系统中（所有者为%s）"
+msgstr "%s：%s 已经存在于文件系统中（所有者为 %s）"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -155,12 +158,12 @@ msgstr "如不需要此文件，将其移除并重试"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s: %s already existed in filesystem"
-msgstr "%s：%s文件系统中已存在"
+msgstr "%s：%s 文件系统中已存在"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "It has been backed up to %s"
-msgstr "已经备份到%s"
+msgstr "已经备份到 %s"
 
 #: src/alpm_utils.vala
 msgid "Removing invalid files and retrying"
@@ -230,7 +233,7 @@ msgstr "正在检查完整性"
 
 #: src/alpm_utils.vala
 msgid "Loading packages files"
-msgstr "正在载入包文件"
+msgstr "正在载入软件包文件"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -351,7 +354,7 @@ msgstr "正在克隆 %s 构建文件"
 #: src/transaction.vala
 #, c-format
 msgid "Failed to clone %s build files"
-msgstr "克隆%s构建文件失败"
+msgstr "克隆 %s 构建文件失败"
 
 #: src/transaction.vala
 #, c-format
@@ -397,7 +400,7 @@ msgstr "无事可做"
 #: src/transaction.vala
 #, c-format
 msgid "%s: ignoring package upgrade (%s => %s)\n"
-msgstr ""
+msgstr "%s：忽略软件包升级（%s => %s）\n"
 
 #: src/transaction.vala
 #, c-format
@@ -507,7 +510,7 @@ msgstr "关闭 (_C)"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "重新启动"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -588,7 +591,7 @@ msgstr "Alpm 软件包"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "具有Alpm、AUR、Flatpak和Snap支持的软件包管理器"
+msgstr "具有 Alpm、AUR、Flatpak 和 Snap 支持的软件包管理器"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
@@ -600,6 +603,10 @@ msgstr "Snap"
 msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u 个待处理的操作"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "待处理"
 
 #: src/manager_window.vala
 msgid "All"
@@ -623,7 +630,7 @@ msgstr "已安装"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "忽略全部"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -779,47 +786,47 @@ msgstr "上次刷新"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "每 3 个小时"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "每 6 个小时"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "每 12 个小时"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "每天"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "每周"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -827,15 +834,15 @@ msgstr "全世界"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -849,11 +856,11 @@ msgstr[0] "%u 个文件"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "设定构建目录"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_选择"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -945,7 +952,7 @@ msgstr "以管理员身份构建软件包"
 #: src/cli.vala
 #, c-format
 msgid "Setting build directory to %s"
-msgstr "将构建目录设置为%s"
+msgstr "将构建目录设置为 %s"
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
@@ -969,7 +976,7 @@ msgstr "选项"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
-msgstr "查找包或者文件，可以指定多个搜索词"
+msgstr "查找软件包或者文件，可以指定多个搜索词"
 
 #: src/cli.vala
 msgid "file(s)"
@@ -1006,7 +1013,7 @@ msgstr "展示包的细节，可以指定多个包"
 
 #: src/cli.vala
 msgid "List packages, groups, repositories or files"
-msgstr "列出包、组、仓库或者文件"
+msgstr "列出软件包、分组、仓库或者文件"
 
 #: src/cli.vala
 msgid "group(s)"
@@ -1014,7 +1021,7 @@ msgstr "组"
 
 #: src/cli.vala
 msgid "repo(s)"
-msgstr "仓库"
+msgstr "软件仓库源"
 
 #: src/cli.vala
 msgid "list installed packages"
@@ -1022,7 +1029,7 @@ msgstr "列出已安装的包"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "列出明确安装的软件包"
 
 #: src/cli.vala
 msgid ""
@@ -1038,7 +1045,7 @@ msgstr "列出在仓库中未找到的包"
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr "列出指定组的所有包，若未指定组则列出所有组"
+msgstr "列出指定分组的所有包，若未指定组则列出所有组"
 
 #: src/cli.vala
 msgid ""
@@ -1119,7 +1126,7 @@ msgstr "全局"
 msgid ""
 "ignore a package upgrade, multiple packages can be specified by separating "
 "them with a comma"
-msgstr "忽略一个包的升级，可以用逗号分隔来指定多个软件包"
+msgstr "忽略一个软件包包的升级，可以用逗号分隔来指定多个软件包"
 
 #: src/cli.vala
 msgid ""
@@ -1175,7 +1182,7 @@ msgstr "不修改数据库安全地检查更新"
 
 #: src/cli.vala
 msgid "Exit code is 100 if updates are available"
-msgstr "若有更新退出代码为 100"
+msgstr "若有更新退出代码则为 100"
 
 #: src/cli.vala
 msgid ""
@@ -1197,7 +1204,7 @@ msgstr "每行仅打印一条更新"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
-msgstr "同时检查开发软件包更新 (与 --aur 一起使用)"
+msgstr "同时检查开发软件包更新（与 --aur 一起使用）"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
@@ -1229,7 +1236,7 @@ msgstr "不更新从 AUR 安装的包"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
-msgstr "同时升级开发软件包 (与 --aur 一起使用)"
+msgstr "同时升级开发软件包（与 --aur 一起使用）"
 
 #: src/cli.vala
 msgid "do not upgrade development packages"
@@ -1327,7 +1334,7 @@ msgstr "清理构建文件"
 #: src/cli.vala
 #, c-format
 msgid "Add %s to install"
-msgstr "添加%s以安装"
+msgstr "添加 %s 以安装"
 
 #: src/cli.vala
 #, c-format
@@ -1338,7 +1345,7 @@ msgstr "%s 只能从 AUR 获得"
 #, c-format
 msgid "There is %u member in group %s"
 msgid_plural "There are %u members in group %s"
-msgstr[0] "%s 组中有 %u 个成员"
+msgstr[0] "%s 分组中有 %u 个成员"
 
 #: src/cli.vala
 msgid "all"
@@ -1347,7 +1354,7 @@ msgstr "所有的"
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr "添加%s以重新安装"
+msgstr "添加 %s 以重新安装"
 
 #: src/cli.vala
 #, c-format
@@ -1492,7 +1499,7 @@ msgstr "检查更新"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "检查更新频率"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1500,23 +1507,23 @@ msgstr "自动下载更新"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "当没有更新可用时，隐藏托盘图标"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "下载任务"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "并发下载"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "使用镜像从"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "刷新镜像列表"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1524,15 +1531,15 @@ msgstr "缓存"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "每个软件包保留的版本数目"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "只移除要卸载的软件包"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "清理"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1562,11 +1569,11 @@ msgstr "启用降级"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "忽略更新"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "第三方"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1580,7 +1587,7 @@ msgstr "启用 AUR 支持"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "保留已构建的软件包"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"
@@ -1600,7 +1607,7 @@ msgstr "启用 Flatpak 支持"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr "Snap 包由其发布者维护。"
+msgstr "Snap 软件包由其发布者维护。"
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"

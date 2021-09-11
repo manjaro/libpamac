@@ -5,18 +5,18 @@
 # 
 # Translators:
 # Kus Mis <kusmis@hot.ee>, 2013
-# Kalle Kadakas <kallekadakas@gmail.com>, 2015,2018
+# 396ebea05dbb0a1edc9736bca8794acd_10e7387 <fd1873a2e5d04ada6b84b644237206bc_372872>, 2015,2018
 # Kus Mis <kusmis@hot.ee>, 2013
-# Madis Otenurm, 2019-2020
+# Madis Otenurm, 2019-2021
 # Madis Otenurm, 2018
 # Madis Otenurm, 2018-2019
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 13:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-08-03 17:23+0000\n"
+"Last-Translator: Madis Otenurm\n"
 "Language-Team: Estonian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -386,7 +386,7 @@ msgstr "Pole midagi teha"
 #: src/transaction.vala
 #, c-format
 msgid "%s: ignoring package upgrade (%s => %s)\n"
-msgstr ""
+msgstr "%s: paketitäienduse ignoreerimine (%s => %s)\n"
 
 #: src/transaction.vala
 #, c-format
@@ -496,7 +496,7 @@ msgstr "_Sulge"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Taaskäivita"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -593,6 +593,10 @@ msgstr[0] "%u tegevus ootel"
 msgstr[1] "%u tegevust ootel"
 
 #: src/manager_window.vala
+msgid "Pending"
+msgstr "Ootel"
+
+#: src/manager_window.vala
 msgid "All"
 msgstr "Kõik"
 
@@ -614,7 +618,7 @@ msgstr "Paigaldatud"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Ignoreeritud"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -770,47 +774,47 @@ msgstr "Viimatine värskendus"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "iga 3 tunni järel"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "iga 6 tunni järel"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "iga 12 tunni järel"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "iga päev"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "iga nädal"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -818,15 +822,15 @@ msgstr "Ülemaailmne"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -841,11 +845,11 @@ msgstr[1] "%u faili"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Vali ehituskaust"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Vali"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -1014,7 +1018,7 @@ msgstr "loetle paigaldatud paketid"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "loetle otseselt paigaldatud paketid"
 
 #: src/cli.vala
 msgid ""
@@ -1486,7 +1490,7 @@ msgstr "Kontrolli uuenduste olemasolu"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Uuendustekontrolli sagedus"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1494,23 +1498,23 @@ msgstr "Laadi uuendused automaatselt alla"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Peida uuenduse puudumisel süsteemisalve ikoon"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Allalaadimised"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Paralleel-allalaadimised"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Kasuta peegleid asukohast"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Värskenda peeglid"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1518,15 +1522,15 @@ msgstr "Vahemälu"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Versioonide arv, mida iga paketi puhul säilitada"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Eemalda ainult desinstallitud paketid"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Puhasta"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1556,11 +1560,11 @@ msgstr "Luba vanemad versioonid"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Ignoreeritud täiendused"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Kolmas osapool"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1574,7 +1578,7 @@ msgstr "Luba AURi tugi"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Säilita sisseehitatud paketid"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

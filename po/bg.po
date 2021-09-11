@@ -4,7 +4,7 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
 # 
 # Translators:
-# Galin Iskrenov <loot270@abv.bg>, 2013-2020
+# Galin Iskrenov <loot270@abv.bg>, 2013-2021
 # Georgi Georgiev (Жоро) <g.georgiev.shumen@gmail.com>, 2014
 # Georgi Georgiev (Жоро) <g.georgiev.shumen@gmail.com>, 2014,2016,2018
 # Galin Iskrenov <loot270@abv.bg>, 2013
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 13:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-06-02 07:14+0000\n"
+"Last-Translator: Galin Iskrenov <loot270@abv.bg>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -387,7 +387,7 @@ msgstr "Нищо за правене"
 #: src/transaction.vala
 #, c-format
 msgid "%s: ignoring package upgrade (%s => %s)\n"
-msgstr ""
+msgstr "%s: игнориране надграждането на пакета (%s => %s)\n"
 
 #: src/transaction.vala
 #, c-format
@@ -497,7 +497,7 @@ msgstr "_Затвори"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Рестарт"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -594,6 +594,10 @@ msgstr[0] "%u висяща операция"
 msgstr[1] "%u висящи операции"
 
 #: src/manager_window.vala
+msgid "Pending"
+msgstr " В очакване"
+
+#: src/manager_window.vala
 msgid "All"
 msgstr "Всичко"
 
@@ -615,7 +619,7 @@ msgstr "Инсталиран"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Пренебрегнат"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -771,47 +775,47 @@ msgstr "Последно обновяване"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "На всеки 3 часа"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "На всеки 6 часа"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "На всеки 12 часа"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "Всеки ден"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "Всяка седмица"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -819,15 +823,15 @@ msgstr "По света"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -842,11 +846,11 @@ msgstr[1] "%u файлове"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Изберете папка за изграждане"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Choose"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -1015,7 +1019,7 @@ msgstr "списък инсталирани пакети"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "Списък на изрично инсталирани пакети"
 
 #: src/cli.vala
 msgid ""
@@ -1487,7 +1491,7 @@ msgstr "Проверка за актуализации"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Честота на проверката за актуализации"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1495,23 +1499,23 @@ msgstr "Автоматично изтегляне на актуализации"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Без икона на задачите, когато няма актуализация"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Изтегляния"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Паралелни изтегляния"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Използвай огледала от"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Обновяване на огледалата"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1519,15 +1523,15 @@ msgstr "Кеш"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Брой запазени версии на всеки пакет"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Премахване само на деинсталираните пакети"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Почистване"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1557,11 +1561,11 @@ msgstr "Позволи към по-ниска версия"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Пренебрегнати надграждания"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Трета страна"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1575,7 +1579,7 @@ msgstr "Позволи AUR поддръжка"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Запази построените пакети"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

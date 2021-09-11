@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-05-12 09:32+0000\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-07-27 15:36+0000\n"
 "Last-Translator: Algent Albrahimi <algent@protonmail.com>\n"
 "Language-Team: Albanian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sq/)\n"
 "MIME-Version: 1.0\n"
@@ -590,12 +590,16 @@ msgstr[0] "%u operacion në pritje"
 msgstr[1] "%u operacione në pritje "
 
 #: src/manager_window.vala
+msgid "Pending"
+msgstr "në pritje"
+
+#: src/manager_window.vala
 msgid "All"
 msgstr "Të gjitha"
 
 #: src/manager_window.vala
 msgid "Explicitly installed"
-msgstr "Instaluar në mënyrë të qartë"
+msgstr "Instaluar veçmas"
 
 #: src/manager_window.vala
 msgid "Orphans"
@@ -623,7 +627,7 @@ msgstr "Instaluar si një varësi për një paketë tjetër"
 
 #: src/manager_window.vala
 msgid "Mark as explicitly installed"
-msgstr "Shëno si i instaluar në mënyrë të qartë"
+msgstr "Shëno si i instaluar veçmas"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Licenses"
@@ -1011,7 +1015,7 @@ msgstr "listo paketat e instaluara"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "listo paketat e instaluara veçmas"
 
 #: src/cli.vala
 msgid ""
@@ -1126,7 +1130,7 @@ msgstr "shënjoni të gjitha paketat e instaluara si një varësi"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr "shënjoni të gjitha paketat e instaluara në mënyrë të qartë"
+msgstr "shënoji të gjitha paketat e instaluara veçmas"
 
 #: src/cli.vala
 msgid "check for updates"

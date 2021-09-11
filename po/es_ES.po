@@ -8,14 +8,15 @@
 # Francisco Torres <franute@gmail.com>, 2018
 # Kiibakun, 2020-2021
 # manueljlin <manueljlin@gmail.com>, 2019
+# Ricardo Pérez <ricpelo@gmail.com>, 2021
 # Xema Fuentes, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 16:29+0000\n"
-"Last-Translator: Kiibakun\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-07-19 13:17+0000\n"
+"Last-Translator: Ricardo Pérez <ricpelo@gmail.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -298,7 +299,7 @@ msgstr "Actualizando %s"
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
-msgstr "Descarga de %siniciada"
+msgstr "Descarga de %s iniciada"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -450,21 +451,21 @@ msgstr "Flatpak"
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Depends On"
-msgstr "Depende De"
+msgstr "Depende de"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
-msgstr "Orfe de"
+msgstr "Huérfano de"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Conflicts With"
-msgstr "Entra en Conflicto con"
+msgstr "Entra en conflicto con"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Required By"
-msgstr "Requerido Por"
+msgstr "Requerido por"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
@@ -514,7 +515,7 @@ msgstr "Instalar %s de todas formas"
 
 #: src/transaction-gtk.vala src/tray.vala
 msgid "Package Manager"
-msgstr "Gestor de Paquetería"
+msgstr "Gestor de paquetes"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
@@ -538,7 +539,7 @@ msgstr "Actualizaciones disponibles"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up-to-date"
-msgstr "Tu sistema está actualizado"
+msgstr "Su sistema está actualizado"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -565,7 +566,7 @@ msgstr "Buscando actualizaciones"
 
 #: src/manager_window.vala resources/manager_window.ui
 msgid "Install Local Packages"
-msgstr "Instalar Paquetes Locales"
+msgstr "Instalar paquetes locales"
 
 #: src/manager_window.vala
 msgid "_Open"
@@ -592,6 +593,10 @@ msgstr[0] "%u operación pendiente"
 msgstr[1] "%u operaciones pendientes"
 
 #: src/manager_window.vala
+msgid "Pending"
+msgstr ""
+
+#: src/manager_window.vala
 msgid "All"
 msgstr "Todo"
 
@@ -605,7 +610,7 @@ msgstr "Huérfanos"
 
 #: src/manager_window.vala
 msgid "Foreign"
-msgstr "Extranjero"
+msgstr "Ajeno"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Installed"
@@ -673,11 +678,11 @@ msgstr "Empaquetador"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Build Date"
-msgstr "Fecha de Construcción"
+msgstr "Fecha de creación"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Date"
-msgstr "Fecha de Instalación"
+msgstr "Fecha de instalación"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Signatures"
@@ -689,7 +694,7 @@ msgstr "Respaldar archivos"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional Dependencies"
-msgstr "Dependencias Opcionales"
+msgstr "Dependencias opcionales"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Make Dependencies"
@@ -697,11 +702,11 @@ msgstr "Hacer dependencias"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Check Dependencies"
-msgstr "Comprobar Dependencias"
+msgstr "Comprobar dependencias"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional For"
-msgstr "Opcional Para"
+msgstr "Opcional para"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
@@ -713,7 +718,7 @@ msgstr "Editor"
 
 #: src/manager_window.vala
 msgid "Confined in a Sandbox"
-msgstr "Confinado en un Sandbox"
+msgstr "Confinado en un sandbox"
 
 #: src/manager_window.vala
 msgid "Channels"
@@ -721,7 +726,7 @@ msgstr "Canales"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr "Actualizaciones de SO"
+msgstr "Actualizaciones del sistema"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
@@ -844,11 +849,11 @@ msgstr ""
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr "_Escoger"
+msgstr "_Elegir"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
-msgstr "Escoger Actualizaciones Ignoradas"
+msgstr "Elegir actualizaciones ignoradas"
 
 #: src/transaction-cli.vala src/cli.vala
 #, c-format
@@ -910,7 +915,7 @@ msgstr "Para construir"
 
 #: src/transaction-cli.vala
 msgid "To downgrade"
-msgstr "Para degradar"
+msgstr "Para desactualizar"
 
 #: src/transaction-cli.vala
 msgid "To remove"

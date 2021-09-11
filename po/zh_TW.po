@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-05-11 10:41+0000\n"
-"Last-Translator: green.leek <grann88417@gmail.com>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-05-16 00:50+0000\n"
+"Last-Translator: 黃柏諺 <s8321414@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -590,6 +590,10 @@ msgstr "Snap"
 msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u 個作業擱置中"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "擱置中"
 
 #: src/manager_window.vala
 msgid "All"

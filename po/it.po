@@ -44,9 +44,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-16 08:08+0000\n"
-"Last-Translator: Vincenzo Reale <vinx.reale@gmail.com>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-05-16 07:51+0000\n"
+"Last-Translator: Nicolas Mariniello <seldon1000@tutanota.com>\n"
 "Language-Team: Italian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -621,6 +621,10 @@ msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u operazione in sospeso"
 msgstr[1] "%u operazioni in sospeso"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "In sospeso"
 
 #: src/manager_window.vala
 msgid "All"

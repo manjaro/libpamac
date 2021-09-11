@@ -14,15 +14,15 @@
 # Oriol Fernandez <oriolfa@ono.com>, 2013-2014
 # philm <philm@manjaro.org>, 2015
 # Ramon Buldó <rbuldo@gmail.com>, 2013,2016
-# Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2018
+# Robert Antoni Buj i Gelonch <rbuj@fedoraproject.org>, 2018
 # Tomàs Mallafré Gispert <tomas@mallafre.cat>, 2014-2015
 # Xema Fuentes, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-16 10:46+0000\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-05-20 07:49+0000\n"
 "Last-Translator: Davidmp <medipas@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -598,6 +598,10 @@ msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u operació pendent"
 msgstr[1] "%u operacions pendents"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Pendent"
 
 #: src/manager_window.vala
 msgid "All"

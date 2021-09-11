@@ -13,14 +13,14 @@
 # Porrumentzio <porrumentzio@riseup.net>, 2021
 # Sergio Moreno <semosa@gmail.com>, 2014
 # Sergio Moreno <semosa@gmail.com>, 2014
-# Gontzal M. Pujana <juchuf@gmail.com>, 2020
+# Gontzal M. Pujana <juchuf@gmail.com>, 2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 13:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-07-28 13:15+0000\n"
+"Last-Translator: Gontzal M. Pujana <juchuf@gmail.com>\n"
 "Language-Team: Basque (http://www.transifex.com/manjarolinux/manjaro-pamac/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -390,7 +390,7 @@ msgstr "Ezer ez egiteko"
 #: src/transaction.vala
 #, c-format
 msgid "%s: ignoring package upgrade (%s => %s)\n"
-msgstr ""
+msgstr "%s: paketearen bertsio-berritzea ezikusten (%s => %s)\n"
 
 #: src/transaction.vala
 #, c-format
@@ -500,7 +500,7 @@ msgstr "_Itxi"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Berrabiarazi"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -597,6 +597,10 @@ msgstr[0] "Eragiketa %u egiteke"
 msgstr[1] "%u eragiketa egiteke"
 
 #: src/manager_window.vala
+msgid "Pending"
+msgstr "Egiteke"
+
+#: src/manager_window.vala
 msgid "All"
 msgstr "Denak"
 
@@ -618,7 +622,7 @@ msgstr "Instalatuta"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Ezikusiak"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -774,47 +778,47 @@ msgstr "Azken freskatzea"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "3 orduro"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "6 orduro"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "12 orduro"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "egunero"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "astero"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -822,15 +826,15 @@ msgstr "Mundu mailakoa"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -845,11 +849,11 @@ msgstr[1] "%ufitxategi"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Aukeratu eraiketa direktorioa"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Hautatu"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -1018,7 +1022,7 @@ msgstr "zerrendatu instalatutako paketeak"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "zerrendatu esplizituki instalatutako paketeak"
 
 #: src/cli.vala
 msgid ""
@@ -1490,7 +1494,7 @@ msgstr "Egiaztatu eguneraketak"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Eguneraketen egiaztatze maiztasuna"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1498,23 +1502,23 @@ msgstr "Deskargatu eguneraketak automatikoki"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Ezkutatu barrako ikonoa eguneraketarik ez dagoenean"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Deskargak"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Deskarga paraleloak"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Erabili hemengo ispiluak"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Freskatu ispiluak"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1522,15 +1526,15 @@ msgstr "Katxea"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Gorde beharreko pakete bakoitzeko bertsio kopurua"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Kendu deinstalatutako paketeen bertsioak soilik"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Garbitu"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1560,11 +1564,11 @@ msgstr "Gaitu bertsio-zaharketa"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Ezikusitako eguneraketak"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Hirugarrenekoak"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1578,7 +1582,7 @@ msgstr "Gaitu AUR euskarria"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Mantendu eraikitako paketeak"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

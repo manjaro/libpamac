@@ -4,9 +4,11 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
 # 
 # Translators:
+# Abdul Munif Hanafi <amunifhanafi@gmail.com>, 2021
 # Brings Rain <bringsrain.solutions@gmail.com>, 2016
 # Budi Ariyanto <fx.budi.ariyanto@gmail.com>, 2017
 # Budiman Jojo <budimanjojo@gmail.com>, 2014-2015
+# f4fa50e1921fb4273a514899ed633fda_b9e907e <fb7ca61b730a9d06962cf5749dc9f4d6_202334>, 2015
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # Hasan Al Banna, 2014
@@ -27,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 13:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-09-10 12:01+0000\n"
+"Last-Translator: Triyan W. Nugroho <triyan.wn@gmail.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,11 +45,11 @@ msgstr "Pasang, perbarui, atau hapus paket"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
-msgstr "Autentikasi diperlukan untuk mengistal, memperbarui, atau menghapus paket"
+msgstr "Autentikasi diperlukan untuk memasang, memperbarui, atau menghapus paket"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
-msgstr "Gagal menginisialisasi library alpm"
+msgstr "Gagal menginisialisasi pustaka alpm"
 
 #: src/alpm_utils.vala
 msgid "Synchronizing package databases"
@@ -55,7 +57,7 @@ msgstr "Sedang menyinkronkan basis data paket"
 
 #: src/alpm_utils.vala
 msgid "Failed to synchronize databases"
-msgstr "Gagal dalam mengsinkronisasi database"
+msgstr "Gagal menyinkronkan basis data"
 
 #: src/alpm_utils.vala
 msgid "Failed to init transaction"
@@ -79,7 +81,7 @@ msgstr "paket %s tidak memiliki arsitektur yang valid"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%s' required by %s"
-msgstr "tidak dapat memenuhi dependensi '%s' yang dibutuhkan oleh %s "
+msgstr "tidak dapat memenuhi dependensi '%s' yang dibutuhkan oleh %s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -89,17 +91,17 @@ msgstr "Peringatan"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %s (%s) breaks dependency '%s' required by %s"
-msgstr "menginstall %s (%s) merusak dependensi '%s' yang dibutuhkan oleh %s"
+msgstr "memasang %s (%s) merusak dependensi '%s' yang dibutuhkan oleh %s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
 msgid "Add %s to remove"
-msgstr "Add 1%s untuk di hapus"
+msgstr "Tambah %s untuk dihapus"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "if possible, remove %s and retry"
-msgstr "jika memungkinkan, hapus 1%s dan mencoba kembali"
+msgstr "jika memungkinkan, hapus %s dan coba kembali"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -118,16 +120,16 @@ msgstr "%s harus dihapus, tetapi paket ini terkunci"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
-msgstr "Gagal menginisialisasi database AUR"
+msgstr "Gagal menginisialisasi basis data AUR"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s from target list"
-msgstr "menghapus 1%s dari daftar target"
+msgstr "menghapus %s dari daftar target"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "Mulai ulang diperlukan untuk menerapkan perubahan"
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
@@ -141,30 +143,30 @@ msgstr "%s ada di dalam %s dan %s"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s: %s already exists in filesystem (owned by %s)"
-msgstr "1%s : 1%s sudah ada didalam filesystem ( dimiliki oleh %s )"
+msgstr "%s : %s sudah ada di dalam sistem berkas (dimiliki oleh %s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s: %s already exists in filesystem"
-msgstr "%s: %s sudah ada di dalam berkas sistem"
+msgstr "%s: %s sudah ada di dalam sistem berkas"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
-msgstr "Jika file tidak diperlukan, hapus dan jalankan ulang"
+msgstr "jika berkas ini tidak diperlukan, hapus dan coba lagi"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s: %s already existed in filesystem"
-msgstr "%s : %s sudah ada didalam filesystem"
+msgstr "%s : %s sudah ada di dalam sistem berkas"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "It has been backed up to %s"
-msgstr ""
+msgstr "Telah dicadangkan ke %s"
 
 #: src/alpm_utils.vala
 msgid "Removing invalid files and retrying"
-msgstr "Menghilangkan file yang tidak valid dan mencoba kembali"
+msgstr "Menghapus berkas yang tidak valid dan mencoba lagi"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -173,11 +175,11 @@ msgstr "%s tidak valid atau rusak"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
-msgstr "anda dapat menghilangkan file ini dan mencoba kembali"
+msgstr "anda dapat menghapus berkas ini dan coba lagi"
 
 #: src/alpm_utils.vala
 msgid "failed to retrieve some files"
-msgstr "Gagal dalam mendapatkan file"
+msgstr "gagal mendapatkan beberapa berkas"
 
 #: src/alpm_utils.vala
 msgid "Failed to commit transaction"
@@ -197,12 +199,12 @@ msgstr "Memecahkan dependensi"
 
 #: src/alpm_utils.vala
 msgid "Checking inter-conflicts"
-msgstr "Sedang memeriksa interkonflik"
+msgstr "Memeriksa interkonflik"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
-msgstr "Sedang memasang %s"
+msgstr "Memasang %s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -240,7 +242,7 @@ msgstr "Mengkonfigurasi %s"
 #: src/alpm_utils.vala
 #, c-format
 msgid "Error while configuring %s"
-msgstr "Terdapat kesalahan saat konfigurasi%s"
+msgstr "Terdapat kesalahan saat mengkonfigurasi %s"
 
 #: src/alpm_utils.vala
 msgid "Checking available disk space"
@@ -254,7 +256,7 @@ msgstr "%s secara opsional membutuhkan %s"
 #: src/alpm_utils.vala
 #, c-format
 msgid "Database file for %s does not exist"
-msgstr "Berkas database untuk %s tidak ada"
+msgstr "Berkas basis data untuk %s tidak ada"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
@@ -280,23 +282,23 @@ msgstr "Menjalankan kaitan pra-transaksi"
 
 #: src/alpm_utils.vala
 msgid "Running post-transaction hooks"
-msgstr "Menjalankan kaitan paska transaksi"
+msgstr "Menjalankan kaitan paska-transaksi"
 
 #: src/alpm_utils.vala
 msgid "Error while running hooks"
-msgstr "Terdapat kesalahan saat menjalankan hooks"
+msgstr "Terdapat kesalahan saat menjalankan kaitan"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu second remaining"
 msgid_plural "About %lu seconds remaining"
-msgstr[0] ""
+msgstr[0] "Sekitar %lu detik lagi"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu minute remaining"
 msgid_plural "About %lu minutes remaining"
-msgstr[0] "Tersisa sekitar %lu menit"
+msgstr[0] "Sekitar %lu menit lagi"
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
@@ -328,11 +330,11 @@ msgstr "Otentikasi gagal"
 
 #: src/daemon.vala
 msgid "Waiting for another package manager to quit"
-msgstr "Menunggu package manager yang lain untuk keluar"
+msgstr "Menunggu manajer paket yang lain keluar"
 
 #: src/daemon.vala
 msgid "Timeout expired"
-msgstr "Telah melebih batas waktu"
+msgstr "Telah melebihi batas waktu"
 
 #: src/database.vala src/transaction-gtk.vala src/manager_window.vala
 #: src/cli.vala resources/preferences_dialog.ui
@@ -346,37 +348,37 @@ msgstr "Menyegarkan daftar cermin"
 #: src/transaction.vala src/cli.vala
 #, c-format
 msgid "Cloning %s build files"
-msgstr "Menyalin%sbuild files"
+msgstr "Membuat klon %s berkas pembangun"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to clone %s build files"
-msgstr "Gagal dalam menyalin %s build files"
+msgstr "Gagal membuat klon %s berkas pembangun"
 
 #: src/transaction.vala
 #, c-format
 msgid "Generating %s information"
-msgstr "Membangkitkan%sinformasi"
+msgstr "Membangkitkan %s informasi"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to generate %s information"
-msgstr "Gagal dalam membangkitkan %s informasi"
+msgstr "Gagal membangkitkan %s informasi"
 
 #: src/transaction.vala
 #, c-format
 msgid "Checking %s dependencies"
-msgstr "Mengecek %sdependencies"
+msgstr "Memeriksa %s dependensi"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to check %s dependencies"
-msgstr "Gagal dalam mengecek %s dependencies"
+msgstr "Gagal memeriksa %s dependensi"
 
 #: src/transaction.vala
 #, c-format
 msgid "key %s could not be imported"
-msgstr "Kunci %s tidak dapat diimpor"
+msgstr "kunci %s tidak dapat diimpor"
 
 #: src/transaction.vala src/manager_window.vala
 msgid "Transaction successfully finished"
@@ -388,7 +390,7 @@ msgstr "Menyiapkan"
 
 #: src/transaction.vala src/snap_plugin.vala
 msgid "Yes"
-msgstr "Iya"
+msgstr "Ya"
 
 #: src/transaction.vala src/installer.vala src/cli.vala
 msgid "Nothing to do"
@@ -397,17 +399,17 @@ msgstr "Tidak ada yang harus dilakukan"
 #: src/transaction.vala
 #, c-format
 msgid "%s: ignoring package upgrade (%s => %s)\n"
-msgstr ""
+msgstr "%s: mengabaikan peningkatan paket (%s => %s)\n"
 
 #: src/transaction.vala
 #, c-format
 msgid "Building %s"
-msgstr "Building %s"
+msgstr "Membangun %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
-msgstr "Gagal melakukan build %s"
+msgstr "Gagal membangun %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -425,7 +427,7 @@ msgstr "Impor kunci PGP"
 
 #: src/transaction-gtk.vala
 msgid "Trust and Import"
-msgstr "Kenpercayaan dan Impor"
+msgstr "Percayai dan Impor"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: src/preferences_dialog.vala resources/progress_dialog.ui
@@ -437,12 +439,12 @@ msgstr "_Batal"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %s is needed to verify %s source files"
-msgstr "PGP key %s diperlukan untuk verivikasi %s source files"
+msgstr "Kunci PGP %s diperlukan untuk verifikasi %s berkas sumber"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Trust %s and import the PGP key"
-msgstr "Percayai %s dan impor PGP key"
+msgstr "Percayai %s dan impor kunci PGP"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
@@ -466,7 +468,7 @@ msgstr "Bergantung Pada"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
-msgstr ""
+msgstr "Yatim Dari"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
@@ -485,7 +487,7 @@ msgstr "Gantikan"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Edit build files"
-msgstr ""
+msgstr "Sunting berkas pembangun"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 msgid "Total download size"
@@ -494,7 +496,7 @@ msgstr "Total ukuran unduhan"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Edit %s build files"
-msgstr "Ubah %s build files"
+msgstr "Sunting %s berkas pembangun"
 
 #: src/transaction-gtk.vala
 msgid "Save"
@@ -507,7 +509,7 @@ msgstr "_Tutup"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Mulai Ulang"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -517,12 +519,12 @@ msgstr "Pasang"
 #: src/transaction-gtk.vala
 #, c-format
 msgid "The snap %s was published using classic confinement"
-msgstr ""
+msgstr "Snap %s dipublikasikan menggunakan kurungan klasik"
 
 #: src/transaction-gtk.vala
 #, c-format
 msgid "Install %s anyway"
-msgstr "Install %s bagaimanapun juga"
+msgstr "Tetap pasang %s"
 
 #: src/transaction-gtk.vala src/tray.vala
 msgid "Package Manager"
@@ -530,7 +532,7 @@ msgstr "Manajer Paket"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
-msgstr "Install packages melalui repositories, path, atau url"
+msgstr "Pasang paket-paket dari repositori, path atau url"
 
 #: src/installer.vala src/cli.vala
 msgid "Remove packages"
@@ -546,7 +548,7 @@ msgstr "package(s)"
 
 #: src/tray.vala
 msgid "Updates Available"
-msgstr ""
+msgstr "Pembaruan Tersedia"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up-to-date"
@@ -588,7 +590,7 @@ msgstr "Paket Alpm"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr ""
+msgstr "Sebuah Manajer Paket dengan dukungan Alpm, AUR, Flatpak dan Snap"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
@@ -600,6 +602,10 @@ msgstr "Snap"
 msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u operasi menunggu"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Tertunda"
 
 #: src/manager_window.vala
 msgid "All"
@@ -623,7 +629,7 @@ msgstr "Terpasang"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Diabaikan"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -719,7 +725,7 @@ msgstr "Menyediakan"
 
 #: src/manager_window.vala
 msgid "Publisher"
-msgstr "Publisher"
+msgstr "Penerbit"
 
 #: src/manager_window.vala
 msgid "Confined in a Sandbox"
@@ -727,19 +733,19 @@ msgstr "Terbatas didalam sandbox"
 
 #: src/manager_window.vala
 msgid "Channels"
-msgstr ""
+msgstr "Kanal"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr ""
+msgstr "Pembaruan OS"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
-msgstr ""
+msgstr "Termasuk peningkatan performa, stabilitas dan keamanan"
 
 #: src/manager_window.vala
 msgid "Featured"
-msgstr ""
+msgstr "Unggulan"
 
 #: src/manager_window.vala
 msgid "Photo & Video"
@@ -767,7 +773,7 @@ msgstr "Game"
 
 #: src/manager_window.vala
 msgid "Utilities"
-msgstr ""
+msgstr "Utilitas"
 
 #: src/manager_window.vala
 msgid "Development"
@@ -775,51 +781,51 @@ msgstr "Development"
 
 #: src/manager_window.vala
 msgid "Last refresh"
-msgstr ""
+msgstr "Penyegaran terakhir"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "setiap 3 jam"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "setiap 6 jam"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "setiap 12 jam"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "setiap hari"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "setiap minggu"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -827,19 +833,19 @@ msgstr "Seluruh dunia"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
-msgstr ""
+msgstr "Untuk dihapus"
 
 #: src/preferences_dialog.vala src/cli.vala
 #, c-format
@@ -849,11 +855,11 @@ msgstr[0] "%u files"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Pilih Direktori Pembangun"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Pilih"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -862,11 +868,11 @@ msgstr "Pilih upgrades yang diabaikan"
 #: src/transaction-cli.vala src/cli.vala
 #, c-format
 msgid "Enter a selection (default=%s)"
-msgstr ""
+msgstr "Masukkan sebuah pilihan (bawaan=%s)"
 
 #: src/transaction-cli.vala
 msgid "none"
-msgstr ""
+msgstr "tak-ada"
 
 #: src/transaction-cli.vala
 #, c-format
@@ -875,11 +881,11 @@ msgstr "Masukkan angka (default=%d)"
 
 #: src/transaction-cli.vala
 msgid "[y/N]"
-msgstr ""
+msgstr "[y/T]"
 
 #: src/transaction-cli.vala
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: src/transaction-cli.vala
 msgid "yes"
@@ -887,7 +893,7 @@ msgstr "ya"
 
 #: src/transaction-cli.vala
 msgid "[e]"
-msgstr ""
+msgstr "[e]"
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
@@ -895,15 +901,15 @@ msgstr "Terapkan transaksi"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
-msgstr ""
+msgstr "[e/y/T]"
 
 #: src/transaction-cli.vala
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
-msgstr "Untuk diupgrade"
+msgstr "Untuk ditingkatkan"
 
 #: src/transaction-cli.vala
 msgid "To reinstall"
@@ -936,341 +942,341 @@ msgstr "Total ukuran yang dihapus"
 #: src/transaction-cli.vala
 #, c-format
 msgid "View %s build files diff"
-msgstr ""
+msgstr "Lihat %s perbedaan berkas pembangun"
 
 #: src/cli.vala
 msgid "Building packages as root"
-msgstr ""
+msgstr "Membangun paket sebagai root"
 
 #: src/cli.vala
 #, c-format
 msgid "Setting build directory to %s"
-msgstr ""
+msgstr "Menyetel direktori pembangun ke %s"
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
-msgstr ""
+msgstr "Tidak ada berkas PKGBUILD yang ditemukan di direktori saat ini"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
-msgstr ""
+msgstr "Memeriksa pembaruan paket pengembangan sebagai root"
 
 #: src/cli.vala
 msgid "Available actions"
-msgstr ""
+msgstr "Aksi yang tersedia"
 
 #: src/cli.vala
 msgid "action"
-msgstr ""
+msgstr "aksi"
 
 #: src/cli.vala
 msgid "options"
-msgstr ""
+msgstr "pilihan"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
-msgstr ""
+msgstr "Cari paket atau berkas, bisa menggunakan lebih dari satu kata"
 
 #: src/cli.vala
 msgid "file(s)"
-msgstr ""
+msgstr "berkas()"
 
 #: src/cli.vala
 msgid "only search for installed packages"
-msgstr ""
+msgstr "hanya cari pada paket yang terpasang"
 
 #: src/cli.vala
 msgid "only search for packages in repositories"
-msgstr ""
+msgstr "hanya cari pada paket di dalam repositori"
 
 #: src/cli.vala
 msgid "also search in AUR"
-msgstr ""
+msgstr "juga cari di AUR"
 
 #: src/cli.vala
 msgid "do not search in AUR"
-msgstr ""
+msgstr "jangan cari di AUR"
 
 #: src/cli.vala
 msgid ""
 "search for packages which own the given filenames (filenames can be partial)"
-msgstr ""
+msgstr "cari paket berdasarkan nama bekas yang dimiliki oleh paket tersebut (nama berkas bisa parsial)"
 
 #: src/cli.vala
 msgid "only print names"
-msgstr ""
+msgstr "hanya tampilkan nama"
 
 #: src/cli.vala
 msgid "Display package details, multiple packages can be specified"
-msgstr ""
+msgstr "Tampilkan rincian paket, bisa lebih dari satu paket"
 
 #: src/cli.vala
 msgid "List packages, groups, repositories or files"
-msgstr ""
+msgstr "Tampilkan daftar paket, grup, repositori, atau berkas"
 
 #: src/cli.vala
 msgid "group(s)"
-msgstr ""
+msgstr "grup"
 
 #: src/cli.vala
 msgid "repo(s)"
-msgstr ""
+msgstr "repo"
 
 #: src/cli.vala
 msgid "list installed packages"
-msgstr ""
+msgstr "tampilkan daftar paket yang terpasang"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "tampilkan secara eksplisit daftar paket yang terpasang"
 
 #: src/cli.vala
 msgid ""
 "list packages that were installed as dependencies but are no longer required"
 " by any installed package"
-msgstr ""
+msgstr "tampilkan daftar paket yang terpasang sebagai dependensi tetapi tidak lagi dibutuhkan oleh paket manapun yang terpasang"
 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
-msgstr ""
+msgstr "tampilkan daftar paket yang tidak ditemukan di dalam repositori"
 
 #: src/cli.vala
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr ""
+msgstr "tampilkan daftar semua paket yang menjadi anggota dari grup yang ditentukan, jika tidak ada grup yang ditentukan maka tampilkan daftar semua grup"
 
 #: src/cli.vala
 msgid ""
 "list all packages available in the given repos, if no repo is given list all"
 " repos"
-msgstr ""
+msgstr "tampilkan daftar semua paket yang tersedia pada repo yang ditentukan, jika tidak ada repo yang ditentukan maka tampilkan daftar semua repo"
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
-msgstr ""
+msgstr "tampilkan daftar berkas yang dimiliki oleh paket yang ditentukan"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
-msgstr ""
+msgstr "Buat klon atau sinkronkan berkas pembangun paket dari AUR"
 
 #: src/cli.vala
 msgid "dir"
-msgstr ""
+msgstr "dir"
 
 #: src/cli.vala
 msgid ""
 "build directory, if no directory is given the one specified in pamac.conf "
 "file is used"
-msgstr ""
+msgstr "direktori pembangun, jika tidak ada direktori yang ditentukan, maka direktori yang telah diatur di berkas pamac.conf akan digunakan"
 
 #: src/cli.vala
 msgid "also clone needed dependencies"
-msgstr ""
+msgstr "juga buat klon dependensi yang diperlukan"
 
 #: src/cli.vala
 msgid "do not print any output"
-msgstr ""
+msgstr "jangan menampilkan keluaran apapun"
 
 #: src/cli.vala
 msgid "overwrite existing files"
-msgstr ""
+msgstr "timpa berkas yang sudah ada"
 
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
-msgstr ""
+msgstr "Jika nama paket tidak ditentukan, gunakan berkas PKGBUILD pada direktori saat ini"
 
 #: src/cli.vala
 msgid ""
 "The build directory will be the parent directory, --builddir option will be "
 "ignored"
-msgstr ""
+msgstr "Direktori pembangun menggunakan direktori induk, opsi --builddir akan diabaikan"
 
 #: src/cli.vala
 msgid "and --no-clone option will be enforced"
-msgstr ""
+msgstr "dan paksa opsi --no-clone"
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
-msgstr ""
+msgstr "biarkan paket yang telah dibangun berada di tembolok setelah pemasangan"
 
 #: src/cli.vala
 msgid "do not keep built packages in cache after installation"
-msgstr ""
+msgstr "jangan membiarkan paket yang telah dibangun berada di tembolok setelah pemasangan"
 
 #: src/cli.vala
 msgid "only print what would be done but do not run the transaction"
-msgstr ""
+msgstr "hanya tampilkan apa yang akan dilakukan, tetapi jangan jalankan transaksi"
 
 #: src/cli.vala
 msgid "do not clone build files from AUR, only use local files"
-msgstr ""
+msgstr "jangan membuat klon berkas pembangun dari AUR, hanya gunakan berkas-berkas lokal"
 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
-msgstr ""
+msgstr "abaikan semua pesan konfirmasi"
 
 #: src/cli.vala
 msgid "glob"
-msgstr ""
+msgstr "glob"
 
 #: src/cli.vala
 msgid ""
 "ignore a package upgrade, multiple packages can be specified by separating "
 "them with a comma"
-msgstr ""
+msgstr "abaikan peningkatan paket, beberapa paket dapat ditentukan dengan memisahkannya dengan tanda koma"
 
 #: src/cli.vala
 msgid ""
 "overwrite conflicting files, multiple patterns can be specified by "
 "separating them with a comma"
-msgstr ""
+msgstr "timpa berkas-berkas yang berkonflik, bisa menggunakan lebih dari satu pola dengan memisahkannya dengan tanda koma"
 
 #: src/cli.vala
 msgid "download all packages but do not install/upgrade anything"
-msgstr ""
+msgstr "unduh semua paket namun jangan pasang/tingkatkan apapun"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
-msgstr ""
+msgstr "tandai semua paket terpasang sebagai dependensi"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr ""
+msgstr "tandai semua paket terpasang secara eksplisit"
 
 #: src/cli.vala
 msgid "check for updates"
-msgstr ""
+msgstr "periksa pembaruan"
 
 #: src/cli.vala
 msgid "do not check for updates"
-msgstr ""
+msgstr "jangan memeriksa pembaruan"
 
 #: src/cli.vala
 msgid "Reinstall packages"
-msgstr ""
+msgstr "Pasang ulang paket"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
-msgstr ""
+msgstr "hapus paket hanya jika tidak dibutuhkan oleh paket-paket lain"
 
 #: src/cli.vala
 msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
-msgstr ""
+msgstr "hapus dependensi yang tidak diperlukan oleh paket-paket lain, jika opsi ini digunakan tanpa nama paket, hapus semua paket yatim"
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
-msgstr ""
+msgstr "jangan menghapus dependensi yang tidak dibutuhkan oleh paket-paket lain"
 
 #: src/cli.vala
 msgid "ignore files backup"
-msgstr ""
+msgstr "abaikan cadangan berkas"
 
 #: src/cli.vala
 msgid "Safely check for updates without modifiying the databases"
-msgstr ""
+msgstr "Periksa pembaruan secara aman tanpa memodifikasi basis data"
 
 #: src/cli.vala
 msgid "Exit code is 100 if updates are available"
-msgstr ""
+msgstr "Kode keluar adalah 100 jika pembaruan tersedia"
 
 #: src/cli.vala
 msgid ""
 "build directory (use with --devel), if no directory is given the one "
 "specified in pamac.conf file is used"
-msgstr ""
+msgstr "direktori pembangun (gunakan dengan --devel), jika tidak ada direktori yang ditentukan, maka direktori yang telah ditentukan di berkas pamac.conf akan digunakan"
 
 #: src/cli.vala
 msgid "also check updates in AUR"
-msgstr ""
+msgstr "juga periksa pembaruan di AUR"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr ""
+msgstr "jangan periksa pembaruan di AUR"
 
 #: src/cli.vala
 msgid "only print one line per update"
-msgstr ""
+msgstr "hanya tampilkan satu baris per pembaruan"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
-msgstr ""
+msgstr "juga periksa pembaruan paket-paket pengembangan (gunakan dengan --aur)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr ""
+msgstr "jangan memeriksa pembaruan paket-paket pengembangan"
 
 #: src/cli.vala
 msgid "Upgrade your system"
-msgstr ""
+msgstr "Tingkatkan sistem Anda"
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
-msgstr ""
+msgstr "paksa penyegaran basis data"
 
 #: src/cli.vala
 msgid "enable package downgrades"
-msgstr ""
+msgstr "bolehkan penurunan paket"
 
 #: src/cli.vala
 msgid "disable package downgrades"
-msgstr ""
+msgstr "nonaktifkan penurunan paket"
 
 #: src/cli.vala
 msgid "also upgrade packages installed from AUR"
-msgstr ""
+msgstr "juga tingkatkan paket-paket yang terpasang dari AUR"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr ""
+msgstr "jangan meningkatkan paket-paket yang terpasang dari AUR"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
-msgstr ""
+msgstr "juga tingkatkan paket-paket pengembangan (gunakan dengan --aur)"
 
 #: src/cli.vala
 msgid "do not upgrade development packages"
-msgstr ""
+msgstr "jangan meningkatkan paket-paket pengembangan"
 
 #: src/cli.vala
 msgid ""
 "build directory (use with --aur), if no directory is given the one specified"
 " in pamac.conf file is used"
-msgstr ""
+msgstr "direktori pembangun (gunakan dengan --aur), jika tidak ada direktori yang ditentukan, maka direktori yang telah ditentukan di berkas pamac.conf akan digunakan"
 
 #: src/cli.vala
 msgid "Clean packages cache or build files"
-msgstr ""
+msgstr "Bersihkan tembolok paket atau berkas-berkas pembangun"
 
 #: src/cli.vala
 msgid "number"
-msgstr ""
+msgstr "nomor"
 
 #: src/cli.vala
 msgid ""
 "specify how many versions of each package are kept in the cache directory"
-msgstr ""
+msgstr "tentukan berapa banyak versi dari tiap paket akan disimpan di direktori tembolok"
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
-msgstr ""
+msgstr "hanya menargetkan paket-paket yang telah dicopot"
 
 #: src/cli.vala
 msgid ""
 "remove all build files, the build directory is the one specified in "
 "pamac.conf"
-msgstr ""
+msgstr "hapus semua berkas pembangun, direktori pembangun adalah yang telah ditentukan di berkas pamac.conf"
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
-msgstr ""
+msgstr "jangan menghapus berkas, hanya temukan paket-paket kandidat"
 
 #: src/cli.vala
 msgid "also display all files names"
-msgstr ""
+msgstr "juga tampilkan semua nama berkas"
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
@@ -1282,35 +1288,35 @@ msgstr "Versi"
 
 #: src/cli.vala
 msgid "Description"
-msgstr ""
+msgstr "Deskripsi"
 
 #: src/cli.vala
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/cli.vala
 msgid "Installed Size"
-msgstr ""
+msgstr "Ukuran Terpasang"
 
 #: src/cli.vala
 #, c-format
 msgid "No package owns %s"
-msgstr ""
+msgstr "Tidak ada paket yang memiliki %s"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is owned by %s"
-msgstr ""
+msgstr "%s dimiliki oleh %s"
 
 #: src/cli.vala
 #, c-format
 msgid "%u ignored update"
 msgid_plural "%u ignored updates"
-msgstr[0] ""
+msgstr[0] "%u pembaruan yang diabaikan"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
-msgstr "Hapus versi paket yang sudah diuninstal"
+msgstr "Hapus hanya versi paket yang sudah dicopot"
 
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
@@ -1322,37 +1328,37 @@ msgstr "Bersihkan cache"
 
 #: src/cli.vala
 msgid "Clean build files"
-msgstr ""
+msgstr "Bersihkan berkas-berkas pembangun"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to install"
-msgstr ""
+msgstr "Tambahkan %s untuk dipasang"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is only available from AUR"
-msgstr ""
+msgstr "%s hanya tersedia dari AUR"
 
 #: src/cli.vala
 #, c-format
 msgid "There is %u member in group %s"
 msgid_plural "There are %u members in group %s"
-msgstr[0] ""
+msgstr[0] "Terdapat %u anggota di grup %s"
 
 #: src/cli.vala
 msgid "all"
-msgstr ""
+msgstr "semua"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr ""
+msgstr "Tambahkan %s untuk dipasang ulang"
 
 #: src/cli.vala
 #, c-format
 msgid "Install %s from %s"
-msgstr ""
+msgstr "Pasang %s dari %s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1384,7 +1390,7 @@ msgstr "_Terapkan"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr ""
+msgstr "Mode Perangkat Lunak"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
@@ -1408,19 +1414,19 @@ msgstr "Cari"
 
 #: resources/manager_window.ui
 msgid "Remove all"
-msgstr ""
+msgstr "Hapus Semua"
 
 #: resources/manager_window.ui
 msgid "Install all"
-msgstr ""
+msgstr "Pasang semua"
 
 #: resources/manager_window.ui
 msgid "Ignore all"
-msgstr ""
+msgstr "Abaikan semua"
 
 #: resources/manager_window.ui
 msgid "Sort by"
-msgstr ""
+msgstr "Urutkan berdasar"
 
 #: resources/manager_window.ui
 msgid "Relevance"
@@ -1432,11 +1438,11 @@ msgstr "Ukuran"
 
 #: resources/manager_window.ui
 msgid "Date"
-msgstr ""
+msgstr "Tanggal"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "Segarkan"
 
 #: resources/manager_window.ui
 msgid "Categories"
@@ -1452,7 +1458,7 @@ msgstr "Update"
 
 #: resources/manager_window.ui
 msgid "Launch"
-msgstr ""
+msgstr "Luncurkan"
 
 #: resources/manager_window.ui
 msgid "Remove"
@@ -1464,7 +1470,7 @@ msgstr "Memasang ulang"
 
 #: resources/manager_window.ui
 msgid "Build"
-msgstr ""
+msgstr "Pembangun"
 
 #: resources/manager_window.ui
 msgid "Dependencies"
@@ -1476,7 +1482,7 @@ msgstr "Berkas"
 
 #: resources/manager_window.ui
 msgid "Reset build files"
-msgstr ""
+msgstr "Setel ulang berkas-berkas pembangun"
 
 #: resources/manager_window.ui
 msgid "Build files"
@@ -1492,31 +1498,31 @@ msgstr "Periksa pembaharuan"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Frekuensi pemeriksaan pembaruan"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
-msgstr ""
+msgstr "Unduh pembaruan secara otomatis"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Sembunyikan ikon baki saat tidak ada pembaruan"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Unduhan"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Unduhan paralel"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Gunakan cermin dari"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Segarkan Cermin"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1524,29 +1530,29 @@ msgstr "Cache"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Jumlah versi setiap paket untuk disimpan"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Hapus hanya paket-paket yang telah dicopot"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Bersihkan"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
-msgstr ""
+msgstr "Tingkat Lanjut"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
+msgstr "Kesalahan konfigurasi dari opsi-opsi ini bisa mengakibatkan kerusakan sistem.\nLakukan perubahan hanya jika Anda tahu apa yang Anda kerjakan."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
-msgstr ""
+msgstr "Periksa ruang diska yang tersedia"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"
@@ -1554,19 +1560,19 @@ msgstr "Hapus dependensi yang tidak dibutuhkan"
 
 #: resources/preferences_dialog.ui
 msgid "Do not check for updates when installing"
-msgstr ""
+msgstr "Jangan memeriksa pembaruan saat memasang"
 
 #: resources/preferences_dialog.ui
 msgid "Enable downgrade"
-msgstr ""
+msgstr "Bolehkan penurunan"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Penurunan yang diabaikan"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Pihak Ketiga"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1580,28 +1586,28 @@ msgstr "Izinkan dukungan AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Simpan paket-paket yang telah dibangun"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"
-msgstr ""
+msgstr "Periksa pembaruan paket-paket pengembangan"
 
 #: resources/preferences_dialog.ui
 msgid "Build directory"
-msgstr "Build direktori"
+msgstr "Direktori pembangun"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
-msgstr ""
+msgstr "Paket-paket Flatpak dipelihara oleh para penerbitnya"
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
-msgstr ""
+msgstr "Aktifkan dukungan Flatpak"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr ""
+msgstr "Paket-paket Snap dipelihara oleh para penerbitnya."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"
-msgstr ""
+msgstr "Aktifkan dukungan Snap"

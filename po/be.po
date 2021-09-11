@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-26 06:34+0000\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-08-02 11:35+0000\n"
 "Last-Translator: Źmicier Turok <nashtlumach@gmail.com>\n"
 "Language-Team: Belarusian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/be/)\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr "Увага"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %s (%s) breaks dependency '%s' required by %s"
-msgstr "усталёўка %s (%s) парушае залежнасць \"%s\", неабходную для %s"
+msgstr "усталяванне %s (%s) парушае залежнасць \"%s\", неабходную для %s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -186,7 +186,7 @@ msgstr "Праверка на ўзаемныя канфлікты"
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
-msgstr "Усталёўка %s"
+msgstr "Усталяванне %s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -219,7 +219,7 @@ msgstr "Загрузка файлаў пакункаў"
 #: src/alpm_utils.vala
 #, c-format
 msgid "Configuring %s"
-msgstr "Наладка %s"
+msgstr "Наладжванне %s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -520,7 +520,7 @@ msgstr "Кіраўнік пакункаў"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
-msgstr "Усталёўка пакункаў з рэпазіторыяў, па шляху альбо сеціўнаму адрасу"
+msgstr "Усталяванне пакункаў з рэпазіторыяў, па шляху альбо сеціўнаму адрасу"
 
 #: src/installer.vala src/cli.vala
 msgid "Remove packages"
@@ -569,7 +569,7 @@ msgstr "Праверка на абнаўленні"
 
 #: src/manager_window.vala resources/manager_window.ui
 msgid "Install Local Packages"
-msgstr "Усталяваць лакальныя пакункі"
+msgstr "Усталяванне лакальных пакункаў"
 
 #: src/manager_window.vala
 msgid "_Open"
@@ -581,7 +581,7 @@ msgstr "Пакунак Alpm"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "Кіраўнік пакункаў з падтрымкай Alpm, AUR, Flatpak і Snap"
+msgstr "Кіраўнік пакункаў, які падтрымлівае Alpm, AUR, Flatpak і Snap"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
@@ -596,6 +596,10 @@ msgstr[0] "%u чакае апрацоўкі"
 msgstr[1] "%u чакаюць апрацоўкі"
 msgstr[2] "%u чакаюць апрацоўкі"
 msgstr[3] "%u чакаюць апрацоўкі"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Да апрацоўвання"
 
 #: src/manager_window.vala
 msgid "All"
@@ -779,11 +783,11 @@ msgstr "кожныя 3 гадзіны"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr "кожныя 6 гадзін"
+msgstr "кожныя 6 гадзінаў"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr "кожныя 12 гадзін"
+msgstr "кожныя 12 гадзінаў"
 
 #: src/preferences_dialog.vala
 msgid "every day"
@@ -1393,7 +1397,7 @@ msgstr "Праграмны рэжым"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
-msgstr "Абнавіць базы даных"
+msgstr "Абнаўленне базаў даных"
 
 #: resources/manager_window.ui
 msgid "View History"
@@ -1541,13 +1545,13 @@ msgstr "Ачысціць"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
-msgstr "Дадаткова"
+msgstr "Дадатковыя"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "Няправільная наладка гэтых параметраў можа прывесці да пашкоджання сістэмы.\nЗмяняйце іх толькі, калі ведаеце, што робіце."
+msgstr "Няправільнае наладжванне гэтых параметраў можа прывесці да пашкоджання сістэмы.\nЗмяняйце іх толькі, калі ведаеце, што робіце."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1559,7 +1563,7 @@ msgstr "Выдаляць непатрэбныя залежнасці"
 
 #: resources/preferences_dialog.ui
 msgid "Do not check for updates when installing"
-msgstr "Не правяраць на абнаўленні падчас усталёўкі"
+msgstr "Не правяраць на абнаўленні падчас усталявання"
 
 #: resources/preferences_dialog.ui
 msgid "Enable downgrade"
@@ -1567,17 +1571,17 @@ msgstr "Уключыць вяртанне да папярэдніх версій
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr "Ігнаруемыя абнаўленні"
+msgstr "Абнаўленні, якія ігнаруюцца"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr "Пабочныя"
+msgstr "Іншыя крыніцы"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AUR - падтрымліваемы суполкай рэпазіторый. Пры яго выкарыстанні ёсць верагоднасць узнікнення пэўных праблем. \nУсе карыстальнікі AUR мусяць азнаёміцца з працэсам зборкі."
+msgstr "AUR - рэпазіторый, які падтрымліваецца супольнасцю. Пры яго выкарыстанні ёсць верагоднасць узнікнення пэўных праблемаў. \nУсе карыстальнікі AUR мусяць азнаёміцца з працэсам зборкі."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

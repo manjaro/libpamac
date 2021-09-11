@@ -6,7 +6,7 @@
 # Translators:
 # Mario <al.manja@gmx.com>, 2017
 # ansich <mojmejlzaforume@gmail.com>, 2014
-# Arnold Marko <arnold.marko@gmail.com>, 2020
+# Arnold Marko <arnold.marko@gmail.com>, 2020-2021
 # Boštjan Mejak <bostjan.xperia@gmail.com>, 2019
 # 81bf57fa00e764cd1a86babbb15d8afe_973765f <6bc1770e567c243ec280bc3c26fe946f_125326>, 2013
 # ansich <mojmejlzaforume@gmail.com>, 2014-2015,2017
@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 13:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-08-23 07:41+0000\n"
+"Last-Translator: Arnold Marko <arnold.marko@gmail.com>\n"
 "Language-Team: Slovenian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -393,7 +393,7 @@ msgstr "Ni opravil"
 #: src/transaction.vala
 #, c-format
 msgid "%s: ignoring package upgrade (%s => %s)\n"
-msgstr ""
+msgstr "%s: ignoriram nadgradnjo paketa (%s =>%s)\n"
 
 #: src/transaction.vala
 #, c-format
@@ -503,7 +503,7 @@ msgstr "_Zapri"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Ponovni zagon"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -604,6 +604,10 @@ msgstr[2] "%u operacij na čakanju"
 msgstr[3] "%u operacij na čakanju"
 
 #: src/manager_window.vala
+msgid "Pending"
+msgstr "Na čakanju"
+
+#: src/manager_window.vala
 msgid "All"
 msgstr "Vse"
 
@@ -625,7 +629,7 @@ msgstr "Nameščeno"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Prezrto"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -781,47 +785,47 @@ msgstr "Nazadnje osveženo"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "na 3 ure"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "na 6 ur"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "na 12 ur"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "vsak dan"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "vsak teden"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -829,15 +833,15 @@ msgstr "Po celem svetu"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -854,11 +858,11 @@ msgstr[3] "%u datotek"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Določite mapo za gradnjo"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Izberi"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -1027,7 +1031,7 @@ msgstr "seznam nameščenih paketov"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "izpiši eksplicitno nameščene pakete"
 
 #: src/cli.vala
 msgid ""
@@ -1363,7 +1367,7 @@ msgstr "Dodaj %s za ponovno namestitev"
 #: src/cli.vala
 #, c-format
 msgid "Install %s from %s"
-msgstr ""
+msgstr "Namesti %s iz %s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1503,7 +1507,7 @@ msgstr "Preveri za posodobitve"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Pogostost preverjanja nadgradenj"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1511,23 +1515,23 @@ msgstr "Samodejno prenesi posodobitve"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Skrji statusno ikono, kadar ni nadgradenj"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Prenosi"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Vzporedni prenosi"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Uporabi zrcala za"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Osveži zrcala"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1535,15 +1539,15 @@ msgstr "Predpomnilnik"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Število različic, ki naj se obdržijo za vsak paket"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Odstrani le od-nameščene pakete"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Počisti"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1573,11 +1577,11 @@ msgstr "Omogoči posodobitev na starejšo različico"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Prezrte nadgradnje"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Iz tretje roke"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1591,7 +1595,7 @@ msgstr "Omogoči podporo AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Ohrani zgrajene pakete"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 15:41+0000\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-06-15 12:08+0000\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -392,7 +392,7 @@ msgstr "Nič na vykonanie"
 #: src/transaction.vala
 #, c-format
 msgid "%s: ignoring package upgrade (%s => %s)\n"
-msgstr ""
+msgstr "%s: ignoruje sa aktualizácia balíka (%s => %s)\n"
 
 #: src/transaction.vala
 #, c-format
@@ -601,6 +601,10 @@ msgstr[0] "%u operácia na vybavenie"
 msgstr[1] "%u operácie na vybavenie"
 msgstr[2] "%u operácií na vybavenie"
 msgstr[3] "%u operácií na vybavenie"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Na vybavenie"
 
 #: src/manager_window.vala
 msgid "All"
@@ -1217,11 +1221,11 @@ msgstr "vynútiť obnovenie databáz"
 
 #: src/cli.vala
 msgid "enable package downgrades"
-msgstr "povoliť prechod na staršiu verziu balíkov"
+msgstr "povoliť návrat k starším verziám balíkov"
 
 #: src/cli.vala
 msgid "disable package downgrades"
-msgstr ""
+msgstr "zakázať návrat k starším verziám balíkov"
 
 #: src/cli.vala
 msgid "also upgrade packages installed from AUR"
@@ -1502,7 +1506,7 @@ msgstr "Kontrolovať aktualizácie"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Interval kontroly aktualizácií"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1510,23 +1514,23 @@ msgstr "Automaticky prevziať aktualizácie"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Skryť ikonu v systémovej lište, keď nie sú dostupné aktualizácie"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Preberanie"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Súčasné preberania"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Použiť zrkadlá z"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Obnoviť zrkadlá"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1534,15 +1538,15 @@ msgstr "Vyrovnávacia pamäť"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Počet verzií každého balíka, ktoré ponechať"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Odstrániť iba odinštalované balíky"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Vymazať"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1568,15 +1572,15 @@ msgstr "Nekontrolovať aktualizácie počas inštalovania"
 
 #: resources/preferences_dialog.ui
 msgid "Enable downgrade"
-msgstr "Povoliť prechod na staršiu verziu balíkov"
+msgstr "Povoliť návrat k starším verziám balíkov"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Ignorované aktualizácie"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Tretie strany"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1590,7 +1594,7 @@ msgstr "Povoliť podporu repozitára AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Ponechať zostavené balíky"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

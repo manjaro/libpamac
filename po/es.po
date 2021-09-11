@@ -21,7 +21,7 @@
 # Marchin, 2015
 # Miguel Hernández <mhdez@protonmail.com>, 2015,2017
 # Marchin, 2015
-# Noel Rodríguez Freire <noelrf.ou@gmail.com>, 2015-2016
+# Noel Rodríguez Freire <noelrf.ou@gmail.com>, 2015-2016,2021
 # philm <philm@manjaro.org>, 2015
 # Robert Schneider <robertschv@gmail.com>, 2019-2020
 # Jakeukalane <tuscriaturas@gmail.com>, 2018
@@ -29,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-04-14 11:22+0200\n"
-"PO-Revision-Date: 2021-04-14 13:28+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"PO-Revision-Date: 2021-09-02 08:58+0000\n"
+"Last-Translator: Noel Rodríguez Freire <noelrf.ou@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -606,6 +606,10 @@ msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u operación pendiente"
 msgstr[1] "%u operaciones pendientes"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr ""
 
 #: src/manager_window.vala
 msgid "All"
@@ -1489,7 +1493,7 @@ msgstr "Restablecer archivos de compilación"
 
 #: resources/manager_window.ui
 msgid "Build files"
-msgstr "Construir archivos"
+msgstr "Archivos de compilación"
 
 #: resources/preferences_dialog.ui
 msgid "General"
