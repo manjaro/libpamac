@@ -1013,7 +1013,7 @@ namespace Pamac {
 							unowned Json.Node? node = full_json_object.get_member ("Groups");
 							if (node != null) {
 								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _depends);
+								populate_array (json_array, ref _groups);
 							}
 						}
 					}
