@@ -16,8 +16,8 @@ def on_emit_hook_progress(transaction, action, details, status, progress, data):
 def on_emit_warning(transaction, message, data):
 	print(message)
 
-def on_emit_error(transaction, message, details, details_length, data):
-	if details_length > 0:
+def on_emit_error(transaction, message, details, data):
+	if len(details) > 0:
 		print(f"{message}:")
 		for detail in details:
 			print(detail)
