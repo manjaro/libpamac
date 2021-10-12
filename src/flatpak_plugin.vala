@@ -415,9 +415,15 @@ namespace Pamac {
 			}
 		}
 
-		public bool is_installed_flatpak (string name) {
+		public bool is_installed_flatpak (string id) {
+			string[] splitted = id.split ("/", 5);
+			//unowned string remote = splitted[0];
+			//unowned string kind = splitted[1];
+			unowned string name = splitted[2];
+			unowned string arch = splitted[3];
+			unowned string branch = splitted[4];
 			try {
-				Flatpak.InstalledRef? installed_ref = installation.get_installed_ref (Flatpak.RefKind.APP, name, null, null);
+				Flatpak.InstalledRef? installed_ref = installation.get_installed_ref (Flatpak.RefKind.APP, name, arch, branch);
 				if (installed_ref != null) {
 					return true;
 				}
