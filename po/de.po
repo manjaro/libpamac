@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # Andreas Eitel, 2018
 # Andreas Eitel <github-aneitel@online.de>, 2019-2020
@@ -36,14 +36,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-05-20 13:32+0000\n"
 "Last-Translator: Gustav Gyges\n"
 "Language-Team: German (http://www.transifex.com/manjarolinux/manjaro-pamac/language/de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -86,8 +86,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "Paket %s hat keine gültige Architektur"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "nicht vorhandene Abhängigkeit '%s' benötigt von %s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -96,8 +96,8 @@ msgid "Warning"
 msgstr "Warnung"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "das Installieren von %s (%s) verletzt Abhängigkeit '%s' benötigt von %s"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -111,13 +111,13 @@ msgid "if possible, remove %s and retry"
 msgstr "Entfernen Sie nach Möglichkeit %s und versuchen Sie es erneut"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "das Entfernen von %s verletzt Abhängigkeit '%s' benötigt von %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr " %s und %s stehen im Konflikt zueinander"
 
 #: src/alpm_utils.vala
@@ -143,18 +143,18 @@ msgid "Transaction cancelled"
 msgstr "Vorgang abgebrochen"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "%s existiert in %s und %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s: %s existiert bereits im Dateisystem (gehört zu %s)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: %s existiert bereits im Dateisystem"
 
 #: src/alpm_utils.vala
@@ -162,8 +162,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "Falls diese Datei nicht gebraucht wird, entfernen Sie sie und versuchen Sie es erneut"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: %s existiert bereits im Dateisystem"
 
 #: src/alpm_utils.vala
@@ -256,8 +256,8 @@ msgid "Checking available disk space"
 msgstr "Überprüfe verfügbaren Speicherplatz"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr " %s benötigt optional %s"
 
 #: src/alpm_utils.vala
@@ -274,13 +274,13 @@ msgid "Downloading required keys"
 msgstr "Lade die benötigten Schlüssel herunter"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "%s installiert als %s.pacnew"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "%s installiert als %s.pacsave"
 
 #: src/alpm_utils.vala
@@ -406,19 +406,19 @@ msgid "Nothing to do"
 msgstr "Es gibt nichts zu tun"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: ignoriere Paket-Upgrade (%s => %s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Erstelle %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "Fehler beim Erstellen von %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Erstelle %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -438,16 +438,15 @@ msgstr "PGP-Schlüssel importieren"
 msgid "Trust and Import"
 msgstr "Vertrauen und importieren"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Abbrechen"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "Der PGP-Schlüssel %s wird benötigt, um %s Quellcode-Dateien zu verifizieren"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -460,8 +459,7 @@ msgstr "Vertraue %s und importiere den PGP-Schlüssel"
 msgid "Official Repositories"
 msgstr "Offizielle Softwarequellen"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "Softwarequellen"
 
@@ -520,8 +518,7 @@ msgstr "_Schließen"
 msgid "Restart"
 msgstr "Neustart"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "Installieren"
 
@@ -602,8 +599,7 @@ msgstr "Alpm Paket"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Ein Paketmanager mit Unterstützung von ALPM, AUR, Flatpak und Snap"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -790,6 +786,11 @@ msgstr "Dienstprogramme"
 msgid "Development"
 msgstr "Entwicklung"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "Aktualisierungen"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "Letzte Aktualisierung"
@@ -904,6 +905,11 @@ msgid "yes"
 msgstr "ja"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "Der PGP-Schlüssel %s wird benötigt, um %s Quellcode-Dateien zu verifizieren"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -1010,8 +1016,7 @@ msgid "do not search in AUR"
 msgstr "Nicht im AUR suchen"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "suche nach Paketen mit den gegebenen Dateinamen (Dateinamen können unvollständig sein)"
 
 #: src/cli.vala
@@ -1043,9 +1048,7 @@ msgid "list explicitly installed packages"
 msgstr "explizit installierte Pakete auflisten"
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "Pakete auflisten, die als Abhängigkeiten installiert wurden, aber nicht länger von einem installierten Paket benötigt werden"
 
 #: src/cli.vala
@@ -1053,15 +1056,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "Pakete auflisten, die nicht in den Softwarequellen gefunden wurden"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "Alle Pakete auflisten, die Mitglieder in den angegebenen Gruppen sind, wenn keine Gruppe angegeben ist, werden alle Gruppen aufgelistet"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "Alle verfügbaren Pakete der angegebenen Softwarequellen auflisten, wenn keine Softwarequelle angegeben ist, werden alle Softwarequellen aufgelistet"
 
 #: src/cli.vala
@@ -1077,9 +1076,7 @@ msgid "dir"
 msgstr "Verzeichnis"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "Build-Verzeichnis, wenn kein Verzeichnis angegeben wurde, wird das in der Datei pamac.conf angegebene verwendet"
 
 #: src/cli.vala
@@ -1095,14 +1092,11 @@ msgid "overwrite existing files"
 msgstr "Existierende Dateien überschreiben"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Wenn kein Paketname angegeben wurde, benutze die PKGBUILD-Datei im aktuellen Verzeichnis"
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "Als Build-Verzeichnis wird das übergeordnete Verzeichnis benutzt,  die Option --builddir wird ignoriert"
 
 #: src/cli.vala
@@ -1134,15 +1128,11 @@ msgid "glob"
 msgstr "Platzhalter"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "Ignoriere Paketaktualisierung, mehrere Pakete können angegeben werden, indem sie mit einem Komma getrennt werden"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "Konfliktdateien überschreiben, mehrere Muster können angegeben werden, indem sie mittels Komma getrennt werden"
 
 #: src/cli.vala
@@ -1174,9 +1164,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "Entfernen Sie Pakete nur dann, wenn sie nicht von anderen Paketen benötigt werden"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "entferne Abhängigkeiten, die nicht von anderen Paketen benötigt werden, wenn diese Option ohne Paketname genutzt wird, werden alle Waisen entfernt"
 
 #: src/cli.vala
@@ -1196,9 +1184,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Der Exit-Code lautet 100, wenn Aktualisierungen verfügbar sind"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "Build-Verzeichnis (benutzen mit --devel), wenn kein Verzeichnis angegeben wurde, wird das in der Datei pamac.conf verwendet"
 
 #: src/cli.vala
@@ -1254,9 +1240,7 @@ msgid "do not upgrade development packages"
 msgstr "Entwicklerpakete nicht aktualisieren"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "Build-Verzeichnis (benutzen mit --aur), wenn kein Verzeichnis angegeben wurde, wird das in der Datei pamac.conf verwendet"
 
 #: src/cli.vala
@@ -1268,8 +1252,7 @@ msgid "number"
 msgstr "Nummer"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "Anzahl der Paketversionen, die im Puffer vorgehalten werden"
 
 #: src/cli.vala
@@ -1277,9 +1260,7 @@ msgid "only target uninstalled packages"
 msgstr "ausschließlich nicht installierte Pakete beachten"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "Entferne alle Build-Dateien. Das Build-Verzeichnis ist das in der Datei pamac.conf angegebene."
 
 #: src/cli.vala
@@ -1354,9 +1335,9 @@ msgid "%s is only available from AUR"
 msgstr "%s ist nur im AUR verfügbar"
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Es ist %u Mitglied in Gruppe %s"
 msgstr[1] "Es gibt %u Mitglieder in der Gruppe %s"
 
@@ -1466,10 +1447,6 @@ msgstr "Kategorien"
 msgid "Browse"
 msgstr "Durchstöbern"
 
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Aktualisierungen"
-
 #: resources/manager_window.ui
 msgid "Launch"
 msgstr "Starten"
@@ -1562,7 +1539,9 @@ msgstr "Fortgeschritten"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "Eine fehlerhafte Konfiguration dieser Einstellungen kann dazu führen, dass dieses System unbrauchbar wird.\nVerändern Sie diese nur dann, wenn Sie genau wissen, was Sie tun."
+msgstr ""
+"Eine fehlerhafte Konfiguration dieser Einstellungen kann dazu führen, dass dieses System unbrauchbar wird.\n"
+"Verändern Sie diese nur dann, wenn Sie genau wissen, was Sie tun."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1592,7 +1571,9 @@ msgstr "Drittanbieter"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "Das AUR ist eine inoffizielle Softwarequelle, die von der Gemeinschaft bereitgestellt wird. Dies geht mit potentiellen Risiken und Problemen einher.\nAlle Benutzer des AUR sollten mit dem Build-Prozess vertraut sein."
+msgstr ""
+"Das AUR ist eine inoffizielle Softwarequelle, die von der Gemeinschaft bereitgestellt wird. Dies geht mit potentiellen Risiken und Problemen einher.\n"
+"Alle Benutzer des AUR sollten mit dem Build-Prozess vertraut sein."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

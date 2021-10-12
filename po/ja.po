@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # BALLOON a.k.a. Fu-sen., 2015
 # ふうせん Fu-sen. | BALLOON a.k.a. Fu-sen., 2015
@@ -14,14 +14,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-05-17 13:45+0000\n"
 "Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
 "Language-Team: Japanese (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ja/)\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -64,8 +64,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "パッケージ %s は有効なアーキテクチャではありません"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "依存パッケージ '%s' を満たすことができません。%s に必要です"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -74,8 +74,8 @@ msgid "Warning"
 msgstr "警告"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "%s (%s) をインストールすると '%s' (%s に必要) の依存関係を壊します"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -89,13 +89,13 @@ msgid "if possible, remove %s and retry"
 msgstr "可能であれば、%s を削除してリトライしてください"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "%s を削除すると '%s' (%s に必要) の依存関係を壊します"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr "%s と %s が競合しています"
 
 #: src/alpm_utils.vala
@@ -121,18 +121,18 @@ msgid "Transaction cancelled"
 msgstr "トランザクションがキャンセルされました"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "%s が %s と %s の両方に存在します"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s: %s はすでにファイルシステムに存在します (%s が所有)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: %s は既にファイルシステムに存在します"
 
 #: src/alpm_utils.vala
@@ -140,8 +140,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "このファイルが不要な場合は、削除してリトライしてください"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: %s はすでにファイルシステムに存在します"
 
 #: src/alpm_utils.vala
@@ -234,8 +234,8 @@ msgid "Checking available disk space"
 msgstr "使用可能なディスク容量を確認しています"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr "%s はオプションとして %s を必要とします"
 
 #: src/alpm_utils.vala
@@ -252,13 +252,13 @@ msgid "Downloading required keys"
 msgstr "必要なキーをダウンロードしています"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "%s を %s.pacnewとしてインストールしました"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "%s を %s.pacsaveとしてインストールしました"
 
 #: src/alpm_utils.vala
@@ -382,19 +382,19 @@ msgid "Nothing to do"
 msgstr "何もすることがありません"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: パッケージのアップグレードを無視 (%s => %s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "%s をビルドしています"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "%s のビルドに失敗しました "
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "%s をビルドしています"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -414,16 +414,15 @@ msgstr "PGP鍵をインポート"
 msgid "Trust and Import"
 msgstr "信用とインポート"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "キャンセル (_C)"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "%s ソースファイルを検証するにはPGP鍵 %s が必要です"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -436,8 +435,7 @@ msgstr "%s を信用してPGP鍵をインポートしますか"
 msgid "Official Repositories"
 msgstr "公式リポジトリ"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "リポジトリ"
 
@@ -496,8 +494,7 @@ msgstr "閉じる (_C)"
 msgid "Restart"
 msgstr "再起動"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "インストール"
 
@@ -577,8 +574,7 @@ msgstr "Alpm パッケージ"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Alpm、AUR、Flatpak、Snap をサポートするパッケージマネージャー"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -764,6 +760,11 @@ msgstr "ユーティリティ"
 msgid "Development"
 msgstr "開発"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "アップデート"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "最終更新"
@@ -877,6 +878,11 @@ msgid "yes"
 msgstr "yes"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "%s ソースファイルを検証するにはPGP鍵 %s が必要です"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -983,8 +989,7 @@ msgid "do not search in AUR"
 msgstr "AURを検索しない"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "ファイル名（ファイル名は部分的でも可）によりパッケージを検索"
 
 #: src/cli.vala
@@ -1016,9 +1021,7 @@ msgid "list explicitly installed packages"
 msgstr "明示的にインストールされたパッケージのリスト"
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "他のパッケージの依存パッケージとしてインストールされたものの、既に他のパッケージから必要とされていないパッケージのリスト"
 
 #: src/cli.vala
@@ -1026,15 +1029,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "リポジトリに存在しないパッケージのリスト"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "指定されたグループのパッケージを全てリストにする。グループが指定されていない場合は全てのグループをリストにする"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "指定されたリポジトリで利用できるパッケージを全てリストにする。リポジトリが指定されていない場合は全てのリポジトリをリストにする"
 
 #: src/cli.vala
@@ -1050,9 +1049,7 @@ msgid "dir"
 msgstr "dir"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "ビルドを行うディレクトリ、もしデジレクトリが指定されていない場合はpamac.confで指定されたものを使用"
 
 #: src/cli.vala
@@ -1068,14 +1065,11 @@ msgid "overwrite existing files"
 msgstr "既存のファイルに上書き"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "パッケージ名が指定されていない場合は、カレントディレクトリのPKGBUILDファイルを使用します"
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "ビルドディレクトリは1つ上のディレクトリとなり、--builddir オプションは無視されます"
 
 #: src/cli.vala
@@ -1107,15 +1101,11 @@ msgid "glob"
 msgstr "glob"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "アップグレードを無視するパッケージ。コンマで区切ることで複数のパッケージを指定できます"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "コンフリクトするファイルを上書きする。カンマ区切りで複数のパターンを指定できる"
 
 #: src/cli.vala
@@ -1147,9 +1137,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "他のパッケージから必要とされていないもののみ削除"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "他のパッケージから必要とされていないパッケージを削除する。パッケージ名を指定せずにこのオプションを使うと、孤立したパッケージを全て削除する"
 
 #: src/cli.vala
@@ -1169,9 +1157,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "アップデートがりようできるならば、終了コードは100です。"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "ビルドディレクトリ (--devel と一緒に使う)。ディレクトリの指定がなければ pamac.conf ファイルで指定されたものが使われる"
 
 #: src/cli.vala
@@ -1227,9 +1213,7 @@ msgid "do not upgrade development packages"
 msgstr "開発用パッケージをアップグレードしない"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "ビルドディレクトリ (--aur とともに使う)。ディレクトリの指定がない場合は pamac.conf で指定されている場所を使う"
 
 #: src/cli.vala
@@ -1241,8 +1225,7 @@ msgid "number"
 msgstr "数字"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "キャッシュディレクトリに保持する各パッケージのバージョン数を指定する"
 
 #: src/cli.vala
@@ -1250,9 +1233,7 @@ msgid "only target uninstalled packages"
 msgstr "アンインストール済みのパッケージのみを対象とする"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "全てのビルドファイルを削除します。ビルドディレクトリはpamac.confで指定されているものです"
 
 #: src/cli.vala
@@ -1326,9 +1307,9 @@ msgid "%s is only available from AUR"
 msgstr "%s はAURからのみ利用できます"
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "グループ%s 内に %u のパッケージがあります。"
 
 #: src/cli.vala
@@ -1437,10 +1418,6 @@ msgstr "カテゴリ"
 msgid "Browse"
 msgstr "閲覧"
 
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "アップデート"
-
 #: resources/manager_window.ui
 msgid "Launch"
 msgstr "実行"
@@ -1533,7 +1510,9 @@ msgstr "高度な設定"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "これらのオプションの設定を誤ると、システムが壊れる可能性があります。\n自分が何をしているのか理解している場合にのみ、それらを変更してください。"
+msgstr ""
+"これらのオプションの設定を誤ると、システムが壊れる可能性があります。\n"
+"自分が何をしているのか理解している場合にのみ、それらを変更してください。"
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1563,7 +1542,9 @@ msgstr "サードパーティー"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AURはコミュニティがメンテナンスしているリポジトリです。そのため潜在的なリスクや問題があります。\nAURを使用する場合はビルドプロセスを熟知している必要があります。"
+msgstr ""
+"AURはコミュニティがメンテナンスしているリポジトリです。そのため潜在的なリスクや問題があります。\n"
+"AURを使用する場合はビルドプロセスを熟知している必要があります。"
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

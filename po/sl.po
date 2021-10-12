@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # Mario <al.manja@gmx.com>, 2017
 # ansich <mojmejlzaforume@gmail.com>, 2014
@@ -17,14 +17,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-08-23 07:41+0000\n"
 "Last-Translator: Arnold Marko <arnold.marko@gmail.com>\n"
 "Language-Team: Slovenian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sl/)\n"
+"Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sl\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -67,8 +67,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "paket %s ni ustrezno zasnovan"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "ne morem zadostiti odvisnosti '%s', ki jo zahteva %s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -77,8 +77,8 @@ msgid "Warning"
 msgstr "Opozorilo"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "namestitev %s (%s) prekine odvisnost '%s', ki jo zahteva %s"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -92,13 +92,13 @@ msgid "if possible, remove %s and retry"
 msgstr "Če je to mogoče, odstranite %s in poskusite znova"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "odstranitev %s prekine odvisnost '%s', ki jo potrebuje %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr "%s in %s sta v sporu"
 
 #: src/alpm_utils.vala
@@ -124,18 +124,18 @@ msgid "Transaction cancelled"
 msgstr "Prenos je bil preklican"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "%s obstaja tako v %s, kot v %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s:%s že obstaja v datotečnem sistemu (lastnik je %s)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: %s že obstaja v datotečnem sistemu"
 
 #: src/alpm_utils.vala
@@ -143,8 +143,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "Če ta datoteka ni potrebna, jo odstranite in poskusite znova"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: %s sta že obstajala v datotečnem sistemu"
 
 #: src/alpm_utils.vala
@@ -237,8 +237,8 @@ msgid "Checking available disk space"
 msgstr "Preverjanje razpoložljivega prostora"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr "%s opcijsko zahteva %s"
 
 #: src/alpm_utils.vala
@@ -255,13 +255,13 @@ msgid "Downloading required keys"
 msgstr "Prenašanje potrebnih ključev"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "%s je nameščen kot %s.pacnew"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "%s je nameščen kot %s.pacsave"
 
 #: src/alpm_utils.vala
@@ -391,19 +391,19 @@ msgid "Nothing to do"
 msgstr "Ni opravil"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: ignoriram nadgradnjo paketa (%s =>%s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Izgradnja %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "Neuspešna izgradnja %s "
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Izgradnja %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -423,16 +423,15 @@ msgstr "Uvozi PGP ključ"
 msgid "Trust and Import"
 msgstr "Zaupaj in uvozi"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Prekliči"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "PGP ključ %s je potreben za overitev %s izvornih datotek"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -445,8 +444,7 @@ msgstr "Zaupaj %s in uvozi PGP ključ"
 msgid "Official Repositories"
 msgstr "Uradni repozitoriji"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "Skladišča"
 
@@ -505,8 +503,7 @@ msgstr "_Zapri"
 msgid "Restart"
 msgstr "Ponovni zagon"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "Namesti"
 
@@ -589,8 +586,7 @@ msgstr "Paket Alpm"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Upravljalnik paketov s podporo za Alpm, AUR, Flatpak in Snap"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -779,6 +775,11 @@ msgstr "Orodja"
 msgid "Development"
 msgstr "Razvoj"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "Posodobitve"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "Nazadnje osveženo"
@@ -895,6 +896,11 @@ msgid "yes"
 msgstr "da"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "PGP ključ %s je potreben za overitev %s izvornih datotek"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -1001,8 +1007,7 @@ msgid "do not search in AUR"
 msgstr "ne išči po AUR"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "išči pakete, ki si lastijo podano ime datoteke (imena datotek so lahko delna)"
 
 #: src/cli.vala
@@ -1034,9 +1039,7 @@ msgid "list explicitly installed packages"
 msgstr "izpiši eksplicitno nameščene pakete"
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "izpiši seznam paketov, ki so bili nameščeni kot odvisnosti, a niso več potrebni za delovanje nameščenih paketov"
 
 #: src/cli.vala
@@ -1044,15 +1047,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "seznam paketov, ki niso bili najdeni v repozitorijih"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "seznam vseh paketov, ki so člani podane skupine - če ta ni podana, izpiši seznam vseh skupin"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "seznam vseh paketov v podanem repozitoriju - če ta ni podan, izpiši seznam vseh repozitorijev"
 
 #: src/cli.vala
@@ -1068,9 +1067,7 @@ msgid "dir"
 msgstr "direktorij"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "izgradi direktoriij - če ta ni podan, se uporabi tisti, ki je določen v pamac.conf datoteki"
 
 #: src/cli.vala
@@ -1086,14 +1083,11 @@ msgid "overwrite existing files"
 msgstr "prepiši obstoječe datoteke"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Če ni podano ime paketa, uporabi PKGBUILD datoteko v trenutnem direktoriju"
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "Izgradni direktorij bo starševski direktorij, -builddir opcije bodo prezrte"
 
 #: src/cli.vala
@@ -1125,15 +1119,11 @@ msgid "glob"
 msgstr "glob"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "prezri posodobitev paketa - mogoče je določiti več paketov, ki jih ločite z vejico"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "prepiši datoteke, ki so v sporu - določiti je mogoče več vzorcev, ki jih ločite z vejico"
 
 #: src/cli.vala
@@ -1165,9 +1155,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "odstrani pakete le v primeru, da jih ne potrebuje katerikoli drugi paket"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "odstrani odvisnosti, ki jih ne potrebujejo drugi paketi - če je ta opcija izbrana brez imena paketa, bodo odstranjene vse sirote"
 
 #: src/cli.vala
@@ -1187,9 +1175,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Izhodna koda je 100, kadar so na voljo posodobitve"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "izgradni direktorij (uporaba z --devel) - če ta ni podan, bo uporabljen tisti, ki je določen v pamac.conf"
 
 #: src/cli.vala
@@ -1245,9 +1231,7 @@ msgid "do not upgrade development packages"
 msgstr "ne posodobi razvojnih paketov"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "izgradni direktorij (uporaba z --aur) - če ta ni podan, bo uporabljen tisti, ki je določen v pamac.conf"
 
 #: src/cli.vala
@@ -1259,8 +1243,7 @@ msgid "number"
 msgstr "število"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "določi, koliko različic vsakega paketa naj se shrani v direktoriju vmesnega pomnilnika"
 
 #: src/cli.vala
@@ -1268,9 +1251,7 @@ msgid "only target uninstalled packages"
 msgstr "upoštevaj le nenameščene pakete"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "odstrani vse izgradne datoteke, izgradni direktorij je določen v pamac.conf "
 
 #: src/cli.vala
@@ -1347,9 +1328,9 @@ msgid "%s is only available from AUR"
 msgstr "%s je na voljo le iz AUR"
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "V skupini %s je %u član"
 msgstr[1] "V skupini %s sta %u člana"
 msgstr[2] "V skupini %s so %u člani"
@@ -1461,10 +1442,6 @@ msgstr "Kategorije"
 msgid "Browse"
 msgstr "Brskaj"
 
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Posodobitve"
-
 #: resources/manager_window.ui
 msgid "Launch"
 msgstr "Zaženi"
@@ -1557,7 +1534,9 @@ msgstr "Napredno"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "Napačna nastavitev teh opcij lahko pokvari sistem.\nSpreminjajte jih le, če veste, kaj delate."
+msgstr ""
+"Napačna nastavitev teh opcij lahko pokvari sistem.\n"
+"Spreminjajte jih le, če veste, kaj delate."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1587,7 +1566,9 @@ msgstr "Iz tretje roke"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AUR je repoziroij, ki ga urejajo uporabniki, zaradi česar je lahko potencialni vir tveganj in težav.\nPriporočljivo je, da so vsi uporabniki AUR seznanjeni s procesom izgradnje programov."
+msgstr ""
+"AUR je repoziroij, ki ga urejajo uporabniki, zaradi česar je lahko potencialni vir tveganj in težav.\n"
+"Priporočljivo je, da so vsi uporabniki AUR seznanjeni s procesom izgradnje programov."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

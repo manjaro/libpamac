@@ -767,31 +767,31 @@ namespace Pamac {
 							unowned Alpm.Package pkg;
 							if (miss->causingpkg == null) {
 								/* package being installed/upgraded has unresolved dependency */
-								details.add ("- " + _("unable to satisfy dependency '%s' required by %s").printf (depstring, miss->target));
+								details.add ("- " + _("unable to satisfy dependency '%1$s' required by %2$s").printf (depstring, miss->target));
 							} else if ((pkg = Alpm.pkg_find (trans_add, miss->causingpkg)) != null) {
 								/* upgrading a package breaks a local dependency */
 								if (commit_retries < 1) {
-									do_emit_warning (_("Warning") + ": " + _("installing %s (%s) breaks dependency '%s' required by %s").printf (miss->causingpkg, pkg.version, depstring, miss->target));
+									do_emit_warning (_("Warning") + ": " + _("installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s").printf (miss->causingpkg, pkg.version, depstring, miss->target));
 									do_emit_warning (_("Add %s to remove").printf (miss->target));
 									required_to_remove.add (miss->target);
 									if (trans_remove_pkg (alpm_handle, miss->target)) {
 										need_retry = true;
 									}
 								} else {
-									details.add ("- " + _("installing %s (%s) breaks dependency '%s' required by %s").printf (miss->causingpkg, pkg.version, depstring, miss->target) + ",");
+									details.add ("- " + _("installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s").printf (miss->causingpkg, pkg.version, depstring, miss->target) + ",");
 									details.add ("- " + _("if possible, remove %s and retry").printf (miss->target));
 								}
 							} else {
 								/* removing a package breaks a local dependency */
 								if (commit_retries < 1) {
-									do_emit_warning (_("Warning") + ": " + _("removing %s breaks dependency '%s' required by %s").printf (miss->causingpkg, depstring, miss->target));
+									do_emit_warning (_("Warning") + ": " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target));
 									do_emit_warning (_("Add %s to remove").printf (miss->target));
 									required_to_remove.add (miss->target);
 									if (trans_remove_pkg (alpm_handle, miss->target)) {
 										need_retry = true;
 									}
 								} else {
-									details.add ("- " + _("removing %s breaks dependency '%s' required by %s").printf (miss->causingpkg, depstring, miss->target) + ",");
+									details.add ("- " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target) + ",");
 									details.add ("- " + _("if possible, remove %s and retry").printf (miss->target));
 								}
 							}
@@ -805,7 +805,7 @@ namespace Pamac {
 						unowned Alpm.List<Alpm.Conflict*> list = err_data;
 						while (list != null) {
 							Alpm.Conflict* conflict = list.data;
-							string conflict_detail = "- " + _("%s and %s are in conflict").printf (conflict->package1, conflict->package2);
+							string conflict_detail = "- " + _("%1$s and %2$s are in conflict").printf (conflict->package1, conflict->package2);
 							// only print reason if it contains new information
 							if (conflict->reason.mod != Alpm.Depend.Mode.ANY) {
 								conflict_detail += " (%s)".printf (conflict->reason.compute_string ());
@@ -2087,24 +2087,24 @@ namespace Pamac {
 							Alpm.FileConflict* conflict = list.data;
 							switch (conflict->type) {
 								case Alpm.FileConflict.Type.TARGET:
-									details.add ("- " + _("%s exists in both %s and %s").printf (conflict->file, conflict->target, conflict->ctarget));
+									details.add ("- " + _("%1$s exists in both %2$s and %3$s").printf (conflict->file, conflict->target, conflict->ctarget));
 									break;
 								case Alpm.FileConflict.Type.FILESYSTEM:
 									if (conflict->ctarget.length > 0) {
-										details.add ("- " + _("%s: %s already exists in filesystem (owned by %s)").printf (conflict->target, conflict->file, conflict->ctarget));
+										details.add ("- " + _("1$%s: %2$s already exists in filesystem (owned by %3$s)").printf (conflict->target, conflict->file, conflict->ctarget));
 									} else {
 										if (commit_retries < 1) {
 											string? backup_path = backup_conflict_file (conflict->file);
 											if (backup_path == null) {
-												details.add ("- " + _("%s: %s already exists in filesystem").printf (conflict->target, conflict->file) + ",");
+												details.add ("- " + _("%1$s: %2$s already exists in filesystem").printf (conflict->target, conflict->file) + ",");
 												details.add ("  " + _("if this file is not needed, remove it and retry"));
 											} else {
-												do_emit_warning (_("Warning") + ": " + _("%s: %s already existed in filesystem").printf (conflict->target, conflict->file));
+												do_emit_warning (_("Warning") + ": " + _("%1$s: %2$s already existed in filesystem").printf (conflict->target, conflict->file));
 												do_emit_warning (_("It has been backed up to %s").printf (backup_path));
 												need_retry = true;
 											}
 										} else {
-											details.add ("- " + _("%s: %s already exists in filesystem").printf (conflict->target, conflict->file) + ",");
+											details.add ("- " + _("%1$s: %2$s already exists in filesystem").printf (conflict->target, conflict->file) + ",");
 											details.add ("  " + _("if this file is not needed, remove it and retry"));
 										}
 									}
@@ -2289,7 +2289,7 @@ namespace Pamac {
 					current_action = dgettext (null, "Checking available disk space") + "...";
 					break;
 				case 26: //Alpm.Event.Type.OPTDEP_REMOVAL
-					do_emit_warning ("%s: %s".printf (dgettext (null, "Warning"), dgettext (null, "%s optionally requires %s").printf (details[0], details[1])));
+					do_emit_warning ("%s: %s".printf (dgettext (null, "Warning"), dgettext (null, "%1$s optionally requires %2$s").printf (details[0], details[1])));
 					break;
 				case 27: //Alpm.Event.Type.DATABASE_MISSING
 					do_emit_script_output (dgettext (null, "Database file for %s does not exist").printf (details[0]) + ".");
@@ -2301,10 +2301,10 @@ namespace Pamac {
 					do_emit_action (dgettext (null, "Downloading required keys") + "...");
 					break;
 				case 32: //Alpm.Event.Type.PACNEW_CREATED
-					do_emit_script_output (dgettext (null, "%s installed as %s.pacnew").printf (details[0], details[0])+ ".");
+					do_emit_script_output (dgettext (null, "%1$s installed as %2$s.pacnew").printf (details[0], details[0])+ ".");
 					break;
 				case 33: //Alpm.Event.Type.PACSAVE_CREATED
-					do_emit_script_output (dgettext (null, "%s installed as %s.pacsave").printf (details[0], details[0])+ ".");
+					do_emit_script_output (dgettext (null, "%1$s installed as %2$s.pacsave").printf (details[0], details[0])+ ".");
 					break;
 				case 34: //Alpm.Event.Type.HOOK_START
 					switch (secondary_event) {

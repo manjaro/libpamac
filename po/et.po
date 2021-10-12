@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # Kus Mis <kusmis@hot.ee>, 2013
 # 396ebea05dbb0a1edc9736bca8794acd_10e7387 <fd1873a2e5d04ada6b84b644237206bc_372872>, 2015,2018
@@ -14,14 +14,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-08-03 17:23+0000\n"
 "Last-Translator: Madis Otenurm\n"
 "Language-Team: Estonian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/et/)\n"
+"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -64,8 +64,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "paketil %s puudub tõene arhitektuuri spetsifikatsioon"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "ei saa rahuldada sõltuvust „%s“, mida vajab %s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -74,8 +74,8 @@ msgid "Warning"
 msgstr "Hoiatus"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "%s (%s) paigaldamine lõhub sõltuvuse „%s“, mida vajab %s"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -89,13 +89,13 @@ msgid "if possible, remove %s and retry"
 msgstr "võimalusel eemalda %s ja proovi uuesti"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "%s eemaldamine lõhub sõltuvuse „%s“, mida vajab %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr "%s ning %s on üksteisega vastuolus"
 
 #: src/alpm_utils.vala
@@ -121,18 +121,18 @@ msgid "Transaction cancelled"
 msgstr "Tehing katkestatud"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "%s eksisteerib nii asukohas %s kui ka %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s: %s on juba failisüsteemis olemas (omanik %s)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: %s on juba failisüsteemis olemas"
 
 #: src/alpm_utils.vala
@@ -140,8 +140,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "kui see fail pole nõutud, eemalda see ja proovi uuesti"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: %s oli juba failisüsteemis olemas"
 
 #: src/alpm_utils.vala
@@ -234,8 +234,8 @@ msgid "Checking available disk space"
 msgstr "Saadaoleva kettaruumi kontroll"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr "%s vajab valikuliselt paketti %s"
 
 #: src/alpm_utils.vala
@@ -252,13 +252,13 @@ msgid "Downloading required keys"
 msgstr "Vajalike võtmerõngaste allalaadimine"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "%s paigaldatud kui %s.pacnew"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "%s paigaldatud kui %s.pacsave"
 
 #: src/alpm_utils.vala
@@ -384,19 +384,19 @@ msgid "Nothing to do"
 msgstr "Pole midagi teha"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: paketitäienduse ignoreerimine (%s => %s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "%s kompileerimine"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "%s ehitamisel esines viga"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "%s kompileerimine"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -416,16 +416,15 @@ msgstr "Impordi PGP-võti"
 msgid "Trust and Import"
 msgstr "Usalda ja impordi"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Katkesta"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "PGP-võti %s on vajalik %s lähtefailide kinnitamiseks"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -438,8 +437,7 @@ msgstr "Usalda %s ja impordi PGP-võti"
 msgid "Official Repositories"
 msgstr "Ametlikud hoidlad"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "Hoidlad"
 
@@ -498,8 +496,7 @@ msgstr "_Sulge"
 msgid "Restart"
 msgstr "Taaskäivita"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "Paigalda"
 
@@ -580,8 +577,7 @@ msgstr "Alpm pakett"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Paketihaldur Alpm, AUR, Flatpak ja Snapi toega"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -768,6 +764,11 @@ msgstr "Tööriistad"
 msgid "Development"
 msgstr "Arendus"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "Uuendused"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "Viimatine värskendus"
@@ -882,6 +883,11 @@ msgid "yes"
 msgstr "yes"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "PGP-võti %s on vajalik %s lähtefailide kinnitamiseks"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -988,8 +994,7 @@ msgid "do not search in AUR"
 msgstr "ära otsi AURist"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "otsi pakette, millel on antud failinimed (failinimed võivad olla osalised)"
 
 #: src/cli.vala
@@ -1021,9 +1026,7 @@ msgid "list explicitly installed packages"
 msgstr "loetle otseselt paigaldatud paketid"
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "loetle paketid, mis paigaldati sõltuvustena aga pole enam vajalikud mistahes paigaldatud paketile"
 
 #: src/cli.vala
@@ -1031,15 +1034,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "loetle paketid, mida ei leidu hoidlates"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "loetle kõik paketid, mis on antud gruppide liikmed; kui gruppi pole määratud, loetle kõik grupid"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "loetle kõik paketid, mis on saadaval antud hoidlates; kui hoidlat ei määratud, loetle kõik hoidlad"
 
 #: src/cli.vala
@@ -1055,9 +1054,7 @@ msgid "dir"
 msgstr "tee"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "kompileerimise kaust; kui kausta ei anta, valitakse failis pamac.conf määratu"
 
 #: src/cli.vala
@@ -1073,14 +1070,11 @@ msgid "overwrite existing files"
 msgstr "kirjuta olemasolevad failid üle"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Kui paketinime pole antud, kasuta praeguses kataloogis olevat PKGBUILD-faili "
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "Ehituskataloog saab ülemkataloogiks, valikut --builddir ignoreeritakse"
 
 #: src/cli.vala
@@ -1112,15 +1106,11 @@ msgid "glob"
 msgstr "glob"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "ignoreeri paketitäiendust; võib sisestada mitu paketti, eraldades neid komaga"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "kirjuta konfliktiga failid üle; võimalik sisestada mitu mustrit, eraldades neid komaga"
 
 #: src/cli.vala
@@ -1152,9 +1142,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "eemalda paketid vaid siis, kui neid ei nõua teised paketid"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "eemalda sõltuvused, mis pole teistele pakettidele vajalikud; kui seda valikut kasutatakse ilma paketinimeta, eemalda kõik orvud"
 
 #: src/cli.vala
@@ -1174,9 +1162,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Väljumiskood on 100, kui uuendused on saadaval"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "kompileerimise kaust (kasuta koos --devel); kui kausta pole määratud, kasutatakse failis pamac.conf määratut"
 
 #: src/cli.vala
@@ -1232,9 +1218,7 @@ msgid "do not upgrade development packages"
 msgstr "ära täienda arenduspakette"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "kompileerimise kaust (kasuta parameetriga --aur); kui kausta ei anta, valitakse failis pamac.conf määratu"
 
 #: src/cli.vala
@@ -1246,8 +1230,7 @@ msgid "number"
 msgstr "arv"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "määra, mitu versiooni igast paketist hoitakse vahemälu kaustas"
 
 #: src/cli.vala
@@ -1255,9 +1238,7 @@ msgid "only target uninstalled packages"
 msgstr "sihi vaid eemaldatud pakette"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "eemalda kõik ehitusfailid, ehituse failitee on määratud failis pamac.conf"
 
 #: src/cli.vala
@@ -1332,9 +1313,9 @@ msgid "%s is only available from AUR"
 msgstr "%s on saadaval ainult AURist"
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Grupis %s on %u liige"
 msgstr[1] "Grupis %s on %u liiget"
 
@@ -1444,10 +1425,6 @@ msgstr "Kategooriad"
 msgid "Browse"
 msgstr "Sirvi"
 
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Uuendused"
-
 #: resources/manager_window.ui
 msgid "Launch"
 msgstr "Käivita"
@@ -1540,7 +1517,9 @@ msgstr "Täpsem"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "Nende valikute vale seadistus võib viia süsteemi lõhkumiseni.\nMuuda neid vaid siis, kui tead mida teed."
+msgstr ""
+"Nende valikute vale seadistus võib viia süsteemi lõhkumiseni.\n"
+"Muuda neid vaid siis, kui tead mida teed."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1570,7 +1549,9 @@ msgstr "Kolmas osapool"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AUR on kogukonna-hallatud hoidla, seega sellega kaasnevad potentsiaalsed riskid ja probleemid.\nKõik AURi kasutajad peaksid olema tuttavad nende kompileerimisprotsessiga."
+msgstr ""
+"AUR on kogukonna-hallatud hoidla, seega sellega kaasnevad potentsiaalsed riskid ja probleemid.\n"
+"Kõik AURi kasutajad peaksid olema tuttavad nende kompileerimisprotsessiga."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

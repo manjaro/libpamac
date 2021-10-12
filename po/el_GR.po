@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # a24aea7ffc84d2433b80f99f2fbaaa74_064c1cf <f35716e87b48e4f0b82a420d01c955ad_139079>, 2014
 # angel_solomos, 2013
@@ -24,14 +24,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-07-20 14:37+0000\n"
 "Last-Translator: Ioannis LM\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/el_GR/)\n"
+"Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: el_GR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -74,8 +74,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "το πακέτο %s δεν έχει την σωστή αρχιτεκτονική"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "αδυναμία να ικανοποιηθεί η εξάρτηση '%s' που απαιτείται από το %s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -84,8 +84,8 @@ msgid "Warning"
 msgstr "Προειδοποίηση"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "η εγκατάσταση του %s (%s) σπάει την εξάρτηση '%s' που απαιτείται από το %s"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -99,13 +99,13 @@ msgid "if possible, remove %s and retry"
 msgstr "αν γίνεται, αφαίρεση του %s και επανάληψη"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "η αφαίρεση του %s σπάει την εξάρτηση '%s' που απαιτείται από το %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr "Το %s και το %s είναι σε διένεξη"
 
 #: src/alpm_utils.vala
@@ -131,18 +131,18 @@ msgid "Transaction cancelled"
 msgstr "Η διεργασία ακυρώθηκε"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "Το %s υπάρχει στο %s και στο %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s: το %s υπάρχει ήδη στο σύστημα αρχείων (ανήκει στο %s)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: το %s υπάρχει ήδη στο σύστημα αρχείων"
 
 #: src/alpm_utils.vala
@@ -150,8 +150,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "αν αυτό το πακέτο δεν χρειάζεται, αφαίρεση και επανάληψη"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: το %s υπάρχει ήδη στο σύστημα αρχείων"
 
 #: src/alpm_utils.vala
@@ -244,8 +244,8 @@ msgid "Checking available disk space"
 msgstr "Έλεγχος ελεύθερου χώρου στον δίσκο"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr "Το %s απαιτεί προαιρετικά το %s"
 
 #: src/alpm_utils.vala
@@ -262,13 +262,13 @@ msgid "Downloading required keys"
 msgstr "Μεταφόρτωση των απαιτούμενων κλειδιών"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "Το %s εγκαταστάθηκε ως %s.pacnew"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "Το %s εγκαταστάθηκε ως %s.pacsave"
 
 #: src/alpm_utils.vala
@@ -394,19 +394,19 @@ msgid "Nothing to do"
 msgstr "Δεν υπάρχει τίποτε να γίνει"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: αγνόηση αναβάθμισης πακέτου (%s => %s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Δημιουργία %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "Απέτυχε η δόμηση του %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Δημιουργία %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -426,16 +426,15 @@ msgstr "Εισαγωγή κλειδιού PGP"
 msgid "Trust and Import"
 msgstr "Εμπιστοσύνη και εισαγωγή"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Άκυρο"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "Το κλειδί PGP %s απαιτείται για να επικυρώσει τα πηγαία αρχεία %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -448,8 +447,7 @@ msgstr "Εμπιστοσύνη %s και εισαγωγή του κλειδιο�
 msgid "Official Repositories"
 msgstr "Επίσημα αποθετήρια"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "Αποθετήρια"
 
@@ -508,8 +506,7 @@ msgstr "_Κλείσιμο"
 msgid "Restart"
 msgstr "Επανεκκίνηση"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "Εγκατάσταση"
 
@@ -590,8 +587,7 @@ msgstr "Πακέτο Alpm"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Διαχειριστής πακέτων με υποστήριξη Alpm, AUR, Flatpak και Snap"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -778,6 +774,11 @@ msgstr "Βοηθήματα"
 msgid "Development"
 msgstr "Ανάπτυξη"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "Ενημερώσεις"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "Τελευταία ενημέρωση"
@@ -892,6 +893,11 @@ msgid "yes"
 msgstr "ναι"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "Το κλειδί PGP %s απαιτείται για να επικυρώσει τα πηγαία αρχεία %s"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[ε]"
 
@@ -998,8 +1004,7 @@ msgid "do not search in AUR"
 msgstr "χωρίς αναζήτηση στο AUR"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "αναζήτηση για πακέτα στα οποία ανήκουν τα δεδομένα ονόματα αρχείων (τα ονόματα αρχείων μπορούν να είναι ελλιπή)"
 
 #: src/cli.vala
@@ -1031,9 +1036,7 @@ msgid "list explicitly installed packages"
 msgstr "εμφάνιση ρητώς εγκατεστημένων πακέτων "
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "εμφάνιση πακέτων εγκατεστημένων ως εξαρτήσεις, αλλά δεν απαιτούνται πλέον από κανένα εγκατεστημένο πακέτο"
 
 #: src/cli.vala
@@ -1041,15 +1044,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "εμφάνιση πακέτων που δεν βρέθηκαν στα αποθετήρια"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "εμφάνιση όλων των πακέτων που είναι μέλη των δεδομένων ομάδων, αν δεν δίνεται ομάδα εμφάνιση όλων των ομάδων"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "εμφάνιση όλων των πακέτων που είναι διαθέσιμα στα δεδομένα αποθετήρια, αν δεν δίνεται αποθετήριο εμφάνιση όλων των αποθετηρίων"
 
 #: src/cli.vala
@@ -1065,9 +1064,7 @@ msgid "dir"
 msgstr "κατάλογος"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "κατάλογος δόμησης, αν δεν δίνεται κατάλογος θα χρησιμοποιείται ο ορισμένος στο pamac.conf"
 
 #: src/cli.vala
@@ -1083,14 +1080,11 @@ msgid "overwrite existing files"
 msgstr "αντικατάσταση υπαρχόντων αρχείων"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Αν δεν δίνεται όνομα πακέτου, χρήση του αρχείου PKGBUILD από τον τρέχοντα κατάλογο"
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "Ο κατάλογος δόμησης θα είναι ο γονικός κατάλογος, η επιλογή --builddir θα αγνοηθεί"
 
 #: src/cli.vala
@@ -1122,15 +1116,11 @@ msgid "glob"
 msgstr "glob"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "παράλειψη αναβάθμισης πακέτου, μπορούν να οριστούν πολλαπλά πακέτα διαχωρισμένα με κόμμα"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "αντικατάσταση συγκρουόμενων αρχείων, μπορούν να οριστούν πολλαπλά σχέδια/μοτίβα διαχωρισμένα κόμμα"
 
 #: src/cli.vala
@@ -1162,9 +1152,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "αφαίρεση πακέτων μόνο εάν δεν απαιτούνται από άλλα πακέτα"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "αφαίρεση εξαρτήσεων που δεν απαιτούνται από άλλα πακέτα, αν δεν δίνεται όνομα πακέτου, αφαίρεση όλων των ορφανών"
 
 #: src/cli.vala
@@ -1184,9 +1172,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Κωδικός εξόδου 100 αν υπάρχουν διαθέσιμες ενημερώσεις"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "κατάλογος δόμησης (χρήση με --devel), αν δεν δίνεται κατάλογος θα χρησιμοποιείται ο ορισμένος στο pamac.conf "
 
 #: src/cli.vala
@@ -1242,9 +1228,7 @@ msgid "do not upgrade development packages"
 msgstr "να μην αναβαθμίζονται τα πακέτα ανάπτυξης"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "κατάλογος δόμησης (χρήση με --aur), αν δεν δίνεται κατάλογος, χρήση του ορισμένου στο pamac.conf"
 
 #: src/cli.vala
@@ -1256,8 +1240,7 @@ msgid "number"
 msgstr "αριθμός"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "καθορισμός αριθμού εκδόσεων κάθε πακέτου που διατηρούνται στον κατάλογο αποθήκης"
 
 #: src/cli.vala
@@ -1265,9 +1248,7 @@ msgid "only target uninstalled packages"
 msgstr "στόχευση μόνο των απεγκατεστημένων πακέτων"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "απεγκατάσταση όλων των αρχείων δόμησης, ο κατάλογος δόμησης είναι ο ορισμένος στο pamac.conf"
 
 #: src/cli.vala
@@ -1342,9 +1323,9 @@ msgid "%s is only available from AUR"
 msgstr "Το %s είναι διαθέσιμο μόνο από το AUR"
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Υπάρχει %u μέλος στην ομάδα %s"
 msgstr[1] "Υπάρχουν %u μέλη στην ομάδα %s"
 
@@ -1453,10 +1434,6 @@ msgstr "Κατηγορίες"
 #: resources/manager_window.ui
 msgid "Browse"
 msgstr "Αναζήτηση"
-
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Ενημερώσεις"
 
 #: resources/manager_window.ui
 msgid "Launch"
@@ -1580,7 +1557,10 @@ msgstr "Άλλων"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "Το AUR είναι αποθετήριο που συντηρείται από την κοινότητα, γι'αυτό και δεν αποκλείεται\nνα δημιουργήσει προβλήματα. Όλοι οι χρήστες του AUR, θα πρέπει να είναι εξοικειωμένοι\nμε την διαδικασία δημιουργίας των πακέτων."
+msgstr ""
+"Το AUR είναι αποθετήριο που συντηρείται από την κοινότητα, γι'αυτό και δεν αποκλείεται\n"
+"να δημιουργήσει προβλήματα. Όλοι οι χρήστες του AUR, θα πρέπει να είναι εξοικειωμένοι\n"
+"με την διαδικασία δημιουργίας των πακέτων."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

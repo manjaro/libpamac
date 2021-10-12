@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # JungHee Lee <daemul72@gmail.com>, 2021
 # Cybertramp <paran_son@outlook.com>, 2018
@@ -22,14 +22,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-05-20 15:26+0000\n"
 "Last-Translator: JungHee Lee <daemul72@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ko/)\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -72,8 +72,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "%s 패키지에 올바른 아키텍처가 없습니다"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "%s에 필요한 종속성 '%s'을(를) 충족시킬 수 없습니다"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -82,8 +82,8 @@ msgid "Warning"
 msgstr "경고"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "%s (%s)을(를) 설치하면 %s에 필요한 '%s' 종속성이 깨집니다"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -97,13 +97,13 @@ msgid "if possible, remove %s and retry"
 msgstr "가능하면 %s을(를) 제거하고 다시 시도하십시오"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "%s을(를) 제거하면 %s에 필요한 '%s' 종속성이 깨집니다"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr "%s 및 %s이(가) 충돌합니다"
 
 #: src/alpm_utils.vala
@@ -129,18 +129,18 @@ msgid "Transaction cancelled"
 msgstr "트랜잭션이 취소되었습니다"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "%s은(는) %s과(와) %s 모두에 존재합니다"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s: %s이(가) 이미 파일 시스템에 존재합니다 (%s 소유)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: %s이(가) 파일 시스템에 이미 존재합니다"
 
 #: src/alpm_utils.vala
@@ -148,8 +148,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "이 파일이 필요하지 않으면 파일을 제거하고 다시 시도하십시오"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: %s은(는) 이미 파일 시스템에 존재합니다"
 
 #: src/alpm_utils.vala
@@ -242,8 +242,8 @@ msgid "Checking available disk space"
 msgstr "사용 가능한 디스크 공간 확인중"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr "%s은(는) 선택적으로 %s을(를) 필요로 합니다"
 
 #: src/alpm_utils.vala
@@ -260,13 +260,13 @@ msgid "Downloading required keys"
 msgstr "필요한 키 다운로드중"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "%s은(는) %s.pacnew로 설치되었습니다"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "%s 는 %s.pacsave로 설치되었습니다"
 
 #: src/alpm_utils.vala
@@ -390,19 +390,19 @@ msgid "Nothing to do"
 msgstr "아무 것도 할 것이 없습니다"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: 패키지 업그레이드 무시하는 중 (%s => %s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "%s 빌드중"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "%s 빌드 실패"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "%s 빌드중"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -422,16 +422,15 @@ msgstr "PGP 키 가져오기"
 msgid "Trust and Import"
 msgstr "신용 및 가져오기"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "취소 (_C)"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "%s PGP 키는 %s 소스 파일을 확인하기 위해 필요합니다"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -444,8 +443,7 @@ msgstr "%s을(를) 신용하고 PGP 키 가져 오기"
 msgid "Official Repositories"
 msgstr "공식 저장소"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "저장소"
 
@@ -504,8 +502,7 @@ msgstr "닫기 (_C)"
 msgid "Restart"
 msgstr "재시작"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "설치"
 
@@ -585,8 +582,7 @@ msgstr "Alpm 패키지"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Alpm, AUR, Flatpak 및 Snap 지원이 있는 패키지 관리자"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -772,6 +768,11 @@ msgstr "유틸리티"
 msgid "Development"
 msgstr "개발"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "업데이트"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "마지막 새로고침"
@@ -885,6 +886,11 @@ msgid "yes"
 msgstr "yes"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "%s PGP 키는 %s 소스 파일을 확인하기 위해 필요합니다"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -991,8 +997,7 @@ msgid "do not search in AUR"
 msgstr "AUR에서 검색하지 않습니다"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "지정된 파일 이름을 소유하는 패키지 검색 (파일명은 부분적으로도 가능)"
 
 #: src/cli.vala
@@ -1024,9 +1029,7 @@ msgid "list explicitly installed packages"
 msgstr "완전히 설치된 패키지 목록"
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "다른 패키지의 의존패키지로 설치되었지만, 설치된 패키지에 더 이상 필요하지 않은 패키지 목록"
 
 #: src/cli.vala
@@ -1034,15 +1037,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "저장소에서 찾을 수 없는 패키지 목록"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "그룹이 지정되지 않은 경우 모든 그룹을 나열하고, 지정된 그룹의 검색어인 모든 패키지를 나열합니다"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "저장소가 없는 경우 모든 저장소를 나열하고, 지정된 저장소에 있는 모든 패키지를 나열합니다"
 
 #: src/cli.vala
@@ -1058,9 +1057,7 @@ msgid "dir"
 msgstr "디렉토리"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "빌드할 디렉토리, 만약 저장소가 지정되어 있지 않으면 pamac.conf로 지정된 것을 사용합니다"
 
 #: src/cli.vala
@@ -1076,14 +1073,11 @@ msgid "overwrite existing files"
 msgstr "기존 파일 덮어쓰기"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "패키지 이름이 지정되지 않은 경우 현재 디렉토리에서 PKGBUILD 파일을 사용합니다"
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "빌드 디렉토리는 상위 디렉토리가 되고, --builddir 옵션은 무시됩니다"
 
 #: src/cli.vala
@@ -1115,15 +1109,11 @@ msgid "glob"
 msgstr "전역"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "패키지 업그레이드를 무시하고, 여러 패키지를 쉼표로 구분하여 지정할 수 있습니다"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "충돌하는 파일을 덮어쓰고, 여러 패턴을 쉼표로 구분하여 지정할 수 있습니다"
 
 #: src/cli.vala
@@ -1155,9 +1145,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "다른 패키지에 필요하지 않은 경우에만 패키지 제거"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "다른 패키지에 필요하지 않은 종속성을 제거하고, 패키지 이름 없이 이 옵션을 사용하는 경우 모든 독립 패키지를 제거합니다"
 
 #: src/cli.vala
@@ -1177,9 +1165,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "업데이트가 가능한 경우 종료 코드는 100입니다"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "빌드 디렉토리( --devel과 함께 사용), 디렉토리가 없는 경우 pamac.conf 파일에 지정된 디렉토리가 사용됩니다"
 
 #: src/cli.vala
@@ -1235,9 +1221,7 @@ msgid "do not upgrade development packages"
 msgstr "개발 패키지를 업그레이드하지 않습니다"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "빌드 디렉토리 (--aur와 함께 사용), 디렉토리가 없는 경우 pamac.conf 파일에 지정된 디렉토리가 사용됩니다"
 
 #: src/cli.vala
@@ -1249,8 +1233,7 @@ msgid "number"
 msgstr "번호"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "캐시 디렉토리에 보관되는 각 패키지의 버전 수 지정"
 
 #: src/cli.vala
@@ -1258,9 +1241,7 @@ msgid "only target uninstalled packages"
 msgstr "대상 제거 패키지만"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "모든 빌드 파일을 제거합니다. 빌드 디렉토리는 pamac.conf에 지정된 파일입니다"
 
 #: src/cli.vala
@@ -1334,9 +1315,9 @@ msgid "%s is only available from AUR"
 msgstr "%s는 AUR에서만 이용 가능"
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "%u 개의 패키지가 %s 그룹에 있습니다"
 
 #: src/cli.vala
@@ -1445,10 +1426,6 @@ msgstr "카테고리"
 msgid "Browse"
 msgstr "찾아보기"
 
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "업데이트"
-
 #: resources/manager_window.ui
 msgid "Launch"
 msgstr "실행"
@@ -1541,7 +1518,9 @@ msgstr "고급"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "이러한 옵션을 잘못 구성하면 시스템이 손상될 수 있습니다.\n수행중인 작업에 대해 자세히 알고있는 경우에만 수정하십시오"
+msgstr ""
+"이러한 옵션을 잘못 구성하면 시스템이 손상될 수 있습니다.\n"
+"수행중인 작업에 대해 자세히 알고있는 경우에만 수정하십시오"
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1571,7 +1550,9 @@ msgstr "서드 파티"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AUR은 커뮤니티에서 관리하는 저장소로, 잠재적인 위험과 문제점이 있습니다.\n모든 AUR 사용자은 빌드 과정에 익숙해야합니다."
+msgstr ""
+"AUR은 커뮤니티에서 관리하는 저장소로, 잠재적인 위험과 문제점이 있습니다.\n"
+"모든 AUR 사용자은 빌드 과정에 익숙해야합니다."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

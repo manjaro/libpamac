@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # Moo, 2015
 # Moo, 2015-2021
@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-05-15 14:31+0000\n"
 "Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Lithuanian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/lt/)\n"
+"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: lt\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -60,8 +60,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "paketas %s neturi teisingos architektūros"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "nepavyko patenkinti \"%s\" priklausomybių, kurių reikia paketui %s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -70,8 +70,8 @@ msgid "Warning"
 msgstr "Įspėjimas"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "įdiegiant %s (%s) sugadinama \"%s\" priklausomybė, kurios reikia paketui %s"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -85,13 +85,13 @@ msgid "if possible, remove %s and retry"
 msgstr "jei įmanoma, šalinti %s ir bandyti dar kartą"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "šalinant %s sugadinama \"%s\" priklausomybė, kurios reikia paketui %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr "%s ir %s tarpusavyje konfliktuoja"
 
 #: src/alpm_utils.vala
@@ -117,18 +117,18 @@ msgid "Transaction cancelled"
 msgstr "Operacijos atsisakyta"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "%s yra abiejuose %s ir %s"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s: %s jau yra failų sistemoje (priklauso %s)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: %s jau yra failų sistemoje"
 
 #: src/alpm_utils.vala
@@ -136,8 +136,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "jei šio failo nebereikia, pašalinti jį ir bandyti dar kartą"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: %s jau buvo failų sistemoje"
 
 #: src/alpm_utils.vala
@@ -230,8 +230,8 @@ msgid "Checking available disk space"
 msgstr "Tikrinama prieinama vieta diske"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr "%s pasirinktinai reikalauja %s"
 
 #: src/alpm_utils.vala
@@ -248,13 +248,13 @@ msgid "Downloading required keys"
 msgstr "Atsiunčiami reikalingi raktai"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "%s įdiegta kaip %s.pacnew"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "%s įdiegta kaip %s.pacsave"
 
 #: src/alpm_utils.vala
@@ -384,19 +384,19 @@ msgid "Nothing to do"
 msgstr "Nėra ką atlikti"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: nepaisoma paketo atnaujinimo (%s => %s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Kompiliuojama %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "Nepavyko kompiliuoti %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Kompiliuojama %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -416,16 +416,15 @@ msgstr "Importuoti PGP raktą"
 msgid "Trust and Import"
 msgstr "Pasitikėti ir importuoti"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Atsisakyti"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "Reikalingas PGP raktas %s, kad būtų patvirtinti %s šaltinio failai"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -438,8 +437,7 @@ msgstr "Pasitikėti %s ir importuoti PGP raktą"
 msgid "Official Repositories"
 msgstr "Oficialios saugyklos"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "Saugyklos"
 
@@ -498,8 +496,7 @@ msgstr "_Užverti"
 msgid "Restart"
 msgstr "Paleisti iš naujo"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "Įdiegti"
 
@@ -582,8 +579,7 @@ msgstr "Alpm paketas"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Paketų tvarkytuvė su Alpm, AUR, Flatpak ir Snap palaikymu"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -772,6 +768,11 @@ msgstr "Paslaugų programos"
 msgid "Development"
 msgstr "Programavimas"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "Atnaujinimai"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "Paskutinis įkėlimas iš naujo"
@@ -888,6 +889,11 @@ msgid "yes"
 msgstr "taip"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "Reikalingas PGP raktas %s, kad būtų patvirtinti %s šaltinio failai"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -994,8 +1000,7 @@ msgid "do not search in AUR"
 msgstr "neieškoti AUR saugykloje"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "ieškoti paketų, kuriems priklauso nurodyti failų pavadinimai (failų pavadinimai gali būti daliniai)"
 
 #: src/cli.vala
@@ -1027,9 +1032,7 @@ msgid "list explicitly installed packages"
 msgstr ""
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "išvardyti paketus, kurie buvo įdiegti kaip priklausomybės, tačiau daugiau nebereikalingi jokiam įdiegtam paketui"
 
 #: src/cli.vala
@@ -1037,15 +1040,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "išvardyti paketus, kurių nebuvo rasta saugyklose"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "išvardyti paketus, kurie priklauso nurodytoms grupėms, jeigu nenurodyta jokia grupė, išvardyti visas grupes"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "išvardyti visus, nurodytose saugyklose prieinamus, paketus, jeigu nenurodyta jokia saugykla, išvardyti visas saugyklas"
 
 #: src/cli.vala
@@ -1061,9 +1060,7 @@ msgid "dir"
 msgstr "kat"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "kompiliavimo katalogas, jei nėra nurodytas joks katalogas, bus naudojamas tas, kuris nurodytas pamac.conf faile"
 
 #: src/cli.vala
@@ -1079,14 +1076,11 @@ msgid "overwrite existing files"
 msgstr "perrašyti esamus failus"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Jei nėra nurodytas joks paketo pavadinimas, naudoti PKGBUILD failą esamame kataloge"
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "Kompiliavimo katalogas bus virškatalogis, --builddir parametro bus nepaisoma"
 
 #: src/cli.vala
@@ -1118,15 +1112,11 @@ msgid "glob"
 msgstr "visuot"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "nepaisyti paketo atnaujinimų, gali būti nurodyti keli paketai, atskiriant juos kableliais"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "perrašyti konfliktuojančius failus, gali būti nurodyti keli šablonai, atskiriant juos kableliais"
 
 #: src/cli.vala
@@ -1158,9 +1148,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "šalinti paketus tik tuo atveju, jeigu jie nėra reikalingi kitiems paketams"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "šalinti priklausomybes, kurių nereikia jokiems kitiems paketams, jei šis parametras yra naudojamas be paketo pavadinimo, šalinti visus liekamuosius paketus"
 
 #: src/cli.vala
@@ -1180,9 +1168,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Išėjimo kodas yra 100, jeigu yra prieinami atnaujinimai"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "kompiliavimo katalogas (naudoti su --devel), jei nėra nurodytas joks katalogas, bus naudojamas tas, kuris nurodytas pamac.conf faile"
 
 #: src/cli.vala
@@ -1238,9 +1224,7 @@ msgid "do not upgrade development packages"
 msgstr "nenaujinti plėtojimo paketus"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "kompiliavimo katalogas (naudoti su --aur), jei nėra nurodytas joks katalogas, bus naudojamas tas, kuris nurodytas pamac.conf faile"
 
 #: src/cli.vala
@@ -1252,8 +1236,7 @@ msgid "number"
 msgstr "skaičius"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "nurodykite kiek kiekvieno paketo versijų bus laikoma podėlio kataloge"
 
 #: src/cli.vala
@@ -1261,9 +1244,7 @@ msgid "only target uninstalled packages"
 msgstr "taikyti tik pašalintiems paketams"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "šalinti visus kompiliavimo failus, kompiliavimo katalogas yra tas, kuris yra nurodytas pamac.conf faile"
 
 #: src/cli.vala
@@ -1340,9 +1321,9 @@ msgid "%s is only available from AUR"
 msgstr "%s yra prieinamas tik iš AUR"
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Grupėje %s yra %u narys"
 msgstr[1] "Grupėje %s yra %u nariai"
 msgstr[2] "Grupėje %s yra %u narių"
@@ -1454,10 +1435,6 @@ msgstr "Kategorijos"
 msgid "Browse"
 msgstr "Naršyti"
 
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Atnaujinimai"
-
 #: resources/manager_window.ui
 msgid "Launch"
 msgstr "Paleidimas"
@@ -1550,7 +1527,9 @@ msgstr "Išplėstiniai"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "Bloga šių parametrų konfigūracija gali sugadinti sistemą.\nModifikuokite juos tik tuo atveju, jei žinote ką darote."
+msgstr ""
+"Bloga šių parametrų konfigūracija gali sugadinti sistemą.\n"
+"Modifikuokite juos tik tuo atveju, jei žinote ką darote."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1580,7 +1559,9 @@ msgstr ""
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AUR yra bendruomenės palaikoma saugykla, taigi, sukelia tam tikrą riziką ir problemas.\nVisi AUR naudotojai turėtų būti susipažinę su kompiliavimo procesu."
+msgstr ""
+"AUR yra bendruomenės palaikoma saugykla, taigi, sukelia tam tikrą riziką ir problemas.\n"
+"Visi AUR naudotojai turėtų būti susipažinę su kompiliavimo procesu."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

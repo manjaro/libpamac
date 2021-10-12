@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-# 
+#
 # Translators:
 # Ács Zoltán <acszoltan111@gmail.com>, 2020
 # Ferenc Papp <pappfer@gmail.com>, 2017
@@ -23,14 +23,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-05-15 16:14+0200\n"
+"POT-Creation-Date: 2021-10-12 15:59+0200\n"
 "PO-Revision-Date: 2021-05-15 14:31+0000\n"
 "Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/hu/)\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -73,8 +73,8 @@ msgid "package %s does not have a valid architecture"
 msgstr "a csomag %s nem tartalmaz megfelelő architektúrát"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "unable to satisfy dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "nem lehet kielégíteni a \"%s\" függőséget, melyre a %s csomagnak szüksége van"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
@@ -83,8 +83,8 @@ msgid "Warning"
 msgstr "Figyelem"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "installing %s (%s) breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
 msgstr "%s (%s) telepítése függőséget okoz a(z) '%s' melyre a %s csomagnak szüksége van"
 
 #: src/alpm_utils.vala src/cli.vala
@@ -98,13 +98,13 @@ msgid "if possible, remove %s and retry"
 msgstr "ha lehetséges, távolítsd el a következőt: %s, és próbáld újra"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "removing %s breaks dependency '%s' required by %s"
+#, fuzzy, c-format
+msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
 msgstr "%s eltávolítása  függőséget okoz a(z) '%s' melyre a %scsomagnak szüksége van"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s and %s are in conflict"
+#, fuzzy, c-format
+msgid "%1$s and %2$s are in conflict"
 msgstr "%s és %s konfliktusban van"
 
 #: src/alpm_utils.vala
@@ -130,18 +130,18 @@ msgid "Transaction cancelled"
 msgstr "Művelet visszavonva"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s exists in both %s and %s"
+#, fuzzy, c-format
+msgid "%1$s exists in both %2$s and %3$s"
 msgstr "%s előfordul %s és %s -ben is"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem (owned by %s)"
+#, fuzzy
+msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr "%s: %s már létezik a fájlrendszerben (%s a tulajdonosa)"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already exists in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already exists in filesystem"
 msgstr "%s: %s már létezik a fájlrendszerben"
 
 #: src/alpm_utils.vala
@@ -149,8 +149,8 @@ msgid "if this file is not needed, remove it and retry"
 msgstr "ha ez a fájl nem szükséges, akkor távolítsd el, és próbáld újra"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s: %s already existed in filesystem"
+#, fuzzy, c-format
+msgid "%1$s: %2$s already existed in filesystem"
 msgstr "%s: %s már létezett a fájlrendszerben"
 
 #: src/alpm_utils.vala
@@ -243,8 +243,8 @@ msgid "Checking available disk space"
 msgstr "Elérhető tárterület ellenőrzése"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s optionally requires %s"
+#, fuzzy, c-format
+msgid "%1$s optionally requires %2$s"
 msgstr "%s: opcionális függősége van %s"
 
 #: src/alpm_utils.vala
@@ -261,13 +261,13 @@ msgid "Downloading required keys"
 msgstr "Megkövetelt kulcsok letöltése"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacnew"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacnew"
 msgstr "%s telepítve mint %s.pacnew"
 
 #: src/alpm_utils.vala
-#, c-format
-msgid "%s installed as %s.pacsave"
+#, fuzzy, c-format
+msgid "%1$s installed as %2$s.pacsave"
 msgstr "%s telepítve mint %s.pacsave"
 
 #: src/alpm_utils.vala
@@ -393,19 +393,19 @@ msgid "Nothing to do"
 msgstr "Semmi teendő"
 
 #: src/transaction.vala
-#, c-format
-msgid "%s: ignoring package upgrade (%s => %s)\n"
+#, fuzzy, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
 msgstr "%s: csomagfrissítés kihagyása (%s => %s)\n"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Telepítés %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
 msgstr "Nem sikerült összerakni: %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Telepítés %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -425,16 +425,15 @@ msgstr "PGP kulcs betöltése"
 msgid "Trust and Import"
 msgstr "Megbízom benne és betöltöm"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "Mégse"
 
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
+#: src/transaction-gtk.vala
+#, fuzzy, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr "A %s PGP kulcs szükséges a (z) %s forrásfájlok ellenőrzéséhez"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
@@ -447,8 +446,7 @@ msgstr "Megbíz a(z) %s PGP kulcsban és importálja"
 msgid "Official Repositories"
 msgstr "Hivatalos tárolók"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Repositories"
 msgstr "Tárolók"
 
@@ -507,8 +505,7 @@ msgstr "Bezár"
 msgid "Restart"
 msgstr "Újraindítás"
 
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
 msgid "Install"
 msgstr "Telepítés"
 
@@ -589,8 +586,7 @@ msgstr "Alpm csomag"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Csomagkezelő Alpm, AUR, Flatpak és Snap támogatással"
 
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -777,6 +773,11 @@ msgstr "Kellékek"
 msgid "Development"
 msgstr "Fejlesztés"
 
+#: src/manager_window.vala resources/manager_window.ui
+#: resources/preferences_dialog.ui
+msgid "Updates"
+msgstr "Frissítések"
+
 #: src/manager_window.vala
 msgid "Last refresh"
 msgstr "Legutóbbi frissítés"
@@ -891,6 +892,11 @@ msgid "yes"
 msgstr "igen"
 
 #: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "A %s PGP kulcs szükséges a (z) %s forrásfájlok ellenőrzéséhez"
+
+#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -997,8 +1003,7 @@ msgid "do not search in AUR"
 msgstr "ne keressen az AUR-ban"
 
 #: src/cli.vala
-msgid ""
-"search for packages which own the given filenames (filenames can be partial)"
+msgid "search for packages which own the given filenames (filenames can be partial)"
 msgstr "A megadott fájl névvel bíró csomagok keresése (fájlnév részlet is lehet)"
 
 #: src/cli.vala
@@ -1030,9 +1035,7 @@ msgid "list explicitly installed packages"
 msgstr ""
 
 #: src/cli.vala
-msgid ""
-"list packages that were installed as dependencies but are no longer required"
-" by any installed package"
+msgid "list packages that were installed as dependencies but are no longer required by any installed package"
 msgstr "a már nem szükséges függőségi fájlok listázása"
 
 #: src/cli.vala
@@ -1040,15 +1043,11 @@ msgid "list packages that were not found in the repositories"
 msgstr "tárolókban nem található csomagok listázása"
 
 #: src/cli.vala
-msgid ""
-"list all packages that are members of the given groups, if no group is given"
-" list all groups"
+msgid "list all packages that are members of the given groups, if no group is given list all groups"
 msgstr "az adott csoportba tartozó összes csomag listázása, ha nincs csoport, akkor az összesből listáz"
 
 #: src/cli.vala
-msgid ""
-"list all packages available in the given repos, if no repo is given list all"
-" repos"
+msgid "list all packages available in the given repos, if no repo is given list all repos"
 msgstr "az összes elérhető csomag listázása az adott tárolókból, ha nincs megadva tároló, akkor az összesből listáz"
 
 #: src/cli.vala
@@ -1064,9 +1063,7 @@ msgid "dir"
 msgstr "könyvtár"
 
 #: src/cli.vala
-msgid ""
-"build directory, if no directory is given the one specified in pamac.conf "
-"file is used"
+msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
 msgstr "build könyvtár, ha nincs megadva könyvtár, akkor a pamac.conf fájlban megadott lesz használva"
 
 #: src/cli.vala
@@ -1082,14 +1079,11 @@ msgid "overwrite existing files"
 msgstr "meglévő fájlok felülírása"
 
 #: src/cli.vala
-msgid ""
-"If no package name is given, use the PKGBUILD file in the current directory"
+msgid "If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Ha nincs csomagnév megadva, használd a PKGBUILD fájlt az aktuális könyvtárban"
 
 #: src/cli.vala
-msgid ""
-"The build directory will be the parent directory, --builddir option will be "
-"ignored"
+msgid "The build directory will be the parent directory, --builddir option will be ignored"
 msgstr "A build könyvtár a szülő könyvtár lesz, --builddir opció figyelmen kívül lesz véve"
 
 #: src/cli.vala
@@ -1121,15 +1115,11 @@ msgid "glob"
 msgstr "glob"
 
 #: src/cli.vala
-msgid ""
-"ignore a package upgrade, multiple packages can be specified by separating "
-"them with a comma"
+msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
 msgstr "csomagfrissítés mellőzése, vesszővel elválasztva több csomag megadása is lehetséges"
 
 #: src/cli.vala
-msgid ""
-"overwrite conflicting files, multiple patterns can be specified by "
-"separating them with a comma"
+msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
 msgstr "Ütközést okozó fájlok felülírás, több minta is megadható vesszővel elválasztva"
 
 #: src/cli.vala
@@ -1161,9 +1151,7 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "csomagok eltávolítása csak akkor, ha nem igényli más csomag"
 
 #: src/cli.vala
-msgid ""
-"remove dependencies that are not required by other packages, if this option "
-"is used without package name remove all orphans"
+msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
 msgstr "más csomag által nem igényelt függőségek eltávolítása, ha nincs csomagnév megadva, akkor az összes árva eltávolításra kerül"
 
 #: src/cli.vala
@@ -1183,9 +1171,7 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Exit kód 100, ha frissítések elérhetőek"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --devel), if no directory is given the one "
-"specified in pamac.conf file is used"
+msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
 msgstr "könyvtár építése (--devel használattal), ha nincs könyvtár megadva, akkor a pamac.conf- ban megadott lesz használva"
 
 #: src/cli.vala
@@ -1241,9 +1227,7 @@ msgid "do not upgrade development packages"
 msgstr "ne frissítse a fejlesztés alatt álló csomagokat"
 
 #: src/cli.vala
-msgid ""
-"build directory (use with --aur), if no directory is given the one specified"
-" in pamac.conf file is used"
+msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
 msgstr "build könyvtár (--aur), ha nincs megadva könyvtár, akkor a pamac.conf fájlban lévő lesz használva"
 
 #: src/cli.vala
@@ -1255,8 +1239,7 @@ msgid "number"
 msgstr "szám"
 
 #: src/cli.vala
-msgid ""
-"specify how many versions of each package are kept in the cache directory"
+msgid "specify how many versions of each package are kept in the cache directory"
 msgstr "Adja meg hány verzió legyen tárolva minden csomagból a gyorsítótárban"
 
 #: src/cli.vala
@@ -1264,9 +1247,7 @@ msgid "only target uninstalled packages"
 msgstr "csak az eltávolított csomagokat célozza"
 
 #: src/cli.vala
-msgid ""
-"remove all build files, the build directory is the one specified in "
-"pamac.conf"
+msgid "remove all build files, the build directory is the one specified in pamac.conf"
 msgstr "összes átmeneti telepítő fájl eltávolítása, a mappa a pamac.conf -ban megadott"
 
 #: src/cli.vala
@@ -1341,9 +1322,9 @@ msgid "%s is only available from AUR"
 msgstr "%s csak az AUR-ból érhető el."
 
 #: src/cli.vala
-#, c-format
-msgid "There is %u member in group %s"
-msgid_plural "There are %u members in group %s"
+#, fuzzy, c-format
+msgid "There is %1$u member in group %2$s"
+msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "%u tag van a(z) %s csoportban"
 msgstr[1] "%u tag van a(z) %s csoportban"
 
@@ -1453,10 +1434,6 @@ msgstr "Kategóriák"
 msgid "Browse"
 msgstr "Keresés"
 
-#: resources/manager_window.ui resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Frissítések"
-
 #: resources/manager_window.ui
 msgid "Launch"
 msgstr "Indítás"
@@ -1549,7 +1526,9 @@ msgstr "Haladó"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr "Ezeknek a beállításoknak a helytelen beállítása a rendszer elrontásához \nvezethet. Csak akkor módosítsa őket, ha tudja, mit csinál."
+msgstr ""
+"Ezeknek a beállításoknak a helytelen beállítása a rendszer elrontásához \n"
+"vezethet. Csak akkor módosítsa őket, ha tudja, mit csinál."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1579,7 +1558,9 @@ msgstr "Harmadik féltől származó"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "Az AUR egy közösségileg karbantartott tároló, így lehetséges veszélyek és problémák forrása.\nAz AUR felhasználónak ismernie kell a telepítési folyamatot."
+msgstr ""
+"Az AUR egy közösségileg karbantartott tároló, így lehetséges veszélyek és problémák forrása.\n"
+"Az AUR felhasználónak ismernie kell a telepítési folyamatot."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
