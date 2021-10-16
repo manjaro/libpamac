@@ -1270,7 +1270,7 @@ namespace Pamac {
 				foreach (unowned AURPackage aur_pkg in updates.ignored_aur_updates) {
 					emit_script_output ("%s: %s".printf (
 										dgettext (null, "Warning"),
-										dgettext (null, "%1$s: ignoring package upgrade (%2$s => %3$s)\n").printf (
+										dgettext (null, "%1$s: ignoring package upgrade (%2$s => %3$s)").printf (
 												aur_pkg.name, aur_pkg.installed_version, aur_pkg.version)));
 				}
 			}

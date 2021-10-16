@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-12 15:59+0200\n"
+"POT-Creation-Date: 2021-10-16 15:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -118,7 +118,8 @@ msgid "%1$s exists in both %2$s and %3$s"
 msgstr ""
 
 #: src/alpm_utils.vala
-msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
+#, c-format
+msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
 msgstr ""
 
 #: src/alpm_utils.vala
@@ -128,11 +129,6 @@ msgstr ""
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
-msgstr ""
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "%1$s: %2$s already existed in filesystem"
 msgstr ""
 
 #: src/alpm_utils.vala
@@ -376,7 +372,7 @@ msgstr ""
 
 #: src/transaction.vala
 #, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
 
 #: src/transaction.vala
@@ -413,7 +409,7 @@ msgstr ""
 msgid "_Cancel"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr ""
@@ -871,11 +867,6 @@ msgstr ""
 
 #: src/transaction-cli.vala
 msgid "yes"
-msgstr ""
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
 msgstr ""
 
 #: src/transaction-cli.vala

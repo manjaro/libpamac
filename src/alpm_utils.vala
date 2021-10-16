@@ -2091,7 +2091,7 @@ namespace Pamac {
 									break;
 								case Alpm.FileConflict.Type.FILESYSTEM:
 									if (conflict->ctarget.length > 0) {
-										details.add ("- " + _("1$%s: %2$s already exists in filesystem (owned by %3$s)").printf (conflict->target, conflict->file, conflict->ctarget));
+										details.add ("- " + _("%1$s: %2$s already exists in filesystem (owned by %3$s)").printf (conflict->target, conflict->file, conflict->ctarget));
 									} else {
 										if (commit_retries < 1) {
 											string? backup_path = backup_conflict_file (conflict->file);
@@ -2099,7 +2099,7 @@ namespace Pamac {
 												details.add ("- " + _("%1$s: %2$s already exists in filesystem").printf (conflict->target, conflict->file) + ",");
 												details.add ("  " + _("if this file is not needed, remove it and retry"));
 											} else {
-												do_emit_warning (_("Warning") + ": " + _("%1$s: %2$s already existed in filesystem").printf (conflict->target, conflict->file));
+												do_emit_warning (_("Warning") + ": " + _("%1$s: %2$s already exists in filesystem").printf (conflict->target, conflict->file));
 												do_emit_warning (_("It has been backed up to %s").printf (backup_path));
 												need_retry = true;
 											}
