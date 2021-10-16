@@ -533,6 +533,16 @@ namespace Pamac {
 							details.add (dgettext (null, "Failed to clone %s build files").printf (aur_pkg.packagebase));
 							emit_error (dgettext (null, "Failed to prepare transaction"), details);
 							return false;
+						} else {
+							emit_action (dgettext (null, "Generating %s information").printf (pkgname) + "...");
+							bool success = yield database.regenerate_srcinfo_async (pkgname, build_cancellable);
+							if (!success) {
+								// error
+								var details = new GenericArray<string> (1);
+								details.add (dgettext (null, "Failed to generate %s information").printf (pkgname));
+								emit_error (dgettext (null, "Failed to prepare transaction"), details);
+								return false;
+							}
 						}
 					}
 					already_checked_aur_dep.add (aur_pkg.packagebase);
