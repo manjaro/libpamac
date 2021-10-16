@@ -31,10 +31,10 @@ namespace Pamac {
 		public uint64 refresh_period { get; set; }
 		public bool no_update_hide_icon { get; set; }
 		public bool enable_aur { get; set; }
-		public bool support_snap { get; set; }
+		public bool support_snap { get; private set; }
 		public bool enable_snap { get; set; }
 		PluginLoader<SnapPlugin> snap_plugin_loader;
-		public bool support_flatpak { get; set; }
+		public bool support_flatpak { get; private set; }
 		public bool enable_flatpak { get; set; }
 		public bool check_flatpak_updates { get; set; }
 		PluginLoader<FlatpakPlugin> flatpak_plugin_loader;
