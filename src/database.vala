@@ -1364,21 +1364,22 @@ namespace Pamac {
 			} catch (Error e) {
 				warning (e.message);
 			}
-			if (config.enable_aur) {
-				Json.Array? array = aur.suggest (search_string_down);
-				if (array != null) {
-					uint array_length = array.get_length ();
-					if (array_length > 0) {
-						for (uint i = 0; i < array_length; i++) {
-							unowned string pkgname = array.get_string_element (i);
-							if (!result.find_with_equal_func (pkgname, str_equal)) {
-								result.add (pkgname);
-							}
-						}
-						result.sort (strcmp);
-					}
-				}
-			}
+			// disable suggest from AUR, see #1135
+			//if (config.enable_aur) {
+				//Json.Array? array = aur.suggest (search_string_down);
+				//if (array != null) {
+					//uint array_length = array.get_length ();
+					//if (array_length > 0) {
+						//for (uint i = 0; i < array_length; i++) {
+							//unowned string pkgname = array.get_string_element (i);
+							//if (!result.find_with_equal_func (pkgname, str_equal)) {
+								//result.add (pkgname);
+							//}
+						//}
+						//result.sort (strcmp);
+					//}
+				//}
+			//}
 			return result;
 		}
 
