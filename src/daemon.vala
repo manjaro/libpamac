@@ -122,7 +122,7 @@ namespace Pamac {
 				emit_warning (sender, message);
 			});
 			alpm_utils.emit_error.connect ((sender, message, details) => {
-				string[] details_copy = details.steal();
+				string[] details_copy = details.data;
 				emit_error (sender, message, details_copy);
 			});
 			alpm_utils.important_details_outpout.connect ((sender, must_show) => {
