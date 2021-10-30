@@ -468,9 +468,8 @@ namespace Pamac {
 			return matching_apps;
 		}
 
-		AlpmPackageData initialise_pkg_data (Alpm.Handle? handle, Alpm.Package? sync_pkg) {
+		AlpmPackageData initialise_pkg_data (Alpm.Handle? handle, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
 			// only use for updates so it is a sync_pkg
-			unowned Alpm.Package? local_pkg = handle.localdb.get_pkg (sync_pkg.name);
 			var pkg = new AlpmPackageData (sync_pkg, local_pkg, sync_pkg);
 			if (appstream_enabled) {
 				// find if pkgname provides only one app
@@ -2349,10 +2348,10 @@ namespace Pamac {
 						// check if candidate is in IgnorePkg or IgnoreGroup in case of replacer
 						if (tmp_handle.should_ignore (installed_pkg) == 1 ||
 							tmp_handle.should_ignore (candidate) == 1) {
-							var pkg = initialise_pkg_data (tmp_handle, candidate);
+							var pkg = initialise_pkg_data (tmp_handle, installed_pkg, candidate);
 							ignored_repos_updates.add (pkg);
 						} else {
-							var pkg = initialise_pkg_data (tmp_handle, candidate);
+							var pkg = initialise_pkg_data (tmp_handle, installed_pkg, candidate);
 							repos_updates.add (pkg);
 						}
 					} else {
