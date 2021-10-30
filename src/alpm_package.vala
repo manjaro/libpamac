@@ -726,8 +726,6 @@ namespace Pamac {
 				date = null;
 			}
 			if (sync_pkg != null) {
-				// overwrite version
-				_version = sync_pkg.version;
 				// repo
 				// transaction pkg
 				if (sync_pkg.db.name == "pamac_aur") {
