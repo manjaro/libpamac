@@ -1770,14 +1770,9 @@ namespace Pamac {
 						dbs_found++;
 						unowned Alpm.List<unowned Alpm.Package> packages = grp.packages;
 						while (packages != null) {
-							unowned Alpm.Package sync_pkg = packages.data;
-							unowned Alpm.Package? local_pkg;
-							alpm_pkgs.remove (sync_pkg, (Alpm.List.CompareFunc) alpm_pkg_compare_name, out local_pkg);
-							if (local_pkg == null) {
-								alpm_pkgs.add (sync_pkg);
-							} else {
-								// initialise here to give local_pkg
-								pkgs.add (initialise_pkg (local_pkg, sync_pkg));
+							unowned Alpm.Package pkg = packages.data;
+							if (alpm_pkgs.find (pkg, (Alpm.List.CompareFunc) alpm_pkg_compare_name) == null) {
+								alpm_pkgs.add (pkg);
 							}
 							packages.next ();
 						}
