@@ -382,7 +382,7 @@ namespace Pamac {
 
 		public unowned AlpmPackage? get_installed_pkg (string pkgname) {
 			lock (alpm_config) {
-				return initialise_pkg (alpm_handle.localdb.get_pkg (pkgname));
+				return initialise_pkg (alpm_handle.localdb.get_pkg (pkgname), null);
 			}
 		}
 
@@ -394,7 +394,7 @@ namespace Pamac {
 
 		public unowned AlpmPackage? get_installed_satisfier (string depstring) {
 			lock (alpm_config) {
-				return initialise_pkg (Alpm.find_satisfier (alpm_handle.localdb.pkgcache, depstring));
+				return initialise_pkg (Alpm.find_satisfier (alpm_handle.localdb.pkgcache, depstring), null);
 			}
 		}
 
@@ -406,7 +406,7 @@ namespace Pamac {
 					unowned Alpm.Package local_pkg = pkgcache.data;
 					// only check by name
 					if (Posix.fnmatch (glob, local_pkg.name) == 0) {
-						pkgs.add (initialise_pkg (local_pkg));
+						pkgs.add (initialise_pkg (local_pkg, null));
 					}
 					pkgcache.next ();
 				}
@@ -481,7 +481,7 @@ namespace Pamac {
 			return pkg;
 		}
 
-		unowned AlpmPackage? initialise_pkg (Alpm.Package? alpm_pkg) {
+		unowned AlpmPackage? initialise_pkg (Alpm.Package? alpm_pkg, Alpm.Package? sync_pkg) {
 			if (alpm_pkg == null) {
 				return null;
 			}
@@ -493,10 +493,13 @@ namespace Pamac {
 				return pkg;
 			}
 			var new_pkg = new AlpmPackageLinked.from_alpm (alpm_pkg, this);
-			if (config.enable_aur) {
-				unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
+			if (sync_pkg != null) {
 				new_pkg.set_sync_pkg (sync_pkg);
-				if (sync_pkg == null) {
+			} else if (config.enable_aur && alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
+				unowned Alpm.Package? found_sync_pkg = get_syncpkg (alpm_handle, pkgname);
+				new_pkg.set_sync_pkg (found_sync_pkg);
+				new_pkg.set_local_pkg (alpm_pkg);
+				if (found_sync_pkg == null) {
 					if (aur.get_infos (alpm_pkg.name) != null) {
 						new_pkg.repo = dgettext (null, "AUR");
 					}
@@ -931,7 +934,8 @@ namespace Pamac {
 
 		public unowned AlpmPackage? get_sync_pkg (string pkgname) {
 			lock (alpm_config) {
-				return initialise_pkg (get_syncpkg (alpm_handle, pkgname));
+				unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
+				return initialise_pkg (sync_pkg, sync_pkg);
 			}
 		}
 
@@ -957,7 +961,8 @@ namespace Pamac {
 
 		public unowned AlpmPackage? get_sync_satisfier (string depstring) {
 			lock (alpm_config) {
-				return initialise_pkg (find_dbs_satisfier (depstring));
+				unowned Alpm.Package? sync_pkg = find_dbs_satisfier (depstring);
+				return initialise_pkg (sync_pkg, sync_pkg);
 			}
 		}
 
@@ -973,7 +978,7 @@ namespace Pamac {
 						unowned Alpm.Package sync_pkg = pkgcache.data;
 						// only check by name
 						if (Posix.fnmatch (glob, sync_pkg.name) == 0) {
-							pkgs.add (initialise_pkg (sync_pkg));
+							pkgs.add (initialise_pkg (sync_pkg, sync_pkg));
 						}
 						pkgcache.next ();
 					}
@@ -1676,9 +1681,11 @@ namespace Pamac {
 							unowned Alpm.Package sync_pkg = pkgcache.data;
 							unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (sync_pkg.name);
 							if (local_pkg != null) {
-								alpm_pkgs.add (local_pkg);
+								unowned AlpmPackage? new_pkg = initialise_pkg (local_pkg, sync_pkg);
+								pkgs.add (new_pkg);
 							} else {
-								alpm_pkgs.add (sync_pkg);
+								unowned AlpmPackage? new_pkg = initialise_pkg (sync_pkg, sync_pkg);
+								pkgs.add (new_pkg);
 							}
 							pkgcache.next ();
 						}
@@ -1686,7 +1693,6 @@ namespace Pamac {
 					}
 					syncdbs.next ();
 				}
-				initialise_pkgs (alpm_pkgs, ref pkgs);
 			}
 		}
 
@@ -1751,8 +1757,8 @@ namespace Pamac {
 					dbs_found++;
 					unowned Alpm.List<unowned Alpm.Package> packages = grp.packages;
 					while (packages != null) {
-						unowned Alpm.Package pkg = packages.data;
-						alpm_pkgs.add (pkg);
+						unowned Alpm.Package local_pkg = packages.data;
+						alpm_pkgs.add (local_pkg);
 						packages.next ();
 					}
 				}
@@ -1764,9 +1770,14 @@ namespace Pamac {
 						dbs_found++;
 						unowned Alpm.List<unowned Alpm.Package> packages = grp.packages;
 						while (packages != null) {
-							unowned Alpm.Package pkg = packages.data;
-							if (alpm_pkgs.find (pkg, (Alpm.List.CompareFunc) alpm_pkg_compare_name) == null) {
-								alpm_pkgs.add (pkg);
+							unowned Alpm.Package sync_pkg = packages.data;
+							unowned Alpm.Package? local_pkg;
+							alpm_pkgs.remove (sync_pkg, (Alpm.List.CompareFunc) alpm_pkg_compare_name, out local_pkg);
+							if (local_pkg == null) {
+								alpm_pkgs.add (sync_pkg);
+							} else {
+								// initialise here to give local_pkg
+								pkgs.add (initialise_pkg (local_pkg, sync_pkg));
 							}
 							packages.next ();
 						}
@@ -2542,7 +2553,7 @@ namespace Pamac {
 					aur_pkg.version = new_version;
 				}
 				if (Alpm.pkg_vercmp (new_version, old_version) == 1) {
-					if (local_pkg.name in ignorepkgs) {
+					if (name in ignorepkgs) {
 						ignored_aur_updates.add (aur_pkg);
 					} else {
 						aur_updates.add (aur_pkg);
