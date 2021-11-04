@@ -1354,7 +1354,7 @@ namespace Pamac {
 			try {
 				new Thread<int>.try ("search_pkgs", () => {
 					lock (alpm_config) {
-						Alpm.List<unowned string> list = suggest_all_dbs (search_string);
+						Alpm.List<unowned string> list = suggest_all_dbs (search_string_down);
 						while (list != null) {
 							unowned string pkgname = list.data;
 							result.add (pkgname);
@@ -1671,7 +1671,6 @@ namespace Pamac {
 
 		void get_repo_pkgs_real (string repo, ref GenericArray<unowned AlpmPackage> pkgs) {
 			lock (alpm_config) {
-				Alpm.List<unowned Alpm.Package> alpm_pkgs = null;
 				unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
 				while (syncdbs != null) {
 					unowned Alpm.DB db = syncdbs.data;
