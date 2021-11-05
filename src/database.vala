@@ -1012,18 +1012,18 @@ namespace Pamac {
 							}
 							unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 							if (local_pkg != null) {
-								var alpmpkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
-								alpmpkg.set_local_pkg (local_pkg);
-								alpmpkg.set_as_app (app);
-								pkg = alpmpkg;
+								var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+								new_pkg.set_local_pkg (local_pkg);
+								new_pkg.set_as_app (app);
+								pkg = new_pkg;
 							} else {
 								unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
 								if (sync_pkg != null) {
-									var alpmpkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
-									alpmpkg.set_local_pkg (local_pkg);
-									alpmpkg.set_sync_pkg (sync_pkg);
-									alpmpkg.set_as_app (app);
-									pkg = alpmpkg;
+									var new_pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
+									new_pkg.set_local_pkg (local_pkg);
+									new_pkg.set_sync_pkg (sync_pkg);
+									new_pkg.set_as_app (app);
+									pkg = new_pkg;
 								}
 							}
 						}
@@ -1045,9 +1045,9 @@ namespace Pamac {
 							}
 						}
 						if (found) {
-							var alpmpkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
-							alpmpkg.set_local_pkg (local_pkg);
-							pkg = alpmpkg;
+							var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+							new_pkg.set_local_pkg (local_pkg);
+							pkg = new_pkg;
 							break;
 						}
 						pkgcache.next ();
@@ -1562,21 +1562,31 @@ namespace Pamac {
 									foreach (unowned As.App app in apps) {
 										unowned string pkgname = app.get_pkgname_default ();
 										if (pkgname in names_set) {
-											unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
-											if (sync_pkg != null) {
-												unowned string? app_name = app.get_name (null);
-												if (app_name != null) {
-													AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (sync_pkg.name, app_name));
-													if (pkg != null) {
-														pkgs.add (pkg);
-														continue;
-													}
+											unowned string? app_name = app.get_name (null);
+											if (app_name != null) {
+												AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (pkgname, app_name));
+												if (pkg != null) {
+													pkgs.add (pkg);
+													continue;
 												}
-												var pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
-												pkg.set_sync_pkg (sync_pkg);
+											}
+											unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
+											if (local_pkg != null) {
+												var pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+												pkg.set_local_pkg (local_pkg);
 												pkg.set_as_app (app);
 												pkgs.add (pkg);
 												pkgs_cache.replace (pkg.id, pkg);
+											} else {
+												unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
+												if (sync_pkg != null) {
+													var pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
+													pkg.set_local_pkg (local_pkg);
+													pkg.set_sync_pkg (sync_pkg);
+													pkg.set_as_app (app);
+													pkgs.add (pkg);
+													pkgs_cache.replace (pkg.id, pkg);
+												}
 											}
 										}
 									}
@@ -1622,21 +1632,31 @@ namespace Pamac {
 									foreach (unowned string cat_name in categories) {
 										if (cat_name in names_set) {
 											unowned string pkgname = app.get_pkgname_default ();
-											unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
-											if (sync_pkg != null) {
-												unowned string? app_name = app.get_name (null);
-												if (app_name != null) {
-													AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (sync_pkg.name, app_name));
-													if (pkg != null) {
-														pkgs.add (pkg);
-														break;
-													}
+											unowned string? app_name = app.get_name (null);
+											if (app_name != null) {
+												AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (pkgname, app_name));
+												if (pkg != null) {
+													pkgs.add (pkg);
+													break;
 												}
-												var pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
-												pkg.set_sync_pkg (sync_pkg);
+											}
+											unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
+											if (local_pkg != null) {
+												var pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+												pkg.set_local_pkg (local_pkg);
 												pkg.set_as_app (app);
 												pkgs.add (pkg);
 												pkgs_cache.replace (pkg.id, pkg);
+											} else {
+												unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
+												if (sync_pkg != null) {
+													var pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
+													pkg.set_local_pkg (local_pkg);
+													pkg.set_sync_pkg (sync_pkg);
+													pkg.set_as_app (app);
+													pkgs.add (pkg);
+													pkgs_cache.replace (pkg.id, pkg);
+												}
 											}
 											break;
 										}
