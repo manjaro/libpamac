@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-#
+# 
 # Translators:
 # Reza Gharibi <reza.gharibi.rg@gmail.com>, 2013
 # Hootan Baraary <h.baraary@yahoo.com>, 2013
@@ -20,14 +20,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-12 15:59+0200\n"
-"PO-Revision-Date: 2021-05-15 14:31+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2021-10-16 15:45+0200\n"
+"PO-Revision-Date: 2021-10-16 16:25+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/fa_IR/)\n"
-"Language: fa_IR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fa_IR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -70,9 +70,9 @@ msgid "package %s does not have a valid architecture"
 msgstr "بستهٔ %s فاقد معماری معتبر است"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr "وابستگی «%s» مورد‌‌نیاز برای «%s» برطرف نشد"
+msgstr ""
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -80,9 +80,9 @@ msgid "Warning"
 msgstr "هشدار"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr "نصب %s (%s) وابستگی «%s» موردنیاز %s را با مشکل مواجه می‌کند"
+msgstr ""
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -95,14 +95,14 @@ msgid "if possible, remove %s and retry"
 msgstr "در صورت امکان %s را حذف کرده و دوباره امتحان کنید"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr "حذف کردن %s وابستگی «%s» موردنیاز %s را با مشکل مواجه می‌کند"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr "%s و %s با هم تداخل دارند "
+msgstr ""
 
 #: src/alpm_utils.vala
 #, c-format
@@ -127,28 +127,23 @@ msgid "Transaction cancelled"
 msgstr "تراکنش لغو شد"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr "%s هم در %s و هم در %s وجود دارد"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy
-msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr "%s:%s هم‌اکنون در سیستم پرونده موجود است (متعلق به %s)"
+#, c-format
+msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr "%s: %s هم‌اکنون در سیستم پرونده موجود است"
+msgstr ""
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
 msgstr "اگر این پرونده مورد نیاز نیست، آن را پاک کرده و دوباره امتحان کنید"
-
-#: src/alpm_utils.vala
-#, fuzzy, c-format
-msgid "%1$s: %2$s already existed in filesystem"
-msgstr "%s:%s در سیستم پرونده وجود داشت"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -240,9 +235,9 @@ msgid "Checking available disk space"
 msgstr "بررسی فضای دیسک موجود"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr "%s به طور اختیاری به %s نیاز دارد"
+msgstr ""
 
 #: src/alpm_utils.vala
 #, c-format
@@ -258,14 +253,14 @@ msgid "Downloading required keys"
 msgstr "دریافت کلیدهای مورد نیاز"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr "%s به‌عنوان %s.pacnew نصب شد"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr "%s به‌عنوان %s.pacsave نصب شد"
+msgstr ""
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -391,7 +386,7 @@ msgstr "کاری برای انجام دادن وجود ندارد"
 
 #: src/transaction.vala
 #, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
 
 #: src/transaction.vala
@@ -422,16 +417,17 @@ msgstr "کلید PGP را وارد کنید"
 msgid "Trust and Import"
 msgstr "اعتماد و وارد کردن"
 
-#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
-#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
-#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: src/preferences_dialog.vala resources/progress_dialog.ui
+#: resources/transaction_sum_dialog.ui resources/manager_window.ui
+#: resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_لغو"
 
-#: src/transaction-gtk.vala
-#, fuzzy, c-format
+#: src/transaction-gtk.vala src/transaction-cli.vala
+#, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "کلید PGP %s برای تأیید پرونده‌های منبع %s مورد‌نیاز است"
+msgstr ""
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -443,7 +439,8 @@ msgstr "اعتماد به %s و وارد کردن کلید PGP"
 msgid "Official Repositories"
 msgstr "مخازن رسمی"
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Repositories"
 msgstr "مخازن"
 
@@ -502,7 +499,8 @@ msgstr "_بستن"
 msgid "Restart"
 msgstr ""
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Install"
 msgstr "نصب"
 
@@ -583,7 +581,8 @@ msgstr "بسته Aplm"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "یک مدیر بسته با پشتیبانی از Alpm، AUR، Flatpak و Snap"
 
-#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala
+#: resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -889,11 +888,6 @@ msgid "yes"
 msgstr "بله"
 
 #: src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
-msgstr "کلید PGP %s برای تأیید پرونده‌های منبع %s مورد‌نیاز است"
-
-#: src/transaction-cli.vala
 msgid "[e]"
 msgstr ""
 
@@ -1000,7 +994,8 @@ msgid "do not search in AUR"
 msgstr "در AUR جست‌و‌جو نشود"
 
 #: src/cli.vala
-msgid "search for packages which own the given filenames (filenames can be partial)"
+msgid ""
+"search for packages which own the given filenames (filenames can be partial)"
 msgstr "جستجو برای بسته‌هایی که دارای این نام پرونده هستند (نام پرونده می‌تواند جزئی باشد)"
 
 #: src/cli.vala
@@ -1032,7 +1027,9 @@ msgid "list explicitly installed packages"
 msgstr ""
 
 #: src/cli.vala
-msgid "list packages that were installed as dependencies but are no longer required by any installed package"
+msgid ""
+"list packages that were installed as dependencies but are no longer required"
+" by any installed package"
 msgstr "لیست کردن بسته‌هایی که به عنوان یک وابستگی نصب شده‌اند اما دیگر مورد نیاز هیچ بستهٔ نصب شده‌ای نیستند"
 
 #: src/cli.vala
@@ -1040,11 +1037,15 @@ msgid "list packages that were not found in the repositories"
 msgstr "لیست کردن بسته‌هایی که در مخازن پیدا نشدند"
 
 #: src/cli.vala
-msgid "list all packages that are members of the given groups, if no group is given list all groups"
+msgid ""
+"list all packages that are members of the given groups, if no group is given"
+" list all groups"
 msgstr "لیست کردن تمام بسته‌هایی که عضو گروه داده‌شده‌اند؛ اگر هیچ گروهی داده نشده همه گروه‌ها را لیست کن"
 
 #: src/cli.vala
-msgid "list all packages available in the given repos, if no repo is given list all repos"
+msgid ""
+"list all packages available in the given repos, if no repo is given list all"
+" repos"
 msgstr "لیست کردن تمام بسته‌هایی که جزء مخازن داده‌شده‌اند؛ اگر هیچ مخزنی داده نشده همه مخازن را لیست کن"
 
 #: src/cli.vala
@@ -1060,7 +1061,9 @@ msgid "dir"
 msgstr "پوشه"
 
 #: src/cli.vala
-msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory, if no directory is given the one specified in pamac.conf "
+"file is used"
 msgstr "مسیر ساخت؛ اگر مسیری داده نشود مسیر مشخص شده در پرونده pamac.conf استفاده می‌شود"
 
 #: src/cli.vala
@@ -1076,11 +1079,14 @@ msgid "overwrite existing files"
 msgstr "روی پرونده‌های موجود نوشته شود"
 
 #: src/cli.vala
-msgid "If no package name is given, use the PKGBUILD file in the current directory"
+msgid ""
+"If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "اگر نام بسته‌ای داده نشده است، از پرونده PKGBUILD موجود در مسیر کنونی استفاده کن"
 
 #: src/cli.vala
-msgid "The build directory will be the parent directory, --builddir option will be ignored"
+msgid ""
+"The build directory will be the parent directory, --builddir option will be "
+"ignored"
 msgstr ""
 
 #: src/cli.vala
@@ -1112,11 +1118,15 @@ msgid "glob"
 msgstr ""
 
 #: src/cli.vala
-msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
+msgid ""
+"ignore a package upgrade, multiple packages can be specified by separating "
+"them with a comma"
 msgstr "نادیده گرفتن به‌روزرسانی بسته؛ بسته‌های متعدد را می‌توان با علامت کاما از هم جدا کرد"
 
 #: src/cli.vala
-msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
+msgid ""
+"overwrite conflicting files, multiple patterns can be specified by "
+"separating them with a comma"
 msgstr ""
 
 #: src/cli.vala
@@ -1148,7 +1158,9 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "بسته‌ها را حذف کن فقط در صورتی که موردنیاز هیچ بستهٔ دیگری نباشند"
 
 #: src/cli.vala
-msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
+msgid ""
+"remove dependencies that are not required by other packages, if this option "
+"is used without package name remove all orphans"
 msgstr "حذف کردن تمام وابستگی‌هایی که مورد نیاز سایر بسته‌ها نیست؛ اگر این گزینه بدون نام بسته استاده شود تمام orphan هارا پاک خواهد کرد"
 
 #: src/cli.vala
@@ -1168,7 +1180,9 @@ msgid "Exit code is 100 if updates are available"
 msgstr "در صورت وجود به‌روزرسانی، کد خروج عدد 100 است."
 
 #: src/cli.vala
-msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --devel), if no directory is given the one "
+"specified in pamac.conf file is used"
 msgstr ""
 
 #: src/cli.vala
@@ -1224,7 +1238,9 @@ msgid "do not upgrade development packages"
 msgstr "بسته‌های در حال توسعه به‌روزرسانی نشوند"
 
 #: src/cli.vala
-msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --aur), if no directory is given the one specified"
+" in pamac.conf file is used"
 msgstr ""
 
 #: src/cli.vala
@@ -1236,7 +1252,8 @@ msgid "number"
 msgstr "عدد"
 
 #: src/cli.vala
-msgid "specify how many versions of each package are kept in the cache directory"
+msgid ""
+"specify how many versions of each package are kept in the cache directory"
 msgstr "تعداد نسخه‌هایی از هر بسته را که در حافظه موقت نگه‌داری می‌شوند مشخص کنید"
 
 #: src/cli.vala
@@ -1244,7 +1261,9 @@ msgid "only target uninstalled packages"
 msgstr "تنها بسته‌های حذف شده هدف قرار داده شوند"
 
 #: src/cli.vala
-msgid "remove all build files, the build directory is the one specified in pamac.conf"
+msgid ""
+"remove all build files, the build directory is the one specified in "
+"pamac.conf"
 msgstr ""
 
 #: src/cli.vala
@@ -1319,11 +1338,11 @@ msgid "%s is only available from AUR"
 msgstr "%s فقط از طریق AUR در دسترس است"
 
 #: src/cli.vala
-#, fuzzy, c-format
+#, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] "در گروه %s تعداد %u عضو وجود دارد"
-msgstr[1] "در گروه %sتعداد %u عضو وجود دارد"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/cli.vala
 msgid "all"
@@ -1523,9 +1542,7 @@ msgstr "پیشرفته"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
-"تنظیم اشتباه این گزینه‌ها می‌تواند منجر به خراب شدن سیستم شود.\n"
-"فقط در صورتی تغییر دهید که می‌دانید چه کاری انجام می‌دهید."
+msgstr "تنظیم اشتباه این گزینه‌ها می‌تواند منجر به خراب شدن سیستم شود.\nفقط در صورتی تغییر دهید که می‌دانید چه کاری انجام می‌دهید."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1555,9 +1572,7 @@ msgstr ""
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
-"AUR توسط جامعه نگه‌داری می‌شود پس ممکن است دارای ریسک‌های بالقوه باشد.\n"
-"تمام کاربران AUR باید با فرآیند ساخت آشنا باشند."
+msgstr "AUR توسط جامعه نگه‌داری می‌شود پس ممکن است دارای ریسک‌های بالقوه باشد.\nتمام کاربران AUR باید با فرآیند ساخت آشنا باشند."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

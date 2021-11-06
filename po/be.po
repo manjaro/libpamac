@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-#
+# 
 # Translators:
 # Źmicier Turok <nashtlumach@gmail.com>, 2019-2020
 # Źmicier Turok <nashtlumach@gmail.com>, 2018-2019
@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-12 15:59+0200\n"
-"PO-Revision-Date: 2021-08-02 11:35+0000\n"
-"Last-Translator: Źmicier Turok <nashtlumach@gmail.com>\n"
+"POT-Creation-Date: 2021-10-16 15:45+0200\n"
+"PO-Revision-Date: 2021-10-16 16:25+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Belarusian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/be/)\n"
-"Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: be\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -61,9 +61,9 @@ msgid "package %s does not have a valid architecture"
 msgstr "пакунак %s не мае неабходнай архітэктуры"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr "немагчыма задаволіць залежнасць \"%s\", неабходную для %s"
+msgstr ""
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -71,9 +71,9 @@ msgid "Warning"
 msgstr "Увага"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr "усталяванне %s (%s) парушае залежнасць \"%s\", неабходную для %s"
+msgstr ""
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -86,14 +86,14 @@ msgid "if possible, remove %s and retry"
 msgstr "калі магчыма, выдаліць %s і паўтарыць спробу"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr "выдаленне %s парушае залежнасць \"%s\", неабходную для %s"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr "%s і %s канфліктуюць"
+msgstr ""
 
 #: src/alpm_utils.vala
 #, c-format
@@ -118,28 +118,23 @@ msgid "Transaction cancelled"
 msgstr "Трансакцыя скасаваная"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr "%s існуе ў абодвух %s і %s"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy
-msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr "%s: %s ужо існуе ў файлавай сістэме (належыць %s)"
+#, c-format
+msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr "%s: %s ужо існуе ў файлавай сістэме"
+msgstr ""
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
 msgstr "калі гэты файл непатрэбны, выдаліце яго і паўтарыце спробу"
-
-#: src/alpm_utils.vala
-#, fuzzy, c-format
-msgid "%1$s: %2$s already existed in filesystem"
-msgstr "%s: %s ужо існуе ў файлавай сістэме"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -231,9 +226,9 @@ msgid "Checking available disk space"
 msgstr "Праверка даступнай прасторы на дыску"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr "%s патрабуецца неабавязковы %s"
+msgstr ""
 
 #: src/alpm_utils.vala
 #, c-format
@@ -249,14 +244,14 @@ msgid "Downloading required keys"
 msgstr "Спампоўванне неабходных ключоў"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr "%s усталяваны як %s.pacnew"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr "%s усталяваны як %s.pacsave"
+msgstr ""
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -385,9 +380,9 @@ msgid "Nothing to do"
 msgstr "Няма задач"
 
 #: src/transaction.vala
-#, fuzzy, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
-msgstr "%s: ігнараванне абнаўлення пакунка (%s => %s)\n"
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr ""
 
 #: src/transaction.vala
 #, c-format
@@ -417,16 +412,17 @@ msgstr "Імпарт ключа PGP"
 msgid "Trust and Import"
 msgstr "Ухваліць і імпартаваць"
 
-#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
-#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
-#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: src/preferences_dialog.vala resources/progress_dialog.ui
+#: resources/transaction_sum_dialog.ui resources/manager_window.ui
+#: resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Скасаваць"
 
-#: src/transaction-gtk.vala
-#, fuzzy, c-format
+#: src/transaction-gtk.vala src/transaction-cli.vala
+#, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "Ключ PGP %s патрабуецца для праверкі %s зыходных файлаў"
+msgstr ""
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -438,7 +434,8 @@ msgstr "Даверыцца %s і імпартаваць ключ PGP"
 msgid "Official Repositories"
 msgstr "Афіцыйныя рэпазіторыі"
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Repositories"
 msgstr "Рэпазіторыі"
 
@@ -497,7 +494,8 @@ msgstr "_Закрыць"
 msgid "Restart"
 msgstr "Перазапуск"
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Install"
 msgstr "Усталяваць"
 
@@ -580,7 +578,8 @@ msgstr "Пакунак Alpm"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Кіраўнік пакункаў, які падтрымлівае Alpm, AUR, Flatpak і Snap"
 
-#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala
+#: resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -890,11 +889,6 @@ msgid "yes"
 msgstr "так"
 
 #: src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
-msgstr "Ключ PGP %s патрабуецца для праверкі %s зыходных файлаў"
-
-#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -1001,7 +995,8 @@ msgid "do not search in AUR"
 msgstr "не шукаць у AUR"
 
 #: src/cli.vala
-msgid "search for packages which own the given filenames (filenames can be partial)"
+msgid ""
+"search for packages which own the given filenames (filenames can be partial)"
 msgstr "пошук пакункаў, што маюць пададзеныя назвы (можна ўводзіць частку)"
 
 #: src/cli.vala
@@ -1033,7 +1028,9 @@ msgid "list explicitly installed packages"
 msgstr "спіс адмыслова ўсталяваных пакункаў"
 
 #: src/cli.vala
-msgid "list packages that were installed as dependencies but are no longer required by any installed package"
+msgid ""
+"list packages that were installed as dependencies but are no longer required"
+" by any installed package"
 msgstr "спіс пакункаў, што ўсталяваныя як залежнасці, але ўжо не патрабуюцца ніводнаму пакунку"
 
 #: src/cli.vala
@@ -1041,11 +1038,15 @@ msgid "list packages that were not found in the repositories"
 msgstr "спіс пакункаў, не знойдзеных у рэпазіторыях"
 
 #: src/cli.vala
-msgid "list all packages that are members of the given groups, if no group is given list all groups"
+msgid ""
+"list all packages that are members of the given groups, if no group is given"
+" list all groups"
 msgstr "спіс усіх пакункаў, што належаць дадзеным групам, калі група адсутнічае ў пададзеным спісе ўсіх груп"
 
 #: src/cli.vala
-msgid "list all packages available in the given repos, if no repo is given list all repos"
+msgid ""
+"list all packages available in the given repos, if no repo is given list all"
+" repos"
 msgstr "спіс усіх пакункаў, даступных у дадзеных рэпазіторыях, калі рэпазіторый адсутнічае ў пададзеным спісе ўсіх рэпазіторыяў"
 
 #: src/cli.vala
@@ -1061,7 +1062,9 @@ msgid "dir"
 msgstr "каталог"
 
 #: src/cli.vala
-msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory, if no directory is given the one specified in pamac.conf "
+"file is used"
 msgstr "сабраць у каталозе, калі каталог не вызначаны, выкарыстоўваць той, што пазначаны ў pamac.conf"
 
 #: src/cli.vala
@@ -1077,11 +1080,14 @@ msgid "overwrite existing files"
 msgstr "перазапісваць існыя файлы"
 
 #: src/cli.vala
-msgid "If no package name is given, use the PKGBUILD file in the current directory"
+msgid ""
+"If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Калі назва пакунка не пададзеная, выкарыстоўваць PKGBUILD у бягучым каталозе"
 
 #: src/cli.vala
-msgid "The build directory will be the parent directory, --builddir option will be ignored"
+msgid ""
+"The build directory will be the parent directory, --builddir option will be "
+"ignored"
 msgstr "Каталог зборкі будзе бацькоўскім каталогам, параметр --builddir будзе праігнараваны"
 
 #: src/cli.vala
@@ -1113,11 +1119,15 @@ msgid "glob"
 msgstr "глабальна"
 
 #: src/cli.vala
-msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
+msgid ""
+"ignore a package upgrade, multiple packages can be specified by separating "
+"them with a comma"
 msgstr "ігнараваць абнаўленне пакунка, магчыма вызначыць некалькі праз коску"
 
 #: src/cli.vala
-msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
+msgid ""
+"overwrite conflicting files, multiple patterns can be specified by "
+"separating them with a comma"
 msgstr "перазапісваць канфліктуючыя файлы, магчыма вызначыць некалькі праз коску"
 
 #: src/cli.vala
@@ -1149,7 +1159,9 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "выдаляць пакункі толькі калі яны не патрабуюцца іншым пакункам"
 
 #: src/cli.vala
-msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
+msgid ""
+"remove dependencies that are not required by other packages, if this option "
+"is used without package name remove all orphans"
 msgstr "выдаляць залежнасці, што не патрабуюцца іншым пакункам, калі гэты параметр выкарыстоўваецца без назвы пакунка"
 
 #: src/cli.vala
@@ -1169,7 +1181,9 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Код выхаду 100, калі абнаўленні даступныя"
 
 #: src/cli.vala
-msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --devel), if no directory is given the one "
+"specified in pamac.conf file is used"
 msgstr "каталог зборкі (выкарыстоўваць з --devel), калі каталог не вызначаны, выкарыстоўваць той, што пазначаны ў pamac.conf"
 
 #: src/cli.vala
@@ -1225,7 +1239,9 @@ msgid "do not upgrade development packages"
 msgstr "не абнаўляць пакункі да нестабільных версій"
 
 #: src/cli.vala
-msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --aur), if no directory is given the one specified"
+" in pamac.conf file is used"
 msgstr "каталог зборкі (выкарыстоўваць з --aur), калі каталог не вызначаны, выкарыстоўваць той, што пазначаны ў pamac.conf"
 
 #: src/cli.vala
@@ -1237,7 +1253,8 @@ msgid "number"
 msgstr "колькасць"
 
 #: src/cli.vala
-msgid "specify how many versions of each package are kept in the cache directory"
+msgid ""
+"specify how many versions of each package are kept in the cache directory"
 msgstr "вызначце колькі версій кожнага пакунка захоўваць у каталозе кэшу"
 
 #: src/cli.vala
@@ -1245,7 +1262,9 @@ msgid "only target uninstalled packages"
 msgstr "толькі мэтавыя неўсталяваныя пакункі"
 
 #: src/cli.vala
-msgid "remove all build files, the build directory is the one specified in pamac.conf"
+msgid ""
+"remove all build files, the build directory is the one specified in "
+"pamac.conf"
 msgstr "выдаліць усе файлы зборкі, каталог зборкі пазначаны ў pamac.conf"
 
 #: src/cli.vala
@@ -1322,13 +1341,13 @@ msgid "%s is only available from AUR"
 msgstr "%s даступны толькі ў AUR"
 
 #: src/cli.vala
-#, fuzzy, c-format
+#, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] "У групе %s %u удзельнік"
-msgstr[1] "У групе %s %u удзельнікі"
-msgstr[2] "У групе %s %u удзельнікаў"
-msgstr[3] "У групе %s %u удзельнікаў"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: src/cli.vala
 msgid "all"
@@ -1528,9 +1547,7 @@ msgstr "Дадатковыя"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
-"Няправільнае наладжванне гэтых параметраў можа прывесці да пашкоджання сістэмы.\n"
-"Змяняйце іх толькі, калі ведаеце, што робіце."
+msgstr "Няправільнае наладжванне гэтых параметраў можа прывесці да пашкоджання сістэмы.\nЗмяняйце іх толькі, калі ведаеце, што робіце."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1560,9 +1577,7 @@ msgstr "Іншыя крыніцы"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
-"AUR - рэпазіторый, які падтрымліваецца супольнасцю. Пры яго выкарыстанні ёсць верагоднасць узнікнення пэўных праблемаў. \n"
-"Усе карыстальнікі AUR мусяць азнаёміцца з працэсам зборкі."
+msgstr "AUR - рэпазіторый, які падтрымліваецца супольнасцю. Пры яго выкарыстанні ёсць верагоднасць узнікнення пэўных праблемаў. \nУсе карыстальнікі AUR мусяць азнаёміцца з працэсам зборкі."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

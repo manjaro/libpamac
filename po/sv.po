@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-#
+# 
 # Translators:
 # Alexander Lindberg <alexanderlndbrg@gmail.com>, 2013-2014
 # Mattias Johansson <cashew75s@gmail.com>, 2014
@@ -24,14 +24,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-12 15:59+0200\n"
-"PO-Revision-Date: 2021-05-16 23:21+0000\n"
+"POT-Creation-Date: 2021-10-16 15:45+0200\n"
+"PO-Revision-Date: 2021-10-17 11:18+0000\n"
 "Last-Translator: Luna Jernberg <bittin@cafe8bitar.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sv/)\n"
-"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -74,9 +74,9 @@ msgid "package %s does not have a valid architecture"
 msgstr "paketet %s har inte en giltig arkitektur"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr "kan ej möta beroende '%s' som krävs av %s"
+msgstr "kan ej möta beroende '%1$s' som krävs av %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -84,9 +84,9 @@ msgid "Warning"
 msgstr "Varning"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr "installering av %s (%s) åsidosätter beroendet '%s' som krävs av %s"
+msgstr "installering av %1$s (%2$s)  åsidosätter beroendet '%3$s' som krävs av %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -99,14 +99,14 @@ msgid "if possible, remove %s and retry"
 msgstr "om möjligt, ta bort %s och försök igen"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr "borttagning av %s åsidosätter beroendet '%s' som krävs av %s"
+msgstr "borttagning av %1$s åsidosätter beroendet '%2$s' som krävs av %3$s "
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr "%s och %s konflikterar"
+msgstr "%1$s och %2$s är i konflikt"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -131,28 +131,23 @@ msgid "Transaction cancelled"
 msgstr "Överföring avbruten"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr "%s finns i både %s och %s"
+msgstr "%1$sfinns i både %2$s och %3$s"
 
 #: src/alpm_utils.vala
-#, fuzzy
-msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr "%s: %s finns redan i filsystemet (ägs av %s)"
+#, c-format
+msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
+msgstr "%1$s: %2$s finns redan i filsystemet (ägs av %3$s) "
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr "%s: %s finns redan i filsystemet"
+msgstr "%1$s:%2$sfinns redan i filsystemet"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
 msgstr "om denna fil inte behövs, ta bort den och försök igen"
-
-#: src/alpm_utils.vala
-#, fuzzy, c-format
-msgid "%1$s: %2$s already existed in filesystem"
-msgstr "%s: %s finns redan i filsystemet"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -244,9 +239,9 @@ msgid "Checking available disk space"
 msgstr "Kontrollerar tillgängligt diskutrymme"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr "%s kräver frivilligt %s"
+msgstr "%1$skräver frivilligt %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -262,14 +257,14 @@ msgid "Downloading required keys"
 msgstr "Laddar ner nödvändiga nycklar"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr "%s installerades som %s.pacnew"
+msgstr "%1$sinstallerades som%2$s.pacnew"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr "%s installerades som %s.pacsave"
+msgstr "%1$s installerades som %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -394,9 +389,9 @@ msgid "Nothing to do"
 msgstr "Inget att göra"
 
 #: src/transaction.vala
-#, fuzzy, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
-msgstr "%s: ignorerar paketuppgradering (%s =>%s)\n"
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr "%1$s: ignorerar paketuppgradering (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -426,16 +421,17 @@ msgstr "Importera PGP-nyckel"
 msgid "Trust and Import"
 msgstr "Tilltro och Importera"
 
-#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
-#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
-#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: src/preferences_dialog.vala resources/progress_dialog.ui
+#: resources/transaction_sum_dialog.ui resources/manager_window.ui
+#: resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Avbryt"
 
-#: src/transaction-gtk.vala
-#, fuzzy, c-format
+#: src/transaction-gtk.vala src/transaction-cli.vala
+#, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "PGP-nyckeln %s krävs för att verifiera %s källfiler"
+msgstr "PGP-nyckeln %1$s krävs för att verifiera %2$s källfiler"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -447,7 +443,8 @@ msgstr "Tilltro %s och importera PGP-nyckel"
 msgid "Official Repositories"
 msgstr "Officiella förråd"
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Repositories"
 msgstr "Förråd (repo)"
 
@@ -506,7 +503,8 @@ msgstr "_Stäng"
 msgid "Restart"
 msgstr "Starta om"
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Install"
 msgstr "Installera"
 
@@ -587,7 +585,8 @@ msgstr "Alpm-paket"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "En pakethanterare med Alpm, AUR, Flatpak och Snap stöd"
 
-#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala
+#: resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -893,11 +892,6 @@ msgid "yes"
 msgstr "ja"
 
 #: src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
-msgstr "PGP-nyckeln %s krävs för att verifiera %s källfiler"
-
-#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -1004,7 +998,8 @@ msgid "do not search in AUR"
 msgstr "sök inte i AUR"
 
 #: src/cli.vala
-msgid "search for packages which own the given filenames (filenames can be partial)"
+msgid ""
+"search for packages which own the given filenames (filenames can be partial)"
 msgstr "sök efter paket som äger de angivna filnamnen (filnamn kan vara ofullständiga)"
 
 #: src/cli.vala
@@ -1036,7 +1031,9 @@ msgid "list explicitly installed packages"
 msgstr "lista särskilt installerade paket"
 
 #: src/cli.vala
-msgid "list packages that were installed as dependencies but are no longer required by any installed package"
+msgid ""
+"list packages that were installed as dependencies but are no longer required"
+" by any installed package"
 msgstr "lista paket som installerades som besittningar, som ej behövs längre av andra paket"
 
 #: src/cli.vala
@@ -1044,11 +1041,15 @@ msgid "list packages that were not found in the repositories"
 msgstr "lista paket som ej hittades i förråden"
 
 #: src/cli.vala
-msgid "list all packages that are members of the given groups, if no group is given list all groups"
+msgid ""
+"list all packages that are members of the given groups, if no group is given"
+" list all groups"
 msgstr "lista alla paket som är medlemmar av de angivna grupperna, om ingen grupp har angetts, lista alla grupper"
 
 #: src/cli.vala
-msgid "list all packages available in the given repos, if no repo is given list all repos"
+msgid ""
+"list all packages available in the given repos, if no repo is given list all"
+" repos"
 msgstr "lista alla tillgängliga paket i de angivna förråden, om inget förråd har angetts, visa alla förråd"
 
 #: src/cli.vala
@@ -1064,7 +1065,9 @@ msgid "dir"
 msgstr "katalog"
 
 #: src/cli.vala
-msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory, if no directory is given the one specified in pamac.conf "
+"file is used"
 msgstr "bygg katalog, om ingen katalog har angetts kommer befintlig katalog i pamac.conf användas att istället"
 
 #: src/cli.vala
@@ -1080,11 +1083,14 @@ msgid "overwrite existing files"
 msgstr "skriv över befintliga filer"
 
 #: src/cli.vala
-msgid "If no package name is given, use the PKGBUILD file in the current directory"
+msgid ""
+"If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Om inget paketnamn har angetts, använd PKGBUILD-filen i nuvarande katalog"
 
 #: src/cli.vala
-msgid "The build directory will be the parent directory, --builddir option will be ignored"
+msgid ""
+"The build directory will be the parent directory, --builddir option will be "
+"ignored"
 msgstr "Byggkatalogen kommer vara den övre katalogen, --builddir alternativet kommer att ignoreras"
 
 #: src/cli.vala
@@ -1116,11 +1122,15 @@ msgid "glob"
 msgstr "matchning"
 
 #: src/cli.vala
-msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
+msgid ""
+"ignore a package upgrade, multiple packages can be specified by separating "
+"them with a comma"
 msgstr "Ignorera en paketuppgradering, flertal paket kan anges genom att separera dem med ett kommatecken"
 
 #: src/cli.vala
-msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
+msgid ""
+"overwrite conflicting files, multiple patterns can be specified by "
+"separating them with a comma"
 msgstr "skriv över motstridiga filer, flera mönster kan anges genom att separera dem med ett kommatecken"
 
 #: src/cli.vala
@@ -1152,7 +1162,9 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "ta endast bort paket om de inte krävs av andra paket"
 
 #: src/cli.vala
-msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
+msgid ""
+"remove dependencies that are not required by other packages, if this option "
+"is used without package name remove all orphans"
 msgstr "ta bort besittningar som ej behövs av andra paket, om detta alternativet används utan ett namn ta bort alla överblivna paket"
 
 #: src/cli.vala
@@ -1172,7 +1184,9 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Avgångskoden är 100 om uppdateringar är tillgängliga"
 
 #: src/cli.vala
-msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --devel), if no directory is given the one "
+"specified in pamac.conf file is used"
 msgstr "bygg katalogen (använd med --devel), om ingen katalog angetts, kommer en befintlig katalog i pamac.conf att användas istället"
 
 #: src/cli.vala
@@ -1228,7 +1242,9 @@ msgid "do not upgrade development packages"
 msgstr "uppgradera inte utvecklarpaket"
 
 #: src/cli.vala
-msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --aur), if no directory is given the one specified"
+" in pamac.conf file is used"
 msgstr "bygg katalogen (använd med --aur), om ingen katalog angetts, kommer en befintlig katalog i pamac.conf att användas istället"
 
 #: src/cli.vala
@@ -1240,7 +1256,8 @@ msgid "number"
 msgstr "nummer"
 
 #: src/cli.vala
-msgid "specify how many versions of each package are kept in the cache directory"
+msgid ""
+"specify how many versions of each package are kept in the cache directory"
 msgstr "ange hur många versioner av varje paket som sparas i cachekatalogen"
 
 #: src/cli.vala
@@ -1248,7 +1265,9 @@ msgid "only target uninstalled packages"
 msgstr "inrikta dig bara på avinstallerade paket"
 
 #: src/cli.vala
-msgid "remove all build files, the build directory is the one specified in pamac.conf"
+msgid ""
+"remove all build files, the build directory is the one specified in "
+"pamac.conf"
 msgstr "ta bort alla build-filer, build-katalogen är den som anges i pamac.conf"
 
 #: src/cli.vala
@@ -1323,11 +1342,11 @@ msgid "%s is only available from AUR"
 msgstr "%s är endast tillgängligt från AUR"
 
 #: src/cli.vala
-#, fuzzy, c-format
+#, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] "Det finns %u medlemmar i grupp %s"
-msgstr[1] "Det är %u medlemmar i grupp %s"
+msgstr[0] "Det är %1$u medlem i grupp %2$s"
+msgstr[1] "Det är %1$u medlemmar i grupp %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1527,9 +1546,7 @@ msgstr "Avancerat"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
-"Felkonfiguration av dessa alternativ kan leda till systembrott.\n"
-"Ändra dem bara om du vet vad du gör."
+msgstr "Felkonfiguration av dessa alternativ kan leda till systembrott.\nÄndra dem bara om du vet vad du gör."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1559,9 +1576,7 @@ msgstr "Tredje part "
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
-"AUR är ett gemensamt under- och tillhandahållet förråd som kan medföra risker och problem.\n"
-"Alla AUR-användare bör vara bekanta med byggprocessen."
+msgstr "AUR är ett gemensamt under- och tillhandahållet förråd som kan medföra risker och problem.\nAlla AUR-användare bör vara bekanta med byggprocessen."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

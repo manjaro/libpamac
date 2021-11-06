@@ -2,7 +2,7 @@
 # Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
-#
+# 
 # Translators:
 # John Smith <aboutafteragain@gmail.com>, 2015
 # John Smith <aboutafteragain@gmail.com>, 2015
@@ -18,14 +18,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-12 15:59+0200\n"
-"PO-Revision-Date: 2021-07-28 13:15+0000\n"
-"Last-Translator: Gontzal M. Pujana <juchuf@gmail.com>\n"
+"POT-Creation-Date: 2021-10-16 15:45+0200\n"
+"PO-Revision-Date: 2021-10-16 16:25+0000\n"
+"Last-Translator: Transifex Bot <>\n"
 "Language-Team: Basque (http://www.transifex.com/manjarolinux/manjaro-pamac/language/eu/)\n"
-"Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
@@ -68,9 +68,9 @@ msgid "package %s does not have a valid architecture"
 msgstr "%s paketeak ez du baliozko arkitektura bat"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr "ezin izan da bete %s(e)k eskatutako '%s' menpekotasuna"
+msgstr ""
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -78,9 +78,9 @@ msgid "Warning"
 msgstr "Oharra"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr "%s(%s) instalatzeak %s(e)k eskatutako '%s' menpekotasuna apurtzen du"
+msgstr ""
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -93,14 +93,14 @@ msgid "if possible, remove %s and retry"
 msgstr "posible bada, kendu %s eta saiatu berriro"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr "%s kentzeak %s(e)k eskatutako '%s' menpekotasuna apurtzen du"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr "%s eta %s gatazkan daude"
+msgstr ""
 
 #: src/alpm_utils.vala
 #, c-format
@@ -125,28 +125,23 @@ msgid "Transaction cancelled"
 msgstr "Transakzioa bertan behera utzi da"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr "%s %s zein %s paketeetan existitzen da"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy
-msgid "1$%s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr "%s: %s fitxategi sisteman existitzen da dagoeneko (%s da jabea)"
+#, c-format
+msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr "%s: %s badago aurretik fitxategi sisteman"
+msgstr ""
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
 msgstr "fitxategi hau behar ez bada, kendu eta saiatu berriro"
-
-#: src/alpm_utils.vala
-#, fuzzy, c-format
-msgid "%1$s: %2$s already existed in filesystem"
-msgstr "%s: %s bazegoen aurretik fitxategi sisteman"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -238,9 +233,9 @@ msgid "Checking available disk space"
 msgstr "Eskuragarri dagoen disko espazioa egiaztatzen"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr "%s: aukeran %s behar du"
+msgstr ""
 
 #: src/alpm_utils.vala
 #, c-format
@@ -256,14 +251,14 @@ msgid "Downloading required keys"
 msgstr "Beharrezko gakoak deskargatzen"
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr "%s instalatu da %s.pacnew gisa"
+msgstr ""
 
 #: src/alpm_utils.vala
-#, fuzzy, c-format
+#, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr "%s instalatu da %s.pacsave gisa"
+msgstr ""
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -388,9 +383,9 @@ msgid "Nothing to do"
 msgstr "Ezer ez egiteko"
 
 #: src/transaction.vala
-#, fuzzy, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)\n"
-msgstr "%s: paketearen bertsio-berritzea ezikusten (%s => %s)\n"
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr ""
 
 #: src/transaction.vala
 #, c-format
@@ -420,16 +415,17 @@ msgstr "Inportatu PGP gakoa"
 msgid "Trust and Import"
 msgstr "Fidatu eta inportatu"
 
-#: src/transaction-gtk.vala src/manager_window.vala src/preferences_dialog.vala
-#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
-#: resources/manager_window.ui resources/choose_pkgs_dialog.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: src/preferences_dialog.vala resources/progress_dialog.ui
+#: resources/transaction_sum_dialog.ui resources/manager_window.ui
+#: resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
 msgstr "_Utzi"
 
-#: src/transaction-gtk.vala
-#, fuzzy, c-format
+#: src/transaction-gtk.vala src/transaction-cli.vala
+#, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "%s PGP gakoa beharrezkoa da %s(r)en iturburu fitxategiak egiaztatzeko"
+msgstr ""
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -441,7 +437,8 @@ msgstr "Fidatu %s(e)z eta inportatu PGP gakoa"
 msgid "Official Repositories"
 msgstr "Biltegi ofizialak"
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Repositories"
 msgstr "Biltegiak"
 
@@ -500,7 +497,8 @@ msgstr "_Itxi"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: src/transaction-gtk.vala src/manager_window.vala resources/manager_window.ui
+#: src/transaction-gtk.vala src/manager_window.vala
+#: resources/manager_window.ui
 msgid "Install"
 msgstr "Instalatu"
 
@@ -581,7 +579,8 @@ msgstr "Alpm paketea"
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
 msgstr "Alpm, AUR, Flatpak eta Snap euskarria duen pakete-kudeatzaile bat"
 
-#: src/manager_window.vala src/snap_plugin.vala resources/preferences_dialog.ui
+#: src/manager_window.vala src/snap_plugin.vala
+#: resources/preferences_dialog.ui
 msgid "Snap"
 msgstr "Snap"
 
@@ -887,11 +886,6 @@ msgid "yes"
 msgstr "bai"
 
 #: src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %s is needed to verify %s source files"
-msgstr "%s PGP gakoa beharrezkoa da %s(r)en iturburu fitxategiak egiaztatzeko"
-
-#: src/transaction-cli.vala
 msgid "[e]"
 msgstr "[e]"
 
@@ -998,7 +992,8 @@ msgid "do not search in AUR"
 msgstr "ez bilatu AURen"
 
 #: src/cli.vala
-msgid "search for packages which own the given filenames (filenames can be partial)"
+msgid ""
+"search for packages which own the given filenames (filenames can be partial)"
 msgstr "bilatu fitxategi-izen hauen jabeak diren paketeak (fitxategi-izenak partzialak izan daitezke)"
 
 #: src/cli.vala
@@ -1030,7 +1025,9 @@ msgid "list explicitly installed packages"
 msgstr "zerrendatu esplizituki instalatutako paketeak"
 
 #: src/cli.vala
-msgid "list packages that were installed as dependencies but are no longer required by any installed package"
+msgid ""
+"list packages that were installed as dependencies but are no longer required"
+" by any installed package"
 msgstr "zerrendatu menpekotasun bezala instalatu ziren baina jada beharrezkoak ez diren paketeak"
 
 #: src/cli.vala
@@ -1038,11 +1035,15 @@ msgid "list packages that were not found in the repositories"
 msgstr "zerrendatu biltegietan aurkitu ez diren paketeak"
 
 #: src/cli.vala
-msgid "list all packages that are members of the given groups, if no group is given list all groups"
+msgid ""
+"list all packages that are members of the given groups, if no group is given"
+" list all groups"
 msgstr "zerrendatu talde baten kideak diren pakete guztiak, talde bat ematen ez bada zerrendatu talde guztiak"
 
 #: src/cli.vala
-msgid "list all packages available in the given repos, if no repo is given list all repos"
+msgid ""
+"list all packages available in the given repos, if no repo is given list all"
+" repos"
 msgstr "zerrendatu aukeratutako biltegietan eskuragarri dauden paketeak, biltegi bat ematen ez bada zerrendatu biltegi guztiak"
 
 #: src/cli.vala
@@ -1058,7 +1059,9 @@ msgid "dir"
 msgstr "dir"
 
 #: src/cli.vala
-msgid "build directory, if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory, if no directory is given the one specified in pamac.conf "
+"file is used"
 msgstr "eraiketa direktorioa, direktoriorik ematen ez bada pamac.conf fitxategian zehazten dena erabiliko da"
 
 #: src/cli.vala
@@ -1074,11 +1077,14 @@ msgid "overwrite existing files"
 msgstr "gainitdatzi existitzen diren fitxategiak"
 
 #: src/cli.vala
-msgid "If no package name is given, use the PKGBUILD file in the current directory"
+msgid ""
+"If no package name is given, use the PKGBUILD file in the current directory"
 msgstr "Ez bada pakete izena ematen, erabili direktorio honetako PKGBUILD fitxategia"
 
 #: src/cli.vala
-msgid "The build directory will be the parent directory, --builddir option will be ignored"
+msgid ""
+"The build directory will be the parent directory, --builddir option will be "
+"ignored"
 msgstr "Eraiketa direktorioa guraso direktorioa izango da, --builddir aukera ezikusia izango da"
 
 #: src/cli.vala
@@ -1110,11 +1116,15 @@ msgid "glob"
 msgstr "glob"
 
 #: src/cli.vala
-msgid "ignore a package upgrade, multiple packages can be specified by separating them with a comma"
+msgid ""
+"ignore a package upgrade, multiple packages can be specified by separating "
+"them with a comma"
 msgstr "ezikusi pakete baten bertsio-berritzea, hainbat pakete zehaztu daitezke koma baten bidez banatuz"
 
 #: src/cli.vala
-msgid "overwrite conflicting files, multiple patterns can be specified by separating them with a comma"
+msgid ""
+"overwrite conflicting files, multiple patterns can be specified by "
+"separating them with a comma"
 msgstr "gainidatzi fitxategi gatazkatsuak, hainbat patroi zehaztu daitezke koma baten bidez banatuz"
 
 #: src/cli.vala
@@ -1146,7 +1156,9 @@ msgid "remove packages only if they are not required by any other packages"
 msgstr "kendu paketeak beste pakete batzuengatik beharrezkoak ez badira soilik"
 
 #: src/cli.vala
-msgid "remove dependencies that are not required by other packages, if this option is used without package name remove all orphans"
+msgid ""
+"remove dependencies that are not required by other packages, if this option "
+"is used without package name remove all orphans"
 msgstr "kendu beste paketeek beharrezko ez dituzten menpekotasunak, aukera hau pakete izen gabe erabiltzen bada kendu umezurtz guztiak"
 
 #: src/cli.vala
@@ -1166,7 +1178,9 @@ msgid "Exit code is 100 if updates are available"
 msgstr "Irteera kodea 100 da eguneraketak eskuragarri badaude"
 
 #: src/cli.vala
-msgid "build directory (use with --devel), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --devel), if no directory is given the one "
+"specified in pamac.conf file is used"
 msgstr "eraiketa direktorioa (erabili --devel), direktoriorik ematen ez bada pamac.conf fitxategian zehazten dena erabiliko da"
 
 #: src/cli.vala
@@ -1222,7 +1236,9 @@ msgid "do not upgrade development packages"
 msgstr "ez bertsio-berritu garapen paketeak"
 
 #: src/cli.vala
-msgid "build directory (use with --aur), if no directory is given the one specified in pamac.conf file is used"
+msgid ""
+"build directory (use with --aur), if no directory is given the one specified"
+" in pamac.conf file is used"
 msgstr "eraiketa direktorioa (erabili --aur), direktoriorik ematen ez bada pamac.conf fitxategian zehazten dena erabiliko da"
 
 #: src/cli.vala
@@ -1234,7 +1250,8 @@ msgid "number"
 msgstr "zenbakia"
 
 #: src/cli.vala
-msgid "specify how many versions of each package are kept in the cache directory"
+msgid ""
+"specify how many versions of each package are kept in the cache directory"
 msgstr "zehaztu pakete bakoitzaren zenbat bertsio mantenduko diren cache direktorioan"
 
 #: src/cli.vala
@@ -1242,7 +1259,9 @@ msgid "only target uninstalled packages"
 msgstr "desinstalatutako paketeak soilik aukeratu"
 
 #: src/cli.vala
-msgid "remove all build files, the build directory is the one specified in pamac.conf"
+msgid ""
+"remove all build files, the build directory is the one specified in "
+"pamac.conf"
 msgstr "kendu eraiketa fitxategi guztiak, eraiketa direktorioa pamac.conf fitxategian zehazten da"
 
 #: src/cli.vala
@@ -1317,11 +1336,11 @@ msgid "%s is only available from AUR"
 msgstr "%s AURen bidez soilik dago eskuragarri"
 
 #: src/cli.vala
-#, fuzzy, c-format
+#, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] "Kide %u dago %s taldean"
-msgstr[1] "%u kide daude %s taldean"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/cli.vala
 msgid "all"
@@ -1521,9 +1540,7 @@ msgstr "Aurreratuak"
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
-"Aukera hauen konfiguratze okerrak sistemaren apurketa eragin dezake.\n"
-"Aldatu itzazu egiten ari zarena badakizun soilik."
+msgstr "Aukera hauen konfiguratze okerrak sistemaren apurketa eragin dezake.\nAldatu itzazu egiten ari zarena badakizun soilik."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
@@ -1553,9 +1570,7 @@ msgstr "Hirugarrenekoak"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
-"AUR komunitatean mantendutako biltegi bat da eta arrisku zein arazo potentzialak ditu\n"
-"AUR erabiltzaile guztiek eraikitzeko prozesua ezagutu beharko lukete."
+msgstr "AUR komunitatean mantendutako biltegi bat da eta arrisku zein arazo potentzialak ditu\nAUR erabiltzaile guztiek eraikitzeko prozesua ezagutu beharko lukete."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
