@@ -2,7 +2,7 @@ project('libpamac', 'c', 'vala',
 		default_options : [
 		'prefix=/usr',
 		'sysconfdir=/etc',],
-		version : '11.1')
+		version : '11.2')
 
 subdir('src')
 subdir('po')
