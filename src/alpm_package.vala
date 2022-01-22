@@ -109,7 +109,7 @@ namespace Pamac {
 		public abstract DateTime? build_date { get;  }
 		public abstract string? packager { get; }
 		public abstract string? reason { get; }
-		public abstract string? has_signature { get; }
+		public abstract GenericArray<string> validations { get; }
 		public abstract GenericArray<string> groups { get; }
 		public abstract GenericArray<string> depends { get; internal set; }
 		public abstract GenericArray<string> optdepends { get; }
@@ -153,7 +153,6 @@ namespace Pamac {
 		bool download_size_set;
 		bool installed_size_set;
 		bool reason_set;
-		bool has_signature_set;
 		// Package
 		string _name;
 		string _id;
@@ -170,7 +169,7 @@ namespace Pamac {
 		DateTime? _build_date;
 		unowned string? _packager;
 		unowned string? _reason;
-		unowned string? _has_signature;
+		GenericArray<string> _validations;
 		GenericArray<string> _groups;
 		GenericArray<string> _depends;
 		GenericArray<string> _optdepends;
@@ -361,20 +360,30 @@ namespace Pamac {
 				return _reason;
 			}
 		}
-		public override string? has_signature {
+		public override GenericArray<string> validations {
 			get {
-				if (!has_signature_set) {
-					has_signature_set = true;
-					found_sync_pkg ();
-					if (sync_pkg != null) {
-						if (sync_pkg.base64_sig != null) {
-							_has_signature = dgettext (null, "Yes");
+				if (_validations == null) {
+					_validations = new GenericArray<string> ();
+					Alpm.Package.Validation validation = alpm_pkg.validation;
+					if (validation != 0) {
+						if ((validation & Alpm.Package.Validation.NONE) != 0) {
+							_validations.add (dgettext (null, "None"));
 						} else {
-							_has_signature = dgettext (null, "No");
+							if ((validation & Alpm.Package.Validation.MD5SUM) != 0) {
+								_validations.add (dgettext (null, "MD5 Sum"));
+							}
+							if ((validation & Alpm.Package.Validation.SHA256SUM) != 0) {
+								_validations.add (dgettext (null, "SHA-256 Sum"));
+							}
+							if ((validation & Alpm.Package.Validation.SIGNATURE) != 0) {
+								_validations.add (dgettext (null, "Signature"));
+							}
 						}
+					} else {
+						_validations.add (dgettext (null, "Unknown"));
 					}
 				}
-				return _has_signature;
+				return _validations;
 			}
 		}
 		public override GenericArray<string> groups {
@@ -679,8 +688,6 @@ namespace Pamac {
 				_version = sync_pkg.version;
 				// repo
 				_repo = sync_pkg.db.name;
-				// signature
-				str = has_signature;
 				// makedepends
 				unowned GenericArray<string> list =  makedepends;
 				// checkdepends
@@ -688,6 +695,8 @@ namespace Pamac {
 			}
 			// groups
 			unowned GenericArray<string> list = groups;
+			// validations
+			list = validations;
 			// depends
 			list = depends;
 			// optdepends
@@ -784,6 +793,7 @@ namespace Pamac {
 		DateTime? _build_date;
 		unowned string? _packager;
 		unowned string? _reason;
+		GenericArray<string> _validations;
 		GenericArray<string> _groups;
 		GenericArray<string> _depends;
 		GenericArray<string> _optdepends;
@@ -994,7 +1004,14 @@ namespace Pamac {
 				return _reason;
 			}
 		}
-		public override string? has_signature { get { return null; } }
+		public override GenericArray<string> validations {
+			get {
+				if (_validations == null) {
+					_validations = new GenericArray<string> ();
+				}
+				return _validations;
+			}
+		}
 		public override GenericArray<string> groups {
 			get {
 				if (_groups == null) {

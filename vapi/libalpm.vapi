@@ -539,7 +539,7 @@ namespace Alpm {
 		public unowned string base64_sig {
 			[CCode (cname = "alpm_pkg_get_base64_sig")] get;
 		}
-		public int validation {
+		public Validation validation {
 			[CCode (cname = "alpm_pkg_get_validation")] get;
 		}
 		// TODO: changelog functions
