@@ -65,6 +65,7 @@ namespace Pamac {
 		public bool dry_run { get; set; }
 		public bool install_if_needed { get; set; }
 		public bool remove_if_unneeded { get; set; }
+		public bool cascade { get; set; }
 		public bool keep_config_files { get; set; }
 		public bool install_as_dep { get; set; }
 		public bool install_as_explicit { get; set; }
@@ -110,6 +111,7 @@ namespace Pamac {
 			dry_run = false;
 			install_if_needed = true;
 			remove_if_unneeded = false;
+			cascade = false;
 			keep_config_files = true;
 			install_as_dep = false;
 			install_as_explicit = false;
@@ -1535,7 +1537,7 @@ namespace Pamac {
 			// remove flags
 			if (remove_if_unneeded) {
 				trans_flags |= (1 << 15); //Alpm.TransFlag.UNNEEDED
-			} else {
+			} else if (cascade) {
 				trans_flags |= (1 << 4); //Alpm.TransFlag.CASCADE
 			}
 			if (database.config.recurse) {

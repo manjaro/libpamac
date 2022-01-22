@@ -783,18 +783,19 @@ namespace Pamac {
 									details.add ("- " + _("if possible, remove %s and retry").printf (miss->target));
 								}
 							} else {
+								// we don't want to retry if cascade option is not used
 								/* removing a package breaks a local dependency */
-								if (commit_retries < 1) {
-									do_emit_warning (_("Warning") + ": " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target));
-									do_emit_warning (_("Add %s to remove").printf (miss->target));
-									required_to_remove.add (miss->target);
-									if (trans_remove_pkg (alpm_handle, miss->target)) {
-										need_retry = true;
-									}
-								} else {
+								//if (commit_retries < 1) {
+									//do_emit_warning (_("Warning") + ": " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target));
+									//do_emit_warning (_("Add %s to remove").printf (miss->target));
+									//required_to_remove.add (miss->target);
+									//if (trans_remove_pkg (alpm_handle, miss->target)) {
+										//need_retry = true;
+									//}
+								//} else {
 									details.add ("- " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target));
-									details.add ("- " + _("if possible, remove %s and retry").printf (miss->target));
-								}
+									//details.add ("- " + _("if possible, remove %s and retry").printf (miss->target));
+								//}
 							}
 							depstrings.add ((owned) depstring);
 							delete miss;
