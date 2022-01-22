@@ -895,6 +895,8 @@ namespace Pamac {
 								list.next ();
 							}
 							_license = (owned) license_str.str;
+						} else {
+							_license = dgettext (null, "Unknown");
 						}
 					} else if (aur != null) {
 						unowned Json.Object? full_json_object = aur.get_infos (name);
@@ -1008,6 +1010,28 @@ namespace Pamac {
 			get {
 				if (_validations == null) {
 					_validations = new GenericArray<string> ();
+					if (local_pkg != null) {
+						Alpm.Package.Validation validation = local_pkg.validation;
+						if (validation != 0) {
+							if ((validation & Alpm.Package.Validation.NONE) != 0) {
+								_validations.add (dgettext (null, "None"));
+							} else {
+								if ((validation & Alpm.Package.Validation.MD5SUM) != 0) {
+									_validations.add (dgettext (null, "MD5 Sum"));
+								}
+								if ((validation & Alpm.Package.Validation.SHA256SUM) != 0) {
+									_validations.add (dgettext (null, "SHA-256 Sum"));
+								}
+								if ((validation & Alpm.Package.Validation.SIGNATURE) != 0) {
+									_validations.add (dgettext (null, "Signature"));
+								}
+							}
+						} else {
+							_validations.add (dgettext (null, "Unknown"));
+						}
+					} else {
+						_validations.add (dgettext (null, "Unknown"));
+					}
 				}
 				return _validations;
 			}
