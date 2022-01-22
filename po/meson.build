@@ -1,6 +1,6 @@
 i18n = import('i18n')
 
-run_command('populate_LINGUAS_file.sh')
+run_command('populate_LINGUAS_file.sh', check: true)
 
 i18n.gettext('pamac',
 	args : ['--from-code=UTF-8',

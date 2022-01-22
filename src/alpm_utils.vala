@@ -147,6 +147,7 @@ namespace Pamac {
 		public signal bool get_authorization (string sender);
 
 		public AlpmUtils (Config config, Soup.Session soup_session) {
+			sender = "";
 			this.config = config;
 			multi_progress_mutex = Mutex ();
 			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
@@ -778,7 +779,7 @@ namespace Pamac {
 										need_retry = true;
 									}
 								} else {
-									details.add ("- " + _("installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s").printf (miss->causingpkg, pkg.version, depstring, miss->target) + ",");
+									details.add ("- " + _("installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s").printf (miss->causingpkg, pkg.version, depstring, miss->target));
 									details.add ("- " + _("if possible, remove %s and retry").printf (miss->target));
 								}
 							} else {
@@ -791,7 +792,7 @@ namespace Pamac {
 										need_retry = true;
 									}
 								} else {
-									details.add ("- " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target) + ",");
+									details.add ("- " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target));
 									details.add ("- " + _("if possible, remove %s and retry").printf (miss->target));
 								}
 							}
