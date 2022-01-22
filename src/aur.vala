@@ -20,24 +20,117 @@
 namespace Pamac {
 	internal class AUR: Object {
 		// AUR urls
-		const string rpc_url = "https://aur.archlinux.org/rpc/?v=5";
+		const string aur_url = "https://aur.archlinux.org";
+		const string db_gz = "packages-meta-ext-v1.json.gz";
+		const string rpc_url = aur_url + "/rpc/?v=5";
 		const string rpc_search = "&type=search&arg=";
 		const string rpc_suggest = "&type=suggest&arg=";
 		const string rpc_multiinfo = "&type=info";
 		const string rpc_multiinfo_arg = "&arg[]=";
+		Config config;
+		AlpmUtils alpm_utils;
 		Soup.Session session;
 		HashTable<unowned string, Json.Object> cached_infos;
 		HashTable<string, Json.Array> search_results;
 		HashTable<string, Json.Array> suggest_results;
+		string real_build_dir;
+		bool db_loaded;
 
-		public AUR (Soup.Session session) {
-			this.session = session;
+		public AUR (Config config, AlpmUtils alpm_utils) {
+			this.config = config;
+			this.alpm_utils = alpm_utils;
+			session = this.alpm_utils.soup_session;
 			cached_infos = new HashTable<unowned string, Json.Object> (str_hash, str_equal);
 			search_results = new HashTable<string, Json.Array> (str_hash, str_equal);
 			suggest_results = new HashTable<string, Json.Array> (str_hash, str_equal);
 		}
 
-		Json.Array? rpc_query (string uri) {
+		public unowned string get_real_build_dir () {
+			if (real_build_dir == null) {
+				if (Posix.geteuid () == 0) {
+					// build as root with systemd-run
+					// set aur_build_dir to "/var/cache/pamac"
+					real_build_dir = "/var/cache/pamac";
+				} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
+					real_build_dir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()));
+				} else {
+					real_build_dir = config.aur_build_dir;
+				}
+			}
+			return real_build_dir;
+		}
+
+		void parse_db (bool force = false) {
+			if (!force && db_loaded) {
+				return;
+			}
+			string absolute_path = Path.build_filename (get_real_build_dir (), db_gz);
+			var zipfile = File.new_for_commandline_arg (absolute_path);
+			if (!zipfile.query_exists ()) {
+				return;
+			}
+			try {
+				// decompress gzip
+				var src_stream = zipfile.read ();
+				var dst_stream = new MemoryOutputStream (null, GLib.realloc, GLib.free);
+				var conv_stream = new ConverterOutputStream (dst_stream, new ZlibDecompressor (ZlibCompressorFormat.GZIP));
+				// pumps all data from an InputStream to an OutputStream
+				conv_stream.splice (src_stream, 0);
+				// parse data
+				var parser = new Json.Parser.immutable_new ();
+				parser.load_from_data ((string) dst_stream.get_data ());
+				unowned Json.Node? root = parser.get_root ();
+				if (root == null) {
+					stderr.printf ("Failed to read AUR data from %s\n", absolute_path);
+				} else {
+					unowned Json.Array? array = root.get_array ();
+					if (array == null) {
+						stderr.printf ("Failed to read AUR data from %s\n", absolute_path);
+					} else {
+						lock (suggest_results) {
+							suggest_results.remove_all ();
+						}
+						lock (search_results) {
+							search_results.remove_all ();
+						}
+						lock (cached_infos) {
+							cached_infos.remove_all ();
+							uint array_length = array.get_length ();
+							for (uint i = 0; i < array_length; i++) {
+								unowned Json.Object json_object = array.get_object_element (i);
+								cached_infos.insert (json_object.get_string_member ("Name"), json_object);
+							}
+							db_loaded = true;
+						}
+					}
+				}
+			} catch (Error e) {
+				stderr.printf ("Failed to read AUR data from %s : %s\n", absolute_path, e.message);
+			}
+		}
+
+		public bool update_db (bool force_refresh, bool emit_signal) {
+			var builddir = File.new_for_path (get_real_build_dir ());
+			if (!builddir.query_exists ()) {
+				try {
+					builddir.make_directory_with_parents ();
+				} catch (Error e) {
+					warning (e.message);
+					return false;
+				}
+			}
+			// dload defined in alpm_utils.vala
+			int ret = dload (alpm_utils, "https://aur.archlinux.org", db_gz, real_build_dir, 0, false, emit_signal);
+			if (ret < 0) {
+				return false;
+			}
+			if (ret == 0) {
+				parse_db (true);
+			}
+			return true;
+		}
+
+		unowned Json.Array? rpc_query (string uri) {
 			try {
 				var message = new Soup.Message ("GET", uri);
 				InputStream input_stream = session.send (message);
@@ -91,7 +184,7 @@ namespace Pamac {
 							break;
 						}
 					}
-					Json.Array? array = rpc_query (builder.str);
+					unowned Json.Array? array = rpc_query (builder.str);
 					if (array != null) {
 						uint array_length = array.get_length ();
 						for (uint i = 0; i < array_length; i++) {
@@ -104,8 +197,9 @@ namespace Pamac {
 		}
 
 		public unowned Json.Object? get_infos (string pkgname) {
+			parse_db ();
 			unowned Json.Object? json_object = cached_infos.lookup (pkgname);
-			if (json_object == null) {
+			if (json_object == null && !db_loaded) {
 				var to_query = new GenericArray<string> ();
 				to_query.add (pkgname);
 				Json.Array? results = multiinfo (to_query);
@@ -121,14 +215,17 @@ namespace Pamac {
 			return json_object;
 		}
 
-		public GenericArray<Json.Object> get_multi_infos (GenericArray<string> pkgnames) {
-			var result = new GenericArray<Json.Object> ();
+		public GenericArray<unowned Json.Object> get_multi_infos (GenericArray<string> pkgnames) {
+			var result = new GenericArray<unowned Json.Object> ();
 			var to_query = new GenericArray<string> ();
+			parse_db ();
 			lock (cached_infos) {
 				foreach (unowned string pkgname in pkgnames) {
 					unowned Json.Object? json_object = cached_infos.lookup (pkgname);
 					if (json_object == null) {
-						to_query.add (pkgname);
+						if (!db_loaded) {
+							to_query.add (pkgname);
+						}
 					} else {
 						result.add (json_object);
 					}
@@ -150,8 +247,61 @@ namespace Pamac {
 			return result;
 		}
 
-		public Json.Array? suggest (string search_string) {
-			Json.Array? suggest_array;
+		public GenericArray<unowned Json.Object> get_providers (string depend) {
+			var objects = new GenericArray<unowned Json.Object> ();
+			parse_db ();
+			if (db_loaded) {
+				var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
+				unowned Json.Object object;
+				while (iter.next (null, out object)) {
+					unowned Json.Node? node = object.get_member ("Provides");
+					if (node != null) {
+						unowned Json.Array array = node.get_array ();
+						uint array_length = array.get_length ();
+						for (uint i = 0; i < array_length; i++) {
+							unowned string provide = array.get_string_element (i);
+							if (provide.has_prefix (depend)) {
+								objects.add (object);
+							}
+						}
+					}
+				}
+			}
+			return objects;
+		}
+
+		public unowned Json.Array? suggest (string search_string) {
+			parse_db ();
+			if (db_loaded) {
+				return suggest_db (search_string);
+			} else {
+				return suggest_rpc (search_string);
+			}
+		}
+
+		public unowned Json.Array? suggest_db (string search_string) {
+			unowned Json.Array? suggest_array;
+			lock (suggest_results) {
+				suggest_array = suggest_results.lookup (search_string);
+			}
+			if (suggest_array == null) {
+				var suggest_array_new = new Json.Array ();
+				var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
+				unowned Json.Object object;
+				while (iter.next (null, out object)) {
+					unowned string name = object.get_string_member ("Name");
+					if (name.has_prefix (search_string)) {
+						suggest_array_new.add_string_element (name);
+					}
+				}
+				suggest_results.insert (search_string, suggest_array_new);
+				suggest_array = suggest_array_new;
+			}
+			return suggest_array;
+		}
+
+		public unowned Json.Array? suggest_rpc (string search_string) {
+			unowned Json.Array? suggest_array;
 			lock (suggest_results) {
 				suggest_array = suggest_results.lookup (search_string);
 			}
@@ -183,6 +333,108 @@ namespace Pamac {
 		}
 
 		public GenericArray<Json.Object> search (string search_string) {
+			parse_db ();
+			if (db_loaded) {
+				return search_db (search_string);
+			} else {
+				return search_rpc (search_string);
+			}
+		}
+
+		GenericArray<Json.Object> search_db (string search_string) {
+			var needle_match = new GenericArray<Json.Object> ();
+			string[] needles = search_string.split (" ");
+			if (needles.length == 0) {
+				return new GenericArray<Json.Object> ();
+			} else {
+				unowned string targ = needles[0];
+				Regex? regex = null;
+				try {
+					regex = new Regex (targ);
+				} catch (Error e) {
+					warning (e.message);
+				}
+				var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
+				unowned Json.Object object;
+				while (iter.next (null, out object)) {
+					if (find_match (object, targ, regex)) {
+						needle_match.add (object);
+					}
+				}
+				uint needles_length = needles.length;
+				if (needles_length > 1) {
+					GenericArray<Json.Object> all_match = needle_match;
+					uint i;
+					for (i = 1;  i < needles_length; i++) {
+						needle_match = new GenericArray<Json.Object> ();
+						targ = needles[i];
+						try {
+							regex = new Regex (targ);
+						} catch (Error e) {
+							warning (e.message);
+						}
+						foreach (unowned Json.Object obj in all_match) {
+							if (find_match (obj, targ, regex)) {
+								needle_match.add (obj);
+							}
+						}
+						// use the returned list for the next needle
+						// this allows for AND-based package searching
+						all_match = needle_match;
+					}
+					return all_match;
+				} else {
+					return needle_match;
+				}
+			}
+		}
+
+		bool find_match (Json.Object object, string targ, Regex regex) {
+			bool matched = false;
+			unowned string name = object.get_string_member ("Name");
+			unowned string desc = object.get_string_member ("Description");
+			// check name as plain text AND pattern
+			if (name != null && (targ == name || targ == name.down () || (regex != null && regex.match (name)))) {
+				matched = true;
+			}
+			// check if desc contains targ
+			else if (desc != null && (targ in desc)) {
+				matched = true;
+			}
+			if (!matched) {
+				// check provides as plain text AND pattern
+				unowned Json.Node? node = object.get_member ("Provides");
+				if (node != null) {
+					unowned Json.Array array = node.get_array ();
+					uint array_length = array.get_length ();
+					for (uint i = 0; i < array_length; i++) {
+						unowned string provide = array.get_string_element (i);
+						if (targ == provide || (regex != null && regex.match (provide))) {
+							matched = true;
+							break;
+						}
+					}
+				}
+			}
+			if (!matched) {
+				// check groups as plain text AND pattern
+				unowned Json.Node? node = object.get_member ("Groups");
+				if (node != null) {
+					unowned Json.Array array = node.get_array ();
+					uint array_length = array.get_length ();
+					for (uint i = 0; i < array_length; i++) {
+						unowned string group = array.get_string_element (i);
+						if (targ == group || (regex != null && regex.match (group))) {
+							matched = true;
+							break;
+						}
+					}
+				}
+			}
+			return matched;
+		}
+
+		GenericArray<Json.Object> search_rpc (string search_string) {
 			string[] needles = search_string.split (" ");
 			if (needles.length == 0) {
 				return new GenericArray<Json.Object> ();

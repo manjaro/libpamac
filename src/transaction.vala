@@ -32,6 +32,7 @@ namespace Pamac {
 		unowned MainContext context;
 		// run transaction data
 		AlpmUtils alpm_utils;
+		AUR aur;
 		bool sysupgrading;
 		bool force_refresh;
 		int trans_flags;
@@ -92,11 +93,12 @@ namespace Pamac {
 		construct {
 			config = database.config;
 			context = database.context;
-			alpm_utils = new AlpmUtils (config, database.soup_session);
+			alpm_utils = database.alpm_utils;
+			aur = database.aur;
 			if (Posix.geteuid () == 0) {
 				// we are root
 				transaction_interface = new TransactionInterfaceRoot (alpm_utils, context);
-				// adjust timeout set to 1 s in database.vala to a better value to download packages
+				// adjust timeout set to 1s in database.vala to a better value to download packages
 				database.soup_session.timeout = 30;
 			} else {
 				// use dbus daemon
@@ -238,16 +240,8 @@ namespace Pamac {
 		}
 
 		protected async GenericArray<string> get_build_files_async (string pkgname) {
-			string pkgdir_name;
-			if (Posix.geteuid () == 0) {
-				// build as root with systemd-run
-				// set aur_build_dir to "/var/cache/pamac"
-				pkgdir_name = Path.build_filename ("/var/cache/pamac", pkgname);
-			} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-				pkgdir_name = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()), pkgname);
-			} else {
-				pkgdir_name = Path.build_filename (config.aur_build_dir, pkgname);
-			}
+			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			string pkgdir_name = Path.build_filename (real_aur_build_dir, pkgname);
 			var files = new GenericArray<string> ();
 			// PKGBUILD
 			files.add (Path.build_filename (pkgdir_name, "PKGBUILD"));
@@ -354,17 +348,7 @@ namespace Pamac {
 		}
 
 		public async void clean_build_files_async () {
-			string real_aur_build_dir;
-			if (Posix.geteuid () == 0) {
-				// build as root with systemd-run
-				// set aur_build_dir to "/var/cache/pamac"
-				// use private here to get ride of the symlink
-				real_aur_build_dir = "/var/cache/pamac";
-			} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-				real_aur_build_dir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()));
-			} else {
-				real_aur_build_dir = config.aur_build_dir;
-			}
+			unowned string real_aur_build_dir = aur.get_real_build_dir ();
 			try {
 				yield transaction_interface.clean_build_files (real_aur_build_dir);
 			} catch (Error e) {
@@ -479,16 +463,7 @@ namespace Pamac {
 			if (to_get_from_aur.length > 0) {
 				aur_pkgs = yield database.get_aur_pkgs_async (to_get_from_aur);
 			}
-			string real_aur_build_dir;
-			if (Posix.geteuid () == 0) {
-				// build as root with systemd-run
-				// set aur_build_dir to "/var/cache/pamac"
-				real_aur_build_dir = "/var/cache/pamac";
-			} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-				real_aur_build_dir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()));
-			} else {
-				real_aur_build_dir = config.aur_build_dir;
-			}
+			unowned string real_aur_build_dir = aur.get_real_build_dir ();
 			foreach (unowned string pkgname in pkgnames) {
 				if (build_cancellable.is_cancelled ()) {
 					return false;
@@ -503,17 +478,13 @@ namespace Pamac {
 					if (aur_pkg == null) {
 						// may be a virtual package
 						// use search and add results
-						var search_aur_pkgs = yield database.search_aur_pkgs_async (pkgname);
-						foreach (unowned AURPackage found_pkg in search_aur_pkgs) {
-							foreach (unowned string dep_string in found_pkg.provides) {
-								string dep_name = database.get_alpm_dep_name (dep_string);
-								if (dep_name == pkgname) {
-									dep_to_check.add (found_pkg.name);
-									clone_files.add (found_pkg.name);
-									if (pkgname in clone_deps_files) {
-										clone_deps_files.add (found_pkg.name);
-									}
-								}
+						var providers = aur.get_providers (pkgname);
+						foreach (unowned Json.Object object in providers) {
+							unowned string provider_name = object.get_string_member ("Name");
+							dep_to_check.add (provider_name);
+							clone_files.add (provider_name);
+							if (pkgname in clone_deps_files) {
+								clone_deps_files.add (provider_name);
 							}
 						}
 						already_checked_aur_dep.add (pkgname);
@@ -1311,6 +1282,9 @@ namespace Pamac {
 					details.add ("trans_refresh: %s".printf (e.message));
 					emit_error ("Daemon Error", details);
 				}
+				if (config.enable_aur) {
+					success = database.aur.update_db (force_refresh, true);
+				}
 				if (!success) {
 					return false;
 				}
@@ -1401,17 +1375,8 @@ namespace Pamac {
 							}
 						}
 						foreach (unowned string pkgname in alpm_utils.unresolvables) {
-							string pkgdir;
-							bool as_root = Posix.geteuid () == 0;
-							if (as_root) {
-								// build as root with systemd-run
-								// set aur_build_dir to "/var/cache/pamac"
-								pkgdir = Path.build_filename ("/var/cache/pamac", pkgname);
-							} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-								pkgdir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()), pkgname);
-							} else {
-								pkgdir = Path.build_filename (config.aur_build_dir, pkgname);
-							}
+							unowned string real_aur_build_dir = aur.get_real_build_dir ();
+							string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 							success = yield clone_build_files_if_needed (pkgdir, pkgname);
 							if (!success) {
 								var details = new GenericArray<string> (1);
@@ -1441,17 +1406,8 @@ namespace Pamac {
 			if (summary.aur_pkgbases_to_build.length != 0) {
 				if (yield ask_edit_build_files_real (summary)) {
 					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
-						string pkgdir;
-						bool as_root = Posix.geteuid () == 0;
-						if (as_root) {
-							// build as root with systemd-run
-							// set aur_build_dir to "/var/cache/pamac"
-							pkgdir = Path.build_filename ("/var/cache/pamac", pkgname);
-						} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-							pkgdir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()), pkgname);
-						} else {
-							pkgdir = Path.build_filename (config.aur_build_dir, pkgname);
-						}
+						unowned string real_aur_build_dir = aur.get_real_build_dir ();
+						string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 						bool success = yield clone_build_files_if_needed (pkgdir, pkgname);
 						if (!success) {
 							var details = new GenericArray<string> (1);
@@ -1820,17 +1776,9 @@ namespace Pamac {
 				string pkgname = to_build_queue.pop_head ();
 				build_cancellable.reset ();
 				var built_pkgs_path = new GenericArray<string> ();
-				string pkgdir;
+				unowned string real_aur_build_dir = aur.get_real_build_dir ();
+				string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 				bool as_root = Posix.geteuid () == 0;
-				if (as_root) {
-					// build as root with systemd-run
-					// set aur_build_dir to "/var/cache/pamac"
-					pkgdir = Path.build_filename ("/var/cache/pamac", pkgname);
-				} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-					pkgdir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()), pkgname);
-				} else {
-					pkgdir = Path.build_filename (config.aur_build_dir, pkgname);
-				}
 				success = yield clone_build_files_if_needed (pkgdir, pkgname);
 				if (!success) {
 					emit_error (dgettext (null, "Failed to build %s").printf (pkgname), new GenericArray<string> ());

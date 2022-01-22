@@ -22,7 +22,6 @@ namespace Pamac {
 		AlpmConfig alpm_config;
 		Alpm.Handle? alpm_handle;
 		Alpm.Handle? files_handle;
-		AUR aur;
 		As.Store app_store;
 		HashTable<string, AURPackageLinked> aur_vcs_pkgs;
 		HashTable<unowned string, AlpmPackageLinked> pkgs_cache;
@@ -39,6 +38,8 @@ namespace Pamac {
 		public Config config { get; construct set; }
 		internal unowned MainContext context { get; private set; }
 		internal Soup.Session soup_session { get; private set; }
+		internal AUR aur { get; private set; }
+		internal AlpmUtils alpm_utils { get; private set; }
 		internal size_t dbs_count { get; set; }
 		internal size_t dbs_index { get; set; }
 
@@ -61,7 +62,8 @@ namespace Pamac {
 			// set a little timeout, aur should be fast
 			// if we are root timeout is changed to a higher value in transaction.vala
 			soup_session.timeout = 1;
-			aur = new AUR (soup_session);
+			alpm_utils = new AlpmUtils (config, soup_session);
+			aur = new AUR (config, alpm_utils);
 			// set HTTP_USER_AGENT needed when downloading using libalpm like refreshing dbs
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			// load snap plugin
@@ -319,16 +321,8 @@ namespace Pamac {
 		}
 
 		void get_build_files_details_real (ref HashTable<string, uint64?> filenames_size) {
-			File build_directory;
-			if (Posix.geteuid () == 0) {
-				// build as root with systemd-run
-				// set aur_build_dir to "/var/cache/pamac"
-				build_directory = File.new_for_path ("/var/cache/pamac");
-			} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-				build_directory = File.new_for_path (Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ())));
-			} else {
-				build_directory = File.new_for_path (config.aur_build_dir);
-			}
+			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			var build_directory = File.new_for_path (real_aur_build_dir);
 			if (!build_directory.query_exists ()) {
 				return;
 			}
@@ -1368,22 +1362,21 @@ namespace Pamac {
 			} catch (Error e) {
 				warning (e.message);
 			}
-			// disable suggest from AUR, see #1135
-			//if (config.enable_aur) {
-				//Json.Array? array = aur.suggest (search_string_down);
-				//if (array != null) {
-					//uint array_length = array.get_length ();
-					//if (array_length > 0) {
-						//for (uint i = 0; i < array_length; i++) {
-							//unowned string pkgname = array.get_string_element (i);
-							//if (!result.find_with_equal_func (pkgname, str_equal)) {
-								//result.add (pkgname);
-							//}
-						//}
-						//result.sort (strcmp);
-					//}
-				//}
-			//}
+			if (config.enable_aur) {
+				Json.Array? array = aur.suggest (search_string_down);
+				if (array != null) {
+					uint array_length = array.get_length ();
+					if (array_length > 0) {
+						for (uint i = 0; i < array_length; i++) {
+							unowned string pkgname = array.get_string_element (i);
+							if (!result.find_with_equal_func (pkgname, str_equal)) {
+								result.add (pkgname);
+							}
+						}
+						result.sort (strcmp);
+					}
+				}
+			}
 			return result;
 		}
 
@@ -1917,16 +1910,7 @@ namespace Pamac {
 			int status = 1;
 			GenericArray<string> cmdline;
 			var launcher = new SubprocessLauncher (SubprocessFlags.NONE);
-			string real_aur_build_dir;
-			if (Posix.geteuid () == 0) {
-				// build as root with systemd-run
-				// set aur_build_dir to "/var/cache/pamac"
-				real_aur_build_dir = "/var/cache/pamac";
-			} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-				real_aur_build_dir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()));
-			} else {
-				real_aur_build_dir = config.aur_build_dir;
-			}
+			unowned string real_aur_build_dir = aur.get_real_build_dir ();
 			var builddir = File.new_for_path (real_aur_build_dir);
 			if (!builddir.query_exists ()) {
 				try {
@@ -2081,16 +2065,8 @@ namespace Pamac {
 		}
 
 		public bool regenerate_srcinfo (string pkgname, Cancellable? cancellable = null) {
-			string pkgdir_name;
-			if (Posix.geteuid () == 0) {
-				// build as root with systemd-run
-				// set aur_build_dir to "/var/cache/pamac"
-				pkgdir_name = Path.build_filename ("/var/cache/pamac", pkgname);
-			} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-				pkgdir_name = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()), pkgname);
-			} else {
-				pkgdir_name = Path.build_filename (config.aur_build_dir, pkgname);
-			}
+			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			string pkgdir_name = Path.build_filename (real_aur_build_dir, pkgname);
 			var srcinfo = File.new_for_path (Path.build_filename (pkgdir_name, ".SRCINFO"));
 			var pkgbuild = File.new_for_path (Path.build_filename (pkgdir_name, "PKGBUILD"));
 			if (srcinfo.query_exists ()) {
@@ -2341,6 +2317,9 @@ namespace Pamac {
 					if (tmp_handle.update_dbs (syncdbs, 0) < 0) {
 						success = false;
 					}
+					if (config.enable_aur) {
+						success = aur.update_db (false, false);
+					}
 					if (success) {
 						// save now as last refresh time
 						try {
@@ -2481,16 +2460,7 @@ namespace Pamac {
 
 		HashTable<string, string> get_vcs_last_version (GenericArray<string> vcs_local_pkgs) {
 			var pkgnames_table = new HashTable<string, string> (str_hash, str_equal);
-			string real_aur_build_dir;
-			if (Posix.geteuid () == 0) {
-				// build as root with systemd-run
-				// set aur_build_dir to "/var/cache/pamac"
-				real_aur_build_dir = "/var/cache/pamac";
-			} else if (config.aur_build_dir == "/var/tmp" || config.aur_build_dir == "/tmp") {
-				real_aur_build_dir = Path.build_filename (config.aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()));
-			} else {
-				real_aur_build_dir = config.aur_build_dir;
-			}
+			unowned string real_aur_build_dir = aur.get_real_build_dir ();
 			foreach (unowned string pkgname in vcs_local_pkgs) {
 				if (aur_vcs_pkgs.contains (pkgname)) {
 					continue;
@@ -2528,7 +2498,7 @@ namespace Pamac {
 			return pkgnames_table;
 		}
 
-		void get_aur_updates_real (GenericArray<Json.Object> aur_infos, GenericArray<string> vcs_local_pkgs, GenericSet<string?> ignorepkgs, ref Updates updates) {
+		void get_aur_updates_real (GenericArray<unowned Json.Object> aur_infos, GenericArray<string> vcs_local_pkgs, GenericSet<string?> ignorepkgs, ref Updates updates) {
 			unowned GenericArray<AURPackage> aur_updates = updates.aur_updates;
 			unowned GenericArray<AURPackage> outofdate = updates.outofdate;
 			unowned GenericArray<AURPackage> ignored_aur_updates = updates.ignored_aur_updates;
