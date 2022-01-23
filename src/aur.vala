@@ -215,8 +215,8 @@ namespace Pamac {
 			return json_object;
 		}
 
-		public GenericArray<unowned Json.Object> get_multi_infos (GenericArray<string> pkgnames) {
-			var result = new GenericArray<unowned Json.Object> ();
+		public GenericArray<Json.Object> get_multi_infos (GenericArray<string> pkgnames) {
+			var result = new GenericArray<Json.Object> ();
 			var to_query = new GenericArray<string> ();
 			parse_db ();
 			lock (cached_infos) {

@@ -2498,7 +2498,7 @@ namespace Pamac {
 			return pkgnames_table;
 		}
 
-		void get_aur_updates_real (GenericArray<unowned Json.Object> aur_infos, GenericArray<string> vcs_local_pkgs, GenericSet<string?> ignorepkgs, ref Updates updates) {
+		void get_aur_updates_real (GenericArray<Json.Object> aur_infos, GenericArray<string> vcs_local_pkgs, GenericSet<string?> ignorepkgs, ref Updates updates) {
 			unowned GenericArray<AURPackage> aur_updates = updates.aur_updates;
 			unowned GenericArray<AURPackage> outofdate = updates.outofdate;
 			unowned GenericArray<AURPackage> ignored_aur_updates = updates.ignored_aur_updates;
