@@ -130,7 +130,7 @@ namespace Pamac {
 			return true;
 		}
 
-		unowned Json.Array? rpc_query (string uri) {
+		Json.Array? rpc_query (string uri) {
 			try {
 				var message = new Soup.Message ("GET", uri);
 				InputStream input_stream = session.send (message);
@@ -184,7 +184,7 @@ namespace Pamac {
 							break;
 						}
 					}
-					unowned Json.Array? array = rpc_query (builder.str);
+					Json.Array? array = rpc_query (builder.str);
 					if (array != null) {
 						uint array_length = array.get_length ();
 						for (uint i = 0; i < array_length; i++) {
