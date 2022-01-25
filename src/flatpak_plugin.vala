@@ -701,7 +701,7 @@ namespace Pamac {
 				lock (pkgs_cache)  {
 					GenericArray<unowned Flatpak.InstalledRef> update_apps = installation.list_installed_refs_for_update ();
 					foreach (unowned Flatpak.InstalledRef installed_ref in update_apps) {
-						if (installed_ref.kind == Flatpak.RefKind.APP) {
+						//if (installed_ref.kind == Flatpak.RefKind.APP) {
 							string id =  "%s/%s".printf (installed_ref.origin, installed_ref.format_ref ());
 							FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
 							if (pkg == null) {
@@ -710,7 +710,7 @@ namespace Pamac {
 								pkgs_cache.insert (id, pkg);
 							}
 							pkgs.add (pkg);
-						}
+						//}
 					}
 				}
 			} catch (Error e) {
