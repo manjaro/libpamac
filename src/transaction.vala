@@ -1232,35 +1232,13 @@ namespace Pamac {
 
 		async bool run_alpm_transaction () {
 			emit_action (dgettext (null, "Preparing") + "...");
-			if (to_install.length > 0) {
-				yield add_optdeps ();
-			}
-			if (sysupgrading && config.check_aur_updates) {
-				var updates = yield database.get_aur_updates_async (ignorepkgs);
-				foreach (unowned AURPackage aur_pkg in updates.aur_updates) {
-					add_pkg_to_build (aur_pkg.name, true, true);
-				}
-				foreach (unowned AURPackage aur_pkg in updates.ignored_aur_updates) {
-					emit_script_output ("%s: %s".printf (
-										dgettext (null, "Warning"),
-										dgettext (null, "%1$s: ignoring package upgrade (%2$s => %3$s)").printf (
-												aur_pkg.name, aur_pkg.installed_version, aur_pkg.version)));
-				}
-			}
-			if (to_build.length > 0) {
-				bool success = yield compute_aur_build_list ();
-				if (!success) {
-					return false;
-				}
-			}
 			// check if we need to sysupgrade
 			if (!dry_run && !sysupgrading && !config.simple_install && to_install.length > 0) {
 				foreach (unowned string name in to_install) {
 					if (database.is_installed_pkg (name)) {
 						if (database.is_sync_pkg (name)) {
-							Package? local_pkg = database.get_installed_pkg (name);
-							Package? sync_pkg = database.get_sync_pkg (name);
-							if (local_pkg.version != sync_pkg.version) {
+							unowned AlpmPackage? pkg = database.get_installed_pkg (name);
+							if (pkg.installed_version != pkg.version) {
 								sysupgrading = true;
 								break;
 							}
@@ -1287,6 +1265,27 @@ namespace Pamac {
 				if (config.enable_aur) {
 					success = database.aur.update_db (force_refresh, true);
 				}
+				if (!success) {
+					return false;
+				}
+			}
+			if (to_install.length > 0) {
+				yield add_optdeps ();
+			}
+			if (sysupgrading && config.check_aur_updates) {
+				var updates = yield database.get_aur_updates_async (ignorepkgs);
+				foreach (unowned AURPackage aur_pkg in updates.aur_updates) {
+					add_pkg_to_build (aur_pkg.name, true, true);
+				}
+				foreach (unowned AURPackage aur_pkg in updates.ignored_aur_updates) {
+					emit_script_output ("%s: %s".printf (
+										dgettext (null, "Warning"),
+										dgettext (null, "%1$s: ignoring package upgrade (%2$s => %3$s)").printf (
+												aur_pkg.name, aur_pkg.installed_version, aur_pkg.version)));
+				}
+			}
+			if (to_build.length > 0) {
+				success = yield compute_aur_build_list ();
 				if (!success) {
 					return false;
 				}
