@@ -335,10 +335,22 @@ namespace Pamac {
 		}
 
 		internal bool clean_build_files (string aur_build_dir) {
-			try {
-				Process.spawn_command_line_sync ("bash -c 'rm -rf %s/*'".printf (aur_build_dir));
+			var build_directory = File.new_for_path (aur_build_dir);
+			if (!build_directory.query_exists ()) {
 				return true;
-			} catch (SpawnError e) {
+			}
+			try {
+				FileEnumerator enumerator = build_directory.enumerate_children ("standard::*", FileQueryInfoFlags.NONE);
+				FileInfo info;
+				while ((info = enumerator.next_file (null)) != null) {
+					if (info.get_name () == "packages-meta-ext-v1.json.gz") {
+						continue;
+					}
+					string absolute_filename = Path.build_filename (build_directory.get_path (), info.get_name ());
+					Process.spawn_command_line_sync ("rm -rf %s".printf (absolute_filename));
+				}
+				return true;
+			} catch (Error e) {
 				warning (e.message);
 			}
 			return false;

@@ -330,6 +330,9 @@ namespace Pamac {
 				FileEnumerator enumerator = build_directory.enumerate_children ("standard::*", FileQueryInfoFlags.NONE);
 				FileInfo info;
 				while ((info = enumerator.next_file (null)) != null) {
+					if (info.get_name () == "packages-meta-ext-v1.json.gz") {
+						continue;
+					}
 					string absolute_filename = Path.build_filename (build_directory.get_path (), info.get_name ());
 					var child = GLib.File.new_for_path (absolute_filename);
 					uint64 disk_usage;
