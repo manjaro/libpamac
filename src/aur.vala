@@ -119,8 +119,12 @@ namespace Pamac {
 					return false;
 				}
 			}
+			int force = 0;
+			if (force_refresh) {
+				force = 1;
+			}
 			// dload defined in alpm_utils.vala
-			int ret = dload (alpm_utils, "https://aur.archlinux.org", db_gz, real_build_dir, 0, false, emit_signal);
+			int ret = dload (alpm_utils, "https://aur.archlinux.org", db_gz, real_build_dir, force, false, emit_signal);
 			if (ret < 0) {
 				return false;
 			}
