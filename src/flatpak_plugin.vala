@@ -832,7 +832,9 @@ namespace Pamac {
 				transaction.choose_remote_for_ref.connect (on_choose_remote_for_ref);
 				transaction.new_operation.connect (on_new_operation);
 				transaction.operation_error.connect (on_operation_error);
-				return transaction.run (cancellable);
+				bool success = transaction.run (cancellable);
+				refresh ();
+				return success;
 			} catch (Error e) {
 				do_emit_error (dgettext (null, "Flatpak transaction failed"), {e.message});
 				return false;
