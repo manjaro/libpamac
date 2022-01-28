@@ -202,15 +202,18 @@ namespace Pamac {
 
 		public unowned Json.Object? get_infos (string pkgname) {
 			parse_db ();
-			unowned Json.Object? json_object = cached_infos.lookup (pkgname);
+			unowned Json.Object? json_object = null;
+			lock (cached_infos) {
+				json_object = cached_infos.lookup (pkgname);
+			}
 			if (json_object == null && !db_loaded) {
 				var to_query = new GenericArray<string> ();
 				to_query.add (pkgname);
 				Json.Array? results = multiinfo (to_query);
 				if (results != null && results.get_length () == 1) {
-					lock (cached_infos) {
-						json_object = results.get_object_element (0);
-						if (json_object != null) {
+					json_object = results.get_object_element (0);
+					if (json_object != null) {
+						lock (cached_infos) {
 							cached_infos.insert (json_object.get_string_member ("Name"), json_object);
 						}
 					}
@@ -255,17 +258,19 @@ namespace Pamac {
 			var objects = new GenericArray<unowned Json.Object> ();
 			parse_db ();
 			if (db_loaded) {
-				var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
-				unowned Json.Object object;
-				while (iter.next (null, out object)) {
-					unowned Json.Node? node = object.get_member ("Provides");
-					if (node != null) {
-						unowned Json.Array array = node.get_array ();
-						uint array_length = array.get_length ();
-						for (uint i = 0; i < array_length; i++) {
-							unowned string provide = array.get_string_element (i);
-							if (provide.has_prefix (depend)) {
-								objects.add (object);
+				lock (cached_infos) {
+					var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
+					unowned Json.Object object;
+					while (iter.next (null, out object)) {
+						unowned Json.Node? node = object.get_member ("Provides");
+						if (node != null) {
+							unowned Json.Array array = node.get_array ();
+							uint array_length = array.get_length ();
+							for (uint i = 0; i < array_length; i++) {
+								unowned string provide = array.get_string_element (i);
+								if (provide.has_prefix (depend)) {
+									objects.add (object);
+								}
 							}
 						}
 					}
@@ -290,15 +295,19 @@ namespace Pamac {
 			}
 			if (suggest_array == null) {
 				var suggest_array_new = new Json.Array ();
-				var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
-				unowned Json.Object object;
-				while (iter.next (null, out object)) {
-					unowned string name = object.get_string_member ("Name");
-					if (name.has_prefix (search_string)) {
-						suggest_array_new.add_string_element (name);
+				lock (cached_infos) {
+					var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
+					unowned Json.Object object;
+					while (iter.next (null, out object)) {
+						unowned string name = object.get_string_member ("Name");
+						if (name.has_prefix (search_string)) {
+							suggest_array_new.add_string_element (name);
+						}
 					}
 				}
-				suggest_results.insert (search_string, suggest_array_new);
+				lock (suggest_results) {
+					suggest_results.insert (search_string, suggest_array_new);
+				}
 				suggest_array = suggest_array_new;
 			}
 			return suggest_array;
@@ -326,7 +335,9 @@ namespace Pamac {
 						unowned Json.Node? root = parser.get_root ();
 						if (root != null) {
 							suggest_array = root.get_array ();
-							suggest_results.insert (search_string, suggest_array);
+							lock (suggest_results) {
+								suggest_results.insert (search_string, suggest_array);
+							}
 						}
 					}
 				} catch (Error e) {
@@ -358,11 +369,13 @@ namespace Pamac {
 				} catch (Error e) {
 					warning (e.message);
 				}
-				var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
-				unowned Json.Object object;
-				while (iter.next (null, out object)) {
-					if (find_match (object, targ, regex)) {
-						needle_match.add (object);
+				lock (cached_infos) {
+					var iter = HashTableIter<unowned string, Json.Object> (cached_infos);
+					unowned Json.Object object;
+					while (iter.next (null, out object)) {
+						if (find_match (object, targ, regex)) {
+							needle_match.add (object);
+						}
 					}
 				}
 				uint needles_length = needles.length;
