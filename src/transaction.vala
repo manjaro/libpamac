@@ -1262,8 +1262,11 @@ namespace Pamac {
 					details.add ("trans_refresh: %s".printf (e.message));
 					emit_error ("Daemon Error", details);
 				}
-				if (config.enable_aur) {
-					success = database.aur.update_db (force_refresh, true);
+				if (config.check_aur_updates) {
+					bool refresh_success = database.aur.update_db (force_refresh, true);
+					if (!refresh_success) {
+						emit_warning (dgettext (null, "Failed to synchronize AUR database"));
+					}
 				}
 				if (!success) {
 					return false;

@@ -22,6 +22,8 @@ namespace Pamac {
 		HashTable<string, string> environment_variables_priv;
 		Daemon system_daemon;
 		MainLoop loop;
+		bool _enable_aur;
+		bool _check_aur_updates;
 
 		public string conf_path { get; construct; }
 		public bool recurse { get; set; }
@@ -30,7 +32,17 @@ namespace Pamac {
 		public bool simple_install { get; set; }
 		public uint64 refresh_period { get; set; }
 		public bool no_update_hide_icon { get; set; }
-		public bool enable_aur { get; set; }
+		public bool enable_aur {
+			get {
+				return _enable_aur;
+			}
+			set {
+				_enable_aur = value;
+				if (!_enable_aur) {
+					check_aur_updates = false;
+				}
+			}
+		}
 		public bool support_snap { get; private set; }
 		public bool enable_snap { get; set; }
 		PluginLoader<SnapPlugin> snap_plugin_loader;
@@ -39,7 +51,17 @@ namespace Pamac {
 		public bool check_flatpak_updates { get; set; }
 		PluginLoader<FlatpakPlugin> flatpak_plugin_loader;
 		public string aur_build_dir { get; set; }
-		public bool check_aur_updates { get; set; }
+		public bool check_aur_updates {
+			get {
+				return _check_aur_updates;
+			}
+			set {
+				_check_aur_updates = value;
+				if (!_check_aur_updates) {
+					check_aur_vcs_updates = false;
+				}
+			}
+		}
 		public bool check_aur_vcs_updates { get; set; }
 		public bool download_updates { get; set; }
 		public uint64 max_parallel_downloads { get; set; }
@@ -122,19 +144,11 @@ namespace Pamac {
 			enable_flatpak = false;
 			check_flatpak_updates = false;
 			aur_build_dir = "/var/tmp";
-			check_aur_updates = false;
-			check_aur_vcs_updates = false;
 			download_updates = false;
 			max_parallel_downloads = 1;
 			clean_keep_num_pkgs = 3;
 			clean_rm_only_uninstalled = false;
 			parse_file (conf_path);
-			if (!enable_aur) {
-				check_aur_updates = false;
-				check_aur_vcs_updates = false;
-			} else if (!check_aur_updates) {
-				check_aur_vcs_updates = false;
-			}
 			// limited max_parallel_downloads
 			if (max_parallel_downloads > 10) {
 				max_parallel_downloads = 10;
@@ -148,8 +162,8 @@ namespace Pamac {
 			}
 			if (!support_flatpak) {
 				enable_flatpak = false;
-				check_flatpak_updates = false;
-			} else if (!enable_flatpak) {
+			}
+			if (!enable_flatpak) {
 				check_flatpak_updates = false;
 			}
 		}
