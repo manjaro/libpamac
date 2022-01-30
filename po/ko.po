@@ -539,7 +539,7 @@ msgid "Updates Available"
 msgstr "사용 가능한 업데이트"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "시스템이 최신 버전입니다"
 
 #: src/tray.vala

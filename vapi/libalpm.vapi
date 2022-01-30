@@ -1349,7 +1349,7 @@ namespace Alpm {
 			public uint64 total;
 			/** download result code:
 			 *    0 - download completed successfully
-			 *    1 - the file is up-to-date
+			 *    1 - the file is up to date
 			 *   -1 - error
 			 */
 			public int result;

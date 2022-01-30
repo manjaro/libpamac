@@ -534,7 +534,7 @@ msgid "Updates Available"
 msgstr "可用更新"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "您的系統已經是最新的"
 
 #: src/tray.vala

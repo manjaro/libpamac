@@ -531,7 +531,7 @@ msgid "Updates Available"
 msgstr "Uppfærslur tiltækar"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "Kerfið þitt er með öllum nýjasta hugbúnaðinum"
 
 #: src/tray.vala

@@ -527,7 +527,7 @@ msgid "Updates Available"
 msgstr "Kemas Kini Tersedia"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "Sistem anda telah dikemaskini"
 
 #: src/tray.vala

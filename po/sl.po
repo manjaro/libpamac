@@ -540,7 +540,7 @@ msgid "Updates Available"
 msgstr "Na voljo so posodobitve"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "Vaš sistem je posodobljen"
 
 #: src/tray.vala
