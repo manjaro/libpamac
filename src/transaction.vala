@@ -1408,6 +1408,31 @@ namespace Pamac {
 
 		async bool trans_run (TransactionSummary summary) {
 			if (summary.aur_pkgbases_to_build.length != 0) {
+				// populate build queue
+				to_build_queue.clear ();
+				foreach (unowned string name in summary.aur_pkgbases_to_build) {
+					to_build_queue.push_tail (name);
+				}
+				aur_pkgs_to_install.remove_all ();
+				foreach (unowned Package pkg in summary.to_build) {
+					unowned string pkgname = pkg.name;
+					aur_pkgs_to_install.add (pkgname);
+					if (!to_build.contains (pkgname)) {
+						// check if pkg provide a name in to_build
+						var alpmpkg = pkg as AlpmPackage;
+						if (alpmpkg != null) {
+							foreach (unowned string provide in alpmpkg.provides) {
+								string provide_name = database.get_alpm_dep_name (provide);
+								if (to_build.contains (provide_name)) {
+									// replace with provider
+									to_build.remove (provide_name);
+									to_build.add (pkgname);
+									break;
+								}
+							}
+						}
+					}
+				}
 				if (yield ask_edit_build_files_real (summary)) {
 					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
 						unowned string real_aur_build_dir = aur.get_real_build_dir ();
@@ -1437,10 +1462,28 @@ namespace Pamac {
 				summary.conflicts_to_remove.length != 0 ||
 				summary.to_remove.length != 0) {
 				foreach (unowned Package pkg in summary.to_install) {
-					if (!to_install.contains (pkg.name) &&
-						!summary.to_load.find_with_equal_func (pkg.name, str_equal)) {
-						to_install.add (pkg.name);
-						to_install_as_dep.add (pkg.name);
+					unowned string pkgname = pkg.name;
+					if (!to_install.contains (pkgname) &&
+						!summary.to_load.find_with_equal_func (pkgname, str_equal)) {
+						to_install.add (pkgname);
+						bool find_top_provider = false;
+						// check if pkg provide a name in to_install
+						var alpmpkg = pkg as AlpmPackage;
+						if (alpmpkg != null) {
+							foreach (unowned string provide in alpmpkg.provides) {
+								string provide_name = database.get_alpm_dep_name (provide);
+								if (to_install.contains (provide_name)) {
+									// replace with provider
+									to_install.remove (provide_name);
+									to_install.add (pkgname);
+									find_top_provider = true;
+									break;
+								}
+							}
+						}
+						if (!find_top_provider) {
+							to_install_as_dep.add (pkgname);
+						}
 					}
 				}
 				to_remove.remove_all ();
@@ -2001,9 +2044,6 @@ namespace Pamac {
 				return false;
 			});
 			loop.run ();
-			unowned string pkgname = providers[index];
-			to_install.add (pkgname);
-			to_install_as_dep.add (pkgname);
 			return index;
 		}
 
@@ -2069,15 +2109,6 @@ namespace Pamac {
 			iter = HashTableIter<string, SnapPackage> (snap_to_remove);
 			while (iter.next (null, out pkg)) {
 				summary.to_remove.add (pkg);
-			}
-			// populate build queue
-			to_build_queue.clear ();
-			foreach (unowned string name in summary.aur_pkgbases_to_build) {
-				to_build_queue.push_tail (name);
-			}
-			aur_pkgs_to_install.remove_all ();
-			foreach (unowned Package build_pkg in summary.to_build) {
-				aur_pkgs_to_install.add (build_pkg.name);
 			}
 			return yield ask_edit_build_files (summary);
 		}

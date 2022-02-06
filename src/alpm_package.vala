@@ -743,6 +743,9 @@ namespace Pamac {
 					_repo = sync_pkg.db.name;
 				}
 			}
+			// provides
+			unowned GenericArray<string> list = provides;
+			list = null;
 			// unset pkgs
 			set_alpm_pkg (null);
 			set_local_pkg (null);
