@@ -865,7 +865,7 @@ namespace Pamac {
 						_desc = local_pkg.desc;
 					} else if (json_object != null) {
 						unowned Json.Node? node = json_object.get_member ("Description");
-						if (!node.is_null ()) {
+						if (node != null) {
 							_desc = node.get_string ();
 						}
 					}
@@ -930,7 +930,7 @@ namespace Pamac {
 						_url = local_pkg.url;
 					} else if (json_object != null) {
 						unowned Json.Node? node = json_object.get_member ("URL");
-						if (!node.is_null ()) {
+						if (node != null) {
 							_url = node.get_string ();
 						}
 					}
