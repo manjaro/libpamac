@@ -1012,6 +1012,7 @@ namespace Pamac {
 								var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
 								new_pkg.set_local_pkg (local_pkg);
 								new_pkg.set_as_app (app);
+								pkgs_cache.replace (new_pkg.id, new_pkg);
 								pkg = new_pkg;
 							} else {
 								unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
@@ -1020,6 +1021,7 @@ namespace Pamac {
 									new_pkg.set_local_pkg (local_pkg);
 									new_pkg.set_sync_pkg (sync_pkg);
 									new_pkg.set_as_app (app);
+									pkgs_cache.replace (new_pkg.id, new_pkg);
 									pkg = new_pkg;
 								}
 							}
@@ -1044,6 +1046,7 @@ namespace Pamac {
 						if (found) {
 							var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
 							new_pkg.set_local_pkg (local_pkg);
+							pkgs_cache.replace (new_pkg.id, new_pkg);
 							pkg = new_pkg;
 							break;
 						}
