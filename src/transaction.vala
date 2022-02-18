@@ -783,8 +783,8 @@ namespace Pamac {
 							dos.put_string ("%NAME%\n%s\n\n".printf (pkgname_found));
 							// version
 							dos.put_string ("%VERSION%\n%s\n\n".printf (aur_pkg_found.version));
-							// base
-							dos.put_string ("%BASE%\n%s\n\n".printf (aur_pkg_found.packagebase));
+							// base (double %% before BASE to escape %B)
+							dos.put_string ("%%BASE%\n%s\n\n".printf (aur_pkg_found.packagebase));
 							// desc
 							dos.put_string ("%DESC%\n%s\n\n".printf (aur_pkg_found.desc));
 							// arch (double %% before ARCH to escape %A)
@@ -859,8 +859,8 @@ namespace Pamac {
 						dos.put_string ("%NAME%\n%s\n\n".printf (aur_pkg.name));
 						// version
 						dos.put_string ("%VERSION%\n%s\n\n".printf (aur_pkg.version));
-						// base
-						dos.put_string ("%BASE%\n%s\n\n".printf (aur_pkg.packagebase));
+						// base (double %% before BASE to escape %B)
+						dos.put_string ("%%BASE%\n%s\n\n".printf (aur_pkg.packagebase));
 						// desc
 						dos.put_string ("%DESC%\n%s\n\n".printf (aur_pkg.desc));
 						// arch (double %% before ARCH to escape %A)
