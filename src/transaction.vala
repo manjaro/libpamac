@@ -974,20 +974,27 @@ namespace Pamac {
 		async bool clone_build_files_if_needed (string pkgdir, string pkgname) {
 			File? clone_dir = File.new_for_path (pkgdir);
 			if (!clone_dir.query_exists ()) {
-				// clone build files
-				emit_action (dgettext (null, "Cloning %s build files").printf (pkgname) + "...");
-				clone_dir = yield database.clone_build_files_async (pkgname, false, build_cancellable);
-				if (build_cancellable.is_cancelled ()) {
-					return false;
-				}
-				if (clone_dir == null) {
-					// error
-					return false;
-				}
-				// generating srcinfo
-				emit_action (dgettext (null, "Generating %s information").printf (pkgname) + "...");
-				bool success = yield database.regenerate_srcinfo_async (pkgname, build_cancellable);
-				if (!success) {
+				if (pkgname in clone_files) {
+					// clone build files
+					emit_action (dgettext (null, "Cloning %s build files").printf (pkgname) + "...");
+					clone_dir = yield database.clone_build_files_async (pkgname, false, build_cancellable);
+					if (build_cancellable.is_cancelled ()) {
+						return false;
+					}
+					if (clone_dir == null) {
+						// error
+						return false;
+					}
+					// generating srcinfo
+					emit_action (dgettext (null, "Generating %s information").printf (pkgname) + "...");
+					bool success = yield database.regenerate_srcinfo_async (pkgname, build_cancellable);
+					if (!success) {
+						return false;
+					}
+				} else {
+					var details = new GenericArray<string> (1);
+					details.add (dgettext (null, "target not found: %s").printf (pkgname));
+					emit_error (dgettext (null, "Failed to prepare transaction"), details);
 					return false;
 				}
 			}
