@@ -2323,7 +2323,7 @@ namespace Pamac {
 					if (tmp_handle.update_dbs (syncdbs, 0) < 0) {
 						success = false;
 					}
-					if (config.enable_aur) {
+					if (config.check_aur_updates) {
 						success = aur.update_db (false, false);
 					}
 					if (success) {

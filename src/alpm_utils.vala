@@ -1535,7 +1535,7 @@ namespace Pamac {
 			return success;
 		}
 
-		TransactionSummary get_transaction_summary (Alpm.Handle? alpm_handle, ref TransactionSummary summary) {
+		void get_transaction_summary (Alpm.Handle? alpm_handle, ref TransactionSummary summary) {
 			var checked = new HashTable<string, int> (str_hash, str_equal);
 			// to_install
 			unowned Alpm.List<unowned Alpm.Package> pkgs_to_add = alpm_handle.trans_to_add ();
@@ -1796,7 +1796,6 @@ namespace Pamac {
 				}
 				pkgs_to_remove.next ();
 			}
-			return summary;
 		}
 
 		void download_files (Alpm.Handle? handle, uint64 max_parallel_downloads, bool emit_signals) {
