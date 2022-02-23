@@ -539,7 +539,7 @@ msgid "Updates Available"
 msgstr "Sú dostupné aktualizácie"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "Váš systém je aktuálny"
 
 #: src/tray.vala

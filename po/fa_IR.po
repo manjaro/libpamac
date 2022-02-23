@@ -539,7 +539,7 @@ msgid "Updates Available"
 msgstr "به‌روز‌رسانی موجود است"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "سیستم شما به روز است"
 
 #: src/tray.vala

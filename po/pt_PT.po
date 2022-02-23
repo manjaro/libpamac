@@ -541,7 +541,7 @@ msgid "Updates Available"
 msgstr "Atualizações disponíveis"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr "O sistema está atualizado"
 
 #: src/tray.vala
