@@ -517,8 +517,9 @@ namespace Pamac {
 								return false;
 							}
 						}
+					} else {
+						clone_files.add (aur_pkg.packagebase);
 					}
-					already_checked_aur_dep.add (aur_pkg.packagebase);
 				} else if (clone_dir.query_exists ()) {
 						emit_action (dgettext (null, "Generating %s information").printf (pkgname) + "...");
 						bool success = yield database.regenerate_srcinfo_async (pkgname, build_cancellable);
@@ -834,6 +835,7 @@ namespace Pamac {
 					}
 				} else {
 					// use aur infos
+					already_checked_aur_dep.add (aur_pkg.name);
 					// write desc file
 					try {
 						string pkgdir = "%s-%s".printf (aur_pkg.name, aur_pkg.version);
