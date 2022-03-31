@@ -701,7 +701,7 @@ namespace Pamac {
 				lock (pkgs_cache)  {
 					GenericArray<unowned Flatpak.InstalledRef> update_apps = installation.list_installed_refs_for_update ();
 					foreach (unowned Flatpak.InstalledRef installed_ref in update_apps) {
-						//if (installed_ref.kind == Flatpak.RefKind.APP) {
+						if (installed_ref.kind == Flatpak.RefKind.APP) {
 							string id =  "%s/%s".printf (installed_ref.origin, installed_ref.format_ref ());
 							FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
 							if (pkg == null) {
@@ -710,7 +710,7 @@ namespace Pamac {
 								pkgs_cache.insert (id, pkg);
 							}
 							pkgs.add (pkg);
-						//}
+						}
 					}
 				}
 			} catch (Error e) {
@@ -826,6 +826,15 @@ namespace Pamac {
 				foreach (unowned string id in to_upgrade) {
 					string name = id.split ("/", 2)[1];
 					transaction.add_update (name, null, null);
+				}
+				if (to_upgrade.length > 0) {
+					// add runtime updates
+					GenericArray<unowned Flatpak.InstalledRef> update_apps = installation.list_installed_refs_for_update ();
+					foreach (unowned Flatpak.InstalledRef installed_ref in update_apps) {
+						if (installed_ref.kind == Flatpak.RefKind.RUNTIME) {
+							transaction.add_update (installed_ref.format_ref (), null, null);
+						}
+					}
 				}
 				transaction.ready.connect (() => { return true; });
 				transaction.add_new_remote.connect (on_add_new_remote);
