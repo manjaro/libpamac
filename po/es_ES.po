@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Christian Finnberg, 2021
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-17 06:49+0000\n"
-"Last-Translator: Christian Finnberg\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -292,6 +292,11 @@ msgstr "Error"
 msgid "Refreshing %s"
 msgstr "Actualizando %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -318,11 +323,6 @@ msgstr "Esperando a que otro gestor de paquetes salga..."
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Tiempo de espera agotado"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -617,6 +617,10 @@ msgid "Ignored"
 msgstr "Ignorados"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Motivo de instalación"
 
@@ -632,7 +636,7 @@ msgstr "Marcar como explícitamente instalado"
 msgid "Licenses"
 msgstr "Licencias"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -681,8 +685,8 @@ msgid "Install Date"
 msgstr "Fecha de instalación"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Firmas"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -693,20 +697,20 @@ msgid "Optional Dependencies"
 msgstr "Dependencias opcionales"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Hacer dependencias"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Comprobar dependencias"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Opcional para"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Provee"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Hacer dependencias"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Comprobar dependencias"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -936,8 +940,8 @@ msgid "View %s build files diff"
 msgstr "Ver las diferencias de los ficheros de compilación de %s"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Construyendo paquetes como superusuario"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1154,6 +1158,12 @@ msgstr "eliminar paquetes solo si no son requeridos por ningún otro paquete"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "eliminar las dependencias no requeridas por otros paquetes. Si no se especifica ningún nombre de paquete, eliminar todos los paquetes huérfanos"
@@ -1350,8 +1360,8 @@ msgstr "Añadir %s a la reinstalación"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Instalar %s desde %s"
+msgid "Install %1$s from %2$s"
+msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"

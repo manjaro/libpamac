@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Jung Hee Lee <daemul72@gmail.com>, 2021
@@ -11,7 +11,7 @@
 # Daniel Ginovker <danielginovker@gmail.com>, 2020
 # Dongyun KIm <104arb@gmail.com>, 2018
 # Eric Park <ideamaneric@gmail.com>, 2017
-# Jung Hee Lee <daemul72@gmail.com>, 2021
+# Jung Hee Lee <daemul72@gmail.com>, 2021-2022
 # Jung Hee Lee <daemul72@gmail.com>, 2020-2021
 # lego37yoon <lego37yoon@outlook.com>, 2013
 # lego37yoon <lego37yoon@outlook.com>, 2013
@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-26 00:07+0000\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-02-05 22:00+0000\n"
 "Last-Translator: Jung Hee Lee <daemul72@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -297,6 +297,11 @@ msgstr "오류"
 msgid "Refreshing %s"
 msgstr "%s 새로 고치는중"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -323,11 +328,6 @@ msgstr "다른 패키지 관리자가 종료되기를 기다리는 중"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "시간초과로 만료되었습니다"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -620,6 +620,10 @@ msgid "Ignored"
 msgstr "무시됨"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "없음"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "설치 근거"
 
@@ -635,7 +639,7 @@ msgstr "완전히 설치된 것으로 표시"
 msgid "Licenses"
 msgstr "라이센스"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -684,8 +688,8 @@ msgid "Install Date"
 msgstr "설치 날짜"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "서명"
+msgid "Validated By"
+msgstr "유효성 검사"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -696,20 +700,20 @@ msgid "Optional Dependencies"
 msgstr "옵션으로 필요한 것"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "필요한 패키지 만들기"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "필요한 패키지 확인"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "선택 사항 :"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "제공"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "필요한 패키지 만들기"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "필요한 패키지 확인"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -938,8 +942,8 @@ msgid "View %s build files diff"
 msgstr "%s 빌드 파일 차이 보기"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "루트로 패키지 빌드 중"
+msgid "Building packages as dynamic user"
+msgstr "동적 사용자로 패키지 빌드 중"
 
 #: src/cli.vala
 #, c-format
@@ -1156,6 +1160,12 @@ msgstr "다른 패키지에 필요하지 않은 경우에만 패키지 제거"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "하나 이상의 대상 패키지에 종속된 모든 패키지뿐만 아니라 모든 대상 패키지 제거"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "다른 패키지에 필요하지 않은 종속성을 제거하고, 패키지 이름 없이 이 옵션을 사용하는 경우 모든 독립 패키지를 제거합니다"
@@ -1350,8 +1360,8 @@ msgstr "재설치할 %s 추가"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "%s 설치 (%s)"
+msgid "Install %1$s from %2$s"
+msgstr "%2$s에서 %1$s 설치"
 
 #: src/snap_plugin.vala
 msgid "No"

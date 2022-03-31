@@ -1,18 +1,18 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# Xəyyam Qocayev <xxmn77@gmail.com>, 2021
+# xxmn77 <xxmn77@gmail.com>, 2021-2022
 # Zaur Baku <zaurbaku15@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-19 08:18+0000\n"
-"Last-Translator: Xəyyam Qocayev <xxmn77@gmail.com>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-30 16:24+0000\n"
+"Last-Translator: xxmn77 <xxmn77@gmail.com>\n"
 "Language-Team: Azerbaijani (http://www.transifex.com/manjarolinux/manjaro-pamac/language/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -163,7 +163,7 @@ msgstr "Əməliyyatın yerinə yetirilməsi uğursuz oldu"
 
 #: src/alpm_utils.vala
 msgid "Checking dependencies"
-msgstr "Aslılıqlar yoxlanılır"
+msgstr "Asılılıqlar yoxlanılır"
 
 #: src/alpm_utils.vala
 msgid "Checking file conflicts"
@@ -287,6 +287,11 @@ msgstr "Səhv"
 msgid "Refreshing %s"
 msgstr "%s yenilənir"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -313,11 +318,6 @@ msgstr "Digər paket menecerinin işinin başa çatması gözlənilir"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Boşdayanma vaxtı bitmişdir"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -442,7 +442,7 @@ msgstr "Flatpak"
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Depends On"
-msgstr "Aslıdır"
+msgstr "Bunlardan asılıdır"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
@@ -518,7 +518,7 @@ msgstr "Paketlərin silinməsi"
 
 #: src/installer.vala src/cli.vala
 msgid "Build packages from AUR and install them with their dependencies"
-msgstr "Paketləri AUR -dan yığmnaq və onları asılılıqları ilə birlikdə quraşdırmaq"
+msgstr "Paketləri AUR -dan yığmaq və onları asılılıqları ilə birlikdə quraşdırmaq"
 
 #: src/installer.vala src/cli.vala
 msgid "package(s)"
@@ -612,12 +612,16 @@ msgid "Ignored"
 msgstr "Nəzərə alınmadı"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Heç biri"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Yükləmə səbəbi"
 
 #: src/manager_window.vala
 msgid "Installed as a dependency for another package"
-msgstr "Başqa paket asılığı kimi quraşdırıldı"
+msgstr "Başqa paket asılılığı kimi quraşdırıldı"
 
 #: src/manager_window.vala
 msgid "Mark as explicitly installed"
@@ -627,7 +631,7 @@ msgstr "Tam quraşdırılmış kimi işarələ"
 msgid "Licenses"
 msgstr "Lisenziyalar"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Naməlum"
 
@@ -676,8 +680,8 @@ msgid "Install Date"
 msgstr "Yükləmə tarixi"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "İmzalar"
+msgid "Validated By"
+msgstr "Doğrulayan:"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -688,20 +692,20 @@ msgid "Optional Dependencies"
 msgstr "Vacib olmayan asılılıqlar"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Asılılıqlar yaradılması"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Aslılıqları yoxlanıyın"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Vacib olmayan"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Təqdim edir"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Asılılıqlar yaratmaq"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Asılılıqları yoxlayın"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -931,8 +935,8 @@ msgid "View %s build files diff"
 msgstr "%s yığma faylların fərqini göstərmək"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Paketləri kök (root) imtiyazları ilə yığmaq"
+msgid "Building packages as dynamic user"
+msgstr "Paketlərin dinamik istifadəçi adından yığılması"
 
 #: src/cli.vala
 #, c-format
@@ -1149,6 +1153,12 @@ msgstr "ancaq, hansısa digər paketlərin tələb etmədiyi paketləri silmək"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "bütün hədəf paketləri həmçinin bir və ya bir neçə hədəf paketdən asılılığı olan paketləri aradan qaldırın"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "Digər paketlərin tələb etmədiyi asılılıqları ləğv edin, əgər bu seçim paket adı olamadan istifadə olunursa bütün \"yetim\" paket və asılılıqları silmək"
@@ -1345,8 +1355,8 @@ msgstr "%s silmək üçün əlavə etmək"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "%s-dən/dan %s quraşdırmaq"
+msgid "Install %1$s from %2$s"
+msgstr "%2$s-dən %1$s quraşdırın"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1458,7 +1468,7 @@ msgstr "Qurmaq"
 
 #: resources/manager_window.ui
 msgid "Dependencies"
-msgstr "Aslılıqlar"
+msgstr "Asılılıqlar"
 
 #: resources/manager_window.ui
 msgid "Files"
@@ -1540,7 +1550,7 @@ msgstr "Diskin boş qalan sahəsi yoxlanılsın"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"
-msgstr "Təlabat olmayan asılılıqları silmək"
+msgstr "Təlabat olmayan asılılıqları silin"
 
 #: resources/preferences_dialog.ui
 msgid "Do not check for updates when installing"

@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Alexander Lindberg <alexanderlndbrg@gmail.com>, 2013-2014
@@ -10,7 +10,7 @@
 # Eilidh Martin <maxqueue93+github@gmail.com>, 2017
 # Ordtrogen, 2020
 # Lennart Niemelä <lennart.niemela@gmail.com>, 2016
-# Luna Jernberg <bittin@cafe8bitar.se>, 2020-2021
+# Luna Jernberg <bittin@cafe8bitar.se>, 2020-2022
 # Mattias Johansson <cashew75s@gmail.com>, 2014
 # Niklas W <niklas@vividvisions.se>, 2018-2019
 # philm <philm@manjaro.org>, 2015
@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-17 11:18+0000\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-26 13:38+0000\n"
 "Last-Translator: Luna Jernberg <bittin@cafe8bitar.se>\n"
 "Language-Team: Swedish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -301,6 +301,11 @@ msgstr "Fel"
 msgid "Refreshing %s"
 msgstr "Uppdaterar %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -327,11 +332,6 @@ msgstr "Väntar på att annan instans av pakethanteraren ska avslutas"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Timeout har gått ut"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -626,6 +626,10 @@ msgid "Ignored"
 msgstr "Ignoreras"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Inga"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Installeringsorsak"
 
@@ -641,7 +645,7 @@ msgstr "Markera som särskilt installerad"
 msgid "Licenses"
 msgstr "LIcenser"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Okänd"
 
@@ -690,8 +694,8 @@ msgid "Install Date"
 msgstr "Installationsdatum"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Signatur"
+msgid "Validated By"
+msgstr "Validerad av"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -702,20 +706,20 @@ msgid "Optional Dependencies"
 msgstr "Valfria beroenden"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Make-beroenden"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Kontrollera beroenden"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Frivilliga för"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Erbjuder"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Make-beroenden"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Kontrollera beroenden"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -945,8 +949,8 @@ msgid "View %s build files diff"
 msgstr "Se %s byggfilers skillnad"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Kompilerar paket som root"
+msgid "Building packages as dynamic user"
+msgstr "Bygga paket som dynamisk användare"
 
 #: src/cli.vala
 #, c-format
@@ -1163,6 +1167,12 @@ msgstr "ta endast bort paket om de inte krävs av andra paket"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "ta bort alla målpaket, såväl som alla paket som är beroende av ett eller flera målpaket"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "ta bort besittningar som ej behövs av andra paket, om detta alternativet används utan ett namn ta bort alla överblivna paket"
@@ -1359,8 +1369,8 @@ msgstr "Lägg till %s till att ominstallera"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Installera %s från %s"
+msgid "Install %1$s from %2$s"
+msgstr "Installera %1$s från %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"

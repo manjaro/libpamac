@@ -1,20 +1,20 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Alexander B <beliy@yandex.ru>, 2017,2019
-# AlexanderFilev <avfill@outlook.com>, 2015
+# Alexander Filёv, 2015
 # Alexey Ermakov, 2018
-# Andrei Stepanov <adem4ik@gmail.com>, 2019-2021
+# Andrei Stepanov, 2019-2022
 # Victor Kukshiev <andrey0bolkonsky@gmail.com>, 2013
 # Daniil <rostovslipknot@gmail.com>, 2013
 # Eugene <klyuchnikov.evgeny@gmail.com>, 2018
 # Анатолий Валерианович <ffox909@mail.ru>, 2014
 # Paulo Fino <finomeno@gmail.com>, 2014
 # Анатолий Валерианович <ffox909@mail.ru>, 2014
-# AlexanderFilev <avfill@outlook.com>, 2015
+# Alexander Filёv, 2015
 # Artalus, 2018
 # Kirill Virt <spakes1999@gmail.com>, 2018
 # Eugene <klyuchnikov.evgeny@gmail.com>, 2018-2019
@@ -29,8 +29,8 @@
 # Lowrider <pams@imail.ru>, 2015
 # Paulo Fino <finomeno@gmail.com>, 2014
 # Schwonder Reismus <schw0reismus@protonmail.com>, 2019
-# U A <u.almasov@gmail.com>, 2013
-# U A <u.almasov@gmail.com>, 2013
+# Umidjon Almasov <umidjon@almasov.uz>, 2013
+# Umidjon Almasov <umidjon@almasov.uz>, 2013
 # Vladislav Zelenin <leerenix@hitler.rocks>, 2017
 # Анатолий Валерианович <ffox909@mail.ru>, 2014-2017
 # Арина Окшус <nikita@sushko.ru>, 2020
@@ -42,9 +42,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 19:25+0000\n"
-"Last-Translator: Andrei Stepanov <adem4ik@gmail.com>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 23:44+0000\n"
+"Last-Translator: Andrei Stepanov\n"
 "Language-Team: Russian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -179,7 +179,7 @@ msgstr "Удаляются файлы и повторяется попытка"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s is invalid or corrupted"
-msgstr "%s недействующий или повреждён"
+msgstr "%s неверный или повреждён"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
@@ -323,6 +323,11 @@ msgstr "Ошибка"
 msgid "Refreshing %s"
 msgstr "Обновление %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -349,11 +354,6 @@ msgstr "Ожидание выхода другого менеджера паке
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Время ожидания истекло"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -633,7 +633,7 @@ msgstr "Все"
 
 #: src/manager_window.vala
 msgid "Explicitly installed"
-msgstr "Установлены специально"
+msgstr "Установлено специально"
 
 #: src/manager_window.vala
 msgid "Orphans"
@@ -652,12 +652,16 @@ msgid "Ignored"
 msgstr "Пропущены"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Нет"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Причина установки"
 
 #: src/manager_window.vala
 msgid "Installed as a dependency for another package"
-msgstr "Установлено как зависимость для другого пакета"
+msgstr "Установлен как зависимость для другого пакета"
 
 #: src/manager_window.vala
 msgid "Mark as explicitly installed"
@@ -667,7 +671,7 @@ msgstr "Отметить как специально установленный"
 msgid "Licenses"
 msgstr "Лицензии"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -716,8 +720,8 @@ msgid "Install Date"
 msgstr "Дата установки"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Подписи"
+msgid "Validated By"
+msgstr "Подтверждён по"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -728,20 +732,20 @@ msgid "Optional Dependencies"
 msgstr "Необязательные зависимости"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Зависимости сборки"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Проверка зависимостей"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Дополнительно для"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Предоставляет"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Зависимости сборки"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Проверка зависимостей"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -973,8 +977,8 @@ msgid "View %s build files diff"
 msgstr "Посмотреть разницу сборочных файлов %s"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Сборка пакетов от имени администратора"
+msgid "Building packages as dynamic user"
+msgstr "Сборка пакетов от имени динамического пользователя"
 
 #: src/cli.vala
 #, c-format
@@ -1090,13 +1094,13 @@ msgstr "Клонировать или синхронизировать сбор�
 
 #: src/cli.vala
 msgid "dir"
-msgstr "директория"
+msgstr "каталог"
 
 #: src/cli.vala
 msgid ""
 "build directory, if no directory is given the one specified in pamac.conf "
 "file is used"
-msgstr "собрать в каталоге, если каталог не указан, использовать тот,который указан в файле pamac.conf"
+msgstr "собрать в каталоге, если каталог не указан, использовать тот, который указан в файле pamac.conf"
 
 #: src/cli.vala
 msgid "also clone needed dependencies"
@@ -1188,6 +1192,12 @@ msgstr "Переустановить пакеты"
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
 msgstr "удалить пакеты, только если они не требуются другими пакетами"
+
+#: src/cli.vala
+msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "удалить все целевые пакеты, а также все пакеты, зависящие от одного или нескольких целевых пакетов"
 
 #: src/cli.vala
 msgid ""
@@ -1286,7 +1296,7 @@ msgstr "число"
 #: src/cli.vala
 msgid ""
 "specify how many versions of each package are kept in the cache directory"
-msgstr "указать, сколько версий каждого пакета должно быть в директории кэша"
+msgstr "указать, сколько версий каждого пакета должно быть в каталоге кэша"
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
@@ -1296,11 +1306,11 @@ msgstr "только целевые удалённые пакеты"
 msgid ""
 "remove all build files, the build directory is the one specified in "
 "pamac.conf"
-msgstr "удалить все сборочные файлы, сборочная директория указана в pamac.conf"
+msgstr "удалить все сборочные файлы, сборочный каталог указан в pamac.conf"
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
-msgstr "не удалять файлы, а только найти пакеты-кандидаты на удаление"
+msgstr "не удалять файлы, а только искать пакеты-кандидаты на удаление"
 
 #: src/cli.vala
 msgid "also display all files names"
@@ -1391,8 +1401,8 @@ msgstr "Добавить %s к переустановке"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Установить %s из %s"
+msgid "Install %1$s from %2$s"
+msgstr "Установить %1$s из %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1564,7 +1574,7 @@ msgstr "Сохранять предыдущие версии пакетов в �
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr "Удалять только для удалённых пакетов"
+msgstr "Очищать только для удалённых пакетов"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"

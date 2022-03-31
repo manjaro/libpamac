@@ -1,14 +1,14 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Dušan Kazik, 2014
 # Dušan Kazik <prescott66@gmail.com>, 2014-2021
 # Inoki Sakaeru, 2013
 # Jozef Gaal <preklady@mayday.sk>, 2020
-# Miroslav Ďurian <aasami@gmail.com>, 2018
+# Miroslav Ďurian, 2018
 # Patrik Bubák, 2014
 # 5f8d388310b9a9304f619fae7149ed59_153be44, 2014
 # philm <philm@manjaro.org>, 2015
@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 18:45+0000\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Slovak (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -297,6 +297,11 @@ msgstr "Chyba"
 msgid "Refreshing %s"
 msgstr "Obnovuje sa %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -323,11 +328,6 @@ msgstr "Čaká sa na ukončenie iného správcu balíkov"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Časový limit vypršal"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -626,6 +626,10 @@ msgid "Ignored"
 msgstr "Ignorované"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Dôvod inštalácie"
 
@@ -641,7 +645,7 @@ msgstr "Označiť ako explicitne nainštalované"
 msgid "Licenses"
 msgstr "Licencie"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Neznáme"
 
@@ -690,8 +694,8 @@ msgid "Install Date"
 msgstr "Dátum inštalácie"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Podpisy"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -702,20 +706,20 @@ msgid "Optional Dependencies"
 msgstr "Voliteľné závislosti"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Vytvoriť závislosti"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Skontrolovať závislosti"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Voliteľné pre"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Poskytuje"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Vytvoriť závislosti"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Skontrolovať závislosti"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -947,8 +951,8 @@ msgid "View %s build files diff"
 msgstr ""
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Zostavujú sa balíky ako správca"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1165,6 +1169,12 @@ msgstr ""
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "odstrániť závislosti, ktoré nie sú vyžadované inými balíkmi. Ak sa táto voľba použije bez zadania názvu balíka, odstránia sa všetky osamotené balíky"
@@ -1365,7 +1375,7 @@ msgstr ""
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
+msgid "Install %1$s from %2$s"
 msgstr ""
 
 #: src/snap_plugin.vala

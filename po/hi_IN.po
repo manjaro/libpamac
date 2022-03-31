@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Panwar108 <caspian7pena@gmail.com>, 2020-2021
@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Hindi (India) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/hi_IN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -286,6 +286,11 @@ msgstr "त्रुटि"
 msgid "Refreshing %s"
 msgstr "%s रिफ्रेश हो रहा है"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -312,11 +317,6 @@ msgstr "अन्य पैकेज प्रबंधक के बंद ह�
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "समय अवधि समाप्त"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -611,6 +611,10 @@ msgid "Ignored"
 msgstr "अनदेखी की गई"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "इंस्टॉल हेतु कारण"
 
@@ -626,7 +630,7 @@ msgstr "स्पष्ट इंस्टॉल के रूप में च�
 msgid "Licenses"
 msgstr "लाइसेंस"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "अज्ञात"
 
@@ -675,8 +679,8 @@ msgid "Install Date"
 msgstr "इंस्टॉल दिनांक"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "हस्ताक्षर"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -687,20 +691,20 @@ msgid "Optional Dependencies"
 msgstr "वैकल्पिक आश्रित पैकेज"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "आश्रित पैकेज कार्यरत करें"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "आश्रित पैकेज जाँचें"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "इन हेतु वैकल्पिक"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "प्रदान करता है"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "आश्रित पैकेज कार्यरत करें"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "आश्रित पैकेज जाँचें"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -930,8 +934,8 @@ msgid "View %s build files diff"
 msgstr "%s बिल्ड फ़ाइलों का अंतर देखें"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "रुट के रूप में पैकेज बिल्ड करना जारी"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1148,6 +1152,12 @@ msgstr "केवल अन्य पैकेज हेतु अनावश�
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "अन्य पैकेज हेतु अनावश्यक आश्रित पैकेज हटाएँ, यदि बिना पैकेज नाम के निर्दिष्ट हो तो सभी निरर्थक पैकेज हटाएँ"
@@ -1344,8 +1354,8 @@ msgstr "पुनः इंस्टॉल हेतु %s जोड़ें"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "%s से %s इंस्टॉल करें"
+msgid "Install %1$s from %2$s"
+msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"

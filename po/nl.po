@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Douwe Bootsma <d_bootsma@hotmail.com>, 2013
@@ -25,9 +25,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Dutch (http://www.transifex.com/manjarolinux/manjaro-pamac/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -302,6 +302,11 @@ msgstr "Fout"
 msgid "Refreshing %s"
 msgstr "Verversen %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -328,11 +333,6 @@ msgstr "Bezig met wachten totdat een andere pakketbeheerder afgesloten wordt"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr ""
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -627,6 +627,10 @@ msgid "Ignored"
 msgstr ""
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Installatie reden"
 
@@ -642,7 +646,7 @@ msgstr "Markeer als expliciet geïnstalleerd."
 msgid "Licenses"
 msgstr "Licenties"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -691,8 +695,8 @@ msgid "Install Date"
 msgstr "Installatie Datum"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Handtekeningen"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -703,20 +707,20 @@ msgid "Optional Dependencies"
 msgstr "Optionele afhankelijkheden"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Afhankelijkheden bouwen"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Afhankelijkheden controleren"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Optioneel voor"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Biedt"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Afhankelijkheden bouwen"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Afhankelijkheden controleren"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -946,7 +950,7 @@ msgid "View %s build files diff"
 msgstr "Bekijk %s bouw bestand verschillen"
 
 #: src/cli.vala
-msgid "Building packages as root"
+msgid "Building packages as dynamic user"
 msgstr ""
 
 #: src/cli.vala
@@ -1164,6 +1168,12 @@ msgstr ""
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr ""
@@ -1360,7 +1370,7 @@ msgstr ""
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
+msgid "Install %1$s from %2$s"
 msgstr ""
 
 #: src/snap_plugin.vala

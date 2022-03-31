@@ -1,12 +1,12 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Abidin <abidinkofficial@gmail.com>, 2020
 # Cihan Alkan <cihanalk@gmail.com>, 2018,2021
-# Demiray Muhterem <mdemiray@msn.com>, 2013-2021
+# Demiray Muhterem <mdemiray@msn.com>, 2013-2022
 # Demiray Muhterem <mdemiray@msn.com>, 2018
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # philm <philm@manjaro.org>, 2015
@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-25 21:57+0000\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-31 20:32+0000\n"
 "Last-Translator: Demiray Muhterem <mdemiray@msn.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -295,6 +295,11 @@ msgstr "Hata"
 msgid "Refreshing %s"
 msgstr "Yenileniyor %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR Depoları"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -321,11 +326,6 @@ msgstr "Diğer paket yöneticisinin kapanması ya da durması bekleniyor"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Zaman aşımı süresi doldu"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR Depoları"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -620,6 +620,10 @@ msgid "Ignored"
 msgstr "Yoksayılan"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Hiçbiri"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Kurulum Nedeni"
 
@@ -635,7 +639,7 @@ msgstr "Yüklü olarak işaretle"
 msgid "Licenses"
 msgstr "Lisanslar"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
@@ -684,8 +688,8 @@ msgid "Install Date"
 msgstr "Kurulum Tarihi"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "İmzalar"
+msgid "Validated By"
+msgstr "Onaylayan"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -696,20 +700,20 @@ msgid "Optional Dependencies"
 msgstr "Tercih Edilen Bağımlılıklar"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Bağımlılıkları Düzenle"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Bağımlılık Kontrolü"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "İsteğe Bağlı"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Sağladıkları"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Bağımlılıkları Düzenle"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Bağımlılık Kontrolü"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -939,8 +943,8 @@ msgid "View %s build files diff"
 msgstr "%s derleme dosyalarını görüntüle"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Kök olarak paket inşa et"
+msgid "Building packages as dynamic user"
+msgstr "Dinamik kullanıcı olarak paketler oluşturma"
 
 #: src/cli.vala
 #, c-format
@@ -1157,6 +1161,12 @@ msgstr "paketleri sadece başka bir paket için gerekli olmadıklarında çıkar
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "tüm hedef paketleri ve bir veya daha fazla hedef pakete bağlı olan tüm paketleri kaldırın"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "diğer paketlerin gerektirmediği bağımlılıkları kaldır, paket adı olmadan bu seçenek kullanılıyorsa tüm sahipsiz paketleri kaldır"
@@ -1353,8 +1363,8 @@ msgstr "Yeniden kurmak için %s ekleyin"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "%s'den %s yükleyin"
+msgid "Install %1$s from %2$s"
+msgstr "%2$s'den %1$s'i yükleyin"
 
 #: src/snap_plugin.vala
 msgid "No"

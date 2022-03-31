@@ -1,21 +1,21 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # BALLOON a.k.a. Fu-sen., 2015
 # ふうせん Fu-sen. | BALLOON a.k.a. Fu-sen., 2015
 # philm <philm@manjaro.org>, 2015
 # Takefumi Nagata, 2013-2018
-# UTUMI Hirosi <utuhiro78@yahoo.co.jp>, 2017-2021
+# UTUMI Hirosi <utuhiro78@yahoo.co.jp>, 2017-2022
 # David Blaszyk <david@sudomail.ne.jp>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 23:58+0000\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-30 05:55+0000\n"
 "Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
 "Language-Team: Japanese (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -105,7 +105,7 @@ msgstr "%s を削除する必要がありますが、ロックされています
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
-msgstr "AURデータベースの初期化に失敗しました"
+msgstr "AUR データベースの初期化に失敗しました"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -289,6 +289,11 @@ msgstr "エラー"
 msgid "Refreshing %s"
 msgstr "%s をアップデートしています"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -315,11 +320,6 @@ msgstr "他のパッケージマネージャが終了するのを待っていま
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "タイムアウト期限切れ"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -520,7 +520,7 @@ msgstr "パッケージの削除"
 
 #: src/installer.vala src/cli.vala
 msgid "Build packages from AUR and install them with their dependencies"
-msgstr "AURからパッケージをビルドし、依存パッケージとともにインストールする"
+msgstr "AUR からパッケージをビルドし、依存パッケージとともにインストールする"
 
 #: src/installer.vala src/cli.vala
 msgid "package(s)"
@@ -589,7 +589,7 @@ msgstr "保留"
 
 #: src/manager_window.vala
 msgid "All"
-msgstr "全て"
+msgstr "すべて"
 
 #: src/manager_window.vala
 msgid "Explicitly installed"
@@ -612,6 +612,10 @@ msgid "Ignored"
 msgstr "無視"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "なし"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "インストール理由"
 
@@ -627,7 +631,7 @@ msgstr "明示的なインストールとしてマーク"
 msgid "Licenses"
 msgstr "ライセンス"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "不明"
 
@@ -676,8 +680,8 @@ msgid "Install Date"
 msgstr "インストール日"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "署名"
+msgid "Validated By"
+msgstr "次で検証済み"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -688,20 +692,20 @@ msgid "Optional Dependencies"
 msgstr "オプション"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "作成時の依存"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "依存を確認"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "以下のオプション"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "提供"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "作成時の依存"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "依存を確認"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -930,8 +934,8 @@ msgid "View %s build files diff"
 msgstr "%s ビルドファイルの差分を見る"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "root としてパッケージをビルドする"
+msgid "Building packages as dynamic user"
+msgstr "動的ユーザーとしてパッケージをビルドする"
 
 #: src/cli.vala
 #, c-format
@@ -976,11 +980,11 @@ msgstr "リポジトリ内のパッケージのみを検索"
 
 #: src/cli.vala
 msgid "also search in AUR"
-msgstr "AURも検索する"
+msgstr "AUR も検索する"
 
 #: src/cli.vala
 msgid "do not search in AUR"
-msgstr "AURを検索しない"
+msgstr "AUR を検索しない"
 
 #: src/cli.vala
 msgid ""
@@ -1029,13 +1033,13 @@ msgstr "リポジトリに存在しないパッケージのリスト"
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr "指定されたグループのパッケージを全てリストにする。グループが指定されていない場合は全てのグループをリストにする"
+msgstr "指定されたグループのパッケージをすべてリストにする。グループが指定されていない場合はすべてのグループをリストにする"
 
 #: src/cli.vala
 msgid ""
 "list all packages available in the given repos, if no repo is given list all"
 " repos"
-msgstr "指定されたリポジトリで利用できるパッケージを全てリストにする。リポジトリが指定されていない場合は全てのリポジトリをリストにする"
+msgstr "指定されたリポジトリで利用できるパッケージをすべてリストにする。リポジトリが指定されていない場合はすべてのリポジトリをリストにする"
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
@@ -1043,7 +1047,7 @@ msgstr "パッケージに属するファイルのリスト"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
-msgstr "AURからパッケージのビルドファイルをクローンまたは同期"
+msgstr "AUR からパッケージのビルドファイルをクローンまたは同期"
 
 #: src/cli.vala
 msgid "dir"
@@ -1096,11 +1100,11 @@ msgstr "何が行われるかを表示するだけで、トランザクション
 
 #: src/cli.vala
 msgid "do not clone build files from AUR, only use local files"
-msgstr "AURからビルドファイルをクローンせず、ローカルファイルのみを使用する"
+msgstr "AUR からビルドファイルをクローンせず、ローカルファイルのみを使用する"
 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
-msgstr "全ての確認メッセージを無視する"
+msgstr "すべての確認メッセージを無視する"
 
 #: src/cli.vala
 msgid "glob"
@@ -1120,15 +1124,15 @@ msgstr "コンフリクトするファイルを上書きする。カンマ区切
 
 #: src/cli.vala
 msgid "download all packages but do not install/upgrade anything"
-msgstr "全てのパッケージをダウンロードするがインストール/アップグレードは行わない"
+msgstr "すべてのパッケージをダウンロードするがインストール/アップグレードは行わない"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
-msgstr "インストールされる全てのパッケージを依存としてマーク"
+msgstr "インストールされるすべてのパッケージを依存としてマーク"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr "全てのパッケージを明示的にインストールしたものとしてマーク"
+msgstr "すべてのパッケージを明示的にインストールしたものとしてマーク"
 
 #: src/cli.vala
 msgid "check for updates"
@@ -1148,9 +1152,15 @@ msgstr "他のパッケージから必要とされていないもののみ削除
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "すべてのターゲットパッケージと、ターゲットパッケージに依存するすべてのパッケージを削除する"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
-msgstr "他のパッケージから必要とされていないパッケージを削除する。パッケージ名を指定せずにこのオプションを使うと、孤立したパッケージを全て削除する"
+msgstr "他のパッケージから必要とされていないパッケージを削除する。パッケージ名を指定せずにこのオプションを使うと、孤立したパッケージをすべて削除する"
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
@@ -1176,11 +1186,11 @@ msgstr "ビルドディレクトリ (--devel と一緒に使う)。ディレク�
 
 #: src/cli.vala
 msgid "also check updates in AUR"
-msgstr "AURパッケージのアップデートも確認する"
+msgstr "AUR パッケージのアップデートも確認する"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr "AURのアップデートを確認しない"
+msgstr "AUR のアップデートを確認しない"
 
 #: src/cli.vala
 msgid "only print one line per update"
@@ -1212,11 +1222,11 @@ msgstr "パッケージのダウングレードを無効にする"
 
 #: src/cli.vala
 msgid "also upgrade packages installed from AUR"
-msgstr "AURからインストールしたパッケージもアップグレードする"
+msgstr "AUR からインストールしたパッケージもアップグレードする"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr "AURからインストールされたパッケージをアップグレードしない"
+msgstr "AUR からインストールされたパッケージをアップグレードしない"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
@@ -1253,7 +1263,7 @@ msgstr "アンインストール済みのパッケージのみを対象とする
 msgid ""
 "remove all build files, the build directory is the one specified in "
 "pamac.conf"
-msgstr "全てのビルドファイルを削除します。ビルドディレクトリはpamac.confで指定されているものです"
+msgstr "すべてのビルドファイルを削除します。ビルドディレクトリは pamac.conf で指定されているものです"
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
@@ -1261,7 +1271,7 @@ msgstr "ファイルを削除せず、候補パッケージの検索のみを行
 
 #: src/cli.vala
 msgid "also display all files names"
-msgstr "全てのファイル名も表示する"
+msgstr "すべてのファイル名も表示する"
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
@@ -1323,7 +1333,7 @@ msgstr "%s をインストールに追加する"
 #: src/cli.vala
 #, c-format
 msgid "%s is only available from AUR"
-msgstr "%s はAURからのみ利用できます"
+msgstr "%s は AUR からのみ利用できます"
 
 #: src/cli.vala
 #, c-format
@@ -1333,7 +1343,7 @@ msgstr[0] "グループ %2$s には %1$u のメンバーがいます"
 
 #: src/cli.vala
 msgid "all"
-msgstr "全て"
+msgstr "すべて"
 
 #: src/cli.vala
 #, c-format
@@ -1342,8 +1352,8 @@ msgstr "%s を再インストールに追加する"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "%s を %s からインストールする"
+msgid "Install %1$s from %2$s"
+msgstr "%1$s を %2$s からインストール"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1399,15 +1409,15 @@ msgstr "検索"
 
 #: resources/manager_window.ui
 msgid "Remove all"
-msgstr "全て削除"
+msgstr "すべて削除"
 
 #: resources/manager_window.ui
 msgid "Install all"
-msgstr "全てインストール"
+msgstr "すべてインストール"
 
 #: resources/manager_window.ui
 msgid "Ignore all"
-msgstr "全て無視"
+msgstr "すべて無視"
 
 #: resources/manager_window.ui
 msgid "Sort by"
@@ -1435,7 +1445,7 @@ msgstr "カテゴリ"
 
 #: resources/manager_window.ui
 msgid "Browse"
-msgstr "閲覧"
+msgstr "ブラウズ"
 
 #: resources/manager_window.ui
 msgid "Launch"
@@ -1559,11 +1569,11 @@ msgstr "サードパーティー"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AURはコミュニティがメンテナンスしているリポジトリです。そのため潜在的なリスクや問題があります。\nAURを使用する場合はビルドプロセスを熟知している必要があります。"
+msgstr "AUR はコミュニティがメンテナンスしているリポジトリです。そのため潜在的なリスクや問題があります。\nAUR を使用する場合はビルドプロセスを熟知している必要があります。"
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
-msgstr "AURサポートを有効にする"
+msgstr "AUR サポートを有効にする"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"

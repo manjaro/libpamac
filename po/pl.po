@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Adrian Grzemski <adrian.grzemski@gmail.com>, 2017
@@ -10,14 +10,15 @@
 # Daniel Napora <napcok@gmail.com>, 2016-2020
 # Dominik “Devhost97” G <devhost97@gmail.com>, 2016
 # FadeMind <fademind@gmail.com>, 2013
+# cooky, 2022
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # 6d4bfc21a6a6ee066757ddb3507f70b2_37d3db3 <85058123d41b6aff08a61620f76d019e_92355>, 2013
 # 6d4bfc21a6a6ee066757ddb3507f70b2_37d3db3 <85058123d41b6aff08a61620f76d019e_92355>, 2013
-# Marcin Mikołajczak <me@mkljczk.pl>, 2017
-# Marcin Mikołajczak <me@mkljczk.pl>, 2017
+# marcin mikołajczak <me@mkljczk.pl>, 2017
+# marcin mikołajczak <me@mkljczk.pl>, 2017
 # Maciej Dems <maciej.dems@p.lodz.pl>, 2021
-# Marcin Mikołajczak <me@mkljczk.pl>, 2018
-# Marcin Mikołajczak <me@mkljczk.pl>, 2016
+# marcin mikołajczak <me@mkljczk.pl>, 2018
+# marcin mikołajczak <me@mkljczk.pl>, 2016
 # Michał Nowakowski <nowakowski@offshore.rocks>, 2020
 # Piotr Komur <pkomur@gmail.com>, 2018-2019
 # Piotr Miller <nwg.piotr@gmail.com>, 2018
@@ -31,9 +32,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-02-11 19:43+0000\n"
+"Last-Translator: cooky\n"
 "Language-Team: Polish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,7 +84,7 @@ msgstr "pakiet %s nie ma poprawnej architektury"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "nie można spełnić zależności '%1$s' wymaganych przez %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -93,7 +94,7 @@ msgstr "Uwaga"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "instalacja %1$s (%2$s) uszkadza zależności '%3$s' wymagane przez %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -108,12 +109,12 @@ msgstr "Jeśli możliwe, usuń %s i spróbuj ponownie"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "usunięcie %1$s uszkadza zależności '%2$s' wymagane przez %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s i %2$s są w konflikcie"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -140,17 +141,17 @@ msgstr "Operacja została anulowana"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s występuje zarówno w %2$s i w %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s już występuje w systemie plików (należącym do%3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s już występuje w systemie plików"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -248,7 +249,7 @@ msgstr "Sprawdzanie dostępnego miejsca na dysku"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s opcjonalnie wymaga %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -266,12 +267,12 @@ msgstr "Pobieranie wymaganych kluczy"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s zainstalowano jako %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s zainstalowano jako %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -312,6 +313,11 @@ msgstr "Błąd"
 msgid "Refreshing %s"
 msgstr "Odświeżanie %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "Repozytoria użytkowników Arch"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -338,11 +344,6 @@ msgstr "Oczekiwanie na zakończenie innego menedżera pakietów"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Limit czasu upłynął"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "Repozytoria użytkowników Arch"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -402,7 +403,7 @@ msgstr "Nie ma nic do zrobienia"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: ignorowanie aktualizacji pakietu (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -442,7 +443,7 @@ msgstr "_Anuluj"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "Klucz PGP %1$s jest potrzebny do weryfikacji %2$s plików źródłowych"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -508,7 +509,7 @@ msgstr "Zapisz"
 #: src/transaction-gtk.vala resources/progress_dialog.ui
 #: resources/history_dialog.ui
 msgid "_Close"
-msgstr "Zamknij"
+msgstr "_Zamknij"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
@@ -614,7 +615,7 @@ msgstr[3] "Oczekuje %u działań"
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "Oczekujący"
 
 #: src/manager_window.vala
 msgid "All"
@@ -641,6 +642,10 @@ msgid "Ignored"
 msgstr "Ignorowane"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Brak"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Przyczyna instalacji"
 
@@ -656,7 +661,7 @@ msgstr "Zaznacz jako zainstalowany bezpośrednio"
 msgid "Licenses"
 msgstr "Licencje"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Nieznany"
 
@@ -705,8 +710,8 @@ msgid "Install Date"
 msgstr "Data instalacji"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Podpisy"
+msgid "Validated By"
+msgstr "Zatwierdzono przez"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -717,20 +722,20 @@ msgid "Optional Dependencies"
 msgstr "Opcjonalne zależności"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Zależności budowania"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Sprawdź zależności"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Opcjonalnie dla"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Dostarcza"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Zależności budowania"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Sprawdź zależności"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -962,8 +967,8 @@ msgid "View %s build files diff"
 msgstr "Podgląd różnic plików budowania %s"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Budowanie pakietów jako root"
+msgid "Building packages as dynamic user"
+msgstr "Budowanie pakietów jako użytkownik dynamiczny"
 
 #: src/cli.vala
 #, c-format
@@ -1180,6 +1185,12 @@ msgstr "usuń pakiety tylko wtedy, gdy nie są wymagane przez inne pakiety"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "usuń wszystkie pakiety docelowe, jak również wszystkie pakiety, które zależą od jednego lub wielu pakietów docelowych"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "usuń zależności, które nie są wymagane przez inne pakiety, jeśli ta opcja jest użyta bez podania nazwy pakietu - usunie wszystkie osierocone pakiety"
@@ -1364,10 +1375,10 @@ msgstr "%s jest dostępny tylko w AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Jest %1$u członek grupy %2$s"
+msgstr[1] "Jest %1$u członków grupy %2$s"
+msgstr[2] "Jest %1$u członków grupy %2$s"
+msgstr[3] "Jest %1$u członków grupy %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1380,8 +1391,8 @@ msgstr "Dodaj %s do przeinstalowania"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Zainstaluj %s z %s"
+msgid "Install %1$s from %2$s"
+msgstr "Zainstaluj %1$s z %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"

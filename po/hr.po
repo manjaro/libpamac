@@ -1,11 +1,11 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Lovro Kudelić <lovro.kudelic@outlook.com>, 2016
-# Lovro Kudelić <lovro.kudelic@outlook.com>, 2016-2021
+# Lovro Kudelić <lovro.kudelic@outlook.com>, 2016-2022
 # philm <philm@manjaro.org>, 2015
 # ssik64 <ssik64@gmail.com>, 2014
 # ssik64 <ssik64@gmail.com>, 2014
@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-26 19:42+0000\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-27 21:27+0000\n"
 "Last-Translator: Lovro Kudelić <lovro.kudelic@outlook.com>\n"
 "Language-Team: Croatian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/hr/)\n"
 "MIME-Version: 1.0\n"
@@ -292,6 +292,11 @@ msgstr "Greška"
 msgid "Refreshing %s"
 msgstr "Osvježavam %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -318,11 +323,6 @@ msgstr "Čekam na završetak drugog upravitelja paketa"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Timeout je istekao"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -619,6 +619,10 @@ msgid "Ignored"
 msgstr "Ignorirano"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Nijedan"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Razlog za instalaciju"
 
@@ -634,7 +638,7 @@ msgstr "Označi kao eksplicitno instalirano"
 msgid "Licenses"
 msgstr "Licence"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Nepoznato"
 
@@ -683,8 +687,8 @@ msgid "Install Date"
 msgstr "Datum instalacije"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Potpisi"
+msgid "Validated By"
+msgstr "Potvrđeno od strane"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -695,20 +699,20 @@ msgid "Optional Dependencies"
 msgstr "Neobavezne ovisnosti"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Ovisnosti za stvaranje paketa"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Provjera ovisnosti"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Neobavezno za"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Pruža"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Ovisnosti za stvaranje paketa"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Provjera ovisnosti"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -939,8 +943,8 @@ msgid "View %s build files diff"
 msgstr "Pogledaj %s razlike datoteka za stvaranje paketa"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Stvaram pakete kao root"
+msgid "Building packages as dynamic user"
+msgstr "Stvaram pakete kao dinamički korisnik"
 
 #: src/cli.vala
 #, c-format
@@ -1157,6 +1161,12 @@ msgstr "ukloni pakete samo ako ih niti jedan drugi paket ne zahtijeva"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "ukloniti sve ciljne pakete, kao i sve pakete koji ovise o jednom ili više ciljnih paketa"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "ukloni ovisnosti koje drugi paketi ne zahtijevaju, ako se ta mogućnost upotrebljava bez naziva paketa ukloni sve nepotrebne pakete"
@@ -1355,8 +1365,8 @@ msgstr "Dodaj %s za ponovnu instalaciju"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Instaliraj %s iz %s"
+msgid "Install %1$s from %2$s"
+msgstr "Instaliraj %1$s iz %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"

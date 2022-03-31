@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # a24aea7ffc84d2433b80f99f2fbaaa74_064c1cf <f35716e87b48e4f0b82a420d01c955ad_139079>, 2014
@@ -9,7 +9,7 @@
 # Bill <billgameraek@gmail.com>, 2020
 # Frustrated Penguin <frpenguin@protonmail.com>, 2020
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
-# Ioannis LM, 2021
+# Ioannis LM, 2021-2022
 # kouros kouros <kormikg@yahoo.gr>, 2016-2017,2019-2020
 # Lefteris Andrianakis <lefterisandrianakis@gmail.com>, 2019
 # Nikos Lakiotakis <nikos.lakiotakis@protonmail.com>, 2018
@@ -24,9 +24,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/el_GR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +76,7 @@ msgstr "το πακέτο %s δεν έχει την σωστή αρχιτεκτ�
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "αδυναμία να ικανοποιηθεί η εξάρτηση '%1$s' που απαιτείται από το %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -86,7 +86,7 @@ msgstr "Προειδοποίηση"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "η εγκατάσταση του%1$s (%2$s) σπάει την εξάρτηση '%3$s' που απαιτείται από το %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -101,12 +101,12 @@ msgstr "αν γίνεται, αφαίρεση του %s και επανάληψ�
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "η αφαίρεση του %1$s σπάει την εξάρτηση '%2$s' που απαιτείται από το%3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "Το %1$s και το  %2$s είναι σε διένεξη"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -133,17 +133,17 @@ msgstr "Η διεργασία ακυρώθηκε"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "Το %1$s υπάρχει στο %2$s και στο %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: το %2$s υπάρχει ήδη στο σύστημα αρχείων (ανήκει στο %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: το %2$s υπάρχει ήδη στο σύστημα αρχείων"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -241,7 +241,7 @@ msgstr "Έλεγχος ελεύθερου χώρου στον δίσκο"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "Το %1$s απαιτεί προαιρετικά το %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -259,12 +259,12 @@ msgstr "Μεταφόρτωση των απαιτούμενων κλειδιών"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "Το %1$s εγκαταστάθηκε ως %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "Το %1$s εγκαταστάθηκε ως %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -301,6 +301,11 @@ msgstr "Σφάλμα"
 msgid "Refreshing %s"
 msgstr "Ανανέωση %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -327,11 +332,6 @@ msgstr "Αναμονή τερματισμού ενός άλλου διαχειρ
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Το χρονικό όριο έχει λήξει"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -391,7 +391,7 @@ msgstr "Δεν υπάρχει τίποτε να γίνει"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: αγνόηση αναβάθμισης πακέτου (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -431,7 +431,7 @@ msgstr "_Άκυρο"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "Το κλειδί PGP %1$s απαιτείται για να επικυρώσει τα πηγαία αρχεία %2$s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -626,6 +626,10 @@ msgid "Ignored"
 msgstr "Αγνοημένα"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Λόγος για εγκατάσταση"
 
@@ -641,7 +645,7 @@ msgstr "Σήμανση ως ρητώς εγκατεστημένο"
 msgid "Licenses"
 msgstr "Άδειες"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Άγνωστο"
 
@@ -690,8 +694,8 @@ msgid "Install Date"
 msgstr "Ημερομηνία εγκατάστασης"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Υπογραφές"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -702,20 +706,20 @@ msgid "Optional Dependencies"
 msgstr "Προαιρετικές εξαρτήσεις"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Δημιουργία εξαρτήσεων"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Έλεγχος εξαρτήσεων"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Προαιρετικό για"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Παρέχει"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Δημιουργία εξαρτήσεων"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Έλεγχος εξαρτήσεων"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -945,8 +949,8 @@ msgid "View %s build files diff"
 msgstr "Εμφάνιση διαφορών αρχείων δόμησης %s"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Δόμηση πακέτων σαν διαχειριστής"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1163,6 +1167,12 @@ msgstr "αφαίρεση πακέτων μόνο εάν δεν απαιτούν�
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "αφαίρεση εξαρτήσεων που δεν απαιτούνται από άλλα πακέτα, αν δεν δίνεται όνομα πακέτου, αφαίρεση όλων των ορφανών"
@@ -1359,8 +1369,8 @@ msgstr "Προσθήκη του %s για επανεγκατάσταση"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Εγκατάσταση %s από %s"
+msgid "Install %1$s from %2$s"
+msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"

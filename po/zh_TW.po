@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Hsiu-Ming Chang <cges30901@gmail.com>, 2016
@@ -12,13 +12,13 @@
 # Hsiu-Ming Chang <cges30901@gmail.com>, 2016
 # 黃柏諺 <s8321414@gmail.com>, 2014-2019
 # 黃柏諺 <s8321414@gmail.com>, 2013-2014
-# 黃柏諺 <s8321414@gmail.com>, 2019-2021
+# 黃柏諺 <s8321414@gmail.com>, 2019-2022
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-18 01:24+0000\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-26 01:46+0000\n"
 "Last-Translator: 黃柏諺 <s8321414@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -292,6 +292,11 @@ msgstr "錯誤"
 msgid "Refreshing %s"
 msgstr "正在更新 %s 內容"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -318,11 +323,6 @@ msgstr "正在等待其他套件管理員結束"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "已到逾時"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -615,6 +615,10 @@ msgid "Ignored"
 msgstr "已忽略"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "無"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "安裝原因"
 
@@ -630,7 +634,7 @@ msgstr "標示為單獨指定安裝"
 msgid "Licenses"
 msgstr "許可證"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "未知的"
 
@@ -679,8 +683,8 @@ msgid "Install Date"
 msgstr "安裝日期"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "數位簽章"
+msgid "Validated By"
+msgstr "驗證由"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -691,20 +695,20 @@ msgid "Optional Dependencies"
 msgstr "可選相依關係"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "組建時相依關係"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "檢查用依賴關係"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "為後面這些軟體包的可選相依"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "提供"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "組建時相依關係"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "檢查用依賴關係"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -933,8 +937,8 @@ msgid "View %s build files diff"
 msgstr "檢視 %s 組建檔案差異"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "以 root 身份建置軟體包"
+msgid "Building packages as dynamic user"
+msgstr "以動態使用者身份建構軟體包"
 
 #: src/cli.vala
 #, c-format
@@ -1151,6 +1155,12 @@ msgstr "僅在沒有被任何其他軟體包需要時才移除軟體包"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "移除所有目標軟體包，以及所有依賴於一個或多個目標軟體包的軟體包"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "移除不再被其他軟體包所需要的相依關係，若此選項沒有與軟體包名稱一同使用，則會移除所有孤兒軟體包"
@@ -1345,8 +1355,8 @@ msgstr "新增 %s 以重新安裝"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "安裝 %s 從 %s"
+msgid "Install %1$s from %2$s"
+msgstr "安裝 %1$s 從 %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"

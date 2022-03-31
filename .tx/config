@@ -1,9 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[manjaro-pamac.pamacpot]
+[o:manjarolinux:p:manjaro-pamac:r:pamacpot]
 file_filter = po/<lang>.po
 source_file = po/pamac.pot
 source_lang = en
-type = PO
-
+type        = PO

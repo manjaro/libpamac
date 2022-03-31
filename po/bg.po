@@ -1,10 +1,10 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# Galin Iskrenov <loot270@abv.bg>, 2013-2021
+# Galin Iskrenov <loot270@abv.bg>, 2013-2022
 # Georgi Georgiev (Жоро) <g.georgiev.shumen@gmail.com>, 2014
 # Georgi Georgiev (Жоро) <g.georgiev.shumen@gmail.com>, 2014,2016,2018
 # Galin Iskrenov <loot270@abv.bg>, 2013
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,7 +67,7 @@ msgstr "пакета %s няма валидна архитектура"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "не може да се изпълни зависимостта '%1$s' нужна на %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -77,7 +77,7 @@ msgstr "Внимание"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "инсталиране %1$s (%2$s) прекъсващи зависимости '%3$s' нужни на %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -92,12 +92,12 @@ msgstr "ако е възможно, премахни %s и опитай пак"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "премахване %1$s прекъсващи зависимости '%2$s' необходими на %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s и %2$s са в конфликт"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -124,17 +124,17 @@ msgstr "Транзакцията прекратена"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s съществува в %2$s и в %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s вече съществува в файлова система (собственост на %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s вече съществува във файловата система"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -232,7 +232,7 @@ msgstr "Проверка за налично пространство на ди�
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s като опция изисква %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -250,12 +250,12 @@ msgstr "Сваляне на нужните ключове"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s инсталиран като %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s инсталиран като %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -292,6 +292,11 @@ msgstr "Грешка"
 msgid "Refreshing %s"
 msgstr "Обновяване на %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -318,11 +323,6 @@ msgstr "Изчакване да завърши друг пакетен дисп�
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Времето изтече"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -382,7 +382,7 @@ msgstr "Нищо за правене"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: игнориране надграждането на пакета (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -422,7 +422,7 @@ msgstr "_Отказ"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "PGP ключ %1$s е нужен за потвърждаване на сорсовия файл %2$s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -617,6 +617,10 @@ msgid "Ignored"
 msgstr "Пренебрегнат"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Причина за инсталиране"
 
@@ -632,7 +636,7 @@ msgstr "Отбелязан като изрично инсталиран:"
 msgid "Licenses"
 msgstr "Лицензи"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Непознат"
 
@@ -681,8 +685,8 @@ msgid "Install Date"
 msgstr "Дата на инсталиране"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Подписи"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -693,20 +697,20 @@ msgid "Optional Dependencies"
 msgstr "Допълнителни зависимости"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Направи зависимости"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Провери зависимости"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Допълнително за"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Осигурява"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Направи зависимости"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Провери зависимости"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -936,8 +940,8 @@ msgid "View %s build files diff"
 msgstr "Преглед %s разлики в изграждащи файлове"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Пакети за изграждане като root"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1154,6 +1158,12 @@ msgstr "премахване на пакети, само ако те не се �
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "премахнете зависимости, които не се изискват от други пакети, ако тази опция се използва без име на пакет, се премахват всички зависимости"
@@ -1336,8 +1346,8 @@ msgstr "%s е достъпен само от AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Има %1$u члена в група %2$s"
+msgstr[1] "Има %1$u члена в група %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1350,8 +1360,8 @@ msgstr "Добави %s за преинсталиране"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Инсталирай %s от %s"
+msgid "Install %1$s from %2$s"
+msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"

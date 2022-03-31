@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # António Correia, 2014
@@ -11,7 +11,7 @@
 # Carlos Reis <reiscarlos1976@gmail.com>, 2015
 # Carlos Reis <reiscarlos1976@gmail.com>, 2015
 # Fábio Caramelo <fabiocaramelo18@gmail.com>, 2017-2018
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2014-2016,2019-2021
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2014-2016,2019-2022
 # Igor Diogo <idgr2001@protonmail.com>, 2018
 # José Vieira <jvieira33@sapo.pt>, 2017,2019
 # maique madeira <maique@xanato.net>, 2018
@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-18 21:02+0000\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-26 16:12+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -299,6 +299,11 @@ msgstr "Erro"
 msgid "Refreshing %s"
 msgstr "A atualizar %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -325,11 +330,6 @@ msgstr "Esperando que outro gestor de pacotes termine"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "O tempo atribuído expirou"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -624,6 +624,10 @@ msgid "Ignored"
 msgstr "Ignorado"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Nenhum"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Motivo da instalação"
 
@@ -639,7 +643,7 @@ msgstr "Marcar como explicitamente instalado"
 msgid "Licenses"
 msgstr "Licenças"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -688,8 +692,8 @@ msgid "Install Date"
 msgstr "Data de instalação"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Assinaturas"
+msgid "Validated By"
+msgstr "Validado por"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -700,20 +704,20 @@ msgid "Optional Dependencies"
 msgstr "Dependências opcionais"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Estabelecer Dependências"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Verificar dependências"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Opcional para"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Fornece"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Estabelecer Dependências"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Verificar dependências"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -943,8 +947,8 @@ msgid "View %s build files diff"
 msgstr "Ver %s diferenças dos ficheiros de compilação"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "A compilar pacotes como root"
+msgid "Building packages as dynamic user"
+msgstr "A compilar pacotes como utilizador dinâmico"
 
 #: src/cli.vala
 #, c-format
@@ -1161,6 +1165,12 @@ msgstr "remover pacotes apenas se não forem requeridos por quaisquer outros pac
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "remover todos os pacotes referidos, assim como todos os pacotes que dependem de um ou mais pacotes referido"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "remover dependências que não são requeridas por outros pacotes, se esta opção for usada sem o nome do pacote remove todos os órfãos"
@@ -1357,8 +1367,8 @@ msgstr "Adicionar %s para reinstalação"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Instalar %s a partir de %s"
+msgid "Install %1$s from %2$s"
+msgstr "Instalar %1$s a partir de %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"

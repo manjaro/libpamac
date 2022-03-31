@@ -1,26 +1,26 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # John Smith <aboutafteragain@gmail.com>, 2015
 # John Smith <aboutafteragain@gmail.com>, 2015
-# Gontzal M. Pujana <juchuf@gmail.com>, 2020
-# Gontzal M. Pujana <juchuf@gmail.com>, 2018-2019,2021
+# Thadah D. Denyse <juchuf@gmail.com>, 2020
+# Thadah D. Denyse <juchuf@gmail.com>, 2018-2019,2021
 # Kiibakun, 2020
 # Osoitz <oelkoro@gmail.com>, 2015-2017
 # Porrumentzio <porrumentzio@riseup.net>, 2021
 # Sergio Moreno <semosa@gmail.com>, 2014
 # Sergio Moreno <semosa@gmail.com>, 2014
-# Gontzal M. Pujana <juchuf@gmail.com>, 2020-2021
+# Thadah D. Denyse <juchuf@gmail.com>, 2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Basque (http://www.transifex.com/manjarolinux/manjaro-pamac/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -295,6 +295,11 @@ msgstr "Errorea"
 msgid "Refreshing %s"
 msgstr "%s freskatzen"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -321,11 +326,6 @@ msgstr "Beste pakete-kudeatzaile bat ixtearen zain"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Denbora-muga iraungi da"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -620,6 +620,10 @@ msgid "Ignored"
 msgstr "Ezikusiak"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Instalatzeko arrazoia"
 
@@ -635,7 +639,7 @@ msgstr "Markatu esplizituki instalatutako gisa"
 msgid "Licenses"
 msgstr "Lizentziak"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Ezezaguna"
 
@@ -684,8 +688,8 @@ msgid "Install Date"
 msgstr "Instalazio data"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Sinadurak"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -696,20 +700,20 @@ msgid "Optional Dependencies"
 msgstr "Aukerazko menpekotasunak"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Konpilatu menpekotasunak"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Egiaztatu menpekotasunak"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Honentzat aukerazkoa"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Hornitzen du"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Konpilatu menpekotasunak"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Egiaztatu menpekotasunak"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -939,8 +943,8 @@ msgid "View %s build files diff"
 msgstr "Ikusi %s(r)en eraiketa fitxategien diff"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Paketeak root gisa eraikitzen"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1157,6 +1161,12 @@ msgstr "kendu paketeak beste pakete batzuengatik beharrezkoak ez badira soilik"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "kendu beste paketeek beharrezko ez dituzten menpekotasunak, aukera hau pakete izen gabe erabiltzen bada kendu umezurtz guztiak"
@@ -1353,8 +1363,8 @@ msgstr "Gehitu %s berriro instalatzeko"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Instalatu %s %s(r)etik"
+msgid "Install %1$s from %2$s"
+msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"

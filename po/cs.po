@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # halfark <vojtechprecechtel@gmail.com>, 2014,2016
@@ -13,16 +13,17 @@
 # pavelrz, 2017
 # philm <philm@manjaro.org>, 2015
 # Scibex <kroupa@wvw.cz>, 2013
-# Tomáš Marhoun <tmarhoun@gmail.com>, 2020-2021
+# Tomáš Kvapil <thomickcz@gmail.com>, 2022
+# Tomáš Marhoun <tmarhoun@gmail.com>, 2020-2022
 # Vendula Durakova, 2017-2018
 # halfark <vojtechprecechtel@gmail.com>, 2014,2016
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-02-07 10:43+0000\n"
+"Last-Translator: Tomáš Kvapil <thomickcz@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/manjarolinux/manjaro-pamac/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -72,7 +73,7 @@ msgstr "balíček %s nemá platnou architekturu"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "nesplněná závislost '%1$s' požadovaná %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -82,7 +83,7 @@ msgstr "Varování"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "instalace %1$s (%2$s) rozbíjí závislost '%3$s' kterou požaduje %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -97,12 +98,12 @@ msgstr "pokud možno, odstraňte %s a opakujte"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "odstranění %1$s rozbijí závislost '%2$s' kterou požaduje %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s a %2$s jsou v konfliktu"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -129,17 +130,17 @@ msgstr "Transakce zrušena"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s je v %2$s a %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s již v souborovém systému existuje (vlastní je %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s již v souborovém systému existuje"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -237,7 +238,7 @@ msgstr "Kontrola dostupného místa na disku"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s volitelně vyžaduje %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -255,12 +256,12 @@ msgstr "Stahování požadovaných klíčů"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s instalováno jako %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s instalováno jako %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -301,6 +302,11 @@ msgstr "Chyba"
 msgid "Refreshing %s"
 msgstr "Obnovování %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -327,11 +333,6 @@ msgstr "Čekání na ukončení jiného správce balíčků"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Vypršel časový limit"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -391,7 +392,7 @@ msgstr "Není co dělat"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: ignoruje aktualizaci balíčku (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -431,7 +432,7 @@ msgstr "_Zrušit"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "PGP klíč %1$s je třeba k ověření %2$s zdrojových souborů"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -630,6 +631,10 @@ msgid "Ignored"
 msgstr "Ignorováno"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr "Žádný"
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Důvod instalace"
 
@@ -645,7 +650,7 @@ msgstr "Označit jako nainstalované"
 msgid "Licenses"
 msgstr "Licence"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Neznámý"
 
@@ -694,8 +699,8 @@ msgid "Install Date"
 msgstr "Datum instalace"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Podpisy"
+msgid "Validated By"
+msgstr "Ověřil"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -706,20 +711,20 @@ msgid "Optional Dependencies"
 msgstr "Volitelné závislosti"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Závislosti pro sestavení"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Zkontrolovat závislosti"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Doplňky pro"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Obsahuje"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Závislosti pro sestavení"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Zkontrolovat závislosti"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -951,8 +956,8 @@ msgid "View %s build files diff"
 msgstr "Zobrazit %s konfigurační soubory diff"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Sestavování balíčků jako root"
+msgid "Building packages as dynamic user"
+msgstr "Sestavování balíčků jako dynamický uživatel"
 
 #: src/cli.vala
 #, c-format
@@ -1169,6 +1174,12 @@ msgstr "odstranit balíčky pouze pokud nejsou vyžadovány jinými balíčky"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr "odstraní všechny cílové balíčky a také všechny balíčky, které závisí na jednom nebo více cílových balíčcích"
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "odstranit závislosti, které nejsou potřebné ostatními balíčky; pokud je tato možnost použita bez názvu balíčku, odstranit všechny nepotřebné balíčky"
@@ -1353,10 +1364,10 @@ msgstr "%s je dostupný pouze v AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%1$u člen je ve skupině %2$s"
+msgstr[1] "%1$u členů je ve skupině %2$s"
+msgstr[2] "%1$u členů je ve skupině %2$s"
+msgstr[3] "%1$u členy jsou ve skupině %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1369,8 +1380,8 @@ msgstr "Přidat %s k přeinstalaci"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Instalovat %s z %s"
+msgid "Install %1$s from %2$s"
+msgstr "Instalovat %1$s z %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"

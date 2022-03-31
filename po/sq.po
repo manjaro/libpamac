@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Agron Selimaj <as9902613@gmail.com>, 2020
@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Albanian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sq/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +63,7 @@ msgstr "paketa %s nuk ka një arkitekturë të vlefshme"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "nuk mundi të plotësojë varësinë '%1$s' e kërkuar nga %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -73,7 +73,7 @@ msgstr "Paralajmërim"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "instalimi i %1$s(%2$s) thyen varësinë '%3$s' që kërkohet nga %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -88,12 +88,12 @@ msgstr "nëse është e mundur, hiq %s dhe riprovoni"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "heqja e %1$s thyen varësinë '%2$s' e kërkuar nga %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s dhe %2$s janë në konflikt"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -120,17 +120,17 @@ msgstr "Transaksioni u anulua"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s ekziston në të dy %2$s dhe %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s ekzistojnë tashmë në sistemin e skedarëve (në pronësi të %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s:%2$s ekzistojnë tashmë në sistemin e skedarëve"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -228,7 +228,7 @@ msgstr "Duke kontrolluar hapësirën në dispozicion të diskut"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s ka varësi opsionale %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -246,12 +246,12 @@ msgstr "Duke shkarkuar çelësat e kërkuara"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s instaluar si %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s instaluar si %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -288,6 +288,11 @@ msgstr "Gabim"
 msgid "Refreshing %s"
 msgstr "Duke rifreskuar %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -314,11 +319,6 @@ msgstr "Duke pritur që një tjetër menaxher paketash të largohet"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "koha e ndërprerjes skadoi"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -378,7 +378,7 @@ msgstr "Asgjë për të bërë"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: duke injoruar përmirësimin e paketës (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -418,7 +418,7 @@ msgstr "_Fshij"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "Çelësi PGP %1$s nevojitet për të verifikuar %2$s skedarët burimor"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -613,6 +613,10 @@ msgid "Ignored"
 msgstr "Injoruar"
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Arsyeja e Instalimit"
 
@@ -628,7 +632,7 @@ msgstr "Shëno si i instaluar veçmas"
 msgid "Licenses"
 msgstr "Licencat"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "I panjohur"
 
@@ -677,8 +681,8 @@ msgid "Install Date"
 msgstr "Data e Instalimit"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Nënshkrimet"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -689,20 +693,20 @@ msgid "Optional Dependencies"
 msgstr "Varësi fakultative"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Bëni varësitë"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Kontrollo varësitë"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Fakultativ Për"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Ofron"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Bëni varësitë"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Kontrollo varësitë"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -932,8 +936,8 @@ msgid "View %s build files diff"
 msgstr "Shfaq %s ndryshime të skedarëve të ndërtuar"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Ndërtimi i paketave si root"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1150,6 +1154,12 @@ msgstr "hiqni paketat vetëm nëse ato nuk kërkohen nga ndonjë paketë tjetër
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "hiqni varësitë që nuk kërkohen nga paketat e tjera, nëse ky opsion përdoret pa emrin e paketës, largoni të gjithë jetimët"
@@ -1332,8 +1342,8 @@ msgstr "%s është në dispozicion vetëm nga AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ka një %1$u anëtar në grupin %2$s"
+msgstr[1] "Janë %1$u anëtarë në grupin %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1346,8 +1356,8 @@ msgstr "Shto %s per ta riinstaluar"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Instalo %s nga %s"
+msgid "Install %1$s from %2$s"
+msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"

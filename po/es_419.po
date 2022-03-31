@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Benjamin Perez Carrillo <benperezc@gmail.com>, 2020
@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -296,6 +296,11 @@ msgstr "Error"
 msgid "Refreshing %s"
 msgstr "Actualizando %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
@@ -322,11 +327,6 @@ msgstr "Esperando a que otro gestor de paquetes cierre"
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Se terminó el tiempo"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -621,6 +621,10 @@ msgid "Ignored"
 msgstr ""
 
 #: src/manager_window.vala src/cli.vala
+msgid "None"
+msgstr ""
+
+#: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
 msgstr "Razón de Instalación"
 
@@ -636,7 +640,7 @@ msgstr "Marcar como explícitamente instalado"
 msgid "Licenses"
 msgstr "Licencias"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -685,8 +689,8 @@ msgid "Install Date"
 msgstr "Fecha de Instalación"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Firmas"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -697,20 +701,20 @@ msgid "Optional Dependencies"
 msgstr "Dependencias Opcionales"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Crear Dependencias"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Inspeccionar Dependencias"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Opcional Para"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Provee"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Crear Dependencias"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Inspeccionar Dependencias"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -940,7 +944,7 @@ msgid "View %s build files diff"
 msgstr "Ver %s archivos construidos diff"
 
 #: src/cli.vala
-msgid "Building packages as root"
+msgid "Building packages as dynamic user"
 msgstr ""
 
 #: src/cli.vala
@@ -1158,6 +1162,12 @@ msgstr "Eliminar paquetes no requeridos por otros paquetes"
 
 #: src/cli.vala
 msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
 msgstr "Eliminar dependencias que no son requeridos por otros paquetes, si esta opción es usada sin el nombre del paquete elimina todos los paquetes huérfanos"
@@ -1354,7 +1364,7 @@ msgstr "Agregando el %s para reinstalar"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
+msgid "Install %1$s from %2$s"
 msgstr ""
 
 #: src/snap_plugin.vala

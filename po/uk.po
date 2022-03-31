@@ -1,7 +1,7 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2020 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2020.
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # dsafsadf <heneral@gmail.com>, 2017,2020-2021
@@ -29,9 +29,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2021-10-16 15:45+0200\n"
-"PO-Revision-Date: 2021-10-16 16:25+0000\n"
-"Last-Translator: Transifex Bot <>\n"
+"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"PO-Revision-Date: 2022-01-25 15:15+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,11 +41,11 @@ msgstr ""
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
-msgstr "Встановлення, оновлення або видалення пакетів"
+msgstr "Встановлення, оновлення або видалення пакунків"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
-msgstr "Потрібна аутентифікація для встановлення, оновлення або видалення пакетів"
+msgstr "Потрібна аутентифікація для встановлення, оновлення або видалення пакунків"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
@@ -81,7 +81,7 @@ msgstr "пакунок %s не має дійсної архітектури"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "неможливо задовільнити залежність '%1$s' яку вимагає %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -91,7 +91,7 @@ msgstr "Увага"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "встановлення %1$s (%2$s) розриває залежність '%3$s', яку вимагає %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -106,17 +106,17 @@ msgstr "по можливості видаліть %s і повторіть сп
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "видалення %1$s розриває залежність '%2$s' яку вимагає %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s і %2$s конфліктують"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s needs to be removed but it is a locked package"
-msgstr "%s потрібно видалити, але це заблокований пакет"
+msgstr "%s потрібно видалити, але це заблокований пакунок"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
@@ -138,17 +138,17 @@ msgstr "Транзакцію скасовано"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s існує у %2$s і %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s вже існує у файловій системі (належить%3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s вже існує у файловій системі"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -227,7 +227,7 @@ msgstr "Перевірка цілісності"
 
 #: src/alpm_utils.vala
 msgid "Loading packages files"
-msgstr "Завантаження пакетів файлів"
+msgstr "Завантаження пакунків файлів"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -246,7 +246,7 @@ msgstr "Перевірка вільного місця на диску"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s необхідно необов'язковий компонент %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -264,12 +264,12 @@ msgstr "Завантаження необхідних ключів"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s встановлений як %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s встановлений як %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -310,10 +310,15 @@ msgstr "Помилка"
 msgid "Refreshing %s"
 msgstr "Оновлення %s"
 
+#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
+#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
+msgid "AUR"
+msgstr "AUR"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
-msgstr "Скачування %s почалося"
+msgstr "Завантаження %s почалося"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -323,7 +328,7 @@ msgstr "Завантаження %s"
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
-msgstr "Скачування %s закінчилось"
+msgstr "Завантаження %s закінчилось"
 
 #: src/daemon.vala
 msgid "Authentication failed"
@@ -336,11 +341,6 @@ msgstr "Очікування виходу іншого менеджера пак
 #: src/daemon.vala
 msgid "Timeout expired"
 msgstr "Час очікування сплив"
-
-#: src/database.vala src/transaction-gtk.vala src/manager_window.vala
-#: src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
@@ -400,7 +400,7 @@ msgstr "Нічого робити"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: ігнорування оновлення пакунка (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -440,7 +440,7 @@ msgstr "_Скасувати"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "Ключ PGP %1$s потрібен для перевірки вихідних файлів %2$s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -510,7 +510,7 @@ msgstr "_Закрити"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Перезапустити"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -520,7 +520,7 @@ msgstr "Встановлення"
 #: src/transaction-gtk.vala
 #, c-format
 msgid "The snap %s was published using classic confinement"
-msgstr "Snap пакет %s був опублікований з використанням класичної ізоляції"
+msgstr "Snap пакунок %s був опублікований з використанням класичної ізоляції"
 
 #: src/transaction-gtk.vala
 #, c-format
@@ -529,7 +529,7 @@ msgstr "Встановити %s все одно"
 
 #: src/transaction-gtk.vala src/tray.vala
 msgid "Package Manager"
-msgstr "Менеджер пакетів"
+msgstr "Менеджер пакунків"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
@@ -574,7 +574,7 @@ msgstr "Деталі"
 
 #: src/manager_window.vala
 msgid "No package found"
-msgstr "Пакет не знайдено"
+msgstr "Пакунок не знайдено"
 
 #: src/manager_window.vala
 msgid "Checking for Updates"
@@ -612,7 +612,7 @@ msgstr[3] "%u операцій в очікуванні"
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "Очікується"
 
 #: src/manager_window.vala
 msgid "All"
@@ -636,6 +636,10 @@ msgstr "Встановлено"
 
 #: src/manager_window.vala
 msgid "Ignored"
+msgstr "Проігноровано"
+
+#: src/manager_window.vala src/cli.vala
+msgid "None"
 msgstr ""
 
 #: src/manager_window.vala src/cli.vala
@@ -654,7 +658,7 @@ msgstr "Позначити як свідомо встановлене"
 msgid "Licenses"
 msgstr "Ліцензії"
 
-#: src/manager_window.vala
+#: src/manager_window.vala src/cli.vala
 msgid "Unknown"
 msgstr "Невідомо"
 
@@ -703,8 +707,8 @@ msgid "Install Date"
 msgstr "Дата встановлення"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Signatures"
-msgstr "Підписи"
+msgid "Validated By"
+msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -715,20 +719,20 @@ msgid "Optional Dependencies"
 msgstr "Додаткові Залежності"
 
 #: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Зробити залежності"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Перевірити залежності"
-
-#: src/manager_window.vala src/cli.vala
 msgid "Optional For"
 msgstr "Необов'язково для"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
 msgstr "Забезпечує"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Make Dependencies"
+msgstr "Зробити залежності"
+
+#: src/manager_window.vala src/cli.vala
+msgid "Check Dependencies"
+msgstr "Перевірити залежності"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -797,47 +801,47 @@ msgstr "Останнє оновлення"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "кожні 3 години"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "кожні 6 годин"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "кожні 12 годин"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "кожного дня"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "кожного тижня"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -845,15 +849,15 @@ msgstr "По всьому світу"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -870,11 +874,11 @@ msgstr[3] "%u файлів"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Оберіть Build Directory"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Оберіть"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -960,8 +964,8 @@ msgid "View %s build files diff"
 msgstr "Переглянути різницю %s файлів збирання"
 
 #: src/cli.vala
-msgid "Building packages as root"
-msgstr "Створення пакетів як root"
+msgid "Building packages as dynamic user"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -974,7 +978,7 @@ msgstr "У поточному каталозі не знайдено файл PK
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
-msgstr "Перевірка оновлень пакетів розробки як root"
+msgstr "Перевірка оновлень пакунків розробки як root"
 
 #: src/cli.vala
 msgid "Available actions"
@@ -990,7 +994,7 @@ msgstr "варіанти"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
-msgstr "Шукати пакети або файли, можна вказати кілька пошукових термінів"
+msgstr "Шукати пакунки або файли, можна вказати кілька пошукових термінів"
 
 #: src/cli.vala
 msgid "file(s)"
@@ -998,11 +1002,11 @@ msgstr "файл(ів)"
 
 #: src/cli.vala
 msgid "only search for installed packages"
-msgstr "шукати тільки встановлені пакети"
+msgstr "шукати тільки встановлені пакунки"
 
 #: src/cli.vala
 msgid "only search for packages in repositories"
-msgstr "шукати тільки пакети з репозиторіїв"
+msgstr "шукати тільки пакунки з репозиторіїв"
 
 #: src/cli.vala
 msgid "also search in AUR"
@@ -1023,11 +1027,11 @@ msgstr "друкувати лише імена"
 
 #: src/cli.vala
 msgid "Display package details, multiple packages can be specified"
-msgstr "Відображати подробиці пакета, можна вказати кілька пакетів"
+msgstr "Відображати подробиці пакунка, можна вказати кілька пакунків"
 
 #: src/cli.vala
 msgid "List packages, groups, repositories or files"
-msgstr "Перелік пакетів, груп, сховищ або файлів"
+msgstr "Перелік пакунків, груп, сховищ або файлів"
 
 #: src/cli.vala
 msgid "group(s)"
@@ -1043,17 +1047,17 @@ msgstr "показати встановлені пакунки"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "список явно встановлених пакунків"
 
 #: src/cli.vala
 msgid ""
 "list packages that were installed as dependencies but are no longer required"
 " by any installed package"
-msgstr "показати пакунки, які були встановлені як залежність, але більше не потрібні для будь-якого встановленого пакета"
+msgstr "показати пакунки, які були встановлені як залежність, але більше не потрібні для будь-якого встановленого пакунка"
 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
-msgstr "показати пакети, які не були знайдені в сховищах"
+msgstr "показати пакунки, які не були знайдені в сховищах"
 
 #: src/cli.vala
 msgid ""
@@ -1069,7 +1073,7 @@ msgstr "показати всі пакунки, доступні в даному
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
-msgstr "показати файли, що належать даним пакетам"
+msgstr "показати файли, що належать даним пакункам"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
@@ -1100,7 +1104,7 @@ msgstr "перезаписати існуючі файли"
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
-msgstr "Якщо назву пакета не вказано, скористайтеся файлом PKGBUILD у поточному каталозі"
+msgstr "Якщо назву пакунка не вказано, скористайтеся файлом PKGBUILD у поточному каталозі"
 
 #: src/cli.vala
 msgid ""
@@ -1114,7 +1118,7 @@ msgstr "і --no-clone параметр буде примусово застос�
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
-msgstr "залишити пакети збирання у кеші після встановлення"
+msgstr "залишити пакунки збирання у кеші після встановлення"
 
 #: src/cli.vala
 msgid "do not keep built packages in cache after installation"
@@ -1140,7 +1144,7 @@ msgstr "glob"
 msgid ""
 "ignore a package upgrade, multiple packages can be specified by separating "
 "them with a comma"
-msgstr "ігнорувати оновлення пакета, можна вказати кілька пакетів, розділивши їх комами"
+msgstr "ігнорувати оновлення пакунка, можна вказати кілька пакунків, розділивши їх комами"
 
 #: src/cli.vala
 msgid ""
@@ -1150,15 +1154,15 @@ msgstr "перезапимати конфліктуючі файли, можна
 
 #: src/cli.vala
 msgid "download all packages but do not install/upgrade anything"
-msgstr "скачати усі пакети, але нічого не встановлювати/оновлювати"
+msgstr "завантажити усі пакунки, але нічого не встановлювати/оновлювати"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
-msgstr "позначити усі пакети як встановлені у виді залежностей"
+msgstr "позначити усі пакунки як встановлені у виді залежностей"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr "позначити усі пакети як явно встановлені"
+msgstr "позначити усі пакунки як явно встановлені"
 
 #: src/cli.vala
 msgid "check for updates"
@@ -1174,13 +1178,19 @@ msgstr "Перевстановити пакунки"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
-msgstr "видалити пакети тільки, якщо вони не потрібні для інших пакетів"
+msgstr "видалити пакунки тільки, якщо вони не потрібні для інших пакунків"
+
+#: src/cli.vala
+msgid ""
+"remove all target packages, as well as all packages that depend on one or "
+"more target packages"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
-msgstr "видалити залежності, яких не потребують інші пакунки, якщо ця опція використовується без імені пакета, будуть видалені всі непотрібні пакунки"
+msgstr "видалити залежності, яких не потребують інші пакунки, якщо ця опція використовується без імені пакунка, будуть видалені всі непотрібні пакунки"
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
@@ -1218,11 +1228,11 @@ msgstr "виводити лише один рядок на оновлення"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
-msgstr "також перевірити оновлення пакетів розробки (використовуйте з --aur)"
+msgstr "також перевірити оновлення пакунків розробки (використовуйте з --aur)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr "не перевіряти оновлення пакетів розробки"
+msgstr "не перевіряти оновлення пакунків розробки"
 
 #: src/cli.vala
 msgid "Upgrade your system"
@@ -1246,7 +1256,7 @@ msgstr "також оновити пакунки, встановлені з AUR"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr "не оновлювати пакети, встановлені з AUR"
+msgstr "не оновлювати пакунки, встановлені з AUR"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
@@ -1277,7 +1287,7 @@ msgstr "вкажіть, скільки версій кожного пакунк�
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
-msgstr "вказати лише видалені пакети"
+msgstr "вказати лише видалені пакунки"
 
 #: src/cli.vala
 msgid ""
@@ -1287,7 +1297,7 @@ msgstr "видалити всі файли збірки, каталог збир
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
-msgstr "не видаляти файли, тільки шукати пакети кандидатів"
+msgstr "не видаляти файли, тільки шукати пакунки кандидатів"
 
 #: src/cli.vala
 msgid "also display all files names"
@@ -1362,10 +1372,10 @@ msgstr "%s доступний тільки з AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "У групі %1$u є учасник %2$s"
+msgstr[1] "У групі %1$u є учасник %2$s"
+msgstr[2] "У групі %1$u є учасники %2$s"
+msgstr[3] "У групі %1$u є учасники %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1378,8 +1388,8 @@ msgstr "Додайте %s для перевстановлення"
 
 #: src/cli.vala
 #, c-format
-msgid "Install %s from %s"
-msgstr "Встановлено %s з %s"
+msgid "Install %1$s from %2$s"
+msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1515,7 +1525,7 @@ msgstr "Перевірити наявність оновлень"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Частота перевірки оновлень"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1523,23 +1533,23 @@ msgstr "Автоматично завантажити оновлення"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Приховати піктограму в треї, якщо немає оновлення"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Завантаження"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Паралельні завантаження"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Використовувати дзеркала від"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Оновити дзеркала"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1547,15 +1557,15 @@ msgstr "Кеш"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Кількість версій кожного пакунка для збереження"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Вилучити лише видалені пакунки"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Очистити"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1585,11 +1595,11 @@ msgstr "Увімкнути пониження"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Проігноровані оновлення"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Третя сторона"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1603,7 +1613,7 @@ msgstr "Активувати підтримку AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Зберігати вбудовані пакунки"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"
@@ -1615,7 +1625,7 @@ msgstr "Тека збирання"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
-msgstr "Пакет Flatpak підтримується їх видавцем."
+msgstr "Пакунок Flatpak підтримується їх видавцем."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
@@ -1623,7 +1633,7 @@ msgstr "Увімкнути підтримку Flatpak"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr "Snap пакети підтримуються їхнім видавцем"
+msgstr "Snap пакунки підтримуються їхнім видавцем"
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"
