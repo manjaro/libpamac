@@ -123,8 +123,13 @@ namespace Pamac {
 			if (force_refresh) {
 				force = 1;
 			}
+			string server = "https://aur.manjaro.org";
+			string? id = get_os_id ();
+			if (id == null || id != "manjaro") {
+				server = aur_url;
+			}
 			// dload defined in alpm_utils.vala
-			int ret = dload (alpm_utils, "https://aur.archlinux.org", db_gz, real_build_dir, force, false, emit_signal);
+			int ret = dload (alpm_utils, server, db_gz, real_build_dir, force, false, emit_signal);
 			if (ret < 0) {
 				return false;
 			}
