@@ -18,6 +18,7 @@
 # Joaquín Marcher <joaquin.marcher@gmail.com>, 2020
 # Julián Federico Hipólito <julianhipolito@gmail.com>, 2016
 # Leandro <nargaroth_reg@hotmail.com>, 2014
+# ManjaroArchMint yotros, 2022
 # Marchin, 2015
 # Miguel Hernández <mhdez@protonmail.com>, 2015,2017
 # Marchin, 2015
@@ -30,8 +31,8 @@ msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: ManjaroArchMint yotros, 2022\n"
 "Language-Team: Spanish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,7 +82,7 @@ msgstr "paquete %s no tiene una arquitectura válida"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "incapaz de satisfacer la dependencia%1$s' requerida por %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -91,7 +92,7 @@ msgstr "Advertencia"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr " instalando%1$s (%2$s) rompe la dependencia '%3$s'  Requerido por%4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -106,12 +107,12 @@ msgstr "si es posible, remueve %s y reintenta"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr " quitando%1$srompe la dependencia   '%2$s' requerido por %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s y %2$s están en conflicto"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -129,7 +130,7 @@ msgstr "removiendo %s de la lista objetivo"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "Es necesario reiniciar para que los cambios surtan efecto "
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
@@ -138,17 +139,17 @@ msgstr "Operación cancelada"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s existe en ambos %2$s y %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s  ya existe en el sistema de archivos (propiedad de%3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s ya existe en el sistema de archivos"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -157,7 +158,7 @@ msgstr "si este archivo no es necesario, remuevelo e intenta nuevamente"
 #: src/alpm_utils.vala
 #, c-format
 msgid "It has been backed up to %s"
-msgstr ""
+msgstr " Se ha realizado una copia de seguridad de%s"
 
 #: src/alpm_utils.vala
 msgid "Removing invalid files and retrying"
@@ -246,7 +247,7 @@ msgstr "Comprobando espacio disponible en el disco"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$sopcionalmente requiere %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -264,12 +265,12 @@ msgstr "Descargando las claves requeridas"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$sinstalado como  %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s instalado como %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -396,7 +397,7 @@ msgstr "Nada que hacer"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: ignorando actualización del paquete (%2$s=>%3$s)"
 
 #: src/transaction.vala
 #, c-format

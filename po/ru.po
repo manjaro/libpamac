@@ -43,8 +43,8 @@ msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 23:44+0000\n"
-"Last-Translator: Andrei Stepanov\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: Andrei Stepanov, 2019-2022\n"
 "Language-Team: Russian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,7 +74,7 @@ msgstr "Не удалось синхронизировать базы данны
 
 #: src/alpm_utils.vala
 msgid "Failed to init transaction"
-msgstr "Не удалось выполнить транзакцию"
+msgstr "Не удалось инициализировать транзакцию"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/installer.vala
@@ -721,7 +721,7 @@ msgstr "Дата установки"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr "Подтверждён по"
+msgstr "Подтверждение"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -1203,7 +1203,7 @@ msgstr "удалить все целевые пакеты, а также все 
 msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
-msgstr "удалить зависимости, которые не требуются другим пакетам, если этот параметр не используется без имени пакета, удаление всех \"сирот\""
+msgstr "удалить зависимости, которые не требуются другим пакетам, если этот параметр используется без имени пакета — удалить всех «сирот»"
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"

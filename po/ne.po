@@ -4,13 +4,14 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
+# ManjaroArchMint yotros, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: ManjaroArchMint yotros, 2022\n"
 "Language-Team: Nepali (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ne/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,1586 +21,1586 @@ msgstr ""
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
-msgstr ""
+msgstr "प्याकेजहरू स्थापना गर्नुहोस्, अद्यावधिक गर्नुहोस् वा हटाउनुहोस् "
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
-msgstr ""
+msgstr "प्याकेजहरू स्थापना, अद्यावधिक वा हटाउन प्रमाणीकरण आवश्यक छ "
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
-msgstr ""
+msgstr "alpm लाइब्रेरी प्रारम्भ गर्न असफल भयो "
 
 #: src/alpm_utils.vala
 msgid "Synchronizing package databases"
-msgstr ""
+msgstr "प्याकेज डाटाबेसहरू सिङ्क्रोनाइज गर्दै"
 
 #: src/alpm_utils.vala
 msgid "Failed to synchronize databases"
-msgstr ""
+msgstr "डाटाबेसहरू सिङ्क्रोनाइज गर्न असफल भयो "
 
 #: src/alpm_utils.vala
 msgid "Failed to init transaction"
-msgstr ""
+msgstr "लेनदेन प्रारम्भ गर्न असफल भयो "
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/installer.vala
 msgid "Failed to prepare transaction"
-msgstr ""
+msgstr "लेनदेन तयार गर्न असफल भयो"
 
 #: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
 #, c-format
 msgid "target not found: %s"
-msgstr ""
+msgstr "लक्ष्य फेला परेन:  %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "package %s does not have a valid architecture"
-msgstr ""
+msgstr "प्याकेज%s मान्य वास्तुकला छैन"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "निर्भरता पूरा गर्न असमर्थ  '%1$s'  द्वारा आवश्यक छ %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
 msgid "Warning"
-msgstr ""
+msgstr "चेतावनी"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "स्थापना गर्दै %1$s (%2$s) निर्भरता तोड्छ  '%3$s'द्वारा आवश्यक छ  %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
 msgid "Add %s to remove"
-msgstr ""
+msgstr " थप्नुहोस्%s हटाउनु"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "if possible, remove %s and retry"
-msgstr ""
+msgstr "यदि सम्भव छ भने, हटाउनुहोस्  %s र पुन: प्रयास गर्नुहोस्"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "हटाउँदै %1$sनिर्भरता तोड्छ  '%2$s' द्वारा आवश्यक छ  %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s र %2$s द्वन्द्वमा छन्"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s needs to be removed but it is a locked package"
-msgstr ""
+msgstr "%s हटाउन आवश्यक छ तर यो लक गरिएको प्याकेज हो"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
-msgstr ""
+msgstr "AUR डाटाबेस प्रारम्भ गर्न असफल भयो "
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s from target list"
-msgstr ""
+msgstr " हटाउँदै%s लक्ष्य सूचीबाट"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "परिवर्तनहरू प्रभावकारी हुनको लागि पुन: सुरु गर्न आवश्यक छ "
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
-msgstr ""
+msgstr "कारोबार रद्द गरियो "
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s दुबैमा अवस्थित छ  %2$s र %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s फाइल प्रणालीमा पहिले नै अवस्थित छ (को स्वामित्वमा  %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s फाइल प्रणालीमा पहिले नै अवस्थित छ"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
-msgstr ""
+msgstr "यदि यो फाइल आवश्यक छैन भने, यसलाई हटाउनुहोस् र पुन: प्रयास गर्नुहोस् "
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "It has been backed up to %s"
-msgstr ""
+msgstr "मा ब्याकअप गरिएको छ %s"
 
 #: src/alpm_utils.vala
 msgid "Removing invalid files and retrying"
-msgstr ""
+msgstr "अवैध फाइलहरू हटाउँदै र पुन: प्रयास गर्दै"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s is invalid or corrupted"
-msgstr ""
+msgstr "%sअवैध वा भ्रष्ट छ"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
-msgstr ""
+msgstr "तपाईं यो फाइल हटाउन र पुन: प्रयास गर्न सक्नुहुन्छ"
 
 #: src/alpm_utils.vala
 msgid "failed to retrieve some files"
-msgstr ""
+msgstr "केही फाइलहरू पुन: प्राप्त गर्न असफल भयो"
 
 #: src/alpm_utils.vala
 msgid "Failed to commit transaction"
-msgstr ""
+msgstr "लेनदेन गर्न असफल भयो"
 
 #: src/alpm_utils.vala
 msgid "Checking dependencies"
-msgstr ""
+msgstr "निर्भरता जाँच गर्दै"
 
 #: src/alpm_utils.vala
 msgid "Checking file conflicts"
-msgstr ""
+msgstr "फाइल विवादहरू जाँच गर्दै"
 
 #: src/alpm_utils.vala
 msgid "Resolving dependencies"
-msgstr ""
+msgstr "निर्भरताहरू समाधान गर्दै"
 
 #: src/alpm_utils.vala
 msgid "Checking inter-conflicts"
-msgstr ""
+msgstr "आन्तरिक द्वन्द्व प्रमाणित गर्दै "
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
-msgstr ""
+msgstr " स्थापना गर्दै%s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Upgrading %s"
-msgstr ""
+msgstr " अपग्रेड गर्दै%s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Reinstalling %s"
-msgstr ""
+msgstr " पुन: स्थापना गर्दै%s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Downgrading %s"
-msgstr ""
+msgstr "डाउनग्रेड गर्दै %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
-msgstr ""
+msgstr " हटाउँदै%s"
 
 #: src/alpm_utils.vala
 msgid "Checking integrity"
-msgstr ""
+msgstr "निष्ठा जाँच गर्दै"
 
 #: src/alpm_utils.vala
 msgid "Loading packages files"
-msgstr ""
+msgstr "प्याकेज फाइलहरू लोड गर्दै"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Configuring %s"
-msgstr ""
+msgstr " कन्फिगर गर्दै%s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Error while configuring %s"
-msgstr ""
+msgstr "कन्फिगर गर्दा त्रुटि %s"
 
 #: src/alpm_utils.vala
 msgid "Checking available disk space"
-msgstr ""
+msgstr "उपलब्ध डिस्क स्थान जाँच गर्दै"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s वैकल्पिक रूपमा आवश्यक छ %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Database file for %s does not exist"
-msgstr ""
+msgstr " को लागि डाटाबेस फाइल%s अ स् ति त् व मा छै न"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
-msgstr ""
+msgstr "कीरिङ जाँच गर्दै"
 
 #: src/alpm_utils.vala
 msgid "Downloading required keys"
-msgstr ""
+msgstr "आवश्यक कुञ्जीहरू डाउनलोड गर्दै"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$sको रूपमा स्थापित  %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$sको रूपमा स्थापित  %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
-msgstr ""
+msgstr "पूर्व-लेनदेन हुकहरू चलाउँदै"
 
 #: src/alpm_utils.vala
 msgid "Running post-transaction hooks"
-msgstr ""
+msgstr "पोस्ट-लेनदेन हुकहरू चलिरहेको छ"
 
 #: src/alpm_utils.vala
 msgid "Error while running hooks"
-msgstr ""
+msgstr "हुक चलाउँदा त्रुटि"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu second remaining"
 msgid_plural "About %lu seconds remaining"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "लगभग %lu सेकेन्ड बाँकी"
+msgstr[1] "लगभग %lu सेकेन्ड बाँकी"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu minute remaining"
 msgid_plural "About %lu minutes remaining"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "लगभग %lu मिनेट बाँकी"
+msgstr[1] "लगभग %lu मिनेट बाँकी"
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
-msgstr ""
+msgstr "त्रुटि"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Refreshing %s"
-msgstr ""
+msgstr " रिफ्रेस गर्दै%s"
 
 #: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
 #: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
 msgid "AUR"
-msgstr ""
+msgstr "AUR"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
-msgstr ""
+msgstr "को डाउनलोड गर्नुहोस् %s सुरु भयो"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Downloading %s"
-msgstr ""
+msgstr " डाउनलोड गर्दै%s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
-msgstr ""
+msgstr "को डाउनलोड गर्नुहोस्%s समाप्त"
 
 #: src/daemon.vala
 msgid "Authentication failed"
-msgstr ""
+msgstr "प्रमाणीकरण असफल भयो"
 
 #: src/daemon.vala
 msgid "Waiting for another package manager to quit"
-msgstr ""
+msgstr "अर्को प्याकेज प्रबन्धक छोड्नको लागि कुर्दै"
 
 #: src/daemon.vala
 msgid "Timeout expired"
-msgstr ""
+msgstr "समयावधि समाप्त भयो"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
-msgstr ""
+msgstr "ताजा दर्पण सूची"
 
 #: src/transaction.vala src/cli.vala
 #, c-format
 msgid "Cloning %s build files"
-msgstr ""
+msgstr " क्लोनिङ%s फाइलहरू निर्माण गर्नुहोस्"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to clone %s build files"
-msgstr ""
+msgstr " क्लोन गर्न असफल%s फाइलहरू निर्माण गर्नुहोस्"
 
 #: src/transaction.vala
 #, c-format
 msgid "Generating %s information"
-msgstr ""
+msgstr " उत्पन्न गर्दै%s जानकारी"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to generate %s information"
-msgstr ""
+msgstr "उत्पन्न गर्न असफल भयो%s जानकारी"
 
 #: src/transaction.vala
 #, c-format
 msgid "Checking %s dependencies"
-msgstr ""
+msgstr "जाँच गर्दै  %s निर्भरताहरू"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to check %s dependencies"
-msgstr ""
+msgstr " जाँच गर्न असफल %s निर्भरताहरू"
 
 #: src/transaction.vala
 #, c-format
 msgid "key %s could not be imported"
-msgstr ""
+msgstr "कुञ्जी %s आयात गर्न सकिएन"
 
 #: src/transaction.vala src/manager_window.vala
 msgid "Transaction successfully finished"
-msgstr ""
+msgstr "लेनदेन सफलतापूर्वक समाप्त भयो"
 
 #: src/transaction.vala
 msgid "Preparing"
-msgstr ""
+msgstr "तयारी गर्दै"
 
 #: src/transaction.vala src/snap_plugin.vala
 msgid "Yes"
-msgstr ""
+msgstr "हो"
 
 #: src/transaction.vala src/installer.vala src/cli.vala
 msgid "Nothing to do"
-msgstr ""
+msgstr "गर्नलाई केहि छैन"
 
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: प्याकेज अपग्रेड बेवास्ता गर्दै (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
-msgstr ""
+msgstr "निर्माण गर्न असफल भयो %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Building %s"
-msgstr ""
+msgstr "भवन%s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Choose optional dependencies for %s"
-msgstr ""
+msgstr "को लागि वैकल्पिक निर्भरता छान्नुहोस् %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Choose a provider for %s"
-msgstr ""
+msgstr " को लागि प्रदायक छान्नुहोस्%s"
 
 #: src/transaction-gtk.vala
 msgid "Import PGP key"
-msgstr ""
+msgstr "PGP कुञ्जी आयात गर्नुहोस्"
 
 #: src/transaction-gtk.vala
 msgid "Trust and Import"
-msgstr ""
+msgstr "विश्वास र आयात"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: src/preferences_dialog.vala resources/progress_dialog.ui
 #: resources/transaction_sum_dialog.ui resources/manager_window.ui
 #: resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
-msgstr ""
+msgstr "_रद्द गर्नुहोस्"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "PGP कुञ्जी  %1$s प्रमाणित गर्न आवश्यक छ %2$s स्रोत फाइलहरू"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Trust %s and import the PGP key"
-msgstr ""
+msgstr " भरोसा%s र PGP कुञ्जी आयात गर्नुहोस्"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Official Repositories"
-msgstr ""
+msgstr "आधिकारिक भण्डारहरू"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
 msgid "Repositories"
-msgstr ""
+msgstr "भण्डारहरू"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Flatpak"
-msgstr ""
+msgstr "Flatpak"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Depends On"
-msgstr ""
+msgstr "भर पर्छ"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
-msgstr ""
+msgstr "अनाथ को"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Conflicts With"
-msgstr ""
+msgstr "संग द्वन्द्व"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Required By"
-msgstr ""
+msgstr "द्वारा आवश्यक"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Replaces"
-msgstr ""
+msgstr "प्रतिस्थापन गर्दछ"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Edit build files"
-msgstr ""
+msgstr "निर्माण फाइलहरू सम्पादन गर्नुहोस्"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 msgid "Total download size"
-msgstr ""
+msgstr "कुल डाउनलोड आकार"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Edit %s build files"
-msgstr ""
+msgstr " सम्पादन गर्नुहोस् %s फाइलहरू निर्माण गर्नुहोस्"
 
 #: src/transaction-gtk.vala
 msgid "Save"
-msgstr ""
+msgstr "बचत गर्नुहोस् "
 
 #: src/transaction-gtk.vala resources/progress_dialog.ui
 #: resources/history_dialog.ui
 msgid "_Close"
-msgstr ""
+msgstr "_ बन्द "
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "फेरी सुरु"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
 msgid "Install"
-msgstr ""
+msgstr "स्थापना गर्नुहोस्"
 
 #: src/transaction-gtk.vala
 #, c-format
 msgid "The snap %s was published using classic confinement"
-msgstr ""
+msgstr " द snap %s क्लासिक कैद प्रयोग गरी प्रकाशित गरिएको थियो "
 
 #: src/transaction-gtk.vala
 #, c-format
 msgid "Install %s anyway"
-msgstr ""
+msgstr "स्थापना गर्नुहोस् %s जे भए पनि"
 
 #: src/transaction-gtk.vala src/tray.vala
 msgid "Package Manager"
-msgstr ""
+msgstr "प्याकेज प्रबन्धक"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
-msgstr ""
+msgstr "भण्डार, पथ वा url बाट प्याकेजहरू स्थापना गर्नुहोस्"
 
 #: src/installer.vala src/cli.vala
 msgid "Remove packages"
-msgstr ""
+msgstr "प्याकेजहरू हटाउनुहोस्"
 
 #: src/installer.vala src/cli.vala
 msgid "Build packages from AUR and install them with their dependencies"
-msgstr ""
+msgstr "AUR बाट प्याकेजहरू बनाउनुहोस् र तिनीहरूलाई तिनीहरूको निर्भरताहरूसँग स्थापना गर्नुहोस्"
 
 #: src/installer.vala src/cli.vala
 msgid "package(s)"
-msgstr ""
+msgstr "प्याकेज(हरू)"
 
 #: src/tray.vala
 msgid "Updates Available"
-msgstr ""
+msgstr "अपडेटहरू उपलब्ध छन्"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up-to-date"
-msgstr ""
+msgstr "तपाईंको प्रणाली अप-टु-डेट छ"
 
 #: src/tray.vala
 msgid "_Quit"
-msgstr ""
+msgstr "_छोड्नुहोस्"
 
 #: src/tray.vala src/cli.vala
 #, c-format
 msgid "%u available update"
 msgid_plural "%u available updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u उपलब्ध अद्यावधिकहरू"
+msgstr[1] "%u उपलब्ध अद्यावधिकहरू"
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
-msgstr ""
+msgstr "विवरणहरू"
 
 #: src/manager_window.vala
 msgid "No package found"
-msgstr ""
+msgstr "कुनै प्याकेज भेटिएन"
 
 #: src/manager_window.vala
 msgid "Checking for Updates"
-msgstr ""
+msgstr "अपडेटहरूको लागि जाँच गर्दै"
 
 #: src/manager_window.vala resources/manager_window.ui
 msgid "Install Local Packages"
-msgstr ""
+msgstr "स्थानीय प्याकेजहरू स्थापना गर्नुहोस्"
 
 #: src/manager_window.vala
 msgid "_Open"
-msgstr ""
+msgstr "_खोल्नुहोस्"
 
 #: src/manager_window.vala
 msgid "Alpm Package"
-msgstr ""
+msgstr "Alpm प्याकेज"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr ""
+msgstr "Alpm, AUR, Flatpak र Snap समर्थनको साथ प्याकेज प्रबन्धक"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
 msgid "Snap"
-msgstr ""
+msgstr "Snap"
 
 #: src/manager_window.vala
 #, c-format
 msgid "%u pending operation"
 msgid_plural "%u pending operations"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u विचाराधीन कार्यहरू"
+msgstr[1] "%uविचाराधीन कार्यहरू"
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "विचाराधीन"
 
 #: src/manager_window.vala
 msgid "All"
-msgstr ""
+msgstr "सबै"
 
 #: src/manager_window.vala
 msgid "Explicitly installed"
-msgstr ""
+msgstr "स्पष्ट रूपमा स्थापित"
 
 #: src/manager_window.vala
 msgid "Orphans"
-msgstr ""
+msgstr "अनाथ"
 
 #: src/manager_window.vala
 msgid "Foreign"
-msgstr ""
+msgstr "विदेशी"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Installed"
-msgstr ""
+msgstr "स्थापना गरियो"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "बेवास्ता गरियो"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "कुनै पनि छैन"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
-msgstr ""
+msgstr "कारण स्थापना गर्नुहोस्"
 
 #: src/manager_window.vala
 msgid "Installed as a dependency for another package"
-msgstr ""
+msgstr "अर्को प्याकेजको लागि निर्भरताको रूपमा स्थापना गरियो"
 
 #: src/manager_window.vala
 msgid "Mark as explicitly installed"
-msgstr ""
+msgstr "स्पष्ट रूपमा स्थापित भनी चिन्ह लगाउनुहोस्"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Licenses"
-msgstr ""
+msgstr "इजाजतपत्रहरू"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Unknown"
-msgstr ""
+msgstr "अज्ञात"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Repository"
-msgstr ""
+msgstr "भण्डार"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Package Base"
-msgstr ""
+msgstr "प्याकेज आधार"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Maintainer"
-msgstr ""
+msgstr "संरक्षक"
 
 #: src/manager_window.vala src/cli.vala
 msgid "First Submitted"
-msgstr ""
+msgstr "पहिलो पेश गरियो"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Last Modified"
-msgstr ""
+msgstr "पछिल्लो पटक परिमार्जित"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Votes"
-msgstr ""
+msgstr "भोटहरू"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Out of Date"
-msgstr ""
+msgstr "पुरानो"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Groups"
-msgstr ""
+msgstr "समूहहरू"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Packager"
-msgstr ""
+msgstr "प्याकेजर"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Build Date"
-msgstr ""
+msgstr "निर्माण मिति"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Date"
-msgstr ""
+msgstr "स्थापना मिति"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "द्वारा प्रमाणित "
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
-msgstr ""
+msgstr "ब्याकअप फाइलहरू"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional Dependencies"
-msgstr ""
+msgstr "वैकल्पिक निर्भरताहरू"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional For"
-msgstr ""
+msgstr "को लागि वैकल्पिक"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
-msgstr ""
+msgstr "प्रदान गर्दछ"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Make Dependencies"
-msgstr ""
+msgstr "निर्भरताहरू बनाउनुहोस्"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Check Dependencies"
-msgstr ""
+msgstr "निर्भरताहरू जाँच गर्नुहोस्"
 
 #: src/manager_window.vala
 msgid "Publisher"
-msgstr ""
+msgstr "प्रकाशक"
 
 #: src/manager_window.vala
 msgid "Confined in a Sandbox"
-msgstr ""
+msgstr "स्यान्डबक्समा बन्द"
 
 #: src/manager_window.vala
 msgid "Channels"
-msgstr ""
+msgstr "च्यानलहरू"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr ""
+msgstr "OS अद्यावधिकहरू"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
-msgstr ""
+msgstr "प्रदर्शन, स्थिरता र सुरक्षा सुधारहरू समावेश गर्दछ"
 
 #: src/manager_window.vala
 msgid "Featured"
-msgstr ""
+msgstr "चित्रित"
 
 #: src/manager_window.vala
 msgid "Photo & Video"
-msgstr ""
+msgstr "फोटो र भिडियो"
 
 #: src/manager_window.vala
 msgid "Music & Audio"
-msgstr ""
+msgstr "संगीत र अडियो"
 
 #: src/manager_window.vala
 msgid "Productivity"
-msgstr ""
+msgstr "उत्पादकता"
 
 #: src/manager_window.vala
 msgid "Communication & News"
-msgstr ""
+msgstr "सञ्चार र समाचार"
 
 #: src/manager_window.vala
 msgid "Education & Science"
-msgstr ""
+msgstr "शिक्षा र विज्ञान"
 
 #: src/manager_window.vala
 msgid "Games"
-msgstr ""
+msgstr "खेलहरू"
 
 #: src/manager_window.vala
 msgid "Utilities"
-msgstr ""
+msgstr "उपयोगिताहरू"
 
 #: src/manager_window.vala
 msgid "Development"
-msgstr ""
+msgstr "विकास"
 
 #: src/manager_window.vala resources/manager_window.ui
 #: resources/preferences_dialog.ui
 msgid "Updates"
-msgstr ""
+msgstr "अपडेटहरू"
 
 #: src/manager_window.vala
 msgid "Last refresh"
-msgstr ""
+msgstr "अन्तिम रिफ्रेस"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "प्रत्येक 3 घण्टा"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "प्रत्येक 6 घण्टा"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "प्रत्येक 12 घण्टा"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "हरेक दिन"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "हरेक हप्ता"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
-msgstr ""
+msgstr "विश्वव्यापी"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
-msgstr ""
+msgstr "समारोह"
 
 #: src/preferences_dialog.vala src/cli.vala
 #, c-format
 msgid "%u file"
 msgid_plural "%u files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u फाइलहरू"
+msgstr[1] "%u फाइलहरू"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "बिल्ड डाइरेक्टरी चयन गर्नुहोस्"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_छनोट गर्नुहोस्"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
-msgstr ""
+msgstr "बेवास्ता गरिएका अपग्रेडहरू छान्नुहोस्"
 
 #: src/transaction-cli.vala src/cli.vala
 #, c-format
 msgid "Enter a selection (default=%s)"
-msgstr ""
+msgstr " चयन प्रविष्ट गर्नुहोस् (पूर्वनिर्धारित =%s)"
 
 #: src/transaction-cli.vala
 msgid "none"
-msgstr ""
+msgstr "कुनै पनि छैन"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "Enter a number (default=%d)"
-msgstr ""
+msgstr " नम्बर प्रविष्ट गर्नुहोस् (पूर्वनिर्धारित =%d)"
 
 #: src/transaction-cli.vala
 msgid "[y/N]"
-msgstr ""
+msgstr "[हो होइन]"
 
 #: src/transaction-cli.vala
 msgid "y"
-msgstr ""
+msgstr "र"
 
 #: src/transaction-cli.vala
 msgid "yes"
-msgstr ""
+msgstr "हो"
 
 #: src/transaction-cli.vala
 msgid "[e]"
-msgstr ""
+msgstr "[e]"
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
-msgstr ""
+msgstr "लेनदेन लागू गर्नुहोस्"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
-msgstr ""
+msgstr "[e/y/N]"
 
 #: src/transaction-cli.vala
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
-msgstr ""
+msgstr "अपग्रेड गर्न"
 
 #: src/transaction-cli.vala
 msgid "To reinstall"
-msgstr ""
+msgstr "पुन: स्थापना गर्न"
 
 #: src/transaction-cli.vala
 msgid "To install"
-msgstr ""
+msgstr "स्थापना गर्न"
 
 #: src/transaction-cli.vala
 msgid "To build"
-msgstr ""
+msgstr "बनाउनु "
 
 #: src/transaction-cli.vala
 msgid "To downgrade"
-msgstr ""
+msgstr "डिग्री wng et al को लागी।"
 
 #: src/transaction-cli.vala
 msgid "To remove"
-msgstr ""
+msgstr "हटाउनु "
 
 #: src/transaction-cli.vala
 msgid "Total installed size"
-msgstr ""
+msgstr "कुल स्थापित आकार"
 
 #: src/transaction-cli.vala
 msgid "Total removed size"
-msgstr ""
+msgstr "कुल हटाइएको आकार"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "View %s build files diff"
-msgstr ""
+msgstr "हेर्नुहोस् %s फरक फाइलहरू निर्माण गर्नुहोस्"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "गतिशील प्रयोगकर्ताको रूपमा प्याकेजहरू निर्माण गर्दै"
 
 #: src/cli.vala
 #, c-format
 msgid "Setting build directory to %s"
-msgstr ""
+msgstr "निर्माण निर्देशिका सेट गर्दै %s"
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
-msgstr ""
+msgstr "हालको डाइरेक्टरीमा कुनै PKGBUILD फाइल फेला परेन"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
-msgstr ""
+msgstr "रूटको रूपमा विकास प्याकेज अद्यावधिकहरू जाँच गर्दै "
 
 #: src/cli.vala
 msgid "Available actions"
-msgstr ""
+msgstr "उपलब्ध कार्यहरू"
 
 #: src/cli.vala
 msgid "action"
-msgstr ""
+msgstr "कार्य"
 
 #: src/cli.vala
 msgid "options"
-msgstr ""
+msgstr "विकल्पहरू"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
-msgstr ""
+msgstr "प्याकेजहरू वा फाइलहरू खोज्नुहोस्, धेरै खोज सर्तहरू निर्दिष्ट गर्न सकिन्छ"
 
 #: src/cli.vala
 msgid "file(s)"
-msgstr ""
+msgstr "फाइल(हरू)"
 
 #: src/cli.vala
 msgid "only search for installed packages"
-msgstr ""
+msgstr "स्थापित प्याकेजहरू मात्र खोज्नुहोस्"
 
 #: src/cli.vala
 msgid "only search for packages in repositories"
-msgstr ""
+msgstr "भण्डारहरूमा प्याकेजहरू मात्र खोज्नुहोस्"
 
 #: src/cli.vala
 msgid "also search in AUR"
-msgstr ""
+msgstr "AUR मा पनि खोज्नुहोस्"
 
 #: src/cli.vala
 msgid "do not search in AUR"
-msgstr ""
+msgstr "AUR मा खोज नगर्नुहोस्"
 
 #: src/cli.vala
 msgid ""
 "search for packages which own the given filenames (filenames can be partial)"
-msgstr ""
+msgstr "दिइएको फाइलनामहरूको स्वामित्व भएका प्याकेजहरू खोज्नुहोस् (फाइलनामहरू आंशिक हुन सक्छन्)"
 
 #: src/cli.vala
 msgid "only print names"
-msgstr ""
+msgstr "नाम मात्र छाप्नुहोस्"
 
 #: src/cli.vala
 msgid "Display package details, multiple packages can be specified"
-msgstr ""
+msgstr "प्याकेज विवरणहरू प्रदर्शन गर्नुहोस्, धेरै प्याकेजहरू निर्दिष्ट गर्न सकिन्छ"
 
 #: src/cli.vala
 msgid "List packages, groups, repositories or files"
-msgstr ""
+msgstr "प्याकेजहरू, समूहहरू, भण्डारहरू वा फाइलहरू सूचीबद्ध गर्नुहोस्"
 
 #: src/cli.vala
 msgid "group(s)"
-msgstr ""
+msgstr "समूह(हरू)"
 
 #: src/cli.vala
 msgid "repo(s)"
-msgstr ""
+msgstr "रिपो(हरू)"
 
 #: src/cli.vala
 msgid "list installed packages"
-msgstr ""
+msgstr "स्थापित प्याकेजहरूको सूची"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "स्पष्ट रूपमा स्थापित प्याकेजहरूको सूची"
 
 #: src/cli.vala
 msgid ""
 "list packages that were installed as dependencies but are no longer required"
 " by any installed package"
-msgstr ""
+msgstr "सूची प्याकेजहरू जुन निर्भरताको रूपमा स्थापना गरिएको थियो तर अब कुनै पनि स्थापित प्याकेजद्वारा आवश्यक पर्दैन"
 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
-msgstr ""
+msgstr "सूची प्याकेजहरू जुन भण्डारहरूमा फेला परेनन्"
 
 #: src/cli.vala
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr ""
+msgstr "सबै प्याकेजहरू सूचीबद्ध गर्नुहोस् जुन दिइएको समूहका सदस्यहरू छन्, यदि कुनै समूहलाई दिइएको छैन भने सबै समूहहरू सूचीबद्ध गर्नुहोस् "
 
 #: src/cli.vala
 msgid ""
 "list all packages available in the given repos, if no repo is given list all"
 " repos"
-msgstr ""
+msgstr "दिइएको रिपोमा उपलब्ध सबै प्याकेजहरू सूचीबद्ध गर्नुहोस्, यदि कुनै रिपो दिइएको छैन भने सबै रिपोहरू सूची गर्नुहोस्"
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
-msgstr ""
+msgstr "दिइएको प्याकेजहरूको स्वामित्वमा रहेका फाइलहरू सूची गर्नुहोस्"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
-msgstr ""
+msgstr "क्लोन वा सिंक प्याकेजहरूले AUR बाट फाइलहरू निर्माण गर्दछ"
 
 #: src/cli.vala
 msgid "dir"
-msgstr ""
+msgstr "तिमीलाई"
 
 #: src/cli.vala
 msgid ""
 "build directory, if no directory is given the one specified in pamac.conf "
 "file is used"
-msgstr ""
+msgstr "डाइरेक्टरी निर्माण गर्नुहोस्, यदि pamac.conf फाइलमा निर्दिष्ट गरिएको कुनै डाइरेक्टरी दिइएको छैन भने प्रयोग गरिन्छ"
 
 #: src/cli.vala
 msgid "also clone needed dependencies"
-msgstr ""
+msgstr "क्लोन आवश्यक निर्भरताहरू पनि"
 
 #: src/cli.vala
 msgid "do not print any output"
-msgstr ""
+msgstr "कुनै पनि आउटपुट प्रिन्ट नगर्नुहोस्"
 
 #: src/cli.vala
 msgid "overwrite existing files"
-msgstr ""
+msgstr "अवस्थित फाइलहरू अधिलेखन गर्नुहोस्"
 
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
-msgstr ""
+msgstr "यदि कुनै प्याकेज नाम दिइएको छैन भने, हालको डाइरेक्टरीमा PKGBUILD फाइल प्रयोग गर्नुहोस्"
 
 #: src/cli.vala
 msgid ""
 "The build directory will be the parent directory, --builddir option will be "
 "ignored"
-msgstr ""
+msgstr "बिल्ड डाइरेक्टरी मूल डाइरेक्टरी हुनेछ, --builddir विकल्पलाई बेवास्ता गरिनेछ"
 
 #: src/cli.vala
 msgid "and --no-clone option will be enforced"
-msgstr ""
+msgstr "र --नो-क्लोन विकल्प लागू गरिनेछ"
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
-msgstr ""
+msgstr "स्थापना पछि क्यास मा निर्मित प्याकेज राख्नुहोस्"
 
 #: src/cli.vala
 msgid "do not keep built packages in cache after installation"
-msgstr ""
+msgstr "स्थापना पछि निर्मित प्याकेजहरू क्यासमा नराख्नुहोस्"
 
 #: src/cli.vala
 msgid "only print what would be done but do not run the transaction"
-msgstr ""
+msgstr "के गरिन्छ मात्र प्रिन्ट गर्नुहोस् तर लेनदेन नचलाउनुहोस्"
 
 #: src/cli.vala
 msgid "do not clone build files from AUR, only use local files"
-msgstr ""
+msgstr "AUR बाट निर्माण फाइलहरू क्लोन नगर्नुहोस्, स्थानीय फाइलहरू मात्र प्रयोग गर्नुहोस्"
 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
-msgstr ""
+msgstr "कुनै पनि र सबै पुष्टिकरण सन्देशहरू बाइपास गर्नुहोस्"
 
 #: src/cli.vala
 msgid "glob"
-msgstr ""
+msgstr "ग्लोब"
 
 #: src/cli.vala
 msgid ""
 "ignore a package upgrade, multiple packages can be specified by separating "
 "them with a comma"
-msgstr ""
+msgstr "प्याकेज अपग्रेडलाई बेवास्ता गर्नुहोस्, धेरै प्याकेजहरूलाई अल्पविरामले छुट्याएर निर्दिष्ट गर्न सकिन्छ "
 
 #: src/cli.vala
 msgid ""
 "overwrite conflicting files, multiple patterns can be specified by "
 "separating them with a comma"
-msgstr ""
+msgstr "विरोधाभासी फाइलहरू अधिलेखन गर्नुहोस्, धेरै ढाँचाहरूलाई अल्पविरामले छुट्याएर निर्दिष्ट गर्न सकिन्छ "
 
 #: src/cli.vala
 msgid "download all packages but do not install/upgrade anything"
-msgstr ""
+msgstr "सबै प्याकेजहरू डाउनलोड गर्नुहोस् तर कुनै पनि स्थापना/अपग्रेड नगर्नुहोस्"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
-msgstr ""
+msgstr "निर्भरताको रूपमा स्थापित सबै प्याकेजहरूलाई चिन्ह लगाउनुहोस्"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr ""
+msgstr "सबै प्याकेजहरू स्पष्ट रूपमा स्थापित चिन्ह लगाउनुहोस्"
 
 #: src/cli.vala
 msgid "check for updates"
-msgstr ""
+msgstr "अपडेटहरूको लागि जाँच गर्नुहोस्"
 
 #: src/cli.vala
 msgid "do not check for updates"
-msgstr ""
+msgstr "अपडेटहरूको लागि जाँच नगर्नुहोस्"
 
 #: src/cli.vala
 msgid "Reinstall packages"
-msgstr ""
+msgstr "प्याकेजहरू पुन: स्थापना गर्नुहोस्"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
-msgstr ""
+msgstr "प्याकेजहरू मात्र हटाउनुहोस् यदि तिनीहरू कुनै अन्य प्याकेजहरू द्वारा आवश्यक पर्दैन"
 
 #: src/cli.vala
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "सबै लक्षित प्याकेजहरू हटाउनुहोस्, साथै सबै प्याकेजहरू जुन एक वा बढी लक्षित प्याकेजहरूमा निर्भर छन्"
 
 #: src/cli.vala
 msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
-msgstr ""
+msgstr "अन्य प्याकेजहरूद्वारा आवश्यक नभएका निर्भरताहरू हटाउनुहोस्, यदि यो विकल्प प्याकेज नाम बिना प्रयोग गरिन्छ भने सबै अनाथहरू हटाउनुहोस्"
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
-msgstr ""
+msgstr "अन्य प्याकेजहरू द्वारा आवश्यक नपर्ने निर्भरताहरू नहटाउनुहोस्"
 
 #: src/cli.vala
 msgid "ignore files backup"
-msgstr ""
+msgstr "फाइल ब्याकअप बेवास्ता गर्नुहोस्"
 
 #: src/cli.vala
 msgid "Safely check for updates without modifiying the databases"
-msgstr ""
+msgstr "डाटाबेस परिमार्जन नगरीकन अपडेटहरूको लागि सुरक्षित रूपमा जाँच गर्नुहोस्"
 
 #: src/cli.vala
 msgid "Exit code is 100 if updates are available"
-msgstr ""
+msgstr "निकास कोड 100 हो यदि अद्यावधिकहरू उपलब्ध छन्"
 
 #: src/cli.vala
 msgid ""
 "build directory (use with --devel), if no directory is given the one "
 "specified in pamac.conf file is used"
-msgstr ""
+msgstr "डाइरेक्टरी निर्माण गर्नुहोस् (--devel सँग प्रयोग गर्नुहोस्), यदि कुनै डाइरेक्टरी दिइएको छैन भने pamac.conf फाइलमा निर्दिष्ट गरिएको छ।"
 
 #: src/cli.vala
 msgid "also check updates in AUR"
-msgstr ""
+msgstr "AUR मा अद्यावधिकहरू पनि जाँच गर्नुहोस्"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr ""
+msgstr "AUR मा अद्यावधिकहरू जाँच नगर्नुहोस्"
 
 #: src/cli.vala
 msgid "only print one line per update"
-msgstr ""
+msgstr "प्रति अपडेट मात्र एक लाइन छाप्नुहोस्"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
-msgstr ""
+msgstr "विकास प्याकेज अद्यावधिकहरू पनि जाँच गर्नुहोस् (--aur सँग प्रयोग गर्नुहोस्)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr ""
+msgstr "विकास प्याकेज अद्यावधिकहरू जाँच नगर्नुहोस्"
 
 #: src/cli.vala
 msgid "Upgrade your system"
-msgstr ""
+msgstr "आफ्नो प्रणाली अपग्रेड गर्नुहोस् "
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
-msgstr ""
+msgstr "डाटाबेसको रिफ्रेस गर्न बल दिनुहोस्"
 
 #: src/cli.vala
 msgid "enable package downgrades"
-msgstr ""
+msgstr "प्याकेज डाउनग्रेडहरू सक्षम गर्नुहोस्"
 
 #: src/cli.vala
 msgid "disable package downgrades"
-msgstr ""
+msgstr "प्याकेज डाउनग्रेडहरू असक्षम गर्नुहोस्"
 
 #: src/cli.vala
 msgid "also upgrade packages installed from AUR"
-msgstr ""
+msgstr "AUR बाट स्थापना गरिएका प्याकेजहरू पनि अपग्रेड गर्नुहोस्"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr ""
+msgstr "AUR बाट स्थापित प्याकेजहरू अपग्रेड नगर्नुहोस्"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
-msgstr ""
+msgstr "विकास प्याकेजहरू पनि अपग्रेड गर्नुहोस् (--aur सँग प्रयोग गर्नुहोस्)"
 
 #: src/cli.vala
 msgid "do not upgrade development packages"
-msgstr ""
+msgstr "विकास प्याकेजहरू अपग्रेड नगर्नुहोस्"
 
 #: src/cli.vala
 msgid ""
 "build directory (use with --aur), if no directory is given the one specified"
 " in pamac.conf file is used"
-msgstr ""
+msgstr "डाइरेक्टरी निर्माण गर्नुहोस् (--aur सँग प्रयोग गर्नुहोस्), यदि कुनै डाइरेक्टरी दिइएको छैन भने pamac.conf फाइलमा निर्दिष्ट गरिएको प्रयोग गरिन्छ।"
 
 #: src/cli.vala
 msgid "Clean packages cache or build files"
-msgstr ""
+msgstr "प्याकेजहरू क्यास सफा गर्नुहोस् वा फाइलहरू निर्माण गर्नुहोस्"
 
 #: src/cli.vala
 msgid "number"
-msgstr ""
+msgstr "संख्या"
 
 #: src/cli.vala
 msgid ""
 "specify how many versions of each package are kept in the cache directory"
-msgstr ""
+msgstr "प्रत्येक प्याकेजको कति संस्करणहरू क्यास डाइरेक्टरीमा राखिएका छन् निर्दिष्ट गर्नुहोस्"
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
-msgstr ""
+msgstr "स्थापना रद्द प्याकेजहरू मात्र लक्षित"
 
 #: src/cli.vala
 msgid ""
 "remove all build files, the build directory is the one specified in "
 "pamac.conf"
-msgstr ""
+msgstr "सबै निर्माण फाइलहरू हटाउनुहोस्, निर्माण निर्देशिका pamac.conf मा निर्दिष्ट गरिएको हो"
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
-msgstr ""
+msgstr "फाइलहरू नहटाउनुहोस्, केवल उम्मेदवार प्याकेजहरू फेला पार्नुहोस्"
 
 #: src/cli.vala
 msgid "also display all files names"
-msgstr ""
+msgstr "सबै फाइल नामहरू पनि प्रदर्शन गर्नुहोस्"
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
-msgstr ""
+msgstr "नाम"
 
 #: src/cli.vala
 msgid "Version"
-msgstr ""
+msgstr "संस्करण"
 
 #: src/cli.vala
 msgid "Description"
-msgstr ""
+msgstr "विवरण"
 
 #: src/cli.vala
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/cli.vala
 msgid "Installed Size"
-msgstr ""
+msgstr "स्थापित आकार"
 
 #: src/cli.vala
 #, c-format
 msgid "No package owns %s"
-msgstr ""
+msgstr " कुनै प्याकेजको स्वामित्व छैन%s"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is owned by %s"
-msgstr ""
+msgstr "%sको स्वामित्वमा छ  %s"
 
 #: src/cli.vala
 #, c-format
 msgid "%u ignored update"
 msgid_plural "%u ignored updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u बेवास्ता गरिएका अपडेटहरू"
+msgstr[1] "%u बेवास्ता गरिएका अपडेटहरू"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
-msgstr ""
+msgstr "स्थापना नगरिएका प्याकेजहरूको संस्करण मात्र हटाउनुहोस्"
 
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
-msgstr ""
+msgstr "क्यासमा राख्नको लागि प्रत्येक प्याकेजको संस्करणहरूको संख्या"
 
 #: src/cli.vala
 msgid "Clean cache"
-msgstr ""
+msgstr "क्यास सफा गर्नुहोस्"
 
 #: src/cli.vala
 msgid "Clean build files"
-msgstr ""
+msgstr "निर्माण फाइलहरू सफा गर्नुहोस्"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to install"
-msgstr ""
+msgstr " थप्नुहोस् %s स्थापना गर्न"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is only available from AUR"
-msgstr ""
+msgstr "%s AUR बाट मात्र उपलब्ध छ"
 
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "छन् %1$u समूहमा सदस्यहरू %2$s"
+msgstr[1] "छन् %1$u समूहमा सदस्यहरू %2$s"
 
 #: src/cli.vala
 msgid "all"
-msgstr ""
+msgstr "सबै"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr ""
+msgstr " थप्नुहोस्%s पुन: स्थापना गर्न"
 
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "स्थापना गर्नुहोस् %1$s  बाट%2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
-msgstr ""
+msgstr "छैन"
 
 #: resources/choose_provider_dialog.ui
 msgid "Choose a Provider"
-msgstr ""
+msgstr "एक प्रदायक छान्नुहोस् "
 
 #: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
 msgid "Choose"
-msgstr ""
+msgstr "छान्नुहोस्"
 
 #: resources/progress_dialog.ui
 msgid "Progress"
-msgstr ""
+msgstr "प्रगति"
 
 #: resources/history_dialog.ui
 msgid "Pamac History"
-msgstr ""
+msgstr "Pamac इतिहास"
 
 #: resources/transaction_sum_dialog.ui
 msgid "Transaction Summary"
-msgstr ""
+msgstr "लेनदेन सारांश"
 
 #: resources/transaction_sum_dialog.ui resources/manager_window.ui
 msgid "_Apply"
-msgstr ""
+msgstr "_निवेदन गर्नु"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr ""
+msgstr "सफ्टवेयर मोड"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
-msgstr ""
+msgstr "डाटाबेसहरू ताजा गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "View History"
-msgstr ""
+msgstr "इतिहास हेर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Preferences"
-msgstr ""
+msgstr "प्राथमिकताहरू"
 
 #: resources/manager_window.ui
 msgid "About"
-msgstr ""
+msgstr "बारे"
 
 #: resources/manager_window.ui
 msgid "Search"
-msgstr ""
+msgstr "खोज्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Remove all"
-msgstr ""
+msgstr "सबै हटाऊ"
 
 #: resources/manager_window.ui
 msgid "Install all"
-msgstr ""
+msgstr "सबै स्थापना गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Ignore all"
-msgstr ""
+msgstr "सबै बेवास्ता गर्नुहोस् "
 
 #: resources/manager_window.ui
 msgid "Sort by"
-msgstr ""
+msgstr "अनुसार क्रमबद्ध गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Relevance"
-msgstr ""
+msgstr "सान्दर्भिकता"
 
 #: resources/manager_window.ui
 msgid "Size"
-msgstr ""
+msgstr "साइज"
 
 #: resources/manager_window.ui
 msgid "Date"
-msgstr ""
+msgstr "मिति"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "रिफ्रेस गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Categories"
-msgstr ""
+msgstr "कोटीहरू"
 
 #: resources/manager_window.ui
 msgid "Browse"
-msgstr ""
+msgstr "ब्राउज गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Launch"
-msgstr ""
+msgstr "प्रक्षेपण"
 
 #: resources/manager_window.ui
 msgid "Remove"
-msgstr ""
+msgstr "हटाउनुहोस्"
 
 #: resources/manager_window.ui
 msgid "Reinstall"
-msgstr ""
+msgstr "पुन: स्थापना गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Build"
-msgstr ""
+msgstr "निर्माण गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Dependencies"
-msgstr ""
+msgstr "निर्भरताहरू"
 
 #: resources/manager_window.ui
 msgid "Files"
-msgstr ""
+msgstr "फाइलहरू"
 
 #: resources/manager_window.ui
 msgid "Reset build files"
-msgstr ""
+msgstr "निर्माण फाइलहरू रिसेट गर्नुहोस्"
 
 #: resources/manager_window.ui
 msgid "Build files"
-msgstr ""
+msgstr "फाइलहरू बनाउनुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "General"
-msgstr ""
+msgstr "सामान्य"
 
 #: resources/preferences_dialog.ui
 msgid "Check for updates"
-msgstr ""
+msgstr "अपडेटहरूको लागि जाँच गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "अद्यावधिक आवृत्ति जाँच"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
-msgstr ""
+msgstr "स्वचालित रूपमा अद्यावधिकहरू डाउनलोड गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "कुनै अद्यावधिक नभएको बेला ट्रे प्रतिमा लुकाउनुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "डाउनलोडहरू"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "समानान्तर डाउनलोडहरू"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "बाट ऐना प्रयोग गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "मिररहरू ताजा गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
-msgstr ""
+msgstr "क्यास"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "राख्नको लागि प्रत्येक प्याकेजको संस्करणहरूको संख्या"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "स्थापना नगरिएका प्याकेजहरू मात्र हटाउनुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "सफा"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
-msgstr ""
+msgstr "उन्नत"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
+msgstr "यी विकल्पहरूको गलत कन्फिगरेसनले प्रणाली विच्छेद हुन सक्छ। तपाईंले के गरिरहनुभएको छ भन्ने थाहा भएमा मात्र तिनीहरूलाई परिमार्जन गर्नुहोस्।"
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
-msgstr ""
+msgstr "उपलब्ध डिस्क स्पेस जाँच गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"
-msgstr ""
+msgstr "अनावश्यक निर्भरताहरू हटाउनुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Do not check for updates when installing"
-msgstr ""
+msgstr "स्थापना गर्दा अद्यावधिकहरूको लागि जाँच नगर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Enable downgrade"
-msgstr ""
+msgstr "डाउनग्रेड सक्षम गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "बेवास्ता गरिएका अपग्रेडहरू"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "तेस्रो पक्ष"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
+msgstr "AUR एक सामुदायिक राखिएको भण्डार हो त्यसैले यसले सम्भावित जोखिम र समस्याहरू प्रस्तुत गर्दछ। सबै AUR प्रयोगकर्ताहरू निर्माण प्रक्रियासँग परिचित हुनुपर्छ।"
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
-msgstr ""
+msgstr "AUR समर्थन सक्षम गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "निर्मित प्याकेजहरू राख्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"
-msgstr ""
+msgstr "विकास प्याकेज अद्यावधिकहरूको लागि जाँच गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Build directory"
-msgstr ""
+msgstr "निर्देशिका निर्माण गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
-msgstr ""
+msgstr "Flatpak प्याकेजहरू तिनीहरूको प्रकाशकद्वारा राखिन्छन्।"
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
-msgstr ""
+msgstr "Flatpak समर्थन सक्षम गर्नुहोस्"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr ""
+msgstr "Snap प्याकेजहरू तिनीहरूको प्रकाशकद्वारा राखिन्छन्।"
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"
-msgstr ""
+msgstr "सक्षम गर्नुहोस् Snap समर्थन"
