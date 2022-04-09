@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Dušan Kazik, 2014
-# Dušan Kazik <prescott66@gmail.com>, 2014-2021
+# Dušan Kazik <prescott66@gmail.com>, 2014-2022
 # Inoki Sakaeru, 2013
 # Jozef Gaal <preklady@mayday.sk>, 2020
 # Miroslav Ďurian, 2018
@@ -16,9 +16,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>, 2014-2022\n"
 "Language-Team: Slovak (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -385,6 +385,10 @@ msgid "Nothing to do"
 msgstr "Nič na vykonanie"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
@@ -427,7 +431,7 @@ msgstr "_Zrušiť"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "Je potrený kľúč PGP %1$s na overenie zdrojových súborov balíka %2$s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -539,8 +543,8 @@ msgid "Updates Available"
 msgstr "Sú dostupné aktualizácie"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "Váš systém je aktuálny"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"

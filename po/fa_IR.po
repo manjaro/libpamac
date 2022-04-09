@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: Seyed Mahdi Nagavi Kalajahi <smahdink@protonmail.com>, 2020-2021\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/fa_IR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -385,6 +385,10 @@ msgid "Nothing to do"
 msgstr "کاری برای انجام دادن وجود ندارد"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
@@ -539,8 +543,8 @@ msgid "Updates Available"
 msgstr "به‌روز‌رسانی موجود است"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "سیستم شما به روز است"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
@@ -595,7 +599,7 @@ msgstr[1] "%uفرآیند در حال انتظار"
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "معلق"
 
 #: src/manager_window.vala
 msgid "All"
@@ -731,7 +735,7 @@ msgstr "کانال‌ها"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr ""
+msgstr "به‌روزرسانی‌های سیستم عامل"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
@@ -780,7 +784,7 @@ msgstr "به‌روزرسانی‌ها"
 
 #: src/manager_window.vala
 msgid "Last refresh"
-msgstr ""
+msgstr "آخرین باز‌آوری"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
@@ -1450,7 +1454,7 @@ msgstr "تاریخ"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "تازه‌سازی"
 
 #: resources/manager_window.ui
 msgid "Categories"
@@ -1526,7 +1530,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "تازه‌سازی آینه‌ها"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"

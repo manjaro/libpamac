@@ -6,6 +6,7 @@
 # Translators:
 # Reza Gharibi <reza.gharibi.rg@gmail.com>, 2013
 # Hootan Baraary <h.baraary@yahoo.com>, 2013
+# K2latmanesh, 2022
 # Reza Gharibi <reza.gharibi.rg@gmail.com>, 2013
 # Seyed Mahdi Nagavi Kalajahi <smahdink@protonmail.com>, 2020-2021
 # Soroush Mirzaei <soroush.mirzaei@gmail.com>, 2018
@@ -14,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: K2latmanesh, 2022\n"
 "Language-Team: Persian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,12 +82,12 @@ msgstr ""
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
 msgid "Add %s to remove"
-msgstr ""
+msgstr "اضافه کردن %s برای حذف کردن"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "if possible, remove %s and retry"
-msgstr ""
+msgstr "در صورت امکان %s را حذف کرده و دوباره امتحان کنید"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -105,16 +106,16 @@ msgstr "%sباید حذف شود اما یک بستهٔ قفل شده است"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
-msgstr ""
+msgstr "خطا در مقدار‌دهی اولیهٔ پایگاه دادهٔ AUR"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s from target list"
-msgstr ""
+msgstr "حذف %s از لیست هدف"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "برای اعمال تغییرات لازم است رایانه را restart کنید"
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
@@ -137,7 +138,7 @@ msgstr ""
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
-msgstr ""
+msgstr "اگر این پرونده مورد نیاز نیست، آن را پاک کرده و دوباره امتحان کنید"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -155,7 +156,7 @@ msgstr "%s نامعتبر یا خراب است"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
-msgstr ""
+msgstr "می‌توانید این پرونده را  حذف کرده و دوباره امتحان کنید"
 
 #: src/alpm_utils.vala
 msgid "failed to retrieve some files"
@@ -179,7 +180,7 @@ msgstr "حل وابستگی‌ها"
 
 #: src/alpm_utils.vala
 msgid "Checking inter-conflicts"
-msgstr ""
+msgstr "بررسی ناسازگاری‌های میانی"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -379,6 +380,10 @@ msgid "Nothing to do"
 msgstr "کاری برای انجام دادن وجود ندارد"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
@@ -469,7 +474,7 @@ msgstr "جایگزین می‌شود با"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Edit build files"
-msgstr ""
+msgstr "ویرایش پرونده‌های ساخت"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 msgid "Total download size"
@@ -533,8 +538,8 @@ msgid "Updates Available"
 msgstr "به‌روزرسانی موجود است"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "سیستم شما به روز است"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
@@ -573,7 +578,7 @@ msgstr "بسته Alpm"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr ""
+msgstr "یک مدیر بسته با پشتیبانی از Alpm، AUR، Flatpak و Snap"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
@@ -589,7 +594,7 @@ msgstr[1] "%uعملیات در حال انتظار"
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "معلق"
 
 #: src/manager_window.vala
 msgid "All"
@@ -838,7 +843,7 @@ msgstr ""
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
-msgstr ""
+msgstr "برای حذف"
 
 #: src/preferences_dialog.vala src/cli.vala
 #, c-format
@@ -857,33 +862,33 @@ msgstr ""
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
-msgstr ""
+msgstr "به‌روزرسانی‌های نادیده گرفته شده را انتخاب کنید"
 
 #: src/transaction-cli.vala src/cli.vala
 #, c-format
 msgid "Enter a selection (default=%s)"
-msgstr ""
+msgstr "انتخابی را وارد کنید (پیش‌فرض=%s)"
 
 #: src/transaction-cli.vala
 msgid "none"
-msgstr ""
+msgstr "هیچ‌یک"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "Enter a number (default=%d)"
-msgstr ""
+msgstr "عددی را وارد کنید (پیش‌فرض=%d)"
 
 #: src/transaction-cli.vala
 msgid "[y/N]"
-msgstr ""
+msgstr "[بله(y)/خیر(N)]"
 
 #: src/transaction-cli.vala
 msgid "y"
-msgstr ""
+msgstr "بله"
 
 #: src/transaction-cli.vala
 msgid "yes"
-msgstr ""
+msgstr "بله"
 
 #: src/transaction-cli.vala
 msgid "[e]"
@@ -891,7 +896,7 @@ msgstr ""
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
-msgstr ""
+msgstr "اجرای تراکنش"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
@@ -927,16 +932,16 @@ msgstr "برای حذف"
 
 #: src/transaction-cli.vala
 msgid "Total installed size"
-msgstr ""
+msgstr "مجموع حجم نصب‌شده"
 
 #: src/transaction-cli.vala
 msgid "Total removed size"
-msgstr ""
+msgstr "مجموع حجم حذف‌شده"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "View %s build files diff"
-msgstr ""
+msgstr "مشاهده اختلاف پرونده‌های ساخت %s"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -949,7 +954,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
-msgstr ""
+msgstr "هیچ پروندهٔ PKGBUILD در پوشه کنونی یافت نشد"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
@@ -957,68 +962,68 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Available actions"
-msgstr ""
+msgstr "اقدامات در دسترس"
 
 #: src/cli.vala
 msgid "action"
-msgstr ""
+msgstr "اقدام"
 
 #: src/cli.vala
 msgid "options"
-msgstr ""
+msgstr "گزینه‌ها"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
-msgstr ""
+msgstr "جستجو برای بسته‌ها یا پرونده‌ها، چند کلمه برای جستجو می‌توان به کار برد"
 
 #: src/cli.vala
 msgid "file(s)"
-msgstr ""
+msgstr "پرونده(ها)"
 
 #: src/cli.vala
 msgid "only search for installed packages"
-msgstr ""
+msgstr "فقط جستجو برای بسته‌های نصب شده"
 
 #: src/cli.vala
 msgid "only search for packages in repositories"
-msgstr ""
+msgstr "فقط جستجو برای بسته‌ها در مخازن"
 
 #: src/cli.vala
 msgid "also search in AUR"
-msgstr ""
+msgstr "همچنین در AUR جستجو شود"
 
 #: src/cli.vala
 msgid "do not search in AUR"
-msgstr ""
+msgstr "در AUR جست‌و‌جو نشود"
 
 #: src/cli.vala
 msgid ""
 "search for packages which own the given filenames (filenames can be partial)"
-msgstr ""
+msgstr "جستجو برای بسته‌هایی که دارای این نام پرونده هستند (نام پرونده می‌تواند جزئی باشد)"
 
 #: src/cli.vala
 msgid "only print names"
-msgstr ""
+msgstr "فقط نام‌ها را چاپ کن"
 
 #: src/cli.vala
 msgid "Display package details, multiple packages can be specified"
-msgstr ""
+msgstr "نشان دادن جزئیات بسته، می‌توان چند بسته را انتخاب کرد"
 
 #: src/cli.vala
 msgid "List packages, groups, repositories or files"
-msgstr ""
+msgstr "لیست کردن بسته‌ها، گروه‌ها، مخازن یا پرونده‌ها"
 
 #: src/cli.vala
 msgid "group(s)"
-msgstr ""
+msgstr "گروه(ها)"
 
 #: src/cli.vala
 msgid "repo(s)"
-msgstr ""
+msgstr "مخزن(ها)"
 
 #: src/cli.vala
 msgid "list installed packages"
-msgstr ""
+msgstr "لیست کردن بسته‌های نصب شده"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
@@ -1028,58 +1033,58 @@ msgstr ""
 msgid ""
 "list packages that were installed as dependencies but are no longer required"
 " by any installed package"
-msgstr ""
+msgstr "لیست کردن بسته‌هایی که به عنوان یک وابستگی نصب شده‌اند اما دیگر مورد نیاز هیچ بستهٔ نصب شده‌ای نیستند"
 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
-msgstr ""
+msgstr "لیست کردن بسته‌هایی که در مخازن پیدا نشدند"
 
 #: src/cli.vala
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr ""
+msgstr "لیست کردن تمام بسته‌هایی که عضو گروه داده‌شده‌اند؛ اگر هیچ گروهی داده نشده همه گروه‌ها را لیست کن"
 
 #: src/cli.vala
 msgid ""
 "list all packages available in the given repos, if no repo is given list all"
 " repos"
-msgstr ""
+msgstr "لیست کردن تمام بسته‌هایی که جزء مخازن داده‌شده‌اند؛ اگر هیچ مخزنی داده نشده همه مخازن را لیست کن"
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
-msgstr ""
+msgstr "لیست کردن تمام پرونده‌های متعلق به بسته مورد نظر"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
-msgstr ""
+msgstr "کلون یا همگام‌سازی کردن پرونده‌های ساخت از AUR"
 
 #: src/cli.vala
 msgid "dir"
-msgstr ""
+msgstr "پوشه"
 
 #: src/cli.vala
 msgid ""
 "build directory, if no directory is given the one specified in pamac.conf "
 "file is used"
-msgstr ""
+msgstr "مسیر ساخت؛ اگر مسیری داده نشود مسیر مشخص شده در پرونده pamac.conf استفاده می‌شود"
 
 #: src/cli.vala
 msgid "also clone needed dependencies"
-msgstr ""
+msgstr "وابستگی‌های لازم را هم کلون کن"
 
 #: src/cli.vala
 msgid "do not print any output"
-msgstr ""
+msgstr "هیچ خروجی چاپ نشود"
 
 #: src/cli.vala
 msgid "overwrite existing files"
-msgstr ""
+msgstr "روی پرونده‌های موجود نوشته شود"
 
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
-msgstr ""
+msgstr "اگر نام بسته‌ای داده نشده است، از پرونده PKGBUILD موجود در مسیر کنونی استفاده کن"
 
 #: src/cli.vala
 msgid ""
@@ -1089,27 +1094,27 @@ msgstr ""
 
 #: src/cli.vala
 msgid "and --no-clone option will be enforced"
-msgstr ""
+msgstr "و گزینه --no-clone اعمال خواهد شد"
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
-msgstr ""
+msgstr "نگه‌داشتن بسته‌های ساخته شده در حافظه موقت، کش، بعد از نصب"
 
 #: src/cli.vala
 msgid "do not keep built packages in cache after installation"
-msgstr ""
+msgstr "بسته‌های ساخته شده را پس از نصب در cache نگه ندار"
 
 #: src/cli.vala
 msgid "only print what would be done but do not run the transaction"
-msgstr ""
+msgstr "فقط مواردی را که انجام خواهد شد را چاپ کن ولی تراکنش را اجرا نکن"
 
 #: src/cli.vala
 msgid "do not clone build files from AUR, only use local files"
-msgstr ""
+msgstr "پرونده‌های ساخت را از AUR کلون نکن؛ فقط از پرونده‌های محلی استفاده کن"
 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
-msgstr ""
+msgstr "گذشتن از کنار همه پیام‌های تأیید"
 
 #: src/cli.vala
 msgid "glob"
@@ -1119,7 +1124,7 @@ msgstr ""
 msgid ""
 "ignore a package upgrade, multiple packages can be specified by separating "
 "them with a comma"
-msgstr ""
+msgstr "نادیده گرفتن به‌روزرسانی بسته؛ بسته‌های متعدد را می‌توان با علامت کاما از هم جدا کرد"
 
 #: src/cli.vala
 msgid ""
@@ -1129,31 +1134,31 @@ msgstr ""
 
 #: src/cli.vala
 msgid "download all packages but do not install/upgrade anything"
-msgstr ""
+msgstr "همه بسته‌ها را بارگیری کن اما هیچ‌چیزی را نصب یا به‌روز نکن"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
-msgstr ""
+msgstr "علامت زدن تمام بسته‌ها به عنوان وابستگی"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr ""
+msgstr "علامت زدن تمام بسته‌ها به عنوان صریحاً نصب شده"
 
 #: src/cli.vala
 msgid "check for updates"
-msgstr ""
+msgstr "بررسی برای به‌روزرسانی‌ها"
 
 #: src/cli.vala
 msgid "do not check for updates"
-msgstr ""
+msgstr "برای به‌روزرسانی بررسی نشود"
 
 #: src/cli.vala
 msgid "Reinstall packages"
-msgstr ""
+msgstr "بسته‌ها را دوباره نصب کن"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
-msgstr ""
+msgstr "بسته‌ها را حذف کن فقط در صورتی که موردنیاز هیچ بستهٔ دیگری نباشند"
 
 #: src/cli.vala
 msgid ""
@@ -1165,23 +1170,23 @@ msgstr ""
 msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
-msgstr ""
+msgstr "حذف کردن تمام وابستگی‌هایی که مورد نیاز سایر بسته‌ها نیست؛ اگر این گزینه بدون نام بسته استاده شود تمام orphan هارا پاک خواهد کرد"
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
-msgstr ""
+msgstr "وابستگی‌هایی که مورد نیاز بسته‌های دیگر نیستند حذف نشوند"
 
 #: src/cli.vala
 msgid "ignore files backup"
-msgstr ""
+msgstr "پشتیبان‌گیری از فایل‌ها را نادیده بگیر"
 
 #: src/cli.vala
 msgid "Safely check for updates without modifiying the databases"
-msgstr ""
+msgstr "به صورت ایمن برای به‌روزرسانی‌ها بررسی کن بدون ایجاد تغییر در پایگاه‌داده‌ها"
 
 #: src/cli.vala
 msgid "Exit code is 100 if updates are available"
-msgstr ""
+msgstr "در صورت وجود به‌روزرسانی، کد خروج عدد 100 است."
 
 #: src/cli.vala
 msgid ""
@@ -1191,35 +1196,35 @@ msgstr ""
 
 #: src/cli.vala
 msgid "also check updates in AUR"
-msgstr ""
+msgstr "همچنین بررسی برای به‌روزرسانی‌ها از AUR"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr ""
+msgstr "به‌روز‌رسانی‌ها از AUR بررسی نشوند"
 
 #: src/cli.vala
 msgid "only print one line per update"
-msgstr ""
+msgstr "به ازای هر به‌روزرسانی فقط یک سطر چاپ شود"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
-msgstr ""
+msgstr "همچنین بررسی به‌روزرسانی برای بسته‌های در حال توسعه هم انجام شود (با گزینه --aur استفاده شود)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr ""
+msgstr "بررسی به‌روزرسانی‌ها برای بسته‌های در حال توسعه انجام نشود"
 
 #: src/cli.vala
 msgid "Upgrade your system"
-msgstr ""
+msgstr "به‌روزرسانی سیستم شما"
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
-msgstr ""
+msgstr "اجبار کردن بازآوری پایگاه داده‌ها"
 
 #: src/cli.vala
 msgid "enable package downgrades"
-msgstr ""
+msgstr "فعال کردن به‌عقب‌گردانی بسته‌ها"
 
 #: src/cli.vala
 msgid "disable package downgrades"
@@ -1227,19 +1232,19 @@ msgstr ""
 
 #: src/cli.vala
 msgid "also upgrade packages installed from AUR"
-msgstr ""
+msgstr "همچنین به‌روزرسانی بسته‌های نصب شده از AUR"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr ""
+msgstr "بسته‌هایی که از AUR نصب شده‌اند به‌روزرسانی نشوند"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
-msgstr ""
+msgstr "همچنین بسته‌های در حال توسعه هم به‌روز شوند (با گزینه --aur استفاده شود)"
 
 #: src/cli.vala
 msgid "do not upgrade development packages"
-msgstr ""
+msgstr "بسته‌های در حال توسعه به‌روزرسانی نشوند"
 
 #: src/cli.vala
 msgid ""
@@ -1249,20 +1254,20 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Clean packages cache or build files"
-msgstr ""
+msgstr "پاک کردن حافظه موقت بسته‌ها یا پرونده‌های ساخت"
 
 #: src/cli.vala
 msgid "number"
-msgstr ""
+msgstr "عدد"
 
 #: src/cli.vala
 msgid ""
 "specify how many versions of each package are kept in the cache directory"
-msgstr ""
+msgstr "تعداد نسخه‌هایی از هر بسته را که در حافظه موقت نگه‌داری می‌شوند مشخص کنید"
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
-msgstr ""
+msgstr "تنها بسته‌های حذف شده هدف قرار داده شوند"
 
 #: src/cli.vala
 msgid ""
@@ -1272,11 +1277,11 @@ msgstr ""
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
-msgstr ""
+msgstr "فایل‌ها را حذف نکن، فقط بسته‌های مورد نظر را پیدا کن"
 
 #: src/cli.vala
 msgid "also display all files names"
-msgstr ""
+msgstr "تمام اسامی فایل‌ها نیز نمایش داده شود"
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
@@ -1284,62 +1289,62 @@ msgstr "نام"
 
 #: src/cli.vala
 msgid "Version"
-msgstr "نسخه"
+msgstr "نگارش"
 
 #: src/cli.vala
 msgid "Description"
-msgstr ""
+msgstr "توضیح"
 
 #: src/cli.vala
 msgid "URL"
-msgstr ""
+msgstr "نشانی"
 
 #: src/cli.vala
 msgid "Installed Size"
-msgstr ""
+msgstr "حجم نصب"
 
 #: src/cli.vala
 #, c-format
 msgid "No package owns %s"
-msgstr ""
+msgstr "%sمتعلق به هیچ بسته‌ای نیست"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is owned by %s"
-msgstr ""
+msgstr "%s متعلق به %s است"
 
 #: src/cli.vala
 #, c-format
 msgid "%u ignored update"
 msgid_plural "%u ignored updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u  به‌روزرسانی نادیده گرفته شده"
+msgstr[1] "%u به‌روزرسانی نادیده گرفته شده"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
-msgstr ""
+msgstr "فقط حذف نسخه‌های بسته‌های حذف شده"
 
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
-msgstr ""
+msgstr "تعدادی از نسخه های هر بسته که در حافظه موقت نگهداری شود"
 
 #: src/cli.vala
 msgid "Clean cache"
-msgstr ""
+msgstr "پاک کردن حافظه موقت"
 
 #: src/cli.vala
 msgid "Clean build files"
-msgstr ""
+msgstr "پاک کردن پرونده‌های ساخت"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to install"
-msgstr ""
+msgstr "افزودن %s برای نصب"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is only available from AUR"
-msgstr ""
+msgstr "%s فقط از طریق AUR در دسترس است"
 
 #: src/cli.vala
 #, c-format
@@ -1350,12 +1355,12 @@ msgstr[1] ""
 
 #: src/cli.vala
 msgid "all"
-msgstr ""
+msgstr "همه"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr ""
+msgstr "افزودن %s برای نصب مجدد"
 
 #: src/cli.vala
 #, c-format
@@ -1368,11 +1373,11 @@ msgstr "خیر"
 
 #: resources/choose_provider_dialog.ui
 msgid "Choose a Provider"
-msgstr ""
+msgstr "انتخاب یک ارائه‌دهنده"
 
 #: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
 msgid "Choose"
-msgstr ""
+msgstr "انتخاب"
 
 #: resources/progress_dialog.ui
 msgid "Progress"
@@ -1380,7 +1385,7 @@ msgstr "پیشرفت"
 
 #: resources/history_dialog.ui
 msgid "Pamac History"
-msgstr ""
+msgstr "تاریخچه Pamac"
 
 #: resources/transaction_sum_dialog.ui
 msgid "Transaction Summary"
@@ -1388,7 +1393,7 @@ msgstr "خلاصه‌ی تراکنش"
 
 #: resources/transaction_sum_dialog.ui resources/manager_window.ui
 msgid "_Apply"
-msgstr ""
+msgstr "_اعمال"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
@@ -1396,11 +1401,11 @@ msgstr "حالت نرم‌افزار"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
-msgstr ""
+msgstr "به‌روزرسانی پایگاه داده"
 
 #: resources/manager_window.ui
 msgid "View History"
-msgstr ""
+msgstr "مشاهده تاریخچه"
 
 #: resources/manager_window.ui
 msgid "Preferences"
@@ -1408,7 +1413,7 @@ msgstr "ترجیحات"
 
 #: resources/manager_window.ui
 msgid "About"
-msgstr ""
+msgstr "درباره"
 
 #: resources/manager_window.ui
 msgid "Search"
@@ -1416,15 +1421,15 @@ msgstr "جستجو"
 
 #: resources/manager_window.ui
 msgid "Remove all"
-msgstr ""
+msgstr "حذف همه"
 
 #: resources/manager_window.ui
 msgid "Install all"
-msgstr ""
+msgstr "نصب همه"
 
 #: resources/manager_window.ui
 msgid "Ignore all"
-msgstr ""
+msgstr "نادیده گرفتن همه"
 
 #: resources/manager_window.ui
 msgid "Sort by"
@@ -1432,7 +1437,7 @@ msgstr "مرتب کردن بر اساس"
 
 #: resources/manager_window.ui
 msgid "Relevance"
-msgstr "ارتباط"
+msgstr "مرتبط‌ترین"
 
 #: resources/manager_window.ui
 msgid "Size"
@@ -1444,7 +1449,7 @@ msgstr "تاریخ"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "تازه‌سازی"
 
 #: resources/manager_window.ui
 msgid "Categories"
@@ -1452,11 +1457,11 @@ msgstr "دسته‌ها"
 
 #: resources/manager_window.ui
 msgid "Browse"
-msgstr ""
+msgstr "مرور کردن"
 
 #: resources/manager_window.ui
 msgid "Launch"
-msgstr ""
+msgstr "اجرا کردن"
 
 #: resources/manager_window.ui
 msgid "Remove"
@@ -1480,7 +1485,7 @@ msgstr "پرونده‌ها"
 
 #: resources/manager_window.ui
 msgid "Reset build files"
-msgstr ""
+msgstr "بازنشانی پرونده‌های ساخت"
 
 #: resources/manager_window.ui
 msgid "Build files"
@@ -1488,11 +1493,11 @@ msgstr "پرونده‌های ساخت"
 
 #: resources/preferences_dialog.ui
 msgid "General"
-msgstr ""
+msgstr "عمومی"
 
 #: resources/preferences_dialog.ui
 msgid "Check for updates"
-msgstr ""
+msgstr "بررسی برای به‌روزرسانی"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
@@ -1500,7 +1505,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
-msgstr ""
+msgstr "بارگیری خودکار به‌روزرسانی‌ها"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
@@ -1520,11 +1525,11 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "تازه‌سازی آینه‌ها"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
-msgstr ""
+msgstr "حافظهٔ موقت"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
@@ -1540,29 +1545,29 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
-msgstr ""
+msgstr "پیشرفته"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
+msgstr "تنظیم اشتباه این گزینه‌ها می‌تواند منجر به خراب شدن سیستم شود.\nفقط در صورتی تغییر دهید که می‌دانید چه کاری انجام می‌دهید."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
-msgstr ""
+msgstr "بررسی فضای دیسک موجود"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"
-msgstr ""
+msgstr "حذف وابستگی‌های غیرضروری"
 
 #: resources/preferences_dialog.ui
 msgid "Do not check for updates when installing"
-msgstr ""
+msgstr "در حین نصب برای به‌روزرسانی‌ها جستجو نشود"
 
 #: resources/preferences_dialog.ui
 msgid "Enable downgrade"
-msgstr ""
+msgstr "فعال کردن به عقب برگرداندن"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
@@ -1576,11 +1581,11 @@ msgstr ""
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
+msgstr "AUR توسط جامعه نگه‌داری می‌شود پس ممکن است دارای ریسک‌های بالقوه باشد.\nتمام کاربران AUR باید با فرآیند ساخت آشنا باشند."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
-msgstr ""
+msgstr "فعال کردن پشتیبانی از AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
@@ -1588,24 +1593,24 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"
-msgstr ""
+msgstr "بررسی به‌روزرسانی‌ها برای بسته‌های در حال توسعه"
 
 #: resources/preferences_dialog.ui
 msgid "Build directory"
-msgstr ""
+msgstr "پوشه ساخت"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
-msgstr ""
+msgstr "بسته‌های Flatpak توسط ناشرشان نگه‌داری می‌شوند."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
-msgstr ""
+msgstr "فعال‌سازی پشتیبانی از Flatpak"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr ""
+msgstr "بسته‌های Snap توسط ناشرشان نگه‌داری می‌شوند."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"
-msgstr ""
+msgstr "فعّال‌سازی پشتیبانی از Snap"

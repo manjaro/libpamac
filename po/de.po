@@ -11,7 +11,7 @@
 # Christian G <geblerc@gmail.com>, 2018
 # Gustav Gyges, 2016-2017,2020-2021
 # Pux Tux <puxplaying@gmail.com>, 2019
-# Guillaume Benoit <guillaume@manjaro.org>, 2013
+# Guillaume Benoit <guillaume@manjaro.org>, 2013,2022
 # Gustav Gyges, 2016,2021-2022
 # Tobias B. <aema-001@kabelmail.de>, 2013
 # Jan Jansen, 2017
@@ -36,9 +36,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-02-17 11:45+0000\n"
-"Last-Translator: Gustav Gyges\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>, 2013,2022\n"
 "Language-Team: German (http://www.transifex.com/manjarolinux/manjaro-pamac/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -401,6 +401,10 @@ msgid "Nothing to do"
 msgstr "Es gibt nichts zu tun"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: ignoriere Paket-Upgrade (%2$s => %3$s)"
@@ -555,8 +559,8 @@ msgid "Updates Available"
 msgstr "Aktualisierungen verfügbar"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "Ihr System ist auf dem neuesten Stand"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
@@ -1602,7 +1606,7 @@ msgstr "Das AUR ist eine inoffizielle Softwarequelle, die von der Gemeinschaft b
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
-msgstr "Unterschützung für das AUR aktivieren"
+msgstr "Unterstützung für das AUR aktivieren"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"

@@ -4,15 +4,15 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# Jung Hee Lee <daemul72@gmail.com>, 2021
+# Junghee Lee <daemul72@gmail.com>, 2021
 # Cybertramp <paran_son@outlook.com>, 2018
-# Jung Hee Lee <daemul72@gmail.com>, 2020
-# Jung Hee Lee <daemul72@gmail.com>, 2019-2020
+# Junghee Lee <daemul72@gmail.com>, 2020
+# Junghee Lee <daemul72@gmail.com>, 2019-2020
 # Daniel Ginovker <danielginovker@gmail.com>, 2020
 # Dongyun KIm <104arb@gmail.com>, 2018
 # Eric Park <ideamaneric@gmail.com>, 2017
-# Jung Hee Lee <daemul72@gmail.com>, 2021-2022
-# Jung Hee Lee <daemul72@gmail.com>, 2020-2021
+# Junghee Lee <daemul72@gmail.com>, 2021-2022
+# Junghee Lee <daemul72@gmail.com>, 2020-2021
 # lego37yoon <lego37yoon@outlook.com>, 2013
 # lego37yoon <lego37yoon@outlook.com>, 2013
 # Mine My <my2654jh@gmail.com>, 2018
@@ -22,9 +22,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-02-05 22:00+0000\n"
-"Last-Translator: Jung Hee Lee <daemul72@gmail.com>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: Junghee Lee <daemul72@gmail.com>, 2021-2022\n"
 "Language-Team: Korean (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -385,6 +385,10 @@ msgid "Nothing to do"
 msgstr "아무 것도 할 것이 없습니다"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: 패키지 업그레이드 무시하는 중 (%2$s => %3$s)"
@@ -539,8 +543,8 @@ msgid "Updates Available"
 msgstr "사용 가능한 업데이트"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "시스템이 최신 버전입니다"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"

@@ -44,9 +44,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: André Marcelo Alvarenga <alvarenga@kde.org>, 2020-2021\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,7 +96,7 @@ msgstr "pacote %s não tem uma arquitetura válida"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "incapaz de satisfazer a dependência '%1$s' requerida por %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -106,7 +106,7 @@ msgstr "Aviso"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "a instalação de %1$s (%2$s) quebra a dependência '%3$s' requerida por %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -121,12 +121,12 @@ msgstr "Se possível, remova %s e tente novamente"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "a remoção de %1$s quebra a dependência '%2$s' requerida por %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s e %2$s estão em conflito"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -153,17 +153,17 @@ msgstr "Transação cancelada"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s existe tanto em %2$s como em %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s já existe no sistema de ficheiros (controlado por %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s já existe no sistema de ficheiros"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -261,7 +261,7 @@ msgstr "Verificando espaço disponível em disco"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s requer opcionalmente %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -279,12 +279,12 @@ msgstr "Baixando chaves necessárias"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s instalado como %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s instalado como %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -409,9 +409,13 @@ msgid "Nothing to do"
 msgstr "Nada para fazer"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Falha ao sincronizar a base de dados AUR"
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: a ignorar a atualização do pacote (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
@@ -451,7 +455,7 @@ msgstr "_Cancelar"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "A chave PGP %1$s é necessária para verificar %2$s ficheiros fonte"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -521,7 +525,7 @@ msgstr "_Fechar"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Reiniciar"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -563,8 +567,8 @@ msgid "Updates Available"
 msgstr "Atualizações disponíveis"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "O seu sistema está atualizado"
+msgid "Your system is up to date"
+msgstr "O sistema está atualizado"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -619,7 +623,7 @@ msgstr[1] "%u operações pendentes"
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "Pendente"
 
 #: src/manager_window.vala
 msgid "All"
@@ -643,11 +647,11 @@ msgstr "Instalado"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Ignorado"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -715,7 +719,7 @@ msgstr "Data de instalação"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "Validado por"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -820,11 +824,11 @@ msgstr "a cada 12 horas"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "diariamente"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "semanalmente"
 
 #: src/preferences_dialog.vala
 msgid "1"
@@ -879,7 +883,7 @@ msgstr[1] "%u arquivos"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Selecionar diretório de compilação"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
@@ -970,7 +974,7 @@ msgstr "Ver %s diferenças nos arquivos para compilar"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "A compilar pacotes como utilizador dinâmico"
 
 #: src/cli.vala
 #, c-format
@@ -1052,7 +1056,7 @@ msgstr "listar pacotes instalados"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "lista pacotes explicitamente instalados"
 
 #: src/cli.vala
 msgid ""
@@ -1189,7 +1193,7 @@ msgstr "remover apenas os pacotes que não são necessários para outros pacotes
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "remover todos os pacotes referidos, assim como todos os pacotes que dependem de um ou mais pacotes referido"
 
 #: src/cli.vala
 msgid ""
@@ -1390,7 +1394,7 @@ msgstr "Adicione %s para reinstalação"
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "Instalar %1$s a partir de %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1526,7 +1530,7 @@ msgstr "Verificar atualizações"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Frequência de verificação das atualizações"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1534,7 +1538,7 @@ msgstr "Automaticamente baixar atualizações"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Ocultar ícone da área de notificação quando não há atualização"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
@@ -1542,15 +1546,15 @@ msgstr "Downloads"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Transferências paralelas"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Usar clones (mirrors) de"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Recarregar clones (mirrors)"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1558,15 +1562,15 @@ msgstr "Cache"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Número de versões de cada pacote a manter"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Remover apenas os pacotes desinstalados"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Limpar"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1596,11 +1600,11 @@ msgstr "Habilitar downgrade"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Atualizações ignoradas"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Terceiros"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1614,7 +1618,7 @@ msgstr "Habilitar o suporte AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Manter pacotes compilados"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

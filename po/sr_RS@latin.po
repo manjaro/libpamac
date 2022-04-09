@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: Aleksandar Zarić <alexandarzaric@gmail.com>, 2020\n"
 "Language-Team: Serbian (Latin) (Serbia) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sr_RS@latin/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -377,6 +377,10 @@ msgid "Nothing to do"
 msgstr "Nema se šta činiti"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
@@ -531,8 +535,8 @@ msgid "Updates Available"
 msgstr ""
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "Vaš sistem je ažuriran"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
@@ -1289,7 +1293,7 @@ msgstr "Verzija"
 
 #: src/cli.vala
 msgid "Description"
-msgstr ""
+msgstr "Опис"
 
 #: src/cli.vala
 msgid "URL"
@@ -1297,7 +1301,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Installed Size"
-msgstr ""
+msgstr "Величина инсталације"
 
 #: src/cli.vala
 #, c-format
@@ -1447,7 +1451,7 @@ msgstr "Datum"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "Освежи"
 
 #: resources/manager_window.ui
 msgid "Categories"
@@ -1553,7 +1557,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
-msgstr ""
+msgstr "Proveri dostupan prostor diska"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"

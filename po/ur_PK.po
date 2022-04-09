@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: Taimur <smt.mymail@gmail.com>, 2015\n"
 "Language-Team: Urdu (Pakistan) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ur_PK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -374,6 +374,10 @@ msgid "Nothing to do"
 msgstr "کرنے کو کچھ نہیں"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
@@ -528,8 +532,8 @@ msgid "Updates Available"
 msgstr ""
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "آپ کا سسٹم اپ ٹو ڈیٹ ہے"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
@@ -548,7 +552,7 @@ msgstr "تفصیلات"
 
 #: src/manager_window.vala
 msgid "No package found"
-msgstr ""
+msgstr "کوئی پیکج نہیں ملا"
 
 #: src/manager_window.vala
 msgid "Checking for Updates"
@@ -1283,7 +1287,7 @@ msgstr "ورژن"
 
 #: src/cli.vala
 msgid "Description"
-msgstr ""
+msgstr "تفصیل"
 
 #: src/cli.vala
 msgid "URL"
@@ -1545,7 +1549,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
-msgstr ""
+msgstr "ڈسک میں موجود خالی جگہ کی جانچ کریں"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"

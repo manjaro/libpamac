@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: ManjaroArchMint yotros, 2022\n"
 "Language-Team: Spanish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es/)\n"
@@ -395,6 +395,10 @@ msgid "Nothing to do"
 msgstr "Nada que hacer"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Fallo al sincronizar la base de datos AUR"
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: ignorando actualización del paquete (%2$s=>%3$s)"
@@ -437,7 +441,7 @@ msgstr "_Cancelar"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "La clave PGP %1$s es necesaria para verificar los archivos de código fuente de  %2$s "
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -466,7 +470,7 @@ msgstr "Depende de"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
-msgstr ""
+msgstr "Huérfano de"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
@@ -507,7 +511,7 @@ msgstr "_Cerrar"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Reiniciar"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -546,11 +550,11 @@ msgstr "paquete(s)"
 
 #: src/tray.vala
 msgid "Updates Available"
-msgstr ""
+msgstr "Actualizaciones disponibles"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "Tu sistema está actualizado"
+msgid "Your system is up to date"
+msgstr "Su sistema está actualizado"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -605,7 +609,7 @@ msgstr[1] "%u operaciones pendientes"
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "Pendiente"
 
 #: src/manager_window.vala
 msgid "All"
@@ -629,11 +633,11 @@ msgstr "Paquetes instalados"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Ignoradas"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "ninguno"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -701,7 +705,7 @@ msgstr "Fecha de instalación"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "Validado por "
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -741,11 +745,11 @@ msgstr "Canales"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr ""
+msgstr "Actualizaciones del sistema"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
-msgstr ""
+msgstr "Incluye mejoras de rendimiento, estabilidad y seguridad"
 
 #: src/manager_window.vala
 msgid "Featured"
@@ -790,51 +794,51 @@ msgstr "Actualizaciones"
 
 #: src/manager_window.vala
 msgid "Last refresh"
-msgstr ""
+msgstr "Último refresco"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "cada 3 horas"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "cada 6 horas"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "cada 12 horas"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "cada día"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "cada semana"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -842,15 +846,15 @@ msgstr "Mundial"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -865,11 +869,11 @@ msgstr[1] "%u archivos"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Seleccionar directorio de construcción"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Elegir"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -903,7 +907,7 @@ msgstr "sí"
 
 #: src/transaction-cli.vala
 msgid "[e]"
-msgstr ""
+msgstr "[e]"
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
@@ -911,11 +915,11 @@ msgstr "Aplicar transacción"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
-msgstr ""
+msgstr "[e/s/N]"
 
 #: src/transaction-cli.vala
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
@@ -956,12 +960,12 @@ msgstr "Ver %s archivos construidos diff"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "Creación de paquetes como usuario dinámico "
 
 #: src/cli.vala
 #, c-format
 msgid "Setting build directory to %s"
-msgstr ""
+msgstr "Configurando %s como directorio de compilación"
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
@@ -969,7 +973,7 @@ msgstr "No se encontró archivo PKGBUILD en directorio actual"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
-msgstr ""
+msgstr "Comprobando paquetes en desarrollo como superusuario"
 
 #: src/cli.vala
 msgid "Available actions"
@@ -1038,7 +1042,7 @@ msgstr "lista los paquetes instalados"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "Listar paquetes instalados explícitamente"
 
 #: src/cli.vala
 msgid ""
@@ -1175,7 +1179,7 @@ msgstr "elimina únicamente aquellos paquetes no requeridos por otros paquetes"
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "elimine todos los paquetes de destino, así como todos los paquetes que dependen de uno o más paquetes de destino"
 
 #: src/cli.vala
 msgid ""
@@ -1376,7 +1380,7 @@ msgstr "Agregar %s para reinstalar"
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "instalar %1$s desde %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1408,7 +1412,7 @@ msgstr "_Aplicar"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr ""
+msgstr "Modo software"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
@@ -1460,7 +1464,7 @@ msgstr "Fecha"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "Refrescar"
 
 #: resources/manager_window.ui
 msgid "Categories"
@@ -1512,7 +1516,7 @@ msgstr "Comprobar actualizaciones"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Frecuencia de comprobación de actualizaciones"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1520,23 +1524,23 @@ msgstr "Descargar actualizaciones automáticamente"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Ocultar icono cuando no hay actualizaciones"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Descargas"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Descargas paralelas"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Usar espejos desde"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Actualizar espejos"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1544,15 +1548,15 @@ msgstr "Cache"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Número de versiones a mantener de cada paquete"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Remover solo los paquetes desinstalados"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Limpiar"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1582,11 +1586,11 @@ msgstr "Habilitar el volver a una version anterior"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Actualizaciones ignoradas"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Terceros"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1600,7 +1604,7 @@ msgstr "Habilitar soporte para AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Mantener los paquetes construidos"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

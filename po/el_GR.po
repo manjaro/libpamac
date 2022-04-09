@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: Ioannis LM, 2021-2022\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/el_GR/)\n"
@@ -390,6 +390,10 @@ msgid "Nothing to do"
 msgstr "Δεν υπάρχει τίποτε να γίνει"
 
 #: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: αγνόηση αναβάθμισης πακέτου (%2$s => %3$s)"
@@ -544,8 +548,8 @@ msgid "Updates Available"
 msgstr "Διαθέσιμες ενημερώσεις"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
-msgstr "Το σύστημα σας είναι πλήρως ενημερωμένο"
+msgid "Your system is up to date"
+msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"

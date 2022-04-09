@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Albanian (Albania) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sq_AL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,247 +20,247 @@ msgstr ""
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
-msgstr ""
+msgstr "Instaloni, përditësoni ose hiqni paketat"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
-msgstr ""
+msgstr "Kërkohet vërtetimi për të instaluar, përditësuar ose hequr paketa"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
-msgstr ""
+msgstr "Dështoi në nisjen e bibliotekës alpm"
 
 #: src/alpm_utils.vala
 msgid "Synchronizing package databases"
-msgstr ""
+msgstr "Duke njëkohësuar bazën e të dhënave të paketave"
 
 #: src/alpm_utils.vala
 msgid "Failed to synchronize databases"
-msgstr ""
+msgstr "Dështoi sinkronizimi i bazave së të dhënave"
 
 #: src/alpm_utils.vala
 msgid "Failed to init transaction"
-msgstr ""
+msgstr "Dështoi në nisjen e transaksionit"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/installer.vala
 msgid "Failed to prepare transaction"
-msgstr ""
+msgstr "Dështoi në përgatitjen e transaksionit"
 
 #: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
 #, c-format
 msgid "target not found: %s"
-msgstr ""
+msgstr "objektivi nuk u gjet: %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "package %s does not have a valid architecture"
-msgstr ""
+msgstr "paketa %s nuk ka një arkitekturë të vlefshme"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "nuk mundi të plotësojë varësinë '%1$s' e kërkuar nga %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
 msgid "Warning"
-msgstr ""
+msgstr "Paralajmërim"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "instalimi i %1$s(%2$s) thyen varësinë '%3$s' që kërkohet nga %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
 msgid "Add %s to remove"
-msgstr ""
+msgstr "Shto %s për të hequr"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "if possible, remove %s and retry"
-msgstr ""
+msgstr "nëse është e mundur, hiq %s dhe riprovoni"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "heqja e %1$s thyen varësinë '%2$s' e kërkuar nga %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s dhe %2$s janë në konflikt"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s needs to be removed but it is a locked package"
-msgstr ""
+msgstr "%s duhet të hiqet, por kjo është një paketë e mbyllur"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
-msgstr ""
+msgstr "Dështoi inicializimi i bazës së të dhënave të AUR"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s from target list"
-msgstr ""
+msgstr "Duke hequr %s nga lista e synuar"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "Kërkohet një rinisje që ndryshimet të hyjnë në fuqi"
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
-msgstr ""
+msgstr "Transaksioni u anulua"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s ekziston në të dy %2$s dhe %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s ekzistojnë tashmë në sistemin e skedarëve (në pronësi të %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s:%2$s ekzistojnë tashmë në sistemin e skedarëve"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
-msgstr ""
+msgstr "nëse ky skedar nuk është i nevojshëm, hiqeni atë dhe riprovoni"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "It has been backed up to %s"
-msgstr ""
+msgstr "Është bërë kopja rezervë në %s"
 
 #: src/alpm_utils.vala
 msgid "Removing invalid files and retrying"
-msgstr ""
+msgstr "Duke hequr skedarë e pavlefshëm dhe duke riprovuar"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s is invalid or corrupted"
-msgstr ""
+msgstr "%s është i pavlefshëm ose i korruptuar"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
-msgstr ""
+msgstr "mund ta hiqni këtë skedar dhe të riprovoni"
 
 #: src/alpm_utils.vala
 msgid "failed to retrieve some files"
-msgstr ""
+msgstr "Dështoi në marrjen e disa skedarëve"
 
 #: src/alpm_utils.vala
 msgid "Failed to commit transaction"
-msgstr ""
+msgstr "Dështoi në kryerjen e transaksionit"
 
 #: src/alpm_utils.vala
 msgid "Checking dependencies"
-msgstr ""
+msgstr "Duke kontrolluar varësitë"
 
 #: src/alpm_utils.vala
 msgid "Checking file conflicts"
-msgstr ""
+msgstr "Duke kontrolluar konfliktet e skedarëve"
 
 #: src/alpm_utils.vala
 msgid "Resolving dependencies"
-msgstr ""
+msgstr "Duke zgjidhur varësitë"
 
 #: src/alpm_utils.vala
 msgid "Checking inter-conflicts"
-msgstr ""
+msgstr "Duke kontrolluar ndër-konfliktet"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
-msgstr ""
+msgstr "Duke instaluar %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Upgrading %s"
-msgstr ""
+msgstr "Duke përmirësuar %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Reinstalling %s"
-msgstr ""
+msgstr "Duke reinstaluar %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Downgrading %s"
-msgstr ""
+msgstr "Duke ulur në gradë %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
-msgstr ""
+msgstr "Duke hequr %s"
 
 #: src/alpm_utils.vala
 msgid "Checking integrity"
-msgstr ""
+msgstr "Duke kontrolluar integritetin"
 
 #: src/alpm_utils.vala
 msgid "Loading packages files"
-msgstr ""
+msgstr "Duke ngarkuar paketat e skedarëve"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Configuring %s"
-msgstr ""
+msgstr "Duke konfiguruar %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Error while configuring %s"
-msgstr ""
+msgstr "Gabim gjatë konfigurimit %s"
 
 #: src/alpm_utils.vala
 msgid "Checking available disk space"
-msgstr ""
+msgstr "Duke kontrolluar hapësirën në dispozicion të diskut"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s ka varësi opsionale %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Database file for %s does not exist"
-msgstr ""
+msgstr "Baza e të dhënave e skedarit për %s nuk ekziston"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
-msgstr ""
+msgstr "Duke kontrolluar mbajtëset e çelësave"
 
 #: src/alpm_utils.vala
 msgid "Downloading required keys"
-msgstr ""
+msgstr "Duke shkarkuar çelësat e kërkuara"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s instaluar si %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s instaluar si %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
-msgstr ""
+msgstr "Duke lëshuar grepat e para-transaksionit"
 
 #: src/alpm_utils.vala
 msgid "Running post-transaction hooks"
-msgstr ""
+msgstr "Duke lëshuar grepat e pas-transaksionit"
 
 #: src/alpm_utils.vala
 msgid "Error while running hooks"
-msgstr ""
+msgstr "Gabim gjatë ekzekutimit të grepave"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -278,114 +278,118 @@ msgstr[1] ""
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
-msgstr ""
+msgstr "Gabim"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Refreshing %s"
-msgstr ""
+msgstr "Duke rifreskuar %s"
 
 #: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
 #: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
 msgid "AUR"
-msgstr ""
+msgstr "AUR"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
-msgstr ""
+msgstr "Shkarkimi i %s filloi"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "Duke shkarkuar %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
-msgstr ""
+msgstr "Shkarkim i %s përfundoi"
 
 #: src/daemon.vala
 msgid "Authentication failed"
-msgstr ""
+msgstr "Autentifikimi dështoi"
 
 #: src/daemon.vala
 msgid "Waiting for another package manager to quit"
-msgstr ""
+msgstr "Duke pritur që një tjetër menaxher paketash të largohet"
 
 #: src/daemon.vala
 msgid "Timeout expired"
-msgstr ""
+msgstr "koha e ndërprerjes skadoi"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
-msgstr ""
+msgstr "Duke freskuar listën e pasqyrave"
 
 #: src/transaction.vala src/cli.vala
 #, c-format
 msgid "Cloning %s build files"
-msgstr ""
+msgstr "Duke klonuar %s skedarë të ndërtuar"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to clone %s build files"
-msgstr ""
+msgstr "Dështoi në klonimin %s të skedarëve të ndërtimit"
 
 #: src/transaction.vala
 #, c-format
 msgid "Generating %s information"
-msgstr ""
+msgstr "Duke gjeneruar %s informacion"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to generate %s information"
-msgstr ""
+msgstr "Dështoi në gjenerimin %s informacion"
 
 #: src/transaction.vala
 #, c-format
 msgid "Checking %s dependencies"
-msgstr ""
+msgstr "Duke kontrolluar %s të varësive"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to check %s dependencies"
-msgstr ""
+msgstr "Dështoi të kontrollojë %s varësive"
 
 #: src/transaction.vala
 #, c-format
 msgid "key %s could not be imported"
-msgstr ""
+msgstr "çelësi %s nuk mund të importohet"
 
 #: src/transaction.vala src/manager_window.vala
 msgid "Transaction successfully finished"
-msgstr ""
+msgstr "Transaksioni përfundoi me sukses"
 
 #: src/transaction.vala
 msgid "Preparing"
-msgstr ""
+msgstr "Duke përgatitur"
 
 #: src/transaction.vala src/snap_plugin.vala
 msgid "Yes"
-msgstr ""
+msgstr "Po"
 
 #: src/transaction.vala src/installer.vala src/cli.vala
 msgid "Nothing to do"
+msgstr "Asgjë për të bërë"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
 msgstr ""
 
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: duke injoruar përmirësimin e paketës (%2$s => %3$s)"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
-msgstr ""
+msgstr "Dështoi të ndërtojë %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Building %s"
-msgstr ""
+msgstr "Duke ndërtuar %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -395,144 +399,144 @@ msgstr ""
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Choose a provider for %s"
-msgstr ""
+msgstr "Zgjidhni një ofrues për %s"
 
 #: src/transaction-gtk.vala
 msgid "Import PGP key"
-msgstr ""
+msgstr "Importo çelësin PGP"
 
 #: src/transaction-gtk.vala
 msgid "Trust and Import"
-msgstr ""
+msgstr "Besimi dhe Importi"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: src/preferences_dialog.vala resources/progress_dialog.ui
 #: resources/transaction_sum_dialog.ui resources/manager_window.ui
 #: resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
-msgstr ""
+msgstr "_Fshij"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "Çelësi PGP %1$s nevojitet për të verifikuar %2$s skedarët burimor"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Trust %s and import the PGP key"
-msgstr ""
+msgstr "Beso %s dhe importo çelësin PGP"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Official Repositories"
-msgstr ""
+msgstr "Repozitorët Zyrtarë"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
 msgid "Repositories"
-msgstr ""
+msgstr "Repozitorët"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Flatpak"
-msgstr ""
+msgstr "Flatpak"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Depends On"
-msgstr ""
+msgstr "Varet Nga"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
-msgstr ""
+msgstr "Jetimi i"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Conflicts With"
-msgstr ""
+msgstr "Në konflikt Me"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Required By"
-msgstr ""
+msgstr "Kërkohet Nga"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Replaces"
-msgstr ""
+msgstr "Zëvendëson"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Edit build files"
-msgstr ""
+msgstr "Redakto skedarët e ndërtuar "
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 msgid "Total download size"
-msgstr ""
+msgstr "Madhësia totale shkarkimit"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Edit %s build files"
-msgstr ""
+msgstr "Redakto %s skedarët e ndërtuar"
 
 #: src/transaction-gtk.vala
 msgid "Save"
-msgstr ""
+msgstr "Ruaj"
 
 #: src/transaction-gtk.vala resources/progress_dialog.ui
 #: resources/history_dialog.ui
 msgid "_Close"
-msgstr ""
+msgstr "_Mbyll"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Rifillo"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
 msgid "Install"
-msgstr ""
+msgstr "Instalo"
 
 #: src/transaction-gtk.vala
 #, c-format
 msgid "The snap %s was published using classic confinement"
-msgstr ""
+msgstr "Snap %s u publikua duke përdorur izolimin klasik"
 
 #: src/transaction-gtk.vala
 #, c-format
 msgid "Install %s anyway"
-msgstr ""
+msgstr "Instalo %s gjithsesi"
 
 #: src/transaction-gtk.vala src/tray.vala
 msgid "Package Manager"
-msgstr ""
+msgstr "Menaxheri i Paketave"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
-msgstr ""
+msgstr "Instalo paketat nga repozitorët, rrugë ose url"
 
 #: src/installer.vala src/cli.vala
 msgid "Remove packages"
-msgstr ""
+msgstr "Hiq paketat"
 
 #: src/installer.vala src/cli.vala
 msgid "Build packages from AUR and install them with their dependencies"
-msgstr ""
+msgstr "Ndërto paketa nga AUR dhe instaloni ato me varësitë e tyre"
 
 #: src/installer.vala src/cli.vala
 msgid "package(s)"
-msgstr ""
+msgstr "paketa(t)"
 
 #: src/tray.vala
 msgid "Updates Available"
-msgstr ""
+msgstr "Përditësime të disponueshme"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
-msgstr ""
+msgstr "_Braktis"
 
 #: src/tray.vala src/cli.vala
 #, c-format
@@ -543,36 +547,36 @@ msgstr[1] ""
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
-msgstr ""
+msgstr "Detaje"
 
 #: src/manager_window.vala
 msgid "No package found"
-msgstr ""
+msgstr "Asnjë paketë nuk u gjet"
 
 #: src/manager_window.vala
 msgid "Checking for Updates"
-msgstr ""
+msgstr "Duke kërkuar për Përditësime"
 
 #: src/manager_window.vala resources/manager_window.ui
 msgid "Install Local Packages"
-msgstr ""
+msgstr "Instalo Paketat Lokale"
 
 #: src/manager_window.vala
 msgid "_Open"
-msgstr ""
+msgstr "_Hap"
 
 #: src/manager_window.vala
 msgid "Alpm Package"
-msgstr ""
+msgstr "Paketë Alpm"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr ""
+msgstr "Një Menaxhues Paketash me mbështetjen e Alpm, AUR, Flatpak dhe Snap"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
 msgid "Snap"
-msgstr ""
+msgstr "Snap"
 
 #: src/manager_window.vala
 #, c-format
@@ -583,31 +587,31 @@ msgstr[1] ""
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "në pritje"
 
 #: src/manager_window.vala
 msgid "All"
-msgstr ""
+msgstr "Të gjitha"
 
 #: src/manager_window.vala
 msgid "Explicitly installed"
-msgstr ""
+msgstr "Instaluar veçmas"
 
 #: src/manager_window.vala
 msgid "Orphans"
-msgstr ""
+msgstr "Jetimët"
 
 #: src/manager_window.vala
 msgid "Foreign"
-msgstr ""
+msgstr "Të huaja"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Installed"
-msgstr ""
+msgstr "Të instaluara"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Injoruar"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
@@ -615,67 +619,67 @@ msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
-msgstr ""
+msgstr "Arsyeja e Instalimit"
 
 #: src/manager_window.vala
 msgid "Installed as a dependency for another package"
-msgstr ""
+msgstr "Instaluar si një varësi për një paketë tjetër"
 
 #: src/manager_window.vala
 msgid "Mark as explicitly installed"
-msgstr ""
+msgstr "Shëno si i instaluar veçmas"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Licenses"
-msgstr ""
+msgstr "Licencat"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Unknown"
-msgstr ""
+msgstr "I panjohur"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Repository"
-msgstr ""
+msgstr "Repozitor"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Package Base"
-msgstr ""
+msgstr "Paketa Bazë"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Maintainer"
-msgstr ""
+msgstr "Mirëmbajtës"
 
 #: src/manager_window.vala src/cli.vala
 msgid "First Submitted"
-msgstr ""
+msgstr "Paraqitja e Pare"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Last Modified"
-msgstr ""
+msgstr "Modifikimi i Fundit"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Votes"
-msgstr ""
+msgstr "Vota"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Out of Date"
-msgstr ""
+msgstr "Sdakuar"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Groups"
-msgstr ""
+msgstr "Grupet"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Packager"
-msgstr ""
+msgstr "Paketues"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Build Date"
-msgstr ""
+msgstr "Data e Ndërtimit"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Date"
-msgstr ""
+msgstr "Data e Instalimit"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
@@ -683,156 +687,156 @@ msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
-msgstr ""
+msgstr "Skedarët rezervë"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional Dependencies"
-msgstr ""
+msgstr "Varësi fakultative"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional For"
-msgstr ""
+msgstr "Fakultativ Për"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
-msgstr ""
+msgstr "Ofron"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Make Dependencies"
-msgstr ""
+msgstr "Bëni varësitë"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Check Dependencies"
-msgstr ""
+msgstr "Kontrollo varësitë"
 
 #: src/manager_window.vala
 msgid "Publisher"
-msgstr ""
+msgstr "Botues"
 
 #: src/manager_window.vala
 msgid "Confined in a Sandbox"
-msgstr ""
+msgstr "I izoluar në një Sandbox"
 
 #: src/manager_window.vala
 msgid "Channels"
-msgstr ""
+msgstr "Kanalet"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr ""
+msgstr "Përditësimet e OS"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
-msgstr ""
+msgstr "Përfshin përmirësimet e performancës, stabilitetit dhe sigurisë"
 
 #: src/manager_window.vala
 msgid "Featured"
-msgstr ""
+msgstr "I paraqitur"
 
 #: src/manager_window.vala
 msgid "Photo & Video"
-msgstr ""
+msgstr "Foto dhe Video"
 
 #: src/manager_window.vala
 msgid "Music & Audio"
-msgstr ""
+msgstr "Muzikë dhe Audio"
 
 #: src/manager_window.vala
 msgid "Productivity"
-msgstr ""
+msgstr "Produktiviteti"
 
 #: src/manager_window.vala
 msgid "Communication & News"
-msgstr ""
+msgstr "Komunikimi dhe Lajmet"
 
 #: src/manager_window.vala
 msgid "Education & Science"
-msgstr ""
+msgstr "Edukimi dhe Shkenca"
 
 #: src/manager_window.vala
 msgid "Games"
-msgstr ""
+msgstr "Lojëra"
 
 #: src/manager_window.vala
 msgid "Utilities"
-msgstr ""
+msgstr "Veglat"
 
 #: src/manager_window.vala
 msgid "Development"
-msgstr ""
+msgstr "Zhvillim"
 
 #: src/manager_window.vala resources/manager_window.ui
 #: resources/preferences_dialog.ui
 msgid "Updates"
-msgstr ""
+msgstr "Të pa përditësuara"
 
 #: src/manager_window.vala
 msgid "Last refresh"
-msgstr ""
+msgstr "Rifreskimi i fundit"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "çdo 3 orë"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "çdo 6 orë"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "çdo 12 orë"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "çdo ditë"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "çdo javë"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
-msgstr ""
+msgstr "Botëror"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
-msgstr ""
+msgstr "Për të fshirë"
 
 #: src/preferences_dialog.vala src/cli.vala
 #, c-format
@@ -843,94 +847,94 @@ msgstr[1] ""
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Zgjidhni Diretorinë e Ndërtimit"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Zgjedh"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
-msgstr ""
+msgstr "Zgjidhni Përmirësimet e Injoruara"
 
 #: src/transaction-cli.vala src/cli.vala
 #, c-format
 msgid "Enter a selection (default=%s)"
-msgstr ""
+msgstr "Vendos një përzgjedhje (parazgjedhur=%s)"
 
 #: src/transaction-cli.vala
 msgid "none"
-msgstr ""
+msgstr "asnjë"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "Enter a number (default=%d)"
-msgstr ""
+msgstr "Vendos një numër (parazgjedhur=%d)"
 
 #: src/transaction-cli.vala
 msgid "[y/N]"
-msgstr ""
+msgstr "[p/J]"
 
 #: src/transaction-cli.vala
 msgid "y"
-msgstr ""
+msgstr "p"
 
 #: src/transaction-cli.vala
 msgid "yes"
-msgstr ""
+msgstr "po"
 
 #: src/transaction-cli.vala
 msgid "[e]"
-msgstr ""
+msgstr "[e]"
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
-msgstr ""
+msgstr "Apliko transaksionin"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
-msgstr ""
+msgstr "[e/p/J]"
 
 #: src/transaction-cli.vala
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
-msgstr ""
+msgstr "Për të përmirësuar"
 
 #: src/transaction-cli.vala
 msgid "To reinstall"
-msgstr ""
+msgstr "Për të riinstaluar"
 
 #: src/transaction-cli.vala
 msgid "To install"
-msgstr ""
+msgstr "Për të instaluar"
 
 #: src/transaction-cli.vala
 msgid "To build"
-msgstr ""
+msgstr "Për të ndërtuar"
 
 #: src/transaction-cli.vala
 msgid "To downgrade"
-msgstr ""
+msgstr "Për të ulur në gradë"
 
 #: src/transaction-cli.vala
 msgid "To remove"
-msgstr ""
+msgstr "Për të hequr"
 
 #: src/transaction-cli.vala
 msgid "Total installed size"
-msgstr ""
+msgstr "Madhësia totale e instaluar"
 
 #: src/transaction-cli.vala
 msgid "Total removed size"
-msgstr ""
+msgstr "Madhësia totale e hequr"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "View %s build files diff"
-msgstr ""
+msgstr "Shfaq %s ndryshime të skedarëve të ndërtuar"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -939,215 +943,215 @@ msgstr ""
 #: src/cli.vala
 #, c-format
 msgid "Setting build directory to %s"
-msgstr ""
+msgstr "Duke vendosur drejtorinë e ndërtimit në %s"
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
-msgstr ""
+msgstr "Asnjë skedar PKGBUILD nuk gjendet në direktorinë aktuale"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
-msgstr ""
+msgstr "Duke kontrolluar përditësimet e paketave të zhvillimit si root"
 
 #: src/cli.vala
 msgid "Available actions"
-msgstr ""
+msgstr "Veprimet në dispozicion"
 
 #: src/cli.vala
 msgid "action"
-msgstr ""
+msgstr "veprim"
 
 #: src/cli.vala
 msgid "options"
-msgstr ""
+msgstr "mundësi"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
-msgstr ""
+msgstr "Kërko për paketa ose skedarë, mund të specifikohen terma të shumta të kërkimit"
 
 #: src/cli.vala
 msgid "file(s)"
-msgstr ""
+msgstr "skedarë(t)"
 
 #: src/cli.vala
 msgid "only search for installed packages"
-msgstr ""
+msgstr "kërko vetëm për paketat e instaluara"
 
 #: src/cli.vala
 msgid "only search for packages in repositories"
-msgstr ""
+msgstr "kërko vetëm për paketat në depo"
 
 #: src/cli.vala
 msgid "also search in AUR"
-msgstr ""
+msgstr "kërko edhe në AUR"
 
 #: src/cli.vala
 msgid "do not search in AUR"
-msgstr ""
+msgstr "mos kërko në Aur"
 
 #: src/cli.vala
 msgid ""
 "search for packages which own the given filenames (filenames can be partial)"
-msgstr ""
+msgstr "kërkimi për paketat që zotërojnë emrat e skedarëve të dhënë (emrat e skedarëve mund të jenë të pjesshëm)"
 
 #: src/cli.vala
 msgid "only print names"
-msgstr ""
+msgstr "printo vetëm emrat"
 
 #: src/cli.vala
 msgid "Display package details, multiple packages can be specified"
-msgstr ""
+msgstr "Shfaq detajet e paketës, paketa të shumëfishta mund të specifikohen"
 
 #: src/cli.vala
 msgid "List packages, groups, repositories or files"
-msgstr ""
+msgstr "Listo paketat, grupet, repozitorët ose skedarët"
 
 #: src/cli.vala
 msgid "group(s)"
-msgstr ""
+msgstr "grupe(t)"
 
 #: src/cli.vala
 msgid "repo(s)"
-msgstr ""
+msgstr "depo(t)"
 
 #: src/cli.vala
 msgid "list installed packages"
-msgstr ""
+msgstr "listo paketat e instaluara"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "listo paketat e instaluara veçmas"
 
 #: src/cli.vala
 msgid ""
 "list packages that were installed as dependencies but are no longer required"
 " by any installed package"
-msgstr ""
+msgstr "listo paketat që janë instaluar si varësi por nuk kërkohen më nga ndonjë paketë e instaluar"
 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
-msgstr ""
+msgstr "listo paketat që nuk u gjetën në repozitorë"
 
 #: src/cli.vala
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr ""
+msgstr "listo të gjitha paketat që janë anëtarë të grupeve të dhëna, listo të gjitha grupet nëse asnjë grup nuk jepet"
 
 #: src/cli.vala
 msgid ""
 "list all packages available in the given repos, if no repo is given list all"
 " repos"
-msgstr ""
+msgstr "listo të gjitha paketat e disponueshme në repot e dhëna, listo të gjithë repot nëse nuk jepet repo"
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
-msgstr ""
+msgstr "listoni skedarët në pronësi të paketave të dhëna"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
-msgstr ""
+msgstr "Klono ose nëkohëso skedarët e paketave të ndërtuar nga AUR"
 
 #: src/cli.vala
 msgid "dir"
-msgstr ""
+msgstr "dir"
 
 #: src/cli.vala
 msgid ""
 "build directory, if no directory is given the one specified in pamac.conf "
 "file is used"
-msgstr ""
+msgstr "Ndërtoni direktori, nëse asnjë direktori nuk është dhënë do përdoret ai i specifikuar në pamac.conf"
 
 #: src/cli.vala
 msgid "also clone needed dependencies"
-msgstr ""
+msgstr "Gjithashtu klono varësitë e nevojshme"
 
 #: src/cli.vala
 msgid "do not print any output"
-msgstr ""
+msgstr "mos printo asnjë dalje"
 
 #: src/cli.vala
 msgid "overwrite existing files"
-msgstr ""
+msgstr "mbishkruaj skedarët ekzistues"
 
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
-msgstr ""
+msgstr "Nëse nuk jepet një emër pakete, përdorni skedarin PKGBUILD në direktorinë aktuale"
 
 #: src/cli.vala
 msgid ""
 "The build directory will be the parent directory, --builddir option will be "
 "ignored"
-msgstr ""
+msgstr "Direktoria e ndërtimit do të jetë direktoria mëmë, mundësia --builddir do të injorohet"
 
 #: src/cli.vala
 msgid "and --no-clone option will be enforced"
-msgstr ""
+msgstr "dhe opsioni --no-clone do të zbatohet"
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
-msgstr ""
+msgstr "mbani paketat e ndërtuara në memorje të fshehtë pas instalimit"
 
 #: src/cli.vala
 msgid "do not keep built packages in cache after installation"
-msgstr ""
+msgstr "mos mbani paketat e ndërtuara në memorje të fshehtë pas instalimit"
 
 #: src/cli.vala
 msgid "only print what would be done but do not run the transaction"
-msgstr ""
+msgstr "printo vetëm atë që do të bëhej, por mos kryeni transaksionin"
 
 #: src/cli.vala
 msgid "do not clone build files from AUR, only use local files"
-msgstr ""
+msgstr "mos klono skedarët e ndërtuar nga AUR, përdorni vetëm skedarët lokalë"
 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
-msgstr ""
+msgstr "anashkalojë ndonjë dhe të gjitha mesazhet e konfirmimit"
 
 #: src/cli.vala
 msgid "glob"
-msgstr ""
+msgstr "glob"
 
 #: src/cli.vala
 msgid ""
 "ignore a package upgrade, multiple packages can be specified by separating "
 "them with a comma"
-msgstr ""
+msgstr "injoro një përmirësim të paketës, mund të specifikohen paketa të shumta duke i ndarë ato me presje"
 
 #: src/cli.vala
 msgid ""
 "overwrite conflicting files, multiple patterns can be specified by "
 "separating them with a comma"
-msgstr ""
+msgstr "mbishkruaj skedarët konfliktuale, modelet e shumta mund të specifikohen duke i ndarë ato me një presje"
 
 #: src/cli.vala
 msgid "download all packages but do not install/upgrade anything"
-msgstr ""
+msgstr "shkarkoni të gjitha paketat por mos instaloni / përditësoni asgjë"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
-msgstr ""
+msgstr "shënjoni të gjitha paketat e instaluara si një varësi"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr ""
+msgstr "shënoji të gjitha paketat e instaluara veçmas"
 
 #: src/cli.vala
 msgid "check for updates"
-msgstr ""
+msgstr "kontrolloni për përditësime"
 
 #: src/cli.vala
 msgid "do not check for updates"
-msgstr ""
+msgstr "mos kontrolloni për përditësime"
 
 #: src/cli.vala
 msgid "Reinstall packages"
-msgstr ""
+msgstr "Reinstalo paketat"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
-msgstr ""
+msgstr "hiqni paketat vetëm nëse ato nuk kërkohen nga ndonjë paketë tjetër"
 
 #: src/cli.vala
 msgid ""
@@ -1159,148 +1163,148 @@ msgstr ""
 msgid ""
 "remove dependencies that are not required by other packages, if this option "
 "is used without package name remove all orphans"
-msgstr ""
+msgstr "hiqni varësitë që nuk kërkohen nga paketat e tjera, nëse ky opsion përdoret pa emrin e paketës, largoni të gjithë jetimët"
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
-msgstr ""
+msgstr "mos hiqni varësitë që nuk kërkohen nga paketat e tjera"
 
 #: src/cli.vala
 msgid "ignore files backup"
-msgstr ""
+msgstr "injoroni rezervimin e skedarëve"
 
 #: src/cli.vala
 msgid "Safely check for updates without modifiying the databases"
-msgstr ""
+msgstr "Kontrollo në menyrë të sigurtë për përditësime pa ndryshuar bazat e të dhënave"
 
 #: src/cli.vala
 msgid "Exit code is 100 if updates are available"
-msgstr ""
+msgstr "Kodi i daljes është 100 nëse përditësimet janë të disponueshme"
 
 #: src/cli.vala
 msgid ""
 "build directory (use with --devel), if no directory is given the one "
 "specified in pamac.conf file is used"
-msgstr ""
+msgstr "ndërto direktori (përdoreni me --devel), nëse nuk është dhënë një direktori, do përdoret ai i specifikuar në skedarin pamac.conf"
 
 #: src/cli.vala
 msgid "also check updates in AUR"
-msgstr ""
+msgstr "kontrollo edhe përditësimet në AUR"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr ""
+msgstr "mos kontrolloni për përditësime në AUR"
 
 #: src/cli.vala
 msgid "only print one line per update"
-msgstr ""
+msgstr "vetëm printo një rresht për përditësim"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
-msgstr ""
+msgstr "kontrollo edhe përditësimet e paketave të zhvillimit (përdorni me --aur)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr ""
+msgstr "mos kontrolloni për përditësime të paketave të zhvillimit"
 
 #: src/cli.vala
 msgid "Upgrade your system"
-msgstr ""
+msgstr "Përmirësoni sistemin tuaj"
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
-msgstr ""
+msgstr "detyro rifreskimin e bazave të të dhënave"
 
 #: src/cli.vala
 msgid "enable package downgrades"
-msgstr ""
+msgstr "mundëso uljen në gradë të paketave"
 
 #: src/cli.vala
 msgid "disable package downgrades"
-msgstr ""
+msgstr "çaktivizo uljet e paketave në version të vjetër"
 
 #: src/cli.vala
 msgid "also upgrade packages installed from AUR"
-msgstr ""
+msgstr "përmirëso edhe paketat e instaluara nga AUR"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr ""
+msgstr "mos përditëso paketat e instaluara nga AUR"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
-msgstr ""
+msgstr "gjithashtu përditësoni paketat e zhvillimit (përdor me --aur)"
 
 #: src/cli.vala
 msgid "do not upgrade development packages"
-msgstr ""
+msgstr "mos përditëso paketat e zhvillimit"
 
 #: src/cli.vala
 msgid ""
 "build directory (use with --aur), if no directory is given the one specified"
 " in pamac.conf file is used"
-msgstr ""
+msgstr "ndërto dirketori (përdoreni me --aur), nëse nuk është dhënë një direktori, do përdoret ai i specifikuar në skedarin pamac.conf"
 
 #: src/cli.vala
 msgid "Clean packages cache or build files"
-msgstr ""
+msgstr "Pastroni depon e fshehtë të paketave ose ndërto skedarë"
 
 #: src/cli.vala
 msgid "number"
-msgstr ""
+msgstr "numër"
 
 #: src/cli.vala
 msgid ""
 "specify how many versions of each package are kept in the cache directory"
-msgstr ""
+msgstr "specifikoni sa versione të secilës paketë mbahen në dosjen e depos së fshehtë"
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
-msgstr ""
+msgstr "syno vetëm paketat e fshira"
 
 #: src/cli.vala
 msgid ""
 "remove all build files, the build directory is the one specified in "
 "pamac.conf"
-msgstr ""
+msgstr "hiqni të gjitha skedarët e ndërtuar, direktoria e ndërtimit është ajo e specifikuar në pamac.conf"
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
-msgstr ""
+msgstr "mos fshi skedarët, gjej vetëm paketat kandiduese"
 
 #: src/cli.vala
 msgid "also display all files names"
-msgstr ""
+msgstr "gjithashtu shfaqni të gjitha emrat e skedarëve"
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
-msgstr ""
+msgstr "Emër"
 
 #: src/cli.vala
 msgid "Version"
-msgstr ""
+msgstr "Versioni"
 
 #: src/cli.vala
 msgid "Description"
-msgstr ""
+msgstr "Përshkrim"
 
 #: src/cli.vala
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/cli.vala
 msgid "Installed Size"
-msgstr ""
+msgstr "Madhësia e instaluar"
 
 #: src/cli.vala
 #, c-format
 msgid "No package owns %s"
-msgstr ""
+msgstr "Asnjë paketë zotëron %s"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is owned by %s"
-msgstr ""
+msgstr "%s është në pronësi të %s"
 
 #: src/cli.vala
 #, c-format
@@ -1311,29 +1315,29 @@ msgstr[1] ""
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
-msgstr ""
+msgstr "Hiq vetëm versionet e paketave të çinstaluara"
 
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
-msgstr ""
+msgstr "Numri i versioneve për secilën paketë për të mbajtur në depon e fshehtë"
 
 #: src/cli.vala
 msgid "Clean cache"
-msgstr ""
+msgstr "Pastro depon e fshehtë"
 
 #: src/cli.vala
 msgid "Clean build files"
-msgstr ""
+msgstr "Pastro skedarët e ndërtuar"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to install"
-msgstr ""
+msgstr "Shto %s për të instaluar"
 
 #: src/cli.vala
 #, c-format
 msgid "%s is only available from AUR"
-msgstr ""
+msgstr "%s është në dispozicion vetëm nga AUR"
 
 #: src/cli.vala
 #, c-format
@@ -1344,12 +1348,12 @@ msgstr[1] ""
 
 #: src/cli.vala
 msgid "all"
-msgstr ""
+msgstr "të gjitha"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr ""
+msgstr "Shto %s per ta riinstaluar"
 
 #: src/cli.vala
 #, c-format
@@ -1358,248 +1362,248 @@ msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"
-msgstr ""
+msgstr "Jo"
 
 #: resources/choose_provider_dialog.ui
 msgid "Choose a Provider"
-msgstr ""
+msgstr "Zgjidhni një Ofrues"
 
 #: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
 msgid "Choose"
-msgstr ""
+msgstr "Zgjidhni"
 
 #: resources/progress_dialog.ui
 msgid "Progress"
-msgstr ""
+msgstr "Progres"
 
 #: resources/history_dialog.ui
 msgid "Pamac History"
-msgstr ""
+msgstr "Historia e Pamac"
 
 #: resources/transaction_sum_dialog.ui
 msgid "Transaction Summary"
-msgstr ""
+msgstr "Përmbledhje e transaksioni"
 
 #: resources/transaction_sum_dialog.ui resources/manager_window.ui
 msgid "_Apply"
-msgstr ""
+msgstr "_Apliko"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr ""
+msgstr "Modaliteti Program"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
-msgstr ""
+msgstr "Rifreskoni bazat e të dhënave"
 
 #: resources/manager_window.ui
 msgid "View History"
-msgstr ""
+msgstr "Shiko Historikun"
 
 #: resources/manager_window.ui
 msgid "Preferences"
-msgstr ""
+msgstr "Parapëlqimet"
 
 #: resources/manager_window.ui
 msgid "About"
-msgstr ""
+msgstr "Rreth"
 
 #: resources/manager_window.ui
 msgid "Search"
-msgstr ""
+msgstr "Kërko"
 
 #: resources/manager_window.ui
 msgid "Remove all"
-msgstr ""
+msgstr "Hiq të gjitha"
 
 #: resources/manager_window.ui
 msgid "Install all"
-msgstr ""
+msgstr "Instalo të gjitha"
 
 #: resources/manager_window.ui
 msgid "Ignore all"
-msgstr ""
+msgstr "Injoro të gjitha"
 
 #: resources/manager_window.ui
 msgid "Sort by"
-msgstr ""
+msgstr "Rendit sipas"
 
 #: resources/manager_window.ui
 msgid "Relevance"
-msgstr ""
+msgstr "Rëndësisë"
 
 #: resources/manager_window.ui
 msgid "Size"
-msgstr ""
+msgstr "Madhësisë"
 
 #: resources/manager_window.ui
 msgid "Date"
-msgstr ""
+msgstr "Datës"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "Rifresko"
 
 #: resources/manager_window.ui
 msgid "Categories"
-msgstr ""
+msgstr "Kategoritë"
 
 #: resources/manager_window.ui
 msgid "Browse"
-msgstr ""
+msgstr "Shfleto"
 
 #: resources/manager_window.ui
 msgid "Launch"
-msgstr ""
+msgstr "Lësho"
 
 #: resources/manager_window.ui
 msgid "Remove"
-msgstr ""
+msgstr "Fshij"
 
 #: resources/manager_window.ui
 msgid "Reinstall"
-msgstr ""
+msgstr "Reinstalo"
 
 #: resources/manager_window.ui
 msgid "Build"
-msgstr ""
+msgstr "Ndërto"
 
 #: resources/manager_window.ui
 msgid "Dependencies"
-msgstr ""
+msgstr "Varesitë"
 
 #: resources/manager_window.ui
 msgid "Files"
-msgstr ""
+msgstr "Skedarët"
 
 #: resources/manager_window.ui
 msgid "Reset build files"
-msgstr ""
+msgstr "Rivendos skedarët e ndërtuar"
 
 #: resources/manager_window.ui
 msgid "Build files"
-msgstr ""
+msgstr "Skedarët e ndërtuar"
 
 #: resources/preferences_dialog.ui
 msgid "General"
-msgstr ""
+msgstr "Përgjithshme"
 
 #: resources/preferences_dialog.ui
 msgid "Check for updates"
-msgstr ""
+msgstr "Kontrolloni për përditësime"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Frekuenca e kontrollit të përditësimeve"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
-msgstr ""
+msgstr "Shkarko përditësimet automatikisht"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Fshih ikonën në tabaka kur nuk ka përditësime"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Shkarkime"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Shkarkime paralele"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Përdorni pasqyra nga"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Rifresko Pasqyrat"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
-msgstr ""
+msgstr "Depo e fshehtë"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Numri i versioneve të secilës paketë për t'u mbajtur"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Hiqni vetëm paketat e çinstaluara"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Pastro"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
-msgstr ""
+msgstr "Përparuar"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "Misconfiguration of these options can lead to system breakage.\n"
 "Modify them only if you know what you are doing."
-msgstr ""
+msgstr "Konfigurimi i gabuar i këtyre opsioneve mund të çojë në prishjen e sistemit.\nModifikojini vetëm nëse e dini se çfarë po bëni."
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
-msgstr ""
+msgstr "Kontrollo hapësirën e disponueshme në disk"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"
-msgstr ""
+msgstr "Hiqni varësitë e padëshiruara"
 
 #: resources/preferences_dialog.ui
 msgid "Do not check for updates when installing"
-msgstr ""
+msgstr "Mos kontrollo për përditësime gjatë instalimeve"
 
 #: resources/preferences_dialog.ui
 msgid "Enable downgrade"
-msgstr ""
+msgstr "Mundëso uljen në gradë"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Përditësimet e injoruara"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Pala e tretë"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
+msgstr "AUR është një repozitor i mbajtur nga komunitete kështu që paraqet rreziqe dhe probleme potenciale.\nTë gjithë përdoruesit e AUR duhet të njihen me procesin e ndërtimit."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
-msgstr ""
+msgstr "Aktivizo mbështetjen e AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Mbani paketat e ndërtuara"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"
-msgstr ""
+msgstr "Kontrolloni për përditësimet e paketave të zhvillimit"
 
 #: resources/preferences_dialog.ui
 msgid "Build directory"
-msgstr ""
+msgstr "Direktoria e ndërtimit"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
-msgstr ""
+msgstr "Paketat Flatpak mirëmbahen nga botuesi i tyre."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
-msgstr ""
+msgstr "Aktivizoni mbështetjen e Flatpak"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr ""
+msgstr "Paketat Snap mirëmbahen nga botuesi i tyre."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"
-msgstr ""
+msgstr "Aktivizo mbështetjen e Snap"

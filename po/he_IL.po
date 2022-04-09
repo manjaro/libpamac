@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-01-25 15:57+0100\n"
-"PO-Revision-Date: 2022-01-25 15:15+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>\n"
+"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"PO-Revision-Date: 2013-04-16 23:37+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hebrew (Israel) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/he_IL/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,42 +20,42 @@ msgstr ""
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
-msgstr ""
+msgstr "התקנה, עדכון, או הסרת חבילות"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
-msgstr ""
+msgstr "נדרש אימות כדי להתקין, לעדכן, או להסיר חבילות"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
-msgstr ""
+msgstr "נכשל להתחיל את ספריית alpm"
 
 #: src/alpm_utils.vala
 msgid "Synchronizing package databases"
-msgstr ""
+msgstr "כעת מסנכרן מסדי נתוני חבילה"
 
 #: src/alpm_utils.vala
 msgid "Failed to synchronize databases"
-msgstr ""
+msgstr "כשל בסנכרון מסדי הנתונים"
 
 #: src/alpm_utils.vala
 msgid "Failed to init transaction"
-msgstr ""
+msgstr "נכשל להתחיל טרנזקציה"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/installer.vala
 msgid "Failed to prepare transaction"
-msgstr ""
+msgstr "נכשל להכין טרנזקציה"
 
 #: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
 #, c-format
 msgid "target not found: %s"
-msgstr ""
+msgstr "מטרה לא נמצאה: %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "package %s does not have a valid architecture"
-msgstr ""
+msgstr "לחבילה %s אין ארכיטקטורה תקפה"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -65,7 +65,7 @@ msgstr ""
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
 msgid "Warning"
-msgstr ""
+msgstr "אזהרה"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -75,12 +75,12 @@ msgstr ""
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
 msgid "Add %s to remove"
-msgstr ""
+msgstr "הוספת %s להסרה"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "if possible, remove %s and retry"
-msgstr ""
+msgstr "יש להסיר את %s ולנסות שוב, במידה וזה אפשרי."
 
 #: src/alpm_utils.vala
 #, c-format
@@ -95,7 +95,7 @@ msgstr ""
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s needs to be removed but it is a locked package"
-msgstr ""
+msgstr "%s צריכה להיות מוסרת אך זוהי חבילה נעולה"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
@@ -112,7 +112,7 @@ msgstr ""
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
-msgstr ""
+msgstr "טרנזקציה בוטלה"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -145,7 +145,7 @@ msgstr ""
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s is invalid or corrupted"
-msgstr ""
+msgstr "%s שגוי או פגום"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
@@ -157,61 +157,61 @@ msgstr ""
 
 #: src/alpm_utils.vala
 msgid "Failed to commit transaction"
-msgstr ""
+msgstr "נכשל לבצע טרנזקציה"
 
 #: src/alpm_utils.vala
 msgid "Checking dependencies"
-msgstr ""
+msgstr "כעת בוחן תלויות"
 
 #: src/alpm_utils.vala
 msgid "Checking file conflicts"
-msgstr ""
+msgstr "כעת בוחן התנגשויות קובץ"
 
 #: src/alpm_utils.vala
 msgid "Resolving dependencies"
-msgstr ""
+msgstr "כעת פותר תלויות"
 
 #: src/alpm_utils.vala
 msgid "Checking inter-conflicts"
-msgstr ""
+msgstr "כעת בוחן התנגשויות פנימיות"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
-msgstr ""
+msgstr "כעת מתקין את %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Upgrading %s"
-msgstr ""
+msgstr "כעת משדרג את %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Reinstalling %s"
-msgstr ""
+msgstr "כעת מתקין מחדש את %s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Downgrading %s"
-msgstr ""
+msgstr "כעת מנמיך את %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
-msgstr ""
+msgstr "כעת מסיר את %s"
 
 #: src/alpm_utils.vala
 msgid "Checking integrity"
-msgstr ""
+msgstr "כעת בוחן שלמות"
 
 #: src/alpm_utils.vala
 msgid "Loading packages files"
-msgstr ""
+msgstr "כעת טוען קבצי חבילות"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Configuring %s"
-msgstr ""
+msgstr "כעת מגדיר את %s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -220,7 +220,7 @@ msgstr ""
 
 #: src/alpm_utils.vala
 msgid "Checking available disk space"
-msgstr ""
+msgstr "כעת בוחן נפח כונן זמין"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -230,15 +230,15 @@ msgstr ""
 #: src/alpm_utils.vala
 #, c-format
 msgid "Database file for %s does not exist"
-msgstr ""
+msgstr "קובץ מסד נתונים עבור %s לא קיים"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
-msgstr ""
+msgstr "כעת בוחן מחזיק מפתחות"
 
 #: src/alpm_utils.vala
 msgid "Downloading required keys"
-msgstr ""
+msgstr "כעת מוריד מפתחות נדרשות"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -252,11 +252,11 @@ msgstr ""
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
-msgstr ""
+msgstr "מריץ חיבורי טרום טרנזאקציה"
 
 #: src/alpm_utils.vala
 msgid "Running post-transaction hooks"
-msgstr ""
+msgstr "מריץ חיבורים פוסט טרנזאקציה"
 
 #: src/alpm_utils.vala
 msgid "Error while running hooks"
@@ -282,58 +282,58 @@ msgstr[3] ""
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
-msgstr ""
+msgstr "שגיאה"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Refreshing %s"
-msgstr ""
+msgstr "כעת מרענן את %s"
 
 #: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
 #: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
 msgid "AUR"
-msgstr ""
+msgstr "AUR"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s started"
-msgstr ""
+msgstr "הורדת %s החלה"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "כעת מוריד את %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
-msgstr ""
+msgstr "הורדת %s הסתיימה"
 
 #: src/daemon.vala
 msgid "Authentication failed"
-msgstr ""
+msgstr "אימות נכשל"
 
 #: src/daemon.vala
 msgid "Waiting for another package manager to quit"
-msgstr ""
+msgstr "ממתין למנהל חבילות אחר לחדול מפעולתו"
 
 #: src/daemon.vala
 msgid "Timeout expired"
-msgstr ""
+msgstr "הזמן המוקצב אזל"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
-msgstr ""
+msgstr "כעת מרענן רשימת mirrors"
 
 #: src/transaction.vala src/cli.vala
 #, c-format
 msgid "Cloning %s build files"
-msgstr ""
+msgstr "משכפל %s קבצי מערכת"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to clone %s build files"
-msgstr ""
+msgstr "כשל בשכפול %s קובצי בנייה"
 
 #: src/transaction.vala
 #, c-format
@@ -348,32 +348,36 @@ msgstr ""
 #: src/transaction.vala
 #, c-format
 msgid "Checking %s dependencies"
-msgstr ""
+msgstr "בוחן %s תלויות"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to check %s dependencies"
-msgstr ""
+msgstr "כשל בבחינת %s תלויות"
 
 #: src/transaction.vala
 #, c-format
 msgid "key %s could not be imported"
-msgstr ""
+msgstr "לא ניתן לייבא את המפתח %s"
 
 #: src/transaction.vala src/manager_window.vala
 msgid "Transaction successfully finished"
-msgstr ""
+msgstr "טרנזקציה הסתיימה בהצלחה"
 
 #: src/transaction.vala
 msgid "Preparing"
-msgstr ""
+msgstr "כעת מתכונן"
 
 #: src/transaction.vala src/snap_plugin.vala
 msgid "Yes"
-msgstr ""
+msgstr "כן"
 
 #: src/transaction.vala src/installer.vala src/cli.vala
 msgid "Nothing to do"
+msgstr "אין מה לעשות"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
 msgstr ""
 
 #: src/transaction.vala
@@ -384,37 +388,37 @@ msgstr ""
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
-msgstr ""
+msgstr "כשל בבניית %s"
 
 #: src/transaction.vala
 #, c-format
 msgid "Building %s"
-msgstr ""
+msgstr "בונה %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Choose optional dependencies for %s"
-msgstr ""
+msgstr "בחירת תלויות רשות בשביל %s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Choose a provider for %s"
-msgstr ""
+msgstr "בחר ספק עבור %s"
 
 #: src/transaction-gtk.vala
 msgid "Import PGP key"
-msgstr ""
+msgstr "ייבוא מפתח PGP"
 
 #: src/transaction-gtk.vala
 msgid "Trust and Import"
-msgstr ""
+msgstr "אשר וייבא"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: src/preferences_dialog.vala resources/progress_dialog.ui
 #: resources/transaction_sum_dialog.ui resources/manager_window.ui
 #: resources/choose_pkgs_dialog.ui
 msgid "_Cancel"
-msgstr ""
+msgstr "_ביטול"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -424,27 +428,27 @@ msgstr ""
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Trust %s and import the PGP key"
-msgstr ""
+msgstr "לאשר את %s ולייבא את מפתח ה־PGP"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Official Repositories"
-msgstr ""
+msgstr "מאגרים רשמיים"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
 msgid "Repositories"
-msgstr ""
+msgstr "מאגרים"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Flatpak"
-msgstr ""
+msgstr "Flatpak"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Depends On"
-msgstr ""
+msgstr "תלויה על"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
@@ -453,39 +457,39 @@ msgstr ""
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Conflicts With"
-msgstr ""
+msgstr "מתנגשת עם"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Required By"
-msgstr ""
+msgstr "מחויבת על ידי"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
 msgid "Replaces"
-msgstr ""
+msgstr "מחליפה"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Edit build files"
-msgstr ""
+msgstr "לערוך קובצי בנייה"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 msgid "Total download size"
-msgstr ""
+msgstr "גודל הורדה כולל"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "Edit %s build files"
-msgstr ""
+msgstr "לערוך %s קובצי בנייה"
 
 #: src/transaction-gtk.vala
 msgid "Save"
-msgstr ""
+msgstr "שמירה"
 
 #: src/transaction-gtk.vala resources/progress_dialog.ui
 #: resources/history_dialog.ui
 msgid "_Close"
-msgstr ""
+msgstr "_סגור"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
@@ -494,7 +498,7 @@ msgstr ""
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
 msgid "Install"
-msgstr ""
+msgstr "התקן"
 
 #: src/transaction-gtk.vala
 #, c-format
@@ -504,39 +508,39 @@ msgstr ""
 #: src/transaction-gtk.vala
 #, c-format
 msgid "Install %s anyway"
-msgstr ""
+msgstr "התקן את %s בכל זאת"
 
 #: src/transaction-gtk.vala src/tray.vala
 msgid "Package Manager"
-msgstr ""
+msgstr "מנהל חבילה"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
-msgstr ""
+msgstr "התקן חבילות ממאגרים, נתיב בכונן או קישור"
 
 #: src/installer.vala src/cli.vala
 msgid "Remove packages"
-msgstr ""
+msgstr "הסר חבילות"
 
 #: src/installer.vala src/cli.vala
 msgid "Build packages from AUR and install them with their dependencies"
-msgstr ""
+msgstr "בנה חבילות מ-AUR והתקן אותם יחד עם קבצים נוספים שנדרשים לתוכנה"
 
 #: src/installer.vala src/cli.vala
 msgid "package(s)"
-msgstr ""
+msgstr "חבילה/ות"
 
 #: src/tray.vala
 msgid "Updates Available"
 msgstr ""
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up-to-date"
+msgid "Your system is up to date"
 msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
-msgstr ""
+msgstr "י_ציאה"
 
 #: src/tray.vala src/cli.vala
 #, c-format
@@ -549,36 +553,36 @@ msgstr[3] ""
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
-msgstr ""
+msgstr "פרטים"
 
 #: src/manager_window.vala
 msgid "No package found"
-msgstr ""
+msgstr "לא נמצאו חבילות"
 
 #: src/manager_window.vala
 msgid "Checking for Updates"
-msgstr ""
+msgstr "כעת בבדיקה אם יש עדכונים"
 
 #: src/manager_window.vala resources/manager_window.ui
 msgid "Install Local Packages"
-msgstr ""
+msgstr "התקן חבילות מקומיות"
 
 #: src/manager_window.vala
 msgid "_Open"
-msgstr ""
+msgstr "_פתח"
 
 #: src/manager_window.vala
 msgid "Alpm Package"
-msgstr ""
+msgstr "חבילת Alpm"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr ""
+msgstr "מנהל חבילות עם תמיכה ב־Alpm,‏ AUR,‏ Flatpak וגם ב־Snap"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
 msgid "Snap"
-msgstr ""
+msgstr "‏Snap"
 
 #: src/manager_window.vala
 #, c-format
@@ -591,27 +595,27 @@ msgstr[3] ""
 
 #: src/manager_window.vala
 msgid "Pending"
-msgstr ""
+msgstr "בהמתנה"
 
 #: src/manager_window.vala
 msgid "All"
-msgstr ""
+msgstr "הכול"
 
 #: src/manager_window.vala
 msgid "Explicitly installed"
-msgstr ""
+msgstr "מותקנת בברור"
 
 #: src/manager_window.vala
 msgid "Orphans"
-msgstr ""
+msgstr "יתומות"
 
 #: src/manager_window.vala
 msgid "Foreign"
-msgstr ""
+msgstr "זר"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Installed"
-msgstr ""
+msgstr "מותקנות"
 
 #: src/manager_window.vala
 msgid "Ignored"
@@ -623,7 +627,7 @@ msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
-msgstr ""
+msgstr "סיבת התקנה"
 
 #: src/manager_window.vala
 msgid "Installed as a dependency for another package"
@@ -631,43 +635,43 @@ msgstr ""
 
 #: src/manager_window.vala
 msgid "Mark as explicitly installed"
-msgstr ""
+msgstr "סמן בתור מותקנת בברור"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Licenses"
-msgstr ""
+msgstr "רשיונות"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Unknown"
-msgstr ""
+msgstr "לא ידוע"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Repository"
-msgstr ""
+msgstr "מאגר"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Package Base"
-msgstr ""
+msgstr "בסיס חבילה"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Maintainer"
-msgstr ""
+msgstr "מתחזק"
 
 #: src/manager_window.vala src/cli.vala
 msgid "First Submitted"
-msgstr ""
+msgstr "נמסרה לראשונה"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Last Modified"
-msgstr ""
+msgstr "שונתה לאחרונה"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Votes"
-msgstr ""
+msgstr "קולות"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Out of Date"
-msgstr ""
+msgstr "לא מעודכנת"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Groups"
@@ -675,15 +679,15 @@ msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Packager"
-msgstr ""
+msgstr "אורז"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Build Date"
-msgstr ""
+msgstr "תאריך בנייה"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Date"
-msgstr ""
+msgstr "תאריך התקנה"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
@@ -691,31 +695,31 @@ msgstr ""
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
-msgstr ""
+msgstr "קבצי גיבוי"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional Dependencies"
-msgstr ""
+msgstr "תלויות רשות"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Optional For"
-msgstr ""
+msgstr "בגדר רשות עבור"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
-msgstr ""
+msgstr "מספקת"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Make Dependencies"
-msgstr ""
+msgstr "צור תלויות"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Check Dependencies"
-msgstr ""
+msgstr "בדוק תלויות"
 
 #: src/manager_window.vala
 msgid "Publisher"
-msgstr ""
+msgstr "מוציא/ה לאור"
 
 #: src/manager_window.vala
 msgid "Confined in a Sandbox"
@@ -723,7 +727,7 @@ msgstr ""
 
 #: src/manager_window.vala
 msgid "Channels"
-msgstr ""
+msgstr "ערוצים"
 
 #: src/manager_window.vala
 msgid "OS Updates"
@@ -735,44 +739,44 @@ msgstr ""
 
 #: src/manager_window.vala
 msgid "Featured"
-msgstr ""
+msgstr "מומלצים"
 
 #: src/manager_window.vala
 msgid "Photo & Video"
-msgstr ""
+msgstr "תמונות ווידאו"
 
 #: src/manager_window.vala
 msgid "Music & Audio"
-msgstr ""
+msgstr "מוזיקה ושמע"
 
 #: src/manager_window.vala
 msgid "Productivity"
-msgstr ""
+msgstr "פרודקטיביות"
 
 #: src/manager_window.vala
 msgid "Communication & News"
-msgstr ""
+msgstr "תקשורת וחדשות"
 
 #: src/manager_window.vala
 msgid "Education & Science"
-msgstr ""
+msgstr "חינוך ומדע"
 
 #: src/manager_window.vala
 msgid "Games"
-msgstr ""
+msgstr "משחקים"
 
 #: src/manager_window.vala
 msgid "Utilities"
-msgstr ""
+msgstr "עזרים"
 
 #: src/manager_window.vala
 msgid "Development"
-msgstr ""
+msgstr "פיתוח"
 
 #: src/manager_window.vala resources/manager_window.ui
 #: resources/preferences_dialog.ui
 msgid "Updates"
-msgstr ""
+msgstr "עדכונים"
 
 #: src/manager_window.vala
 msgid "Last refresh"
@@ -824,7 +828,7 @@ msgstr ""
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
-msgstr ""
+msgstr "כלל עולמי"
 
 #: src/preferences_dialog.vala
 msgid "0"
@@ -840,7 +844,7 @@ msgstr ""
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
-msgstr ""
+msgstr "למחיקה"
 
 #: src/preferences_dialog.vala src/cli.vala
 #, c-format
@@ -861,33 +865,33 @@ msgstr ""
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
-msgstr ""
+msgstr "בחר שדרוגים מנוכרים"
 
 #: src/transaction-cli.vala src/cli.vala
 #, c-format
 msgid "Enter a selection (default=%s)"
-msgstr ""
+msgstr "הזן בחירה (ברירת מחדל=%s)"
 
 #: src/transaction-cli.vala
 msgid "none"
-msgstr ""
+msgstr "אין"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "Enter a number (default=%d)"
-msgstr ""
+msgstr "הזן מספר (ברירת מחדל=%d)"
 
 #: src/transaction-cli.vala
 msgid "[y/N]"
-msgstr ""
+msgstr "[y/N]"
 
 #: src/transaction-cli.vala
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: src/transaction-cli.vala
 msgid "yes"
-msgstr ""
+msgstr "כן"
 
 #: src/transaction-cli.vala
 msgid "[e]"
@@ -907,40 +911,40 @@ msgstr ""
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
-msgstr ""
+msgstr "לשדרוג"
 
 #: src/transaction-cli.vala
 msgid "To reinstall"
-msgstr ""
+msgstr "להתקנה חוזרת"
 
 #: src/transaction-cli.vala
 msgid "To install"
-msgstr ""
+msgstr "להתקנה"
 
 #: src/transaction-cli.vala
 msgid "To build"
-msgstr ""
+msgstr "לבניה"
 
 #: src/transaction-cli.vala
 msgid "To downgrade"
-msgstr ""
+msgstr "להנמכה"
 
 #: src/transaction-cli.vala
 msgid "To remove"
-msgstr ""
+msgstr "להסרה"
 
 #: src/transaction-cli.vala
 msgid "Total installed size"
-msgstr ""
+msgstr "סך גודל ההתקנה"
 
 #: src/transaction-cli.vala
 msgid "Total removed size"
-msgstr ""
+msgstr "סך גודל ההסרה"
 
 #: src/transaction-cli.vala
 #, c-format
 msgid "View %s build files diff"
-msgstr ""
+msgstr "עיין %s בהבדלי קבצי ההתקנה"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -953,7 +957,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
-msgstr ""
+msgstr "לא נמצא קובץ PKGBUILD בספרייה הנוכחית"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
@@ -961,23 +965,23 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Available actions"
-msgstr ""
+msgstr "פעולות אפשריות"
 
 #: src/cli.vala
 msgid "action"
-msgstr ""
+msgstr "פעולה"
 
 #: src/cli.vala
 msgid "options"
-msgstr ""
+msgstr "אפשרויות"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
-msgstr ""
+msgstr "חיפוש אחר חבילות או קבצים, ניתן לציין מונחי חיפוש מרובים"
 
 #: src/cli.vala
 msgid "file(s)"
-msgstr ""
+msgstr "קובץ(ים)"
 
 #: src/cli.vala
 msgid "only search for installed packages"
@@ -989,7 +993,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "also search in AUR"
-msgstr ""
+msgstr "לחפש גם ב־AUR"
 
 #: src/cli.vala
 msgid "do not search in AUR"
@@ -998,7 +1002,7 @@ msgstr ""
 #: src/cli.vala
 msgid ""
 "search for packages which own the given filenames (filenames can be partial)"
-msgstr ""
+msgstr "חיפוש אחר חבילות שמכילות את שמות הקבצים שצוינו (שמות קבצים יכולים להיות גם חלקיים)"
 
 #: src/cli.vala
 msgid "only print names"
@@ -1006,23 +1010,23 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Display package details, multiple packages can be specified"
-msgstr ""
+msgstr "הצג פרטי חבילה, ניתן לציין מספר חבילות"
 
 #: src/cli.vala
 msgid "List packages, groups, repositories or files"
-msgstr ""
+msgstr "פרט חבילות, קבוצות, מאגרים או קבצים"
 
 #: src/cli.vala
 msgid "group(s)"
-msgstr ""
+msgstr "קבוצה/ות"
 
 #: src/cli.vala
 msgid "repo(s)"
-msgstr ""
+msgstr "מאגר(ים)"
 
 #: src/cli.vala
 msgid "list installed packages"
-msgstr ""
+msgstr "מנה חבילות מותקנות"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
@@ -1032,45 +1036,45 @@ msgstr ""
 msgid ""
 "list packages that were installed as dependencies but are no longer required"
 " by any installed package"
-msgstr ""
+msgstr "מנה חבילות שהותקנו כדרישות-קדם אך כעת כבר אינן נדרשות על ידי אף חבילה מותקנת"
 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
-msgstr ""
+msgstr "מנה חבילות שלא נמצאו במאגרים"
 
 #: src/cli.vala
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr ""
+msgstr "מנה את כל החבילות שהינן חברות בקבוצות הנזכרות, אם לא תצויין קבוצה יוצגו כל הקבוצות"
 
 #: src/cli.vala
 msgid ""
 "list all packages available in the given repos, if no repo is given list all"
 " repos"
-msgstr ""
+msgstr "מנה את כל הקבוצות הזמינות במאגרים המצויינים, אם לא צויין מאגר - מנה את כל החבילות"
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
-msgstr ""
+msgstr "מנה קבצים השייכים לחבילה הצויינת"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
-msgstr ""
+msgstr "שכפל או סנכרן קובצי בניית חבילות מ־AUR"
 
 #: src/cli.vala
 msgid "dir"
-msgstr ""
+msgstr "ספרייה"
 
 #: src/cli.vala
 msgid ""
 "build directory, if no directory is given the one specified in pamac.conf "
 "file is used"
-msgstr ""
+msgstr "ספריית בניית ההתקנהף אם לא צויינה ספרייה, עשה שימוש בזו שמצויינת בקובץ ההגדרות: pamac.conf"
 
 #: src/cli.vala
 msgid "also clone needed dependencies"
-msgstr ""
+msgstr "שכפל גם את התלויות הנדרשות"
 
 #: src/cli.vala
 msgid "do not print any output"
@@ -1078,7 +1082,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "overwrite existing files"
-msgstr ""
+msgstr "דרוס קבצים קיימים"
 
 #: src/cli.vala
 msgid ""
@@ -1145,15 +1149,15 @@ msgstr ""
 
 #: src/cli.vala
 msgid "check for updates"
-msgstr ""
+msgstr "בדוק אם יש עדכונים"
 
 #: src/cli.vala
 msgid "do not check for updates"
-msgstr ""
+msgstr "לא לבדוק אם יש עדכונים"
 
 #: src/cli.vala
 msgid "Reinstall packages"
-msgstr ""
+msgstr "הורד חבילות מחדש"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
@@ -1195,7 +1199,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "also check updates in AUR"
-msgstr ""
+msgstr "בנוסף לבדוק אם יש עדכונים ב־AUR"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
@@ -1203,7 +1207,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "only print one line per update"
-msgstr ""
+msgstr "הדפס שורה אחת בלבד לעדכון"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
@@ -1215,7 +1219,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Upgrade your system"
-msgstr ""
+msgstr "שדרג את המערכת שלך"
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
@@ -1257,7 +1261,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "number"
-msgstr ""
+msgstr "מספר"
 
 #: src/cli.vala
 msgid ""
@@ -1284,23 +1288,23 @@ msgstr ""
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
-msgstr ""
+msgstr "שם"
 
 #: src/cli.vala
 msgid "Version"
-msgstr ""
+msgstr "גרסא"
 
 #: src/cli.vala
 msgid "Description"
-msgstr ""
+msgstr "תיאור"
 
 #: src/cli.vala
 msgid "URL"
-msgstr ""
+msgstr "כתובת URL"
 
 #: src/cli.vala
 msgid "Installed Size"
-msgstr ""
+msgstr "גודל מותקן"
 
 #: src/cli.vala
 #, c-format
@@ -1323,15 +1327,15 @@ msgstr[3] ""
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
-msgstr ""
+msgstr "הסר רק את הגרסאות של חבילות שהוסרו"
 
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
-msgstr ""
+msgstr "מספר גרסאות של כל חבילה לשמירה בתוך המטמון"
 
 #: src/cli.vala
 msgid "Clean cache"
-msgstr ""
+msgstr "טהר מטמון"
 
 #: src/cli.vala
 msgid "Clean build files"
@@ -1340,7 +1344,7 @@ msgstr ""
 #: src/cli.vala
 #, c-format
 msgid "Add %s to install"
-msgstr ""
+msgstr "הוספת %s להתקנה"
 
 #: src/cli.vala
 #, c-format
@@ -1358,12 +1362,12 @@ msgstr[3] ""
 
 #: src/cli.vala
 msgid "all"
-msgstr ""
+msgstr "הכול"
 
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr ""
+msgstr "הוספת %s להתקנה מחדש"
 
 #: src/cli.vala
 #, c-format
@@ -1372,31 +1376,31 @@ msgstr ""
 
 #: src/snap_plugin.vala
 msgid "No"
-msgstr ""
+msgstr "לא"
 
 #: resources/choose_provider_dialog.ui
 msgid "Choose a Provider"
-msgstr ""
+msgstr "בחירת ספק"
 
 #: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
 msgid "Choose"
-msgstr ""
+msgstr "בחר"
 
 #: resources/progress_dialog.ui
 msgid "Progress"
-msgstr ""
+msgstr "התקדמות"
 
 #: resources/history_dialog.ui
 msgid "Pamac History"
-msgstr ""
+msgstr "היסטורית Pamac"
 
 #: resources/transaction_sum_dialog.ui
 msgid "Transaction Summary"
-msgstr ""
+msgstr "סיכום טרנזקציה"
 
 #: resources/transaction_sum_dialog.ui resources/manager_window.ui
 msgid "_Apply"
-msgstr ""
+msgstr "_החל"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
@@ -1404,87 +1408,87 @@ msgstr ""
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
-msgstr ""
+msgstr "רענן מסדי נתונים"
 
 #: resources/manager_window.ui
 msgid "View History"
-msgstr ""
+msgstr "צפה בהיסטוריה"
 
 #: resources/manager_window.ui
 msgid "Preferences"
-msgstr ""
+msgstr "העדפות"
 
 #: resources/manager_window.ui
 msgid "About"
-msgstr ""
+msgstr "על אודות"
 
 #: resources/manager_window.ui
 msgid "Search"
-msgstr ""
+msgstr "חיפוש"
 
 #: resources/manager_window.ui
 msgid "Remove all"
-msgstr ""
+msgstr "הסר הכול"
 
 #: resources/manager_window.ui
 msgid "Install all"
-msgstr ""
+msgstr "התקן הכול"
 
 #: resources/manager_window.ui
 msgid "Ignore all"
-msgstr ""
+msgstr "להתעלם מהכול"
 
 #: resources/manager_window.ui
 msgid "Sort by"
-msgstr ""
+msgstr "מיון לפי"
 
 #: resources/manager_window.ui
 msgid "Relevance"
-msgstr ""
+msgstr "רלוונטיות"
 
 #: resources/manager_window.ui
 msgid "Size"
-msgstr ""
+msgstr "גודל"
 
 #: resources/manager_window.ui
 msgid "Date"
-msgstr ""
+msgstr "תאריך"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr ""
+msgstr "רענן"
 
 #: resources/manager_window.ui
 msgid "Categories"
-msgstr ""
+msgstr "קטגוריות"
 
 #: resources/manager_window.ui
 msgid "Browse"
-msgstr ""
+msgstr "עיון"
 
 #: resources/manager_window.ui
 msgid "Launch"
-msgstr ""
+msgstr "הפעל"
 
 #: resources/manager_window.ui
 msgid "Remove"
-msgstr ""
+msgstr "הסר"
 
 #: resources/manager_window.ui
 msgid "Reinstall"
-msgstr ""
+msgstr "התקן שוב"
 
 #: resources/manager_window.ui
 msgid "Build"
-msgstr ""
+msgstr "בנה"
 
 #: resources/manager_window.ui
 msgid "Dependencies"
-msgstr ""
+msgstr "תלויות"
 
 #: resources/manager_window.ui
 msgid "Files"
-msgstr ""
+msgstr "קבצים"
 
 #: resources/manager_window.ui
 msgid "Reset build files"
@@ -1492,15 +1496,15 @@ msgstr ""
 
 #: resources/manager_window.ui
 msgid "Build files"
-msgstr ""
+msgstr "קובצי בנייה"
 
 #: resources/preferences_dialog.ui
 msgid "General"
-msgstr ""
+msgstr "כללי"
 
 #: resources/preferences_dialog.ui
 msgid "Check for updates"
-msgstr ""
+msgstr "בדוק עדכונים"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
@@ -1508,7 +1512,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
-msgstr ""
+msgstr "הורדת עדכונים אוטומטית"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
@@ -1532,7 +1536,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
-msgstr ""
+msgstr "מטמון"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
@@ -1548,7 +1552,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
-msgstr ""
+msgstr "מתקדם"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1558,19 +1562,19 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Check available disk space"
-msgstr ""
+msgstr "בדיקת השטח הפנוי בכונן"
 
 #: resources/preferences_dialog.ui
 msgid "Remove unrequired dependencies"
-msgstr ""
+msgstr "הסר תוספים לא נחוצים"
 
 #: resources/preferences_dialog.ui
 msgid "Do not check for updates when installing"
-msgstr ""
+msgstr "לא לבדוק אם יש עדכונים בעת התקנה"
 
 #: resources/preferences_dialog.ui
 msgid "Enable downgrade"
-msgstr ""
+msgstr "לאפשר הנמכה"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
@@ -1584,11 +1588,11 @@ msgstr ""
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr ""
+msgstr "‏AUR הינו מאגר מתוחזק קהילה כך שהוא טומן בחובו סיכונים ובעיות.\nכל משתמשי AUR צריכים להיות בקיעים עם תהליך הבניה."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
-msgstr ""
+msgstr "אפשר תמיכת AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
@@ -1600,7 +1604,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Build directory"
-msgstr ""
+msgstr "תיקיית בנייה של חבילות AUR"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
@@ -1608,12 +1612,12 @@ msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
-msgstr ""
+msgstr "לאפשר תמיכה ב־Flatpak"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr ""
+msgstr "חבילות Snap מתוחזקות על ידי המוציא/ה שלהן לאור."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"
-msgstr ""
+msgstr "לאפשר תמיכה ב־Snap"
