@@ -55,7 +55,7 @@ namespace Pamac {
 		public signal void stop_waiting (string sender);
 		public signal void trans_refresh_finished (string sender, bool success);
 		public signal void trans_run_finished (string sender, bool success);
-		public signal void download_updates_finished (string sender);
+		public signal void download_updates_finished (string sender, bool success);
 		public signal void get_authorization_finished (string sender, bool authorized);
 		public signal void write_alpm_config_finished (string sender);
 		public signal void write_pamac_config_finished (string sender);
@@ -429,16 +429,16 @@ namespace Pamac {
 					}
 					bool success = wait_for_lock (sender, cancellable);
 					if (success) {
-						alpm_utils.download_updates (sender);
+						success = alpm_utils.download_updates (sender);
 						lockfile_mutex.unlock ();
 					}
-					download_updates_finished (sender);
+					download_updates_finished (sender, success);
 					AtomicInt.dec_and_test (ref running_threads);
 					return 0;
 				});
 			} catch (ThreadError e) {
 				emit_error (sender, "Daemon Error", {e.message});
-				download_updates_finished (sender);
+				download_updates_finished (sender, false);
 			}
 		}
 

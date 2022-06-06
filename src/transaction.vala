@@ -69,6 +69,7 @@ namespace Pamac {
 		public bool keep_config_files { get; set; }
 		public bool install_as_dep { get; set; }
 		public bool install_as_explicit { get; set; }
+		public bool no_refresh { get; set; }
 
 		public signal void emit_action (string action);
 		public signal void emit_action_progress (string action, string status, double progress);
@@ -115,6 +116,7 @@ namespace Pamac {
 			keep_config_files = true;
 			install_as_dep = false;
 			install_as_explicit = false;
+			no_refresh = false;
 			// run transaction data
 			sysupgrading = false;
 			force_refresh = false;
@@ -201,8 +203,8 @@ namespace Pamac {
 			flatpak_to_remove = new HashTable<string, FlatpakPackage> (str_hash, str_equal);
 			flatpak_to_upgrade = new HashTable<string, FlatpakPackage> (str_hash, str_equal);
 			// building data
-			tmp_path = "/tmp/pamac";
-			aurdb_path = "/tmp/pamac/aur-%s".printf (Environment.get_user_name ());
+			tmp_path = "/var/tmp/pamac";
+			aurdb_path = "/var/tmp/pamac/aur-%s".printf (Environment.get_user_name ());
 			already_checked_aur_dep = new GenericSet<string?> (str_hash, str_equal);
 			aur_desc_list = new GenericSet<string?> (str_hash, str_equal);
 			aur_pkgs_to_install = new GenericSet<string?> (str_hash, str_equal);
@@ -373,14 +375,16 @@ namespace Pamac {
 			return success;
 		}
 
-		public async void download_updates_async () {
+		public async bool download_updates_async () {
+			bool success = false;
 			try {
-				yield transaction_interface.download_updates ();
+				success = yield transaction_interface.download_updates ();
 			} catch (Error e) {
 				var details = new GenericArray<string> (1);
 				details.add ("download_updates: %s".printf (e.message));
 				emit_error ("Daemon Error", details);
 			}
+			return success;
 		}
 
 		async bool compute_aur_build_list () {
@@ -1259,27 +1263,8 @@ namespace Pamac {
 				}
 			}
 			bool success = false;
-			if (!dry_run && sysupgrading) {
-				success = yield get_authorization_async ();
-				if (!success) {
-					return false;
-				}
-				try {
-					success = yield transaction_interface.trans_refresh (force_refresh);
-				} catch (Error e) {
-					var details = new GenericArray<string> (1);
-					details.add ("trans_refresh: %s".printf (e.message));
-					emit_error ("Daemon Error", details);
-				}
-				if (config.check_aur_updates) {
-					bool refresh_success = database.aur.update_db (force_refresh, true);
-					if (!refresh_success) {
-						emit_warning (dgettext (null, "Failed to synchronize AUR database"));
-					}
-				}
-				if (!success) {
-					return false;
-				}
+			if (!dry_run && !no_refresh && sysupgrading) {
+				success = yield trans_refresh ();
 			}
 			if (to_install.length > 0) {
 				yield add_optdeps ();
@@ -1344,6 +1329,27 @@ namespace Pamac {
 				warning (e.message);
 			}
 			summary = new_summary;
+			return success;
+		}
+
+		async bool trans_refresh () {
+			bool success = yield get_authorization_async ();
+			if (success) {
+				try {
+					success = yield transaction_interface.trans_refresh (force_refresh);
+				} catch (Error e) {
+					var details = new GenericArray<string> (1);
+					details.add ("trans_refresh: %s".printf (e.message));
+					emit_error ("Daemon Error", details);
+					success = false;
+				}
+				if (config.check_aur_updates) {
+					bool aur_success = database.aur.update_db (force_refresh, true);
+					if (!aur_success) {
+						emit_warning (dgettext (null, "Failed to synchronize AUR database"));
+					}
+				}
+			}
 			return success;
 		}
 
@@ -1549,6 +1555,7 @@ namespace Pamac {
 						var details = new GenericArray<string> (1);
 						details.add ("trans_run: %s".printf (e.message));
 						emit_error ("Daemon Error", details);
+						success = false;
 		 			}
 		 			return success;
 				} else {

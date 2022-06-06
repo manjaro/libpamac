@@ -69,13 +69,20 @@ namespace Pamac {
 			// load snap plugin
 			if (config.support_snap) {
 				snap_plugin = config.get_snap_plugin ();
+				if (snap_plugin == null) {
+					config.enable_snap = false;
+				}
 			}
 			// load flatpak plugin
 			if (config.support_flatpak) {
 				flatpak_plugin = config.get_flatpak_plugin ();
-				flatpak_plugin.refresh_period = config.refresh_period;
-				if (config.enable_flatpak) {
-					flatpak_plugin.load_appstream_data ();
+				if (flatpak_plugin == null) {
+					config.enable_flatpak = false;
+				} else {
+					flatpak_plugin.refresh_period = config.refresh_period;
+					if (config.enable_flatpak) {
+						flatpak_plugin.load_appstream_data ();
+					}
 				}
 			}
 			refresh ();
@@ -2247,7 +2254,7 @@ namespace Pamac {
 		}
 
 		public DateTime? get_last_refresh_time () {
-			string timestamp_path = "/tmp/pamac/dbs/sync/refresh_timestamp";
+			string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
 			// check if last refresh is older than config.refresh_period
 			try {
 				var timestamp_file = File.new_for_path (timestamp_path);
@@ -2330,7 +2337,7 @@ namespace Pamac {
 						// save now as last refresh time
 						try {
 							// touch the file
-							string timestamp_path = "/tmp/pamac/dbs/sync/refresh_timestamp";
+							string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
 							Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
 						} catch (SpawnError e) {
 							warning (e.message);

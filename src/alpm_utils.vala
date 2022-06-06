@@ -75,6 +75,10 @@ class Download: Object {
 				ret = dload (alpm_utils, mirror, filename, cachedir, 0, true, false);
 			}
 			if (ret == 0) {
+				// download signature without signal from the same server
+				ret = dload (alpm_utils, mirror, filename + ".sig", cachedir, 0, true, false);
+			}
+			if (ret == 0) {
 				// success
 				return;
 			}
@@ -152,7 +156,7 @@ namespace Pamac {
 			multi_progress_mutex = Mutex ();
 			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
 			alpm_config = config.alpm_config;
-			tmp_path = "/tmp/pamac";
+			tmp_path = "/var/tmp/pamac";
 			to_syncfirst = new GenericSet<string?> (str_hash, str_equal);
 			to_install = new GenericSet<string?> (str_hash, str_equal);
 			deps_to_install = new GenericSet<string?> (str_hash, str_equal);
@@ -402,22 +406,9 @@ namespace Pamac {
 				} catch (SpawnError e) {
 					warning (e.message);
 				}
-			} else {
-				// try to copy refresh dbs from tmp
-				var file = File.new_for_path (tmp_path);
-				if (file.query_exists ()) {
-					try {
-						var alpm_handle = get_handle ();
-						if (alpm_handle != null) {
-							Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/dbs/sync/* %ssync'".printf (tmp_path, alpm_handle.dbpath));
-						}
-					} catch (SpawnError e) {
-						warning (e.message);
-					}
-				}
 			}
-			// a new handle is required to use copied databases
-			var alpm_handle = get_handle ();
+			// use a tmp handle
+			var alpm_handle = get_handle (false, true);
 			if (alpm_handle == null) {
 				return false;
 			}
@@ -429,7 +420,7 @@ namespace Pamac {
 			// only refresh ".files" if force
 			if (force_refresh) {
 				// update ".files", do not need to know if we succeeded
-				var files_handle = get_handle (true);
+				var files_handle = get_handle (true, true);
 				if (files_handle != null) {
 					update_dbs (files_handle, force);
 				}
@@ -495,29 +486,33 @@ namespace Pamac {
 			return new AlpmPackageData.transaction (alpm_pkg, local_pkg, sync_pkg);
 		}
 
-		public void download_updates (string sender) {
+		public bool download_updates (string sender) {
 			this.sender = sender;
 			downloading_updates = true;
-			// use tmp handle
+			// use tmp handle with no callback
 			var alpm_handle = alpm_config.get_handle (false, true);
 			if (alpm_handle == null) {
-				return;
+				return false;
 			}
+			// add question callback for replaces/conflicts/corrupted pkgs and import keys
+			alpm_handle.set_questioncb (cb_question, this);
 			cancellable.reset ();
-			int success = alpm_handle.trans_init (Alpm.TransFlag.NOLOCK);
-			if (success == 0) {
-				success = alpm_handle.trans_sysupgrade (0);
-				if (success == 0) {
+			bool success = false;
+			if (alpm_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
+				if (alpm_handle.trans_sysupgrade (0) == 0) {
 					Alpm.List err_data;
-					success = alpm_handle.trans_prepare (out err_data);
-					if (success == 0) {
+					if (alpm_handle.trans_prepare (out err_data) == 0) {
 						// custom parallel downloads
 						download_files (alpm_handle, config.max_parallel_downloads, false);
+						if (alpm_handle.trans_commit (out err_data) == 0) {
+							success = true;
+						}
 					}
 				}
 				alpm_handle.trans_release ();
 			}
 			downloading_updates = false;
+			return success;
 		}
 
 		bool trans_init (Alpm.Handle? alpm_handle, int flags, bool emit_error = true) {
@@ -1039,7 +1034,23 @@ namespace Pamac {
 			this.trans_flags &= ~Alpm.TransFlag.CASCADE;
 			this.trans_flags &= ~Alpm.TransFlag.RECURSE;
 			// use an handle with no callback to avoid double prepare signals
-			var alpm_handle = get_handle (false, false, false);
+			Alpm.Handle? alpm_handle = null;
+			if ((trans_flags & Alpm.TransFlag.DOWNLOADONLY) == 0) {
+				// copy refresh dbs from tmp
+				var file = File.new_for_path (tmp_path);
+				if (file.query_exists ()) {
+					try {
+						Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/dbs/sync/* %ssync'".printf (tmp_path, alpm_config.dbpath));
+					} catch (SpawnError e) {
+						warning (e.message);
+					}
+				}
+				// a handle using copied databases
+				alpm_handle = get_handle (false, false, false);
+			} else {
+				// use a tmp handle
+				alpm_handle = get_handle (false, true, false);
+			}
 			if (alpm_handle == null) {
 				return false;
 			}

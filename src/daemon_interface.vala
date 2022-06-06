@@ -64,7 +64,7 @@ namespace Pamac {
 		public signal void download_pkg_finished (string sender, string path);
 		public signal void trans_refresh_finished (string sender, bool success);
 		public signal void trans_run_finished (string sender, bool success);
-		public signal void download_updates_finished (string sender);
+		public signal void download_updates_finished (string sender, bool success);
 		public signal void get_authorization_finished (string sender, bool authorized);
 		public signal void write_alpm_config_finished (string sender);
 		public signal void write_pamac_config_finished (string sender);

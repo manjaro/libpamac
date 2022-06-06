@@ -127,8 +127,8 @@ internal class AlpmConfig {
 		Alpm.Errno error = 0;
 		Alpm.Handle? handle = null;
 		if (tmp_db) {
-			string tmp_path = "/tmp/pamac";
-			string tmp_dbpath = "/tmp/pamac/dbs";
+			string tmp_path = "/var/tmp/pamac";
+			string tmp_dbpath = "/var/tmp/pamac/dbs";
 			try {
 				var file = GLib.File.new_for_path (tmp_path);
 				if (!file.query_exists ()) {

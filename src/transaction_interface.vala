@@ -25,7 +25,7 @@ namespace Pamac {
 		public abstract async bool clean_cache (GenericArray<string> filenames) throws Error;
 		public abstract async bool clean_build_files (string aur_build_dir) throws Error;
 		public abstract async bool set_pkgreason (string pkgname, uint reason) throws Error;
-		public abstract async void download_updates () throws Error;
+		public abstract async bool download_updates () throws Error;
 		public abstract async bool trans_refresh (bool force) throws Error;
 		public abstract async bool trans_run (bool sysupgrade,
 										bool enable_downgrade,

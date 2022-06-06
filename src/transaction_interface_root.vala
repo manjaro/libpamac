@@ -69,8 +69,8 @@ namespace Pamac {
 			return success;
 		}
 
-		public async void download_updates () {
-			alpm_utils.download_updates ("root");
+		public async bool download_updates () {
+			return alpm_utils.download_updates ("root");
 		}
 
 		async bool wait_for_lock () {

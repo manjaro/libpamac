@@ -22,6 +22,7 @@ namespace Pamac {
 		Daemon system_daemon;
 		string sender;
 		SourceFunc generate_mirrors_list_callback;
+		bool download_updates_success;
 		SourceFunc download_updates_callback;
 		SourceFunc get_authorization_callback;
 		bool get_authorization_authorized;
@@ -154,18 +155,20 @@ namespace Pamac {
 			}
 		}
 
-		public async void download_updates () throws Error {
+		public async bool download_updates () throws Error {
 			download_updates_callback = download_updates.callback;
 			try {
 				system_daemon.start_download_updates ();
 				yield;
+				return download_updates_success;
 			} catch (Error e) {
 				throw e;
 			}
 		}
 
-		void on_download_updates_finished (string sender) {
+		void on_download_updates_finished (string sender, bool success) {
 			if (sender == this.sender) {
+				download_updates_success = success;
 				download_updates_callback ();
 			}
 		}
