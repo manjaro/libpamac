@@ -391,7 +391,7 @@ msgstr "Δεν υπάρχει τίποτε να γίνει"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Απέτυχε ο συγχρονισμός με τη βάση δεδομένων AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -549,7 +549,7 @@ msgstr "Διαθέσιμες ενημερώσεις"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Το σύστημα σας είναι πλήρως ενημερωμένο"
 
 #: src/tray.vala
 msgid "_Quit"

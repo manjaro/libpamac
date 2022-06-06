@@ -25,6 +25,7 @@
 # Tim, 2014
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2017
 # Michael G. <m.gasperl@gmail.com>, 2019
+# Michael John <amstelchen@gmail.com>, 2022
 # N3tt3rm4n, 2017
 # philm <philm@manjaro.org>, 2013
 # philm <philm@manjaro.org>, 2013-2020
@@ -38,7 +39,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2022-04-04 17:44+0200\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>, 2013,2022\n"
+"Last-Translator: Michael John <amstelchen@gmail.com>, 2022\n"
 "Language-Team: German (http://www.transifex.com/manjarolinux/manjaro-pamac/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -402,7 +403,7 @@ msgstr "Es gibt nichts zu tun"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Fehler beim Synchronisieren der AUR-Datenbank"
 
 #: src/transaction.vala
 #, c-format
@@ -560,7 +561,7 @@ msgstr "Aktualisierungen verfügbar"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Ihr System ist aktuell"
 
 #: src/tray.vala
 msgid "_Quit"

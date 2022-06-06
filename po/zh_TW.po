@@ -381,7 +381,7 @@ msgstr "已無事可作"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "AUR 資料庫同步失敗"
 
 #: src/transaction.vala
 #, c-format
@@ -539,7 +539,7 @@ msgstr "可用更新"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "您的系統已為最新"
 
 #: src/tray.vala
 msgid "_Quit"

@@ -7,6 +7,7 @@
 # Adrian Grzemski <adrian.grzemski@gmail.com>, 2017
 # Aleksander Krzys <alekspierwszy.ap@gmail.com>, 2021
 # B.O.S.S <blazejsadowski2004@gmail.com>, 2020
+# cooky, 2022
 # Daniel Napora <napcok@gmail.com>, 2016-2020
 # Dominik “Devhost97” G <devhost97@gmail.com>, 2016
 # FadeMind <fademind@gmail.com>, 2013
@@ -402,7 +403,7 @@ msgstr "Nie ma nic do zrobienia"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Synchronizacja bazy danych AUR nie powiodła się"
 
 #: src/transaction.vala
 #, c-format
@@ -560,7 +561,7 @@ msgstr "Aktualizacje są dostępne"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Twój system jest w pełni zaktualizowany"
 
 #: src/tray.vala
 msgid "_Quit"

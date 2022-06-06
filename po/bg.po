@@ -381,7 +381,7 @@ msgstr "Нищо за правене"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Неуспешна синхронизация на AUR база от данни"
 
 #: src/transaction.vala
 #, c-format
@@ -539,7 +539,7 @@ msgstr "Актуализации на разположение"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Вашата система е актуална"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -622,7 +622,7 @@ msgstr "Пренебрегнат"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "Нищо"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -690,7 +690,7 @@ msgstr "Дата на инсталиране"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "Валидирано от"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -945,7 +945,7 @@ msgstr "Преглед %s разлики в изграждащи файлове"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "Пакети за изграждане като динамичен потребител"
 
 #: src/cli.vala
 #, c-format
@@ -1164,7 +1164,7 @@ msgstr "премахване на пакети, само ако те не се �
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "Премахнете всички целеви пакети, както и всички пакети, които зависят от един или повече целеви пакети"
 
 #: src/cli.vala
 msgid ""
@@ -1365,7 +1365,7 @@ msgstr "Добави %s за преинсталиране"
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "Инсталирай %1$s от %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"

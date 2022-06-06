@@ -375,7 +375,7 @@ msgstr "Res per fer"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Ha fallat sincronitzar la base de dades de l'AUR."
 
 #: src/transaction.vala
 #, c-format
@@ -533,7 +533,7 @@ msgstr "Actualitzacions disponibles"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "El sistema està actualitzat."
 
 #: src/tray.vala
 msgid "_Quit"

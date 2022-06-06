@@ -384,7 +384,7 @@ msgstr "Ezer ez egiteko"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Ezin izan da AUR datu-basea sinkronizatu"
 
 #: src/transaction.vala
 #, c-format
@@ -542,7 +542,7 @@ msgstr "Eguneraketak eskuragarri"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Zure sistema eguneratuta dago"
 
 #: src/tray.vala
 msgid "_Quit"

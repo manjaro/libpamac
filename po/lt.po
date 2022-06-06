@@ -380,7 +380,7 @@ msgstr "Nėra ką atlikti"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Nepavyko sinchronizuoti AUR duomenų bazės"
 
 #: src/transaction.vala
 #, c-format
@@ -538,7 +538,7 @@ msgstr "Yra prieinami atnaujinimai"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Jūsų sistemoje įdiegti visi paskiausi atnaujinimai"
 
 #: src/tray.vala
 msgid "_Quit"

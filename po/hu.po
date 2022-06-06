@@ -12,6 +12,7 @@
 # Lajos Pasztor <mrlajos@gmail.com>, 2013
 # Lajos Pasztor <mrlajos@gmail.com>, 2013-2017,2019
 # miku84, 2015-2017,2019,2021
+# osiixy <osiixy@gmail.com>, 2022
 # PB, 2020-2021
 # philm <philm@manjaro.org>, 2015
 # 271a73fe325823f2941533b778424ef0, 2018
@@ -25,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2022-04-04 17:44+0200\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: PB, 2020-2021\n"
+"Last-Translator: osiixy <osiixy@gmail.com>, 2022\n"
 "Language-Team: Hungarian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,7 +76,7 @@ msgstr "a csomag %s nem tartalmaz megfelelő architektúrát"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "nem lehet kielégíteni a \"%1$s\" függőséget, melyre a %2$s csomagnak szüksége van"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -85,7 +86,7 @@ msgstr "Figyelem"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "%1$s (%2$s) telepítése függőséget okoz a(z) '%3$s' melyre a %4$s csomagnak szüksége van"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -100,12 +101,12 @@ msgstr "ha lehetséges, távolítsd el a következőt: %s, és próbáld újra"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "%1$s eltávolítása függőséget okoz a(z) '%2$s' melyre a %3$scsomagnak szüksége van"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s és %2$s konfliktusban van"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -547,7 +548,7 @@ msgstr "Frissítések Elérhetőek"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "A rendszer naprakész."
 
 #: src/tray.vala
 msgid "_Quit"
@@ -626,7 +627,7 @@ msgstr "Telepített"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Figyelmen kívül hagyott"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
@@ -862,7 +863,7 @@ msgstr[1] "%u fájlok"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Építési könyvtár megadása"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"

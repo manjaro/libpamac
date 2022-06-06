@@ -387,7 +387,7 @@ msgstr "Res per fer."
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Ha fallat sincronitzar la base de dades de l'AUR."
 
 #: src/transaction.vala
 #, c-format
@@ -545,7 +545,7 @@ msgstr "Actualitzacions disponibles"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "El sistema està actualitzat."
 
 #: src/tray.vala
 msgid "_Quit"
@@ -568,7 +568,7 @@ msgstr "No s'ha trobat cap paquet."
 
 #: src/manager_window.vala
 msgid "Checking for Updates"
-msgstr "Comprovant si hi ha actualitzacions:"
+msgstr "Es comprova si hi ha actualitzacions:"
 
 #: src/manager_window.vala resources/manager_window.ui
 msgid "Install Local Packages"

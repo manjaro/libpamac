@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2022-05-05 16:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -372,12 +372,12 @@ msgid "Nothing to do"
 msgstr ""
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
 
 #: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgid "Failed to synchronize AUR database"
 msgstr ""
 
 #: src/transaction.vala
@@ -1208,6 +1208,10 @@ msgstr ""
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
+msgstr ""
+
+#: src/cli.vala
+msgid "do not refresh the databases"
 msgstr ""
 
 #: src/cli.vala

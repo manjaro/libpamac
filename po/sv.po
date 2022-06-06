@@ -390,7 +390,7 @@ msgstr "Inget att göra"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Misslyckades med att synkronisera AUR databas"
 
 #: src/transaction.vala
 #, c-format
@@ -548,7 +548,7 @@ msgstr "Uppdateringar tillgängliga"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Ditt system är uppdaterat"
 
 #: src/tray.vala
 msgid "_Quit"
