@@ -512,6 +512,12 @@ namespace Pamac {
 				alpm_handle.trans_release ();
 			}
 			downloading_updates = false;
+			// enable offline upgrade
+			try {
+				Process.spawn_command_line_sync ("touch /system-update");
+			} catch (SpawnError e) {
+				warning (e.message);
+			}
 			return success;
 		}
 
@@ -594,13 +600,13 @@ namespace Pamac {
 			} else {
 				bool success = trans_add_pkg_real (alpm_handle, pkg, emit_error);
 				if (success) {
-					if (("linux4" in pkg.name) || ("linux5" in pkg.name)) {
+					if (("linux4" in pkg.name) || ("linux5" in pkg.name) || ("linux6" in pkg.name)) {
 						var installed_kernels = new GenericArray<string> ();
 						var installed_modules = new GenericArray<string> ();
 						unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
 						while (pkgcache != null) {
 							unowned Alpm.Package local_pkg = pkgcache.data;
-							if (("linux4" in local_pkg.name) || ("linux5" in local_pkg.name)) {
+							if (("linux4" in local_pkg.name) || ("linux5" in local_pkg.name) || ("linux6" in local_pkg.name)) {
 								string[] local_pkg_splitted = local_pkg.name.split ("-", 2);
 								if (!installed_kernels.find_with_equal_func (local_pkg_splitted[0], str_equal)) {
 									installed_kernels.add (local_pkg_splitted[0]);
@@ -1860,7 +1866,7 @@ namespace Pamac {
 
 		bool need_reboot (Alpm.Handle? alpm_handle) {
 			bool reboot_needed = false;
-			string[] prefix = {"linux-", "linux4", "linux5", "nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
+			string[] prefix = {"linux-", "linux4", "linux5", "linux6", "nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
 			string[] contains = {"mesa", "wayland"};
 			string[] full = {"cryptsetup"};
 			string[] suffix = {"-ucode"};
