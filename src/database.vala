@@ -1072,8 +1072,8 @@ namespace Pamac {
 
 		public async InputStream get_url_stream (string url) throws Error {
 			try {
-				var request = soup_session.request (url);
-				var inputstream = yield request.send_async (null);
+				var message = new Soup.Message ("GET", url);
+				var inputstream = yield soup_session.send_async (message, null);
 				return inputstream;
 			} catch (Error e) {
 				throw e;
@@ -2242,6 +2242,19 @@ namespace Pamac {
 			return data;
 		}
 
+		public async void refresh_tmp_files_dbs_async () {
+			try {
+				new Thread<int>.try ("refresh_tmp_files_dbs", () => {
+					refresh_tmp_files_dbs ();
+					context.invoke (refresh_tmp_files_dbs_async.callback);
+					return 0;
+				});
+				yield;
+			} catch (Error e) {
+				warning (e.message);
+			}
+		}
+
 		public void refresh_tmp_files_dbs () {
 			lock (alpm_config) {
 				var tmp_files_handle = alpm_config.get_handle (true, true);
@@ -2261,12 +2274,6 @@ namespace Pamac {
 				if (timestamp_file.query_exists ()) {
 					FileInfo info = timestamp_file.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
 					return info.get_modification_date_time ().to_local ();
-				} else {
-					// create config directory
-					File? parent = timestamp_file.get_parent ();
-					if (parent != null && !parent.query_exists ()) {
-						parent.make_directory_with_parents ();
-					}
 				}
 			} catch (Error e) {
 				warning (e.message);
@@ -2339,6 +2346,7 @@ namespace Pamac {
 							// touch the file
 							string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
 							Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
+							Process.spawn_command_line_sync ("chmod a+w %s".printf (timestamp_path));
 						} catch (SpawnError e) {
 							warning (e.message);
 						}

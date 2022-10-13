@@ -434,11 +434,12 @@ namespace Pamac {
 			bool success = yield check_aur_dep_list (to_build_array);
 			if (success && aur_desc_list.length > 0) {
 				// create a fake aur db
-				yield launch_subprocess ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path)});
+				string tmp_aurdb_path = "%s/pamac_aur.db".printf (tmp_path);
+				yield launch_subprocess ({"rm", "-f", tmp_aurdb_path});
 				var cmdline = new GenericArray<string> (5 + aur_desc_list.length);
 				cmdline.add ("bsdtar");
 				cmdline.add ("-cf");
-				cmdline.add ("%s/pamac_aur.db".printf (tmp_path));
+				cmdline.add (tmp_aurdb_path);
 				cmdline.add ("-C");
 				cmdline.add (aurdb_path);
 				foreach (unowned string name_version in aur_desc_list) {
@@ -447,7 +448,9 @@ namespace Pamac {
 				// spawnv needs a null terminated array
 				cmdline.length = cmdline.length + 1;
 				int ret = yield launch_subprocess (cmdline.data);
-				if (ret != 0) {
+				if (ret == 0) {
+					Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_aurdb_path));
+				} else {
 					success = false;
 				}
 			}
@@ -1846,6 +1849,11 @@ namespace Pamac {
 				if (!success) {
 					emit_error (dgettext (null, "Failed to build %s").printf (pkgname), new GenericArray<string> ());
 					to_build_queue.clear ();
+					try {
+						var process = new Subprocess.newv ({"rm", "%s/pamac_aur.db".printf (tmp_path), "%ssync".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
+					} catch (Error e) {
+						warning (e.message);
+					}
 					return false;
 				}
 				// building
@@ -2005,6 +2013,11 @@ namespace Pamac {
 					success = false;
 					break;
 				}
+			}
+			try {
+				var process = new Subprocess.newv ({"rm", "%s/pamac_aur.db".printf (tmp_path), "%ssync".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
+			} catch (Error e) {
+				warning (e.message);
 			}
 			return success;
 		}
