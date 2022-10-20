@@ -146,6 +146,8 @@ internal class AlpmConfig {
 					Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %ssync/* %s/sync'".printf (dbpath, tmp_dbpath));
 					Process.spawn_command_line_sync ("ln -sf %slocal %s".printf (dbpath, tmp_dbpath));
 				}
+				// remove an existing pamac_aur.db file
+				Process.spawn_command_line_sync ("rm -f %s/sync/pamac_aur.db".printf (tmp_dbpath));
 				handle = new Alpm.Handle (rootdir, tmp_dbpath, out error);
 				if (error == Alpm.Errno.DB_VERSION) {
 					try {

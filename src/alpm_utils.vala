@@ -1047,6 +1047,8 @@ namespace Pamac {
 				if (file.query_exists ()) {
 					try {
 						Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/dbs/sync/* %ssync'".printf (tmp_path, alpm_config.dbpath));
+						// remove an existing pamac_aur.db file
+						Process.spawn_command_line_sync ("rm -f %ssync/pamac_aur.db".printf (alpm_config.dbpath));
 					} catch (SpawnError e) {
 						warning (e.message);
 					}

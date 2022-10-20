@@ -2345,8 +2345,13 @@ namespace Pamac {
 						try {
 							// touch the file
 							string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
-							Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
-							Process.spawn_command_line_sync ("chmod a+w %s".printf (timestamp_path));
+							var file = GLib.File.new_for_path (timestamp_path);
+							if (!file.query_exists ()) {
+								Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
+								Process.spawn_command_line_sync ("chmod a+w %s".printf (timestamp_path));
+							} else {
+								Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
+							}
 						} catch (SpawnError e) {
 							warning (e.message);
 						}

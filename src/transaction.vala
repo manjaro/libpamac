@@ -449,7 +449,11 @@ namespace Pamac {
 				cmdline.length = cmdline.length + 1;
 				int ret = yield launch_subprocess (cmdline.data);
 				if (ret == 0) {
-					Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_aurdb_path));
+					try {
+						Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_aurdb_path));
+					} catch (Error e) {
+						warning (e.message);
+					}
 				} else {
 					success = false;
 				}
@@ -1850,7 +1854,7 @@ namespace Pamac {
 					emit_error (dgettext (null, "Failed to build %s").printf (pkgname), new GenericArray<string> ());
 					to_build_queue.clear ();
 					try {
-						var process = new Subprocess.newv ({"rm", "%s/pamac_aur.db".printf (tmp_path), "%ssync".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
+						new Subprocess.newv ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path), "%ssync/pamac_aur.db".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
 					} catch (Error e) {
 						warning (e.message);
 					}
@@ -2015,7 +2019,7 @@ namespace Pamac {
 				}
 			}
 			try {
-				var process = new Subprocess.newv ({"rm", "%s/pamac_aur.db".printf (tmp_path), "%ssync".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
+				new Subprocess.newv ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path), "%ssync/pamac_aur.db".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
 			} catch (Error e) {
 				warning (e.message);
 			}
