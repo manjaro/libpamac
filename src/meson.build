@@ -3,7 +3,7 @@ gio = dependency('gio-2.0')
 gthread = dependency('gthread-2.0')
 libalpm = dependency('libalpm')
 json = dependency('json-glib-1.0')
-libsoup = dependency('libsoup-2.4')
+libsoup = dependency('libsoup-3.0')
 polkit = dependency('polkit-gobject-1')
 appstream = dependency('appstream-glib')
 
@@ -30,7 +30,7 @@ libpamac_sources = ['package.vala', 'alpm_package.vala',
 libpamac_dependencies = [alpm_deps, math, json, appstream, libsoup, gmodule]
 
 if get_option('enable-snap')
-	snapd = dependency('snapd-glib')
+	snapd = dependency('snapd-glib-2')
 
 	libpamac_snap = library('pamac-snap',
 		sources: ['snap_interface.vala', 'snap_plugin.vala', 'package.vala'],

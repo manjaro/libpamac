@@ -1073,7 +1073,7 @@ namespace Pamac {
 		public async InputStream get_url_stream (string url) throws Error {
 			try {
 				var message = new Soup.Message ("GET", url);
-				var inputstream = yield soup_session.send_async (message, null);
+				var inputstream = yield soup_session.send_async (message, Priority.DEFAULT, null);
 				return inputstream;
 			} catch (Error e) {
 				throw e;

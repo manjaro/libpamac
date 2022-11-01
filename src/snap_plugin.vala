@@ -603,7 +603,7 @@ namespace Pamac {
 		bool remove (string name) {
 			try {
 				main_action = dgettext (null, "Removing %s").printf (name);
-				client.remove_sync (name, progress_callback, cancellable);
+				client.remove2_sync (Snapd.RemoveFlags.NONE, name, progress_callback, cancellable);
 				return true;
 			} catch (Error e) {
 				if (!cancellable.is_cancelled ()) {

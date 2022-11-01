@@ -2756,8 +2756,7 @@ int dload (Pamac.AlpmUtils alpm_utils, string mirror, string filename, string lo
 					// start from scratch only download if our local is out of date.
 					FileInfo info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
 					DateTime time = info.get_modification_date_time ();
-					var date = new Soup.Date.from_string (time.to_string ());
-					message.request_headers.append ("If-Modified-Since", date.to_string (Soup.DateFormat.HTTP));
+					message.request_headers.append ("If-Modified-Since", Soup.date_time_to_string (time, Soup.DateFormat.HTTP));
 					if (tempfile.query_exists ()) {
 						tempfile.delete ();
 					}
@@ -2920,8 +2919,7 @@ int dload (Pamac.AlpmUtils alpm_utils, string mirror, string filename, string lo
 		tempfile.move (destfile, FileCopyFlags.OVERWRITE);
 		// set modification time
 		if (last_modified != null) {
-			string time_str = new Soup.Date.from_string (last_modified).to_string (Soup.DateFormat.ISO8601);
-			var datetime = new DateTime.from_iso8601 (time_str, new TimeZone.utc ());
+			var datetime = Soup.date_time_new_from_http_string (last_modified);
 			FileInfo info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
 			info.set_modification_date_time (datetime);
 			destfile.set_attributes_from_info (info, FileQueryInfoFlags.NONE);
