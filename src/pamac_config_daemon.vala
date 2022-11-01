@@ -334,6 +334,18 @@ namespace Pamac {
 								data.append (line);
 								data.append ("\n");
 							}
+						} else if (line.contains ("OfflineUpgrade")) {
+							if (new_conf.lookup_extended ("OfflineUpgrade", null, out variant)) {
+								if (variant.get_boolean ()) {
+									data.append ("OfflineUpgrade\n");
+								} else {
+									data.append ("#OfflineUpgrade\n");
+								}
+								new_conf.remove ("OfflineUpgrade");
+							} else {
+								data.append (line);
+								data.append ("\n");
+							}
 						} else if (line.contains ("MaxParallelDownloads")) {
 							if (new_conf.lookup_extended ("MaxParallelDownloads", null, out variant)) {
 								data.append ("MaxParallelDownloads = %llu\n".printf (variant.get_uint64 ()));
@@ -445,6 +457,12 @@ namespace Pamac {
 							data.append ("DownloadUpdates\n\n");
 						} else {
 							data.append ("#DownloadUpdates\n\n");
+						}
+					} else if (key == "OfflineUpgrade") {
+						if (val.get_boolean ()) {
+							data.append ("OfflineUpgrade\n\n");
+						} else {
+							data.append ("#OfflineUpgrade\n\n");
 						}
 					} else if (key == "MaxParallelDownloads") {
 						data.append ("MaxParallelDownloads = %llu\n\n".printf (val.get_uint64 ()));

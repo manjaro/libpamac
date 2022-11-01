@@ -24,6 +24,7 @@ namespace Pamac {
 		MainLoop loop;
 		bool _enable_aur;
 		bool _check_aur_updates;
+		bool _download_updates;
 
 		public string conf_path { get; construct; }
 		public bool recurse { get; set; }
@@ -63,7 +64,18 @@ namespace Pamac {
 			}
 		}
 		public bool check_aur_vcs_updates { get; set; }
-		public bool download_updates { get; set; }
+		public bool download_updates {
+			get {
+				return _download_updates;
+			}
+			set {
+				_download_updates = value;
+				if (!_download_updates) {
+					offline_upgrade = false;
+				}
+			}
+		}
+		public bool offline_upgrade { get; set; }
 		public uint64 max_parallel_downloads { get; set; }
 		public uint64 clean_keep_num_pkgs { get;  set; }
 		public bool clean_rm_only_uninstalled { get; set; }
@@ -243,6 +255,8 @@ namespace Pamac {
 							check_aur_vcs_updates = true;
 						} else if (key == "DownloadUpdates") {
 							download_updates = true;
+						} else if (key == "OfflineUpgrade") {
+							offline_upgrade = true;
 						} else if (key == "MaxParallelDownloads") {
 							if (splitted.length == 2) {
 								unowned string val = splitted[1]._strip ();
@@ -293,6 +307,7 @@ namespace Pamac {
 			new_pamac_conf.insert ("RefreshPeriod", new Variant.uint64 (refresh_period));
 			new_pamac_conf.insert ("NoUpdateHideIcon", new Variant.boolean (no_update_hide_icon));
 			new_pamac_conf.insert ("DownloadUpdates", new Variant.boolean (download_updates));
+			new_pamac_conf.insert ("OfflineUpgrade", new Variant.boolean (offline_upgrade));
 			new_pamac_conf.insert ("EnableDowngrade", new Variant.boolean (enable_downgrade));
 			new_pamac_conf.insert ("SimpleInstall", new Variant.boolean (simple_install));
 			new_pamac_conf.insert ("MaxParallelDownloads", new Variant.uint64 (max_parallel_downloads));
