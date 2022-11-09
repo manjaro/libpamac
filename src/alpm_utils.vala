@@ -513,10 +513,12 @@ namespace Pamac {
 			}
 			downloading_updates = false;
 			// enable offline upgrade
-			try {
-				Process.spawn_command_line_sync ("touch /system-update");
-			} catch (SpawnError e) {
-				warning (e.message);
+			if (config.offline_upgrade) {
+				try {
+					Process.spawn_command_line_sync ("touch /system-update");
+				} catch (SpawnError e) {
+					warning (e.message);
+				}
 			}
 			return success;
 		}

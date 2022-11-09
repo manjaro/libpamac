@@ -32,6 +32,7 @@ namespace Pamac {
 		public string aur_build_dir { get; set; }
 		public bool check_aur_updates { get; set; }
 		public bool check_aur_vcs_updates { get; set; }
+		public bool offline_upgrade { get; set; }
 		public uint64 max_parallel_downloads { get; set; }
 		public uint64 clean_keep_num_pkgs { get;  set; }
 		public bool clean_rm_only_uninstalled { get; set; }
@@ -68,6 +69,7 @@ namespace Pamac {
 			aur_build_dir = "/var/tmp";
 			max_parallel_downloads = 1;
 			parse_file (conf_path);
+			offline_upgrade = false;
 			// limited max_parallel_downloads
 			if (max_parallel_downloads > 10) {
 				max_parallel_downloads = 10;
@@ -123,6 +125,8 @@ namespace Pamac {
 							enable_snap = true;
 						} else if (key == "EnableFlatpak") {
 							enable_flatpak = true;
+						} else if (key == "OfflineUpgrade") {
+							offline_upgrade = true;
 						} else if (key == "MaxParallelDownloads") {
 							if (splitted.length == 2) {
 								unowned string val = splitted[1]._strip ();

@@ -337,6 +337,19 @@ namespace Pamac {
 							warning (e.message);
 						}
 					}
+					if (config.offline_upgrade) {
+						try {
+							Process.spawn_command_line_async ("systemctl enable pamac-offline-upgrade.service");
+						} catch (SpawnError e) {
+							warning (e.message);
+						}
+					} else {
+						try {
+							Process.spawn_command_line_async ("systemctl disable pamac-offline-upgrade.service");
+						} catch (SpawnError e) {
+							warning (e.message);
+						}
+					}
 				}
 				write_pamac_config_finished (sender);
 			});
