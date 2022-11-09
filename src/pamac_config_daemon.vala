@@ -68,8 +68,8 @@ namespace Pamac {
 			enable_flatpak = false;
 			aur_build_dir = "/var/tmp";
 			max_parallel_downloads = 1;
-			parse_file (conf_path);
 			offline_upgrade = false;
+			parse_file (conf_path);
 			// limited max_parallel_downloads
 			if (max_parallel_downloads > 10) {
 				max_parallel_downloads = 10;
