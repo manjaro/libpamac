@@ -2052,6 +2052,14 @@ namespace Pamac {
 				if (reboot_needed) {
 					do_emit_warning (dgettext (null, "A restart is required for the changes to take effect") + ".");
 				}
+				if (sysupgrade) {
+					// removing a potential /system-update file
+					try {
+						Process.spawn_command_line_sync ("rm -f /system-update");
+					} catch (SpawnError e) {
+						warning (e.message);
+					}
+				}
 			} else if (need_retry) {
 				// retry
 				if (commit_retries < 1) {
