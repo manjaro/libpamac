@@ -44,6 +44,7 @@ namespace Pamac {
 		internal size_t dbs_index { get; set; }
 
 		public signal void get_updates_progress (uint percent);
+		public signal void emit_warning (string message);
 
 		public Database (Config config) {
 			Object (config: config);
@@ -2339,7 +2340,11 @@ namespace Pamac {
 						string dbs_lock_path = "/var/tmp/pamac/dbs/db.lck";
 						var file = GLib.File.new_for_path (dbs_lock_path);
 						if (file.query_exists ()) {
-							Process.spawn_command_line_sync ("rm -f %s".printf (dbs_lock_path));
+							try {
+								Process.spawn_command_line_sync ("rm -f %s".printf (dbs_lock_path));
+							} catch (SpawnError e) {
+								warning (e.message);
+							}
 						}
 					}
 					if (config.check_aur_updates) {
@@ -2360,6 +2365,11 @@ namespace Pamac {
 						} catch (SpawnError e) {
 							warning (e.message);
 						}
+					} else {
+						context.invoke (() => {
+							emit_warning (dgettext (null, "Failed to synchronize databases"));
+							return false;
+						});
 					}
 				} else {
 					// refresh step skipped

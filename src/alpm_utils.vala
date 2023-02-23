@@ -383,7 +383,11 @@ namespace Pamac {
 				if (err_no != 0) {
 					if (err_no == Alpm.Errno.HANDLE_LOCK) {
 						// remove remaining lock in tmp dbs cache
-						Process.spawn_command_line_sync ("rm -f %s/dbs/db.lck".printf (tmp_path));
+						try {
+							Process.spawn_command_line_sync ("rm -f %s/dbs/db.lck".printf (tmp_path));
+						} catch (SpawnError e) {
+							warning (e.message);
+						}
 					}
 					// download error details are set in cb_fetch
 					if (err_no != Alpm.Errno.EXTERNAL_DOWNLOAD) {
