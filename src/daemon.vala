@@ -427,7 +427,7 @@ namespace Pamac {
 						// cancel download updates
 						alpm_utils.cancellable.cancel ();
 					}
-					bool success = wait_for_lock (sender, cancellable);
+					bool success = wait_for_lock (sender, cancellable, true);
 					if (success) {
 						success = alpm_utils.download_updates (sender);
 						lockfile_mutex.unlock ();

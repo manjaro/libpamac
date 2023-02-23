@@ -2336,6 +2336,11 @@ namespace Pamac {
 					tmp_handle.set_dlcb (cb_dl, this);
 					if (tmp_handle.update_dbs (syncdbs, 0) < 0) {
 						success = false;
+						string dbs_lock_path = "/var/tmp/pamac/dbs/db.lck";
+						var file = GLib.File.new_for_path (dbs_lock_path);
+						if (file.query_exists ()) {
+							Process.spawn_command_line_sync ("rm -f %s".printf (dbs_lock_path));
+						}
 					}
 					if (config.check_aur_updates) {
 						success = aur.update_db (false, false);
