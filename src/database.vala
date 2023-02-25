@@ -997,18 +997,19 @@ namespace Pamac {
 			string app_id_short;
 			string app_id_long;
 			if (app_id.has_suffix (".desktop")) {
-				app_id_long = app_id;
-				app_id_short = app_id.replace (".desktop", "");
+				app_id_long = app_id.down();
+				app_id_short = app_id.replace (".desktop", "").down();
 			} else {
-				app_id_short = app_id;
-				app_id_long = app_id + ".desktop";
+				app_id_short = app_id.down();
+				app_id_long = app_id + ".desktop".down();
 			}
 			unowned Package? pkg = null;
 			lock (alpm_config) {
 				if (appstream_enabled) {
 					unowned GenericArray<As.App> apps = app_store.get_apps ();
 					foreach (unowned As.App app in apps) {
-						if (app.get_id () == app_id_short || app.get_id () == app_id_long || get_app_launchable (app) == app_id_long) {
+						string app_id_down = app.get_id ().down();
+						if (app_id_down == app_id_short || app_id_down == app_id_long || get_app_launchable (app) == app_id_long) {
 							unowned string pkgname = app.get_pkgname_default ();
 							string id = "%s/%s".printf (pkgname, app.get_name (null));
 							pkg = pkgs_cache.lookup (id);
