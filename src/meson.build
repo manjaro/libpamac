@@ -37,7 +37,7 @@ if get_option('enable-snap')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, snapd, gmodule],
-		version: '11.4',
+		version: '11.5',
 		install: true,
 		install_dir: [true, true, true])
 
@@ -52,7 +52,7 @@ if get_option('enable-flatpak')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, flatpak, appstream, gmodule],
-		version: '11.4',
+		version: '11.5',
 		install: true,
 		install_dir: [true, true, true])
 
@@ -64,7 +64,7 @@ libpamac = library('pamac',
 	dependencies: libpamac_dependencies,
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
-	version: '11.4',
+	version: '11.5',
 	vala_gir: 'Pamac-11.gir',
 	install: true,
 	install_dir: [true, true, true, true])
