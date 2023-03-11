@@ -1,20 +1,20 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Alexander B <beliy@yandex.ru>, 2017,2019
-# Alexander Filёv, 2015
+# AlexanderFilev, 2015
 # Alexey Ermakov, 2018
-# Andrei Stepanov, 2019-2022
+# Andrei Stepanov, 2019-2023
 # Victor Kukshiev <andrey0bolkonsky@gmail.com>, 2013
 # Daniil <rostovslipknot@gmail.com>, 2013
 # Eugene <klyuchnikov.evgeny@gmail.com>, 2018
 # Анатолий Валерианович <ffox909@mail.ru>, 2014
 # Paulo Fino <finomeno@gmail.com>, 2014
 # Анатолий Валерианович <ffox909@mail.ru>, 2014
-# Alexander Filёv, 2015
+# AlexanderFilev, 2015
 # Artalus, 2018
 # Kirill Virt <spakes1999@gmail.com>, 2018
 # Eugene <klyuchnikov.evgeny@gmail.com>, 2018-2019
@@ -42,9 +42,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Andrei Stepanov, 2019-2022\n"
+"Last-Translator: Andrei Stepanov, 2019-2023\n"
 "Language-Team: Russian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -411,13 +411,13 @@ msgid "Nothing to do"
 msgstr "Нет заданий"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Не удалось синхронизировать базу данных AUR"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: пропуск обновления пакета (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Не удалось синхронизировать базу данных AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -622,10 +622,10 @@ msgstr "Snap"
 #, c-format
 msgid "%u pending operation"
 msgid_plural "%u pending operations"
-msgstr[0] "%u ждёт обработки"
-msgstr[1] "%u ждут обработки"
-msgstr[2] "%u ждут обработки"
-msgstr[3] "%u ждут обработки"
+msgstr[0] "%u ожидает обработки"
+msgstr[1] "%u ожидают обработки"
+msgstr[2] "%u ожидают обработки"
+msgstr[3] "%u ожидают обработки"
 
 #: src/manager_window.vala
 msgid "Pending"
@@ -1260,6 +1260,10 @@ msgid "force the refresh of the databases"
 msgstr "принудительное обновление баз данных"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "не обновлять базы данных"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "разрешить понижение версий пакетов"
 
@@ -1474,7 +1478,7 @@ msgstr "Пропустить все"
 
 #: resources/manager_window.ui
 msgid "Sort by"
-msgstr "Сортировать по"
+msgstr "Сортировка"
 
 #: resources/manager_window.ui
 msgid "Relevance"
@@ -1549,6 +1553,10 @@ msgid "Automatically download updates"
 msgstr "Автоматически скачивать обновления"
 
 #: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Обновлять систему при выключении"
+
+#: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
 msgstr "Скрыть значок при отсутствии обновлений"
 
@@ -1558,7 +1566,7 @@ msgstr "Загрузки"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr "Параллельные загрузки"
+msgstr "Одновременные загрузки"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
@@ -1574,7 +1582,7 @@ msgstr "Кэш"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr "Сохранять предыдущие версии пакетов в количестве"
+msgstr "Число сохраняемых предыдущих версий пакетов"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
@@ -1622,7 +1630,7 @@ msgstr "Сторонние"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AUR — это поддерживаемый сообществом репозиторий, представляющий потенциальные риски и проблемы.\nВсе пользователи AUR должны быть знакомы с процессом сборки."
+msgstr "AUR — это репозиторий, поддерживаемый сообществом и представляющий возможные риски и проблемы.\nВсе пользователи AUR должны быть знакомы с процессом сборки."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

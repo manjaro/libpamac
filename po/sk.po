@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -7,7 +7,7 @@
 # Dušan Kazik, 2014
 # Dušan Kazik <prescott66@gmail.com>, 2014-2022
 # Inoki Sakaeru, 2013
-# Jozef Gaal <preklady@mayday.sk>, 2020
+# Jozef Gaal <preklady@mayday.sk>, 2020,2022
 # Miroslav Ďurian, 2018
 # Patrik Bubák, 2014
 # 5f8d388310b9a9304f619fae7149ed59_153be44, 2014
@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>, 2014-2022\n"
 "Language-Team: Slovak (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
@@ -78,7 +78,7 @@ msgstr "Upozornenie"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "inštaláciou balíka %1$s (%2$s) sa poruší závislosť „%3$s“ požadovaná balíkom %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -93,7 +93,7 @@ msgstr "ak je to možné, odstráňte %s a skúste to znovu"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "odstránením balíka %1$s sa poruší závislosť „%2$s“ požadovaná balíkom %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -125,7 +125,7 @@ msgstr "Transakcia bola zrušená"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s existuje v oboch %2$s a %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -251,12 +251,12 @@ msgstr "Preberajú sa požadované kľúče"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s nainštalované ako %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s nainštalované ako %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -385,13 +385,13 @@ msgid "Nothing to do"
 msgstr "Nič na vykonanie"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr ""
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: ignoruje sa aktualizácia balíka (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Nepodarilo sa synchronizovať databázu AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -544,7 +544,7 @@ msgstr "Sú dostupné aktualizácie"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Váš systém je aktuálny"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -699,7 +699,7 @@ msgstr "Dátum inštalácie"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "Schválil"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -1095,7 +1095,7 @@ msgstr "prepísať existujúce súbory"
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
-msgstr ""
+msgstr "Ak nie je zadaný názov balíka, použije sa súbor PKGBUILD v aktuálnom adresári"
 
 #: src/cli.vala
 msgid ""
@@ -1109,11 +1109,11 @@ msgstr ""
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
-msgstr ""
+msgstr "po inštalácii uchovávať zostavené balíky v medzipamäti"
 
 #: src/cli.vala
 msgid "do not keep built packages in cache after installation"
-msgstr ""
+msgstr "po inštalácii neuchovávať zostavené balíky v medzipamäti"
 
 #: src/cli.vala
 msgid "only print what would be done but do not run the transaction"
@@ -1153,7 +1153,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
-msgstr ""
+msgstr "označiť všetky výlučne nainštalované balíky"
 
 #: src/cli.vala
 msgid "check for updates"
@@ -1175,7 +1175,7 @@ msgstr ""
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "odstrániť všetky cieľové balíky, ako aj všetky balíky, ktoré závisia od jedného alebo viacerých cieľových balíkov"
 
 #: src/cli.vala
 msgid ""
@@ -1185,7 +1185,7 @@ msgstr "odstrániť závislosti, ktoré nie sú vyžadované inými balíkmi. Ak
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
-msgstr ""
+msgstr "neodstraňovať závislosti, ktoré nie sú vyžadované inými balíkmi"
 
 #: src/cli.vala
 msgid "ignore files backup"
@@ -1211,7 +1211,7 @@ msgstr "skontrolovať aj aktualizácie v AUR"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr ""
+msgstr "nekontrolovať aktualizácie v AUR"
 
 #: src/cli.vala
 msgid "only print one line per update"
@@ -1223,7 +1223,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr ""
+msgstr "nekontrolovať aktualizácie vývojových balíkov"
 
 #: src/cli.vala
 msgid "Upgrade your system"
@@ -1232,6 +1232,10 @@ msgstr "Povýšiť Váš systém"
 #: src/cli.vala
 msgid "force the refresh of the databases"
 msgstr "vynútiť obnovenie databáz"
+
+#: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "neobnovovať databázy"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1247,15 +1251,15 @@ msgstr "povýšiť aj balíky, ktoré boli nainštalované z AUR"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr ""
+msgstr "neaktualizovať balíky nainštalované z AUR"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
-msgstr ""
+msgstr "aktualizovať aj vývojové balíky (použite s --aur)"
 
 #: src/cli.vala
 msgid "do not upgrade development packages"
-msgstr ""
+msgstr "neaktualizovať vývojové balíky"
 
 #: src/cli.vala
 msgid ""
@@ -1265,11 +1269,11 @@ msgstr "zostaviť priečinok (použi s --aur), ak nebol zadaný priečinok, pou�
 
 #: src/cli.vala
 msgid "Clean packages cache or build files"
-msgstr ""
+msgstr "Vyčistiť vyrovnávaciu pamäť balíkov alebo súborov na zostavenie"
 
 #: src/cli.vala
 msgid "number"
-msgstr ""
+msgstr "číslo"
 
 #: src/cli.vala
 msgid ""
@@ -1292,7 +1296,7 @@ msgstr ""
 
 #: src/cli.vala
 msgid "also display all files names"
-msgstr ""
+msgstr "zobraziť tiež všetky názvy súborov"
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
@@ -1375,12 +1379,12 @@ msgstr "všetko"
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr ""
+msgstr "Pridať %s na preinštalovanie"
 
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "Inštalovať %1$s z %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1521,6 +1525,10 @@ msgstr "Interval kontroly aktualizácií"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Automaticky prevziať aktualizácie"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

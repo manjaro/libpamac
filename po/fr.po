@@ -1,16 +1,16 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # A beaver, 2021
-# Charles Monzat <c.monzat@laposte.net>, 2018-2021
+# Charles Monzat <c.monzat@laposte.net>, 2018-2022
 # Charles Monzat <c.monzat@laposte.net>, 2015-2018
 # Charles Monzat <c.monzat@laposte.net>, 2018
 # DasFranck <franck97comics@gmail.com>, 2013
 # DasFranck <franck97comics@gmail.com>, 2013
-# Guillaume Benoit <guillaume@manjaro.org>, 2013-2022
+# Guillaume Benoit <guillaume@manjaro.org>, 2013-2023
 # Jean Delmas, 2015
 # jdelmas, 2015
 # philm <philm@manjaro.org>, 2013
@@ -25,15 +25,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>, 2013-2022\n"
+"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>, 2013-2023\n"
 "Language-Team: French (http://www.transifex.com/manjarolinux/manjaro-pamac/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
@@ -77,7 +77,7 @@ msgstr "le paquet %s n’a pas d’architecture valide"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr "impossible de satisfaire la dépendance « %1$s » requise par %2$s"
+msgstr "impossible de satisfaire la dépendance « %1$s » requise par %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -87,7 +87,7 @@ msgstr "Avertissement "
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr "l’installation de %1$s (%2$s) casse la dépendance « %3$s » requise par %4$s"
+msgstr "l’installation de %1$s (%2$s) casse la dépendance « %3$s » requise par %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -102,7 +102,7 @@ msgstr "si possible, supprimer %s et réessayer"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr "la suppression de %1$s casse la dépendance « %2$s » requise par %3$s"
+msgstr "la suppression de %1$s casse la dépendance « %2$s » requise par %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -144,7 +144,7 @@ msgstr "%1$s : %2$s existe déjà dans le système de fichiers (appartient à %
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr "%1$s : %2$s existe déjà dans le système de fichiers"
+msgstr "%1$s : %2$s existe déjà dans le système de fichiers"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -285,6 +285,7 @@ msgid "About %lu second remaining"
 msgid_plural "About %lu seconds remaining"
 msgstr[0] "Environ %lu seconde restante"
 msgstr[1] "Environ %lu secondes restantes"
+msgstr[2] "Environ %lu secondes restantes"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -292,6 +293,7 @@ msgid "About %lu minute remaining"
 msgid_plural "About %lu minutes remaining"
 msgstr[0] "Environ %lu minute restante"
 msgstr[1] "Environ %lu minutes restantes"
+msgstr[2] "Environ %lu minutes restantes"
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
@@ -390,13 +392,13 @@ msgid "Nothing to do"
 msgstr "Rien à faire"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Échec de la synchronisation de la base de données AUR"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr "%1$s  : mise à niveau du paquet ignorée (%2$s => %3$s)"
+msgstr "%1$s : mise à niveau du paquet ignorée (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Échec de la synchronisation de la base de données AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -561,6 +563,7 @@ msgid "%u available update"
 msgid_plural "%u available updates"
 msgstr[0] "%u mise à jour disponible "
 msgstr[1] "%u mises à jour disponibles "
+msgstr[2] "%u mises à jour disponibles "
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
@@ -601,6 +604,7 @@ msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u opération en attente"
 msgstr[1] "%u opérations en attente"
+msgstr[2] "%u opérations en attente"
 
 #: src/manager_window.vala
 msgid "Pending"
@@ -612,7 +616,7 @@ msgstr "Tout"
 
 #: src/manager_window.vala
 msgid "Explicitly installed"
-msgstr "Explicitement installé"
+msgstr "Explicitement installés"
 
 #: src/manager_window.vala
 msgid "Orphans"
@@ -700,7 +704,7 @@ msgstr "Installé le "
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr "Validé par"
+msgstr "Validé par "
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -861,6 +865,7 @@ msgid "%u file"
 msgid_plural "%u files"
 msgstr[0] "%u fichier"
 msgstr[1] "%u fichiers"
+msgstr[2] "%u fichiers"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
@@ -942,11 +947,11 @@ msgstr "À désinstaller "
 
 #: src/transaction-cli.vala
 msgid "Total installed size"
-msgstr "Taille totale installée"
+msgstr "Taille totale installée "
 
 #: src/transaction-cli.vala
 msgid "Total removed size"
-msgstr "Taille totale libérée"
+msgstr "Taille totale libérée "
 
 #: src/transaction-cli.vala
 #, c-format
@@ -1174,7 +1179,7 @@ msgstr "supprimer les paquets uniquement s’ils ne sont requis par aucun autre 
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr "supprimer tous les packages cibles, ainsi que tous les packages qui dépendent d'un ou plusieurs packages cibles"
+msgstr "supprimer tous les paquets cibles, ainsi que tous les paquets qui dépendent d’un ou plusieurs paquets cibles"
 
 #: src/cli.vala
 msgid ""
@@ -1230,7 +1235,11 @@ msgstr "Mettre à jour le système"
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
-msgstr "forcer le rafraîchissement des bases de données"
+msgstr "forcer l’actualisation des bases de données"
+
+#: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "ne pas actualiser les bases de données"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1329,6 +1338,7 @@ msgid "%u ignored update"
 msgid_plural "%u ignored updates"
 msgstr[0] "%u mise à jour ignorée"
 msgstr[1] "%u mises à jour ignorées"
+msgstr[2] "%u mises à jour ignorées"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
@@ -1362,6 +1372,7 @@ msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Il y a %1$u paquet dans le groupe %2$s"
 msgstr[1] "Il y a %1$u paquets dans le groupe %2$s"
+msgstr[2] "Il y a %1$u paquets dans le groupe %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1516,6 +1527,10 @@ msgstr "Fréquence de vérification des mises à jour"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Télécharger automatiquement les mises à jour"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Installer les mises à jour lors de l'arrêt du système"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

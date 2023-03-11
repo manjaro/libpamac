@@ -1,10 +1,10 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# Zkdc, 2020
+# Zkdc, 2020,2022
 # 11f4f694e402d57b7e0189d84859c97d_a26fb2a <e870bc520042eebcf806116686ce2037_757335>, 2018
 # CaoMu <icaomu@gmail.com>, 2018
 # Daetalus <daetalusun@gmail.com>, 2014
@@ -30,9 +30,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: taotieren <admin@taotieren.com>, 2019-2022\n"
+"Last-Translator: Zkdc, 2020,2022\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -393,13 +393,13 @@ msgid "Nothing to do"
 msgstr "无事可做"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "AUR 資料庫同步失敗"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s：忽略软件包升级（%2$s => %3$s）"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "AUR 数据库同步失败"
 
 #: src/transaction.vala
 #, c-format
@@ -552,7 +552,7 @@ msgstr "更新可用"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr "您的系統已為最新"
+msgstr "系统为最新状态"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -1233,6 +1233,10 @@ msgid "force the refresh of the databases"
 msgstr "强制更新数据库"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "不刷新数据库"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "允许包降级"
 
@@ -1514,6 +1518,10 @@ msgstr "检查更新频率"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "自动下载更新"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

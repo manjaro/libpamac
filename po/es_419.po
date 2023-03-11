@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: Wilmar Martinez <wilmar.alberto.martinez@gmail.com>, 2020\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es_419/)\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_419\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
@@ -279,6 +279,7 @@ msgid "About %lu second remaining"
 msgid_plural "About %lu seconds remaining"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -286,6 +287,7 @@ msgid "About %lu minute remaining"
 msgid_plural "About %lu minutes remaining"
 msgstr[0] "Aproximadamente %lu minuto restante"
 msgstr[1] "Aproximadamente %lu minutos restantes"
+msgstr[2] "Aproximadamente %lu minutos restantes"
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
@@ -384,13 +386,13 @@ msgid "Nothing to do"
 msgstr "Nada que hacer"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Fallo al sincronizar la base de datos AUR"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: ignorando actualización del paquete (%2$s=>%3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Fallo al sincronizar la base de datos AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -555,6 +557,7 @@ msgid "%u available update"
 msgid_plural "%u available updates"
 msgstr[0] "%u actualización disponible"
 msgstr[1] "%u actualizaciones disponibles"
+msgstr[2] "%u actualizaciones disponibles"
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
@@ -595,6 +598,7 @@ msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u operación pendiente"
 msgstr[1] "%u operaciones pendientes"
+msgstr[2] "%u operaciones pendientes"
 
 #: src/manager_window.vala
 msgid "Pending"
@@ -855,6 +859,7 @@ msgid "%u file"
 msgid_plural "%u files"
 msgstr[0] "%uarchivo"
 msgstr[1] "%uarchivos"
+msgstr[2] "%uarchivos"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
@@ -1227,6 +1232,10 @@ msgid "force the refresh of the databases"
 msgstr "Forzar el refrescar de la base de datos"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "No refrescar bases de datos"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "Habilitar degradar paquetes"
 
@@ -1323,6 +1332,7 @@ msgid "%u ignored update"
 msgid_plural "%u ignored updates"
 msgstr[0] "%u actualización ignorada"
 msgstr[1] "%u actualizaciones ignoradas"
+msgstr[2] "%u actualizaciones ignoradas"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
@@ -1356,6 +1366,7 @@ msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/cli.vala
 msgid "all"
@@ -1510,6 +1521,10 @@ msgstr "Frecuencia de comprobación de actualizaciones"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Descargar actualizaciones automáticamente"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Actualizar sistema al apagar"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

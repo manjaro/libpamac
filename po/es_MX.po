@@ -1,10 +1,10 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# Amigo, 2022
+# Amigo, 2022-2023
 # Guillaume Benoit <guillaume@manjaro.org>, 2019
 # José Castro <jlcastrogro@gmail.com>, 2018
 # José Castro <jlcastrogro@gmail.com>, 2018
@@ -14,15 +14,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Amigo, 2022\n"
+"Last-Translator: Amigo, 2022-2023\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es_MX\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
@@ -274,6 +274,7 @@ msgid "About %lu second remaining"
 msgid_plural "About %lu seconds remaining"
 msgstr[0] "Queda alrededor de %lu segundo restante"
 msgstr[1] "Quedan alrededor de %lu segundos restantes"
+msgstr[2] "Quedan alrededor de %lu segundos restantes"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -281,6 +282,7 @@ msgid "About %lu minute remaining"
 msgid_plural "About %lu minutes remaining"
 msgstr[0] "Queda alrededor de %lu minuto restante"
 msgstr[1] "Quedan alrededor de %lu minutos restantes"
+msgstr[2] "Quedan alrededor de %lu minutos restantes"
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
@@ -379,13 +381,13 @@ msgid "Nothing to do"
 msgstr "Nada que hacer"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Fallo al sincronizar la base de datos del AUR"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: ignorando actualización del paquete (%2$s=>%3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Fallo al sincronizar la base de datos del AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -550,6 +552,7 @@ msgid "%u available update"
 msgid_plural "%u available updates"
 msgstr[0] "%u actualización disponible"
 msgstr[1] "%u actualizaciones disponibles"
+msgstr[2] "%u actualizaciones disponibles"
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
@@ -590,6 +593,7 @@ msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u operación pendiente"
 msgstr[1] "%u operaciones pendientes"
+msgstr[2] "%u operaciones pendientes"
 
 #: src/manager_window.vala
 msgid "Pending"
@@ -850,6 +854,7 @@ msgid "%u file"
 msgid_plural "%u files"
 msgstr[0] "%u archivo"
 msgstr[1] "%u archivos"
+msgstr[2] "%u archivos"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
@@ -1219,7 +1224,11 @@ msgstr "Actualice su sistema"
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
-msgstr "Forzar el refresco de las bases de datos"
+msgstr "Forzar refresco de bases de datos"
+
+#: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "No refrescar bases de datos"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1318,6 +1327,7 @@ msgid "%u ignored update"
 msgid_plural "%u ignored updates"
 msgstr[0] "%u actualización ignorada"
 msgstr[1] "%u actualizaciones ignoradas"
+msgstr[2] "%u actualizaciones ignoradas"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
@@ -1351,6 +1361,7 @@ msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Hay %1$u miembro en el grupo %2$s"
 msgstr[1] "Hay %1$u miembros en el grupo %2$s"
+msgstr[2] "Hay %1$u miembros en el grupo %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1505,6 +1516,10 @@ msgstr "Frecuencia de verificación de actualizaciones"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Descargar actualizaciones automáticamente"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Actualizar sistema al apagar"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

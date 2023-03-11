@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/gl_ES/)\n"
@@ -373,13 +373,13 @@ msgid "Nothing to do"
 msgstr "Nada que facer"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr ""
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: ignorando a actualización do paquete (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
 
 #: src/transaction.vala
 #, c-format
@@ -1216,6 +1216,10 @@ msgid "force the refresh of the databases"
 msgstr "forzar a actualización das bases de datos"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr ""
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "permite degradar paquetes"
 
@@ -1499,6 +1503,10 @@ msgstr "Frecuencia da comprobación de actualizacións"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Baixar actualizacións automáticamente"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

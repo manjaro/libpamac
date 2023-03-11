@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Slovenian (Slovenia) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sl_SI/)\n"
@@ -60,7 +60,7 @@ msgstr "paket %s ni ustrezno zasnovan"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "ni mogoče zadostiti odvisnosti '%1$s', ki jo zahteva %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -70,7 +70,7 @@ msgstr "Opozorilo"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "namestitev %1$s (%2$s) prekine odvisnost '%3$s', ki jo zahteva %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -85,12 +85,12 @@ msgstr "Če je to mogoče, odstranite %s in poskusite znova"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "odstranitev %1$s prekine odvisnost '%2$s', ki jo zahteva %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s in %2$s sta v sporu"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -117,17 +117,17 @@ msgstr "Prenos je bil preklican"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s obstaja tako v %2$s kot v %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s že obstaja v datotečnem sistemu (lastnik je %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s že obstaja v datotečnem sistemu"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -225,7 +225,7 @@ msgstr "Preverjanje razpoložljivega prostora"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s opcijsko zahteva %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -243,12 +243,12 @@ msgstr "Prenašanje potrebnih ključev"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s nameščen kot %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s nameščen kot %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -377,13 +377,13 @@ msgid "Nothing to do"
 msgstr "Ni opravil"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr ""
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: preziram nadgradnjo paketa (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Sinhronizacija podatkovne zbirke AUR je spodletela"
 
 #: src/transaction.vala
 #, c-format
@@ -423,7 +423,7 @@ msgstr "_Prekliči"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "Ključ PGP %1$s je potreben za overitev %2$s izvornih datotek"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -536,7 +536,7 @@ msgstr "Na voljo so posodobitve"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Vaš sistem je posodobljen"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -623,7 +623,7 @@ msgstr "Prezrto"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "Brez"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -691,7 +691,7 @@ msgstr "Datum namestitve"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "Overitelj"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -948,7 +948,7 @@ msgstr "Prikaži razliko za %s izgradnih datotek"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "Gradnja paketov kot dinamični uporabnik"
 
 #: src/cli.vala
 #, c-format
@@ -1167,7 +1167,7 @@ msgstr "odstrani pakete le v primeru, da jih ne potrebuje katerikoli drugi paket
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "odstrani vse tarčne pakete ter vse pakete, ki so odvisni od enega ali več tarčnih paketov"
 
 #: src/cli.vala
 msgid ""
@@ -1224,6 +1224,10 @@ msgstr "Nadgraditev sistema"
 #: src/cli.vala
 msgid "force the refresh of the databases"
 msgstr "prisilna osvežitev baz podatkov"
+
+#: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "ne osveži podatkovnih zbirk"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1372,7 +1376,7 @@ msgstr "Dodaj %s za ponovno namestitev"
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "Namesti %1$s iz %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1513,6 +1517,10 @@ msgstr "Pogostost preverjanja nadgradenj"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Samodejno prenesi posodobitve"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: Thadah D. Denyse <juchuf@gmail.com>, 2020-2022\n"
 "Language-Team: Basque (http://www.transifex.com/manjarolinux/manjaro-pamac/language/eu/)\n"
@@ -383,13 +383,13 @@ msgid "Nothing to do"
 msgstr "Ezer ez egiteko"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Ezin izan da AUR datu-basea sinkronizatu"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: paketearen bertsio-berritzea ezikusten (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Ezin izan da AUR datu-basea sinkronizatu"
 
 #: src/transaction.vala
 #, c-format
@@ -1226,6 +1226,10 @@ msgid "force the refresh of the databases"
 msgstr "behartu datu-baseen freskatzea"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "ez freskatu datu-baseak"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "gaitu paketeen bertsio zaharragoak"
 
@@ -1509,6 +1513,10 @@ msgstr "Eguneraketen egiaztatze maiztasuna"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Deskargatu eguneraketak automatikoki"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

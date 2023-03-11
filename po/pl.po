@@ -1,13 +1,13 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Adrian Grzemski <adrian.grzemski@gmail.com>, 2017
 # Aleksander Krzys <alekspierwszy.ap@gmail.com>, 2021
-# B.O.S.S <blazejsadowski2004@gmail.com>, 2020
-# cooky, 2022
+# B.O.S.S, 2020
+# cooky, 2022-2023
 # Daniel Napora <napcok@gmail.com>, 2016-2020
 # Dominik “Devhost97” G <devhost97@gmail.com>, 2016
 # FadeMind <fademind@gmail.com>, 2013
@@ -33,9 +33,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: cooky, 2022\n"
+"Last-Translator: cooky, 2022-2023\n"
 "Language-Team: Polish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -402,13 +402,13 @@ msgid "Nothing to do"
 msgstr "Nie ma nic do zrobienia"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Synchronizacja bazy danych AUR nie powiodła się"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: ignorowanie aktualizacji pakietu (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Synchronizacja bazy danych AUR nie powiodła się"
 
 #: src/transaction.vala
 #, c-format
@@ -1251,6 +1251,10 @@ msgid "force the refresh of the databases"
 msgstr "wymuś odświeżenie bazy danych pakietów"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "nie odświeżaj baz danych"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "włącz obniżanie wersji pakietów"
 
@@ -1538,6 +1542,10 @@ msgstr "Częstotliwość sprawdzania aktualizacji"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Pobieraj aktualizacje automatycznie"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Zaktualizuj system podczas zamykania"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

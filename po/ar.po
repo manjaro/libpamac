@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -9,20 +9,22 @@
 # hamza rydhwan <rydhwan21@gmail.com>, 2016
 # hamza rydhwan <rydhwan21@gmail.com>, 2016
 # HishamAHai <hisham.ahai@gmail.com>, 2020
+# HishamAHai <hisham.ahai@gmail.com>, 2022
 # Kareem Abduljaleel <karemjaleel34@gmail.com>, 2021
 # كريم أولاد الشلحة <herr.linux88@gmail.com>, 2013-2014
 # Mohamed Shahin <mohamedali180@gmail.com>, 2016
 # mohammadA <mohammadAbdulhadi1@gmail.com>, 2018
 # mtaiba <taiba_mohamed@hotmail.com>, 2018
 # philm <philm@manjaro.org>, 2015
+# لُؤَيّْ Loaï, 2023
 # MohamedAmin Samet <mohamedamin.samet@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Kareem Abduljaleel <karemjaleel34@gmail.com>, 2021\n"
+"Last-Translator: لُؤَيّْ Loaï, 2023\n"
 "Language-Team: Arabic (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,15 +34,15 @@ msgstr ""
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
-msgstr "تنصيب , تحديث , أو إزالة حزم"
+msgstr "تنصيب, تحديث, أو إزالة حزم"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
-msgstr "الاثبات مطلوب للتنصيب , التحديث , أو حذف الحزم"
+msgstr "الاستيثاق مطلوب للتنصيب، التحديث، أو حذف الحزم"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
-msgstr "فشل تهيئة  مكتبة alpm"
+msgstr "فشل تهيئة مكتبة alpm"
 
 #: src/alpm_utils.vala
 msgid "Synchronizing package databases"
@@ -67,12 +69,12 @@ msgstr "المستهدف لم يتم العثور عليه: %s"
 #: src/alpm_utils.vala
 #, c-format
 msgid "package %s does not have a valid architecture"
-msgstr "الحزمة %s  ليس لها بنية صالحة"
+msgstr "الحزمة %s  ليس لها معمارية صالحة"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "غير قادر على الحصول على البرنامج ذو الصلة '%1$s' المطلوب من %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -82,7 +84,7 @@ msgstr "تحذير"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "تثبيت %1$s (%2$s) يكسر اعتماديات '%3$s' المطلوبة من %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -97,12 +99,12 @@ msgstr "إذا كان ممكناً، احذف %s و حاول من جديد"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "حذف %1$sيكسر اعتماديات '%2$s' المطلوبة من %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s و %2$s متعارضان"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -116,7 +118,7 @@ msgstr "فشل تهيئة قاعدة بيانات AUR"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s from target list"
-msgstr "جاري حذف %s من قائمة الهدف"
+msgstr "جار حذف %s من قائمة الهدف"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
@@ -129,17 +131,17 @@ msgstr "ألغيت المعاملة"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s موجود في كلٍّ من %2$s و %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s موجود بالفعل في نظام الملفات (المملوك من %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s  موجود بالفعل في نظام الملفات"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -148,7 +150,7 @@ msgstr "إذا كان هذا الملف غير ضرورياً، قم بحذفه 
 #: src/alpm_utils.vala
 #, c-format
 msgid "It has been backed up to %s"
-msgstr "تم انشاء نسخة احتياطية إلى %s"
+msgstr "تم إنشاء نسخة احتياطية إلى %s"
 
 #: src/alpm_utils.vala
 msgid "Removing invalid files and retrying"
@@ -169,7 +171,7 @@ msgstr "فشل الحصول على بعض الملفات"
 
 #: src/alpm_utils.vala
 msgid "Failed to commit transaction"
-msgstr "فشل لارتكاب الصفقة"
+msgstr "فشل تنفيذ المعاملة"
 
 #: src/alpm_utils.vala
 msgid "Checking dependencies"
@@ -237,7 +239,7 @@ msgstr "فحص مساحة القرص المتوفرة"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s اختياريا يتطلب %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -255,12 +257,12 @@ msgstr "تحميل حلقة المفاتيح المطلوبة"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$sمثبت كـ  pacnew.%2$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s مثبت كـ pacsave.%2$s"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -272,7 +274,7 @@ msgstr "يشغل السنانير بعد المعاملة"
 
 #: src/alpm_utils.vala
 msgid "Error while running hooks"
-msgstr ""
+msgstr "خطأ عند تشغيل خطافات"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -393,12 +395,12 @@ msgid "Nothing to do"
 msgstr "لا يوجد شيء للقيام به"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
 
 #: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgid "Failed to synchronize AUR database"
 msgstr ""
 
 #: src/transaction.vala
@@ -423,11 +425,11 @@ msgstr "اختيار موفر لل %s"
 
 #: src/transaction-gtk.vala
 msgid "Import PGP key"
-msgstr ""
+msgstr "استيراد مفتاح PGP"
 
 #: src/transaction-gtk.vala
 msgid "Trust and Import"
-msgstr ""
+msgstr "الوثوق و الاستيراد"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: src/preferences_dialog.vala resources/progress_dialog.ui
@@ -459,7 +461,7 @@ msgstr "مستودعات"
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Flatpak"
-msgstr ""
+msgstr "حزمة فلاتباك"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
@@ -487,7 +489,7 @@ msgstr "إستبدال"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Edit build files"
-msgstr ""
+msgstr "تعديل ملفات البناء"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 msgid "Total download size"
@@ -509,7 +511,7 @@ msgstr "أ_غلق"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "إعادة تشغيل"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -532,7 +534,7 @@ msgstr "مدير الحزم"
 
 #: src/installer.vala src/cli.vala
 msgid "Install packages from repositories, path or url"
-msgstr ""
+msgstr "تثبيت الحزم من المستودعات, المسار أو الرابط"
 
 #: src/installer.vala src/cli.vala
 msgid "Remove packages"
@@ -540,7 +542,7 @@ msgstr "ازالة الحزم"
 
 #: src/installer.vala src/cli.vala
 msgid "Build packages from AUR and install them with their dependencies"
-msgstr ""
+msgstr "بناء الحزم من AUR و تثبيتها مع البرامج المرتبطة بها"
 
 #: src/installer.vala src/cli.vala
 msgid "package(s)"
@@ -548,11 +550,11 @@ msgstr "حزمة(حزم)"
 
 #: src/tray.vala
 msgid "Updates Available"
-msgstr ""
+msgstr "يوجد تحديثات متوافرة"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "نظامك محدث إلى آخر إصدار"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -595,12 +597,12 @@ msgstr "حزمة Alpm"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr ""
+msgstr "مدير حزم مع دعم Alpm، AUR، فلاتباك و سناب"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
 msgid "Snap"
-msgstr ""
+msgstr "سناب"
 
 #: src/manager_window.vala
 #, c-format
@@ -639,7 +641,7 @@ msgstr "مثبت"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "تم تجاهله"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
@@ -711,7 +713,7 @@ msgstr "تاريخ التثبيت"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "تم المصادقة عليه من قبل"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -739,7 +741,7 @@ msgstr "تحقق التبعيات"
 
 #: src/manager_window.vala
 msgid "Publisher"
-msgstr ""
+msgstr "الناشر"
 
 #: src/manager_window.vala
 msgid "Confined in a Sandbox"
@@ -747,15 +749,15 @@ msgstr ""
 
 #: src/manager_window.vala
 msgid "Channels"
-msgstr ""
+msgstr "القنوات"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr ""
+msgstr "تحديثات نظام التشغيل"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
-msgstr ""
+msgstr "متضمنة تحسينات الأداء، الاستقرار و ا لأمان"
 
 #: src/manager_window.vala
 msgid "Featured"
@@ -763,23 +765,23 @@ msgstr ""
 
 #: src/manager_window.vala
 msgid "Photo & Video"
-msgstr ""
+msgstr "الصور و الفيديوهات"
 
 #: src/manager_window.vala
 msgid "Music & Audio"
-msgstr ""
+msgstr "الموسيقى و الصوت"
 
 #: src/manager_window.vala
 msgid "Productivity"
-msgstr ""
+msgstr "الانتاجية"
 
 #: src/manager_window.vala
 msgid "Communication & News"
-msgstr ""
+msgstr "التواصل و الأخبار"
 
 #: src/manager_window.vala
 msgid "Education & Science"
-msgstr ""
+msgstr "التعليم و العلوم"
 
 #: src/manager_window.vala
 msgid "Games"
@@ -787,7 +789,7 @@ msgstr "ألعاب"
 
 #: src/manager_window.vala
 msgid "Utilities"
-msgstr ""
+msgstr "الأدوات"
 
 #: src/manager_window.vala
 msgid "Development"
@@ -800,51 +802,51 @@ msgstr "تحديثات"
 
 #: src/manager_window.vala
 msgid "Last refresh"
-msgstr ""
+msgstr "آخر تحديث"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "كل 3 ساعات"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "كل 6 ساعات"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "كل 12 ساعة"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "كل يوم"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "كل أسبوع"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -852,15 +854,15 @@ msgstr " حول العالم"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -879,11 +881,11 @@ msgstr[5] ""
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "اختيار مسار البناء"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "ــ اختر"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -1248,6 +1250,10 @@ msgid "force the refresh of the databases"
 msgstr ""
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr ""
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr ""
 
@@ -1539,6 +1545,10 @@ msgstr ""
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "نزل التحديثات تلقائيا"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

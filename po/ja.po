@@ -1,11 +1,11 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # BALLOON a.k.a. Fu-sen., 2015
-# ふうせん Fu-sen. | BALLOON a.k.a. Fu-sen., 2015
+# 🎈 BALLOON | FU-SEN, 2015
 # philm <philm@manjaro.org>, 2015
 # Takefumi Nagata, 2013-2018
 # UTUMI Hirosi <utuhiro78@yahoo.co.jp>, 2017-2022
@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>, 2017-2022\n"
 "Language-Team: Japanese (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ja/)\n"
@@ -377,13 +377,13 @@ msgid "Nothing to do"
 msgstr "何もすることがありません"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "AUR データベースの同期に失敗しました"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: パッケージのアップグレードを無視（%2$s => %3$s）"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "AUR データベースの同期に失敗しました"
 
 #: src/transaction.vala
 #, c-format
@@ -1217,6 +1217,10 @@ msgid "force the refresh of the databases"
 msgstr "強制的にデータベースをアップデートする"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "データベースをアップデートしない"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "パッケージのダウングレードを可能にする"
 
@@ -1498,6 +1502,10 @@ msgstr "アップデートを確認する頻度"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "アップデートを自動的にダウンロード"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -44,7 +44,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: André Marcelo Alvarenga <alvarenga@kde.org>, 2020-2021\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/pt_BR/)\n"
@@ -52,7 +52,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
@@ -304,6 +304,7 @@ msgid "About %lu second remaining"
 msgid_plural "About %lu seconds remaining"
 msgstr[0] "Cerca de %lu segundo restante"
 msgstr[1] "Cerca de %lu segundos restantes"
+msgstr[2] "Cerca de %lu segundos restantes"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -311,6 +312,7 @@ msgid "About %lu minute remaining"
 msgid_plural "About %lu minutes remaining"
 msgstr[0] "Cerca de %lu minuto restante"
 msgstr[1] "Cerca de %lu minutos restantes"
+msgstr[2] "Cerca de %lu minutos restantes"
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
@@ -409,13 +411,13 @@ msgid "Nothing to do"
 msgstr "Nada para fazer"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Falha ao sincronizar a base de dados AUR"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: a ignorar a atualização do pacote (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Falha ao sincronizar a base de dados AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -580,6 +582,7 @@ msgid "%u available update"
 msgid_plural "%u available updates"
 msgstr[0] "%u atualização disponível"
 msgstr[1] "%u atualizações disponíveis"
+msgstr[2] "%u atualizações disponíveis"
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
@@ -620,6 +623,7 @@ msgid "%u pending operation"
 msgid_plural "%u pending operations"
 msgstr[0] "%u operação pendente"
 msgstr[1] "%u operações pendentes"
+msgstr[2] "%u operações pendentes"
 
 #: src/manager_window.vala
 msgid "Pending"
@@ -880,6 +884,7 @@ msgid "%u file"
 msgid_plural "%u files"
 msgstr[0] "%u arquivo"
 msgstr[1] "%u arquivos"
+msgstr[2] "%u arquivos"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
@@ -1252,6 +1257,10 @@ msgid "force the refresh of the databases"
 msgstr "forçar a atualização dos bancos de dados"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "não atualizar as bases de dados"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "permitir substituição por versão anterior"
 
@@ -1348,6 +1357,7 @@ msgid "%u ignored update"
 msgid_plural "%u ignored updates"
 msgstr[0] "%u atualização ignorada"
 msgstr[1] "%u atualizações ignoradas"
+msgstr[2] "%u atualizações ignoradas"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
@@ -1381,6 +1391,7 @@ msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #: src/cli.vala
 msgid "all"
@@ -1535,6 +1546,10 @@ msgstr "Frequência de verificação das atualizações"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Automaticamente baixar atualizações"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

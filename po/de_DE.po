@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -13,13 +13,14 @@
 # N3tt3rm4n, 2017
 # N3tt3rm4n, 2017
 # philm <philm@manjaro.org>, 2018-2019
+# Sven Frotscher, 2022
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Guillaume Benoit <guillaume@manjaro.org>, 2021-2022\n"
+"Last-Translator: Sven Frotscher, 2022\n"
 "Language-Team: German (Germany) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -382,13 +383,13 @@ msgid "Nothing to do"
 msgstr "Es gibt nichts zu tun"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Fehler beim Synchronisieren der AUR-Datenbank"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: ignoriere Paket-Upgrade (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Fehler beim Synchronisieren der AUR-Datenbank"
 
 #: src/transaction.vala
 #, c-format
@@ -712,11 +713,11 @@ msgstr "Stellt bereit"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Make Dependencies"
-msgstr "Abhängigkeiten erstellen"
+msgstr "Abhängigkeiten zum Erstellen"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Check Dependencies"
-msgstr "Abhängigkeiten überprüfen"
+msgstr "Abhängigkeiten zum Überprüfen"
 
 #: src/manager_window.vala
 msgid "Publisher"
@@ -1225,6 +1226,10 @@ msgid "force the refresh of the databases"
 msgstr "Aktualisierung der Datenbanken erzwingen"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "Datenbanken nicht aktualisieren"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "Paketdegradierung einschalten"
 
@@ -1508,6 +1513,10 @@ msgstr "Intervall für die Suche nach Aktualisierungen"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Aktualisierungen automatisch herunterladen"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

@@ -1,5 +1,5 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: ciaran, 2022\n"
 "Language-Team: Welsh (http://www.transifex.com/manjarolinux/manjaro-pamac/language/cy/)\n"
@@ -51,7 +51,7 @@ msgstr "Wedi methu paratoi trafodiad"
 #: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
 #, c-format
 msgid "target not found: %s"
-msgstr ""
+msgstr "heb ganfod y targed %s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -91,12 +91,12 @@ msgstr "mae %1$s yn torri'r ddibyniaeth '%2$s' sy'n ofynnol i %3$s"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "Mae %1$s a %2$s yn gwrthdaro"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s needs to be removed but it is a locked package"
-msgstr ""
+msgstr "Mae angen tynnu %s ond mae'n becyn sydd wedi'i gloi"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
@@ -105,15 +105,15 @@ msgstr ""
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %s from target list"
-msgstr ""
+msgstr "yn tynnu %s o'r targed"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "Mae angen ailgychwyn y system er mwyn i newidiadau ddod i rym."
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
-msgstr ""
+msgstr "Diddymwyd y trafodiad"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -146,7 +146,7 @@ msgstr "Yn tynnu ffeiliau annilys ac yn ceisio eto"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s is invalid or corrupted"
-msgstr ""
+msgstr "Mae %s yn annilys neu'n llwgr"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
@@ -166,7 +166,7 @@ msgstr "Yn gwirio dibyniaethau"
 
 #: src/alpm_utils.vala
 msgid "Checking file conflicts"
-msgstr ""
+msgstr "Yn gwirio gwrthdaro rhwng ffeiliau"
 
 #: src/alpm_utils.vala
 msgid "Resolving dependencies"
@@ -174,7 +174,7 @@ msgstr "Yn datrys dibyniaethau"
 
 #: src/alpm_utils.vala
 msgid "Checking inter-conflicts"
-msgstr ""
+msgstr "Yn gwirio rhyng-wrthdaro"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -378,13 +378,13 @@ msgid "Nothing to do"
 msgstr "Dim byd i'w wneud"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Wedi methu cysoni cronfa ddata AUR"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Wedi methu cysoni cronfa ddata AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -616,7 +616,7 @@ msgstr "Estron"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Installed"
-msgstr ""
+msgstr "Wedi ei osod"
 
 #: src/manager_window.vala
 msgid "Ignored"
@@ -648,7 +648,7 @@ msgstr "Anhysbys"
 
 #: src/manager_window.vala src/cli.vala resources/manager_window.ui
 msgid "Repository"
-msgstr "Storfa"
+msgstr "storfa"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Package Base"
@@ -858,7 +858,7 @@ msgstr[3] "%u ffeil"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Dewis ffolder adeiladu"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
@@ -949,16 +949,16 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "Yn adeiladu pecynnau fel defnyddiwr dynamig"
 
 #: src/cli.vala
 #, c-format
 msgid "Setting build directory to %s"
-msgstr ""
+msgstr "Yn gosod y ffolder adeiladu i %s"
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
-msgstr "Heb ganfod ffeil PKGBUILD yn y cyfeiriadur cyfredol"
+msgstr "Heb ganfod ffeil PKGBUILD yn y ffolder gyfredol"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
@@ -1071,7 +1071,7 @@ msgstr "cyfeiriadur"
 msgid ""
 "build directory, if no directory is given the one specified in pamac.conf "
 "file is used"
-msgstr ""
+msgstr "ffolder adeiladu, os na ddewisir ffolder defnyddir yr un a nodir yn y ffeil pamac.conf"
 
 #: src/cli.vala
 msgid "also clone needed dependencies"
@@ -1088,13 +1088,13 @@ msgstr "ysgrifennu dros ffeiliau sy'n bodoli eisoes"
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
-msgstr "Os na roddir enw pecyn, defnyddio'r ffeil PKGBUILD yn y cyfeiriadur cyfredol"
+msgstr "Os na roddir enw pecyn, defnyddio'r ffeil PKGBUILD yn y ffolder gyfredol"
 
 #: src/cli.vala
 msgid ""
 "The build directory will be the parent directory, --builddir option will be "
 "ignored"
-msgstr "Y cyfeiriadur adeiladu fydd y cyfeiriadur rhiant, anwybyddir --builddir "
+msgstr "Y ffolder adeiladu fydd y ffolder riant, anwybyddir --builddir "
 
 #: src/cli.vala
 msgid "and --no-clone option will be enforced"
@@ -1122,7 +1122,7 @@ msgstr "hepgor unrhyw neges gadarnhau"
 
 #: src/cli.vala
 msgid "glob"
-msgstr ""
+msgstr "glob"
 
 #: src/cli.vala
 msgid ""
@@ -1196,7 +1196,7 @@ msgstr "100 yw'r cod ymadael os oes diweddariadau ar gael"
 msgid ""
 "build directory (use with --devel), if no directory is given the one "
 "specified in pamac.conf file is used"
-msgstr ""
+msgstr "Y ffolder adeiladu (defnyddir gyda --devel), os na roddir ffolder, caiff y ffolder a nodir yn y ffeil pamac.conf ei defnyddio"
 
 #: src/cli.vala
 msgid "also check updates in AUR"
@@ -1220,11 +1220,15 @@ msgstr "peidio â gwirio diweddariadau pecynnau datblygu"
 
 #: src/cli.vala
 msgid "Upgrade your system"
-msgstr ""
+msgstr "Uwchraddio eich system"
 
 #: src/cli.vala
 msgid "force the refresh of the databases"
-msgstr ""
+msgstr "gorfodi adnewyddu'r cronfeydd data"
+
+#: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "peidio ag adnewyddu'r cronfeydd data"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1254,7 +1258,7 @@ msgstr "peidio ag uwchraddio pecynnau datblygu"
 msgid ""
 "build directory (use with --aur), if no directory is given the one specified"
 " in pamac.conf file is used"
-msgstr ""
+msgstr "Y ffolder adeiladu (defnyddir gyda --aur), os na roddir ffolder, caiff y ffolder a nodir yn y ffeil pamac.conf ei defnyddio"
 
 #: src/cli.vala
 msgid "Clean packages cache or build files"
@@ -1267,7 +1271,7 @@ msgstr ""
 #: src/cli.vala
 msgid ""
 "specify how many versions of each package are kept in the cache directory"
-msgstr "nodi faint o fersiynau o bob pecyn i'w gadw yng nghyfeiriadur y storfa dros dro"
+msgstr "nodi faint o fersiynau o bob pecyn i'w gadw yn ffolder y storfa dros dro"
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
@@ -1277,7 +1281,7 @@ msgstr "targedu pecynnau a ddadosodwyd yn unig"
 msgid ""
 "remove all build files, the build directory is the one specified in "
 "pamac.conf"
-msgstr "tynnu pob ffeil adeiladu, y cyfeiriadur adeiladu yw'r un a nodir yn pamac.conf"
+msgstr "tynnu pob ffeil adeiladu, y ffolder adeiladu yw'r un a nodir yn pamac.conf"
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
@@ -1289,7 +1293,7 @@ msgstr "dangos enw pob ffeil hefyd"
 
 #: src/cli.vala resources/manager_window.ui
 msgid "Name"
-msgstr "Enw"
+msgstr "enw"
 
 #: src/cli.vala
 msgid "Version"
@@ -1405,7 +1409,7 @@ msgstr "_Gweithredu"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr ""
+msgstr "Modd meddalwedd"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
@@ -1516,6 +1520,10 @@ msgid "Automatically download updates"
 msgstr "Lawrlwytho diweddariadau yn awtomatig"
 
 #: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
+
+#: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
 msgstr "Cuddio'r eicon pan nad oes diweddariadau"
 
@@ -1605,7 +1613,7 @@ msgstr "Gwirio am ddiweddariadau i becynnau datblygu"
 
 #: resources/preferences_dialog.ui
 msgid "Build directory"
-msgstr "Cyfeiriadur adeiladu"
+msgstr "Ffolder adeiladu"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."

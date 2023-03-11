@@ -1,16 +1,16 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
 # Xəyyam Qocayev <xxmn77@gmail.com>, 2020-2022
-# Zaur Baku <zaurbaku15@gmail.com>, 2017
+# d61c28696b35aa754de85b9fc22c53a5_f7d6eca, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: Xəyyam Qocayev <xxmn77@gmail.com>, 2020-2022\n"
 "Language-Team: Azerbaijani (Azerbaijan) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/az_AZ/)\n"
@@ -375,13 +375,13 @@ msgid "Nothing to do"
 msgstr "Etməli bir şey yoxdur"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "AUR verilənlər bazasının eyniləşdirilməsi uğursuz oldu"
-
-#: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr "%1$s: paketin ən son versiyaya yenilənməsi nəzərə alınmadan (%2$s=> %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "AUR verilənlər bazasının eyniləşdirilməsi uğursuz oldu"
 
 #: src/transaction.vala
 #, c-format
@@ -1218,6 +1218,10 @@ msgid "force the refresh of the databases"
 msgstr "verilənlər bazasının məcburi yenilənməsi"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr "verilənlər bazası yenilənməsin"
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "paket versiyasının aşağı salınmasını aktivləşdir"
 
@@ -1501,6 +1505,10 @@ msgstr "Yenilənmələrin yoxlanması tezliyi"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Yenilənmələri avtomatik yükləmək"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

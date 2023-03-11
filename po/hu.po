@@ -1,10 +1,10 @@
 # Translation of Pamac.
-# Copyright (C) 2013-2022 Manjaro Developers <manjaro-dev@manjaro.org>
+# Copyright (C) 2013-2023 Manjaro Developers <manjaro-dev@manjaro.org>
 # This file is distributed under the same license as the Pamac package.
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# Ács Zoltán <acszoltan111@gmail.com>, 2020
+# c2e331a438add123670fbf39846b5de3_8c31b08 <d7888a78469511cd116b0058dd23f760_811520>, 2020
 # Ferenc Papp <pappfer@gmail.com>, 2017
 # Gabor Nagy, 2018
 # Gyula Szabó <gyhun95@gmail.com>, 2021
@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
-"POT-Creation-Date: 2022-04-04 17:44+0200\n"
+"POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: osiixy <osiixy@gmail.com>, 2022\n"
 "Language-Team: Hungarian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/hu/)\n"
@@ -389,12 +389,12 @@ msgid "Nothing to do"
 msgstr "Semmi teendő"
 
 #: src/transaction.vala
-msgid "Failed to synchronize AUR database"
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
 msgstr ""
 
 #: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgid "Failed to synchronize AUR database"
 msgstr ""
 
 #: src/transaction.vala
@@ -1232,6 +1232,10 @@ msgid "force the refresh of the databases"
 msgstr "adatbázisok frissítésének kényszerítése"
 
 #: src/cli.vala
+msgid "do not refresh the databases"
+msgstr ""
+
+#: src/cli.vala
 msgid "enable package downgrades"
 msgstr "csomag-visszaállítás engedélyezése"
 
@@ -1515,6 +1519,10 @@ msgstr "Frissítések ellenőrzésének gyakorisága"
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
 msgstr "Frissítések automatikus letöltése"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
