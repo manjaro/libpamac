@@ -1074,9 +1074,10 @@ namespace Pamac {
 
 		public async InputStream get_url_stream (string url) throws Error {
 			try {
-				var message = new Soup.Message ("GET", url);
-				var inputstream = yield soup_session.send_async (message, Priority.DEFAULT, null);
-				return inputstream;
+				// get sure url is valid
+				Uri? uri = Uri.parse (url, Soup.HTTP_URI_FLAGS);
+				var message = new Soup.Message.from_uri ("GET", uri);
+				return yield soup_session.send_async (message, Priority.DEFAULT, null);
 			} catch (Error e) {
 				throw e;
 			}
