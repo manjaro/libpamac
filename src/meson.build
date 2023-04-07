@@ -17,7 +17,7 @@ alpm_deps = [libalpm, gio, posix]
 
 alpm_c_args = ['-D_FILE_OFFSET_BITS=64']
 
-common_vala_args = ['--pkg=posix', '--target-glib=2.38', '--vapidir=' + join_paths(meson.source_root(), 'vapi')]
+common_vala_args = ['--pkg=posix', '--vapidir=' + join_paths(meson.source_root(), 'vapi')]
 common_c_args = ['-DGETTEXT_PACKAGE="pamac"']
 
 libpamac_sources = ['package.vala', 'alpm_package.vala',
