@@ -21,7 +21,6 @@ namespace Pamac {
 	public class Config: Object {
 		HashTable<string, string> environment_variables_priv;
 		Daemon system_daemon;
-		MainLoop loop;
 		bool _enable_aur;
 		bool _check_aur_updates;
 		bool _download_updates;
@@ -274,31 +273,11 @@ namespace Pamac {
 
 		public void save () {
 			if (system_daemon == null) {
-				loop = new MainLoop ();
 				try {
 					system_daemon = Bus.get_proxy_sync (BusType.SYSTEM, "org.manjaro.pamac.daemon", "/org/manjaro/pamac/daemon");
-					system_daemon.write_alpm_config_finished.connect (() => { loop.quit (); });
-					system_daemon.write_pamac_config_finished.connect (() => {
-						// write alpm config
-						var new_alpm_conf = new HashTable<string, Variant> (str_hash, str_equal);
-						new_alpm_conf.insert ("CheckSpace", new Variant.boolean (checkspace));
-						var ignorepkgs_str = new StringBuilder ();
-						foreach (unowned string name in ignorepkgs) {
-							if (ignorepkgs_str.len > 0) {
-								ignorepkgs_str.append (" ");
-							}
-							ignorepkgs_str.append (name);
-						}
-						new_alpm_conf.insert ("IgnorePkg", new Variant.string (ignorepkgs_str.str));
-						try {
-							system_daemon.start_write_alpm_config (new_alpm_conf);
-						} catch (Error e) {
-							warning ("save pamac config error: %s", e.message);
-							loop.quit ();
-						}
-					});
 				} catch (Error e) {
 					warning ("save pamac config error: %s", e.message);
+					return;
 				}
 			}
 			// write pamac config
@@ -323,7 +302,22 @@ namespace Pamac {
 			new_pamac_conf.insert ("CheckFlatpakUpdates", new Variant.boolean (check_flatpak_updates));
 			try {
 				system_daemon.start_write_pamac_config (new_pamac_conf);
-				loop.run ();
+			} catch (Error e) {
+				warning ("save pamac config error: %s", e.message);
+			}
+			// write alpm config
+			var new_alpm_conf = new HashTable<string, Variant> (str_hash, str_equal);
+			new_alpm_conf.insert ("CheckSpace", new Variant.boolean (checkspace));
+			var ignorepkgs_str = new StringBuilder ();
+			foreach (unowned string name in ignorepkgs) {
+				if (ignorepkgs_str.len > 0) {
+					ignorepkgs_str.append (" ");
+				}
+				ignorepkgs_str.append (name);
+			}
+			new_alpm_conf.insert ("IgnorePkg", new Variant.string (ignorepkgs_str.str));
+			try {
+				system_daemon.start_write_alpm_config (new_alpm_conf);
 			} catch (Error e) {
 				warning ("save pamac config error: %s", e.message);
 			}
