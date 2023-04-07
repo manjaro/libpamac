@@ -627,7 +627,6 @@ namespace Pamac {
 						var global_conflicts = new GenericArray<string> ();
 						var global_provides = new GenericArray<string> ();
 						var global_replaces = new GenericArray<string> ();
-						var global_validpgpkeys = new GenericArray<string> ();
 						var pkgnames_table = new HashTable<string, AURPackage> (str_hash, str_equal);
 						while ((line = yield dis.read_line_async ()) != null) {
 							if ("pkgbase = " in line) {
@@ -710,11 +709,6 @@ namespace Pamac {
 											aur_pkg_found.replaces.add ((owned) replace);
 										}
 									}
-								}
-							// grab validpgpkeys to check if they are imported
-							} else if ("validpgpkeys" in line) {
-								if ("validpgpkeys = " in line) {
-									global_validpgpkeys.add (line.split (" = ", 2)[1]);
 								}
 							} else if ("pkgname = " in line) {
 								string pkgname_found = line.split (" = ", 2)[1];
@@ -833,10 +827,6 @@ namespace Pamac {
 								}
 								dos.put_string ("\n");
 							}
-						}
-						// check signature
-						if (global_validpgpkeys.length > 0) {
-							yield check_signature (pkgname, global_validpgpkeys);
 						}
 					} catch (Error e) {
 						var details = new GenericArray<string> (1);
@@ -1012,6 +1002,30 @@ namespace Pamac {
 				}
 			}
 			return true;
+		}
+
+		async void check_signatures (string pkgdir, string pkgname) {
+			File? clone_dir = File.new_for_path (pkgdir);
+			if (clone_dir.query_exists ()) {
+				var srcinfo = clone_dir.get_child (".SRCINFO");
+				try {
+					// read .SRCINFO
+					var dis = new DataInputStream (yield srcinfo.read_async ());
+					string? line;
+					var global_validpgpkeys = new GenericArray<string> ();
+					while ((line = yield dis.read_line_async ()) != null) {
+						if ("validpgpkeys = " in line) {
+							global_validpgpkeys.add (line.split (" = ", 2)[1]);
+						}
+					}
+					// check signature
+					if (global_validpgpkeys.length > 0) {
+						yield check_signature (pkgname, global_validpgpkeys);
+					}
+				} catch (Error e) {
+					warning (e.message);
+				}
+			}
 		}
 
 		async void check_signature (string pkgname, GenericArray<string> keys) {
@@ -1456,8 +1470,8 @@ namespace Pamac {
 					}
 				}
 				if (yield ask_edit_build_files_real (summary)) {
+					unowned string real_aur_build_dir = aur.get_real_build_dir ();
 					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
-						unowned string real_aur_build_dir = aur.get_real_build_dir ();
 						string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 						bool success = yield clone_build_files_if_needed (pkgdir, pkgname);
 						if (!success) {
@@ -1518,6 +1532,22 @@ namespace Pamac {
 					return true;
 				}
 				if (success) {
+					// clone build files and check signatures
+					if (summary.aur_pkgbases_to_build.length != 0) {
+						unowned string real_aur_build_dir = aur.get_real_build_dir ();
+						foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
+							string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
+							success = yield clone_build_files_if_needed (pkgdir, pkgname);
+							if (success) {
+								yield check_signatures (pkgdir, pkgname);
+							} else {
+								var details = new GenericArray<string> (1);
+								details.add (dgettext (null, "Failed to clone %s build files").printf (pkgname));
+								emit_error (dgettext (null, "Failed to prepare transaction"), details);
+								return false;
+							}
+						}
+					}
 					var to_install_array = new GenericArray<string> (to_install.length);
 					var to_remove_array = new GenericArray<string> (to_remove.length);
 					var to_load_array = new GenericArray<string> (to_load.length);
@@ -1576,6 +1606,20 @@ namespace Pamac {
 					return true;
 				}
 				if (success) {
+					// clone build files and check signatures
+					unowned string real_aur_build_dir = aur.get_real_build_dir ();
+					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
+						string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
+						success = yield clone_build_files_if_needed (pkgdir, pkgname);
+						if (success) {
+							yield check_signatures (pkgdir, pkgname);
+						} else {
+							var details = new GenericArray<string> (1);
+							details.add (dgettext (null, "Failed to clone %s build files").printf (pkgname));
+							emit_error (dgettext (null, "Failed to prepare transaction"), details);
+							return false;
+						}
+					}
 					// get_authorization here before building
 					return yield get_authorization_async ();
 				} else {
@@ -1849,17 +1893,6 @@ namespace Pamac {
 				unowned string real_aur_build_dir = aur.get_real_build_dir ();
 				string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 				bool as_root = Posix.geteuid () == 0;
-				success = yield clone_build_files_if_needed (pkgdir, pkgname);
-				if (!success) {
-					emit_error (dgettext (null, "Failed to build %s").printf (pkgname), new GenericArray<string> ());
-					to_build_queue.clear ();
-					try {
-						new Subprocess.newv ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path), "%ssync/pamac_aur.db".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
-					} catch (Error e) {
-						warning (e.message);
-					}
-					return false;
-				}
 				// building
 				building = true;
 				start_building ();
