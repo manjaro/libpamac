@@ -2386,6 +2386,10 @@ namespace Pamac {
 				unowned GenericArray<AlpmPackage> ignored_repos_updates = updates.ignored_repos_updates;
 				var local_pkgs = new GenericArray<string> ();
 				var vcs_local_pkgs = new GenericArray<string> ();
+				var all_ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
+				foreach (unowned string name in config.ignorepkgs) {
+					all_ignorepkgs.add (name);
+				}
 				unowned Alpm.List<unowned Alpm.Package> pkgcache = tmp_handle.localdb.pkgcache;
 				while (pkgcache != null) {
 					unowned Alpm.Package installed_pkg = pkgcache.data;
@@ -2417,6 +2421,11 @@ namespace Pamac {
 										vcs_local_pkgs.add (installed_pkg.name);
 									}
 								} else {
+									// add name in all_ignorepkgs in case of ignoregroup in order
+									// to add the package in ignored_aur_updates in get_aur_updates_real ()
+									if (tmp_handle.should_ignore (installed_pkg) == 1) {
+										all_ignorepkgs.add (installed_pkg.name);
+									}
 									local_pkgs.add (installed_pkg.name);
 								}
 							}
@@ -2437,7 +2446,7 @@ namespace Pamac {
 						get_updates_progress (95);
 						return false;
 					});
-					get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, config.ignorepkgs, ref updates);
+					get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, all_ignorepkgs, ref updates);
 					context.invoke (() => {
 						get_updates_progress (100);
 						return false;
