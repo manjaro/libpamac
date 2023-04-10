@@ -2386,10 +2386,6 @@ namespace Pamac {
 				unowned GenericArray<AlpmPackage> ignored_repos_updates = updates.ignored_repos_updates;
 				var local_pkgs = new GenericArray<string> ();
 				var vcs_local_pkgs = new GenericArray<string> ();
-				var all_ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
-				foreach (unowned string name in config.ignorepkgs) {
-					all_ignorepkgs.add (name);
-				}
 				unowned Alpm.List<unowned Alpm.Package> pkgcache = tmp_handle.localdb.pkgcache;
 				while (pkgcache != null) {
 					unowned Alpm.Package installed_pkg = pkgcache.data;
@@ -2421,11 +2417,7 @@ namespace Pamac {
 										vcs_local_pkgs.add (installed_pkg.name);
 									}
 								} else {
-									// add name in all_ignorepkgs in case of ignoregroup in order
-									// to add the package in ignored_aur_updates in get_aur_updates_real ()
-									if (tmp_handle.should_ignore (installed_pkg) == 1) {
-										all_ignorepkgs.add (installed_pkg.name);
-									}
+									// check for ignorepkgs done in get_aur_updates_real
 									local_pkgs.add (installed_pkg.name);
 								}
 							}
@@ -2446,7 +2438,7 @@ namespace Pamac {
 						get_updates_progress (95);
 						return false;
 					});
-					get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, all_ignorepkgs, ref updates);
+					get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, tmp_handle, ref updates);
 					context.invoke (() => {
 						get_updates_progress (100);
 						return false;
@@ -2550,7 +2542,7 @@ namespace Pamac {
 			return pkgnames_table;
 		}
 
-		void get_aur_updates_real (GenericArray<Json.Object> aur_infos, GenericArray<string> vcs_local_pkgs, GenericSet<string?> ignorepkgs, ref Updates updates) {
+		void get_aur_updates_real (GenericArray<Json.Object> aur_infos, GenericArray<string> vcs_local_pkgs, Alpm.Handle? handle, ref Updates updates) {
 			unowned GenericArray<AURPackage> aur_updates = updates.aur_updates;
 			unowned GenericArray<AURPackage> outofdate = updates.outofdate;
 			unowned GenericArray<AURPackage> ignored_aur_updates = updates.ignored_aur_updates;
@@ -2560,7 +2552,7 @@ namespace Pamac {
 			}
 			foreach (unowned Json.Object json_object in aur_infos) {
 				unowned string name = json_object.get_string_member ("Name");
-				unowned Alpm.Package local_pkg = alpm_handle.localdb.get_pkg (name);
+				unowned Alpm.Package local_pkg = handle.localdb.get_pkg (name);
 				unowned string old_version = local_pkg.version;
 				unowned string new_version;
 				AURPackageLinked? aur_pkg;
@@ -2589,7 +2581,7 @@ namespace Pamac {
 					aur_pkg.version = new_version;
 				}
 				if (Alpm.pkg_vercmp (new_version, old_version) == 1) {
-					if (name in ignorepkgs) {
+					if (handle.should_ignore (local_pkg) == 1) {
 						ignored_aur_updates.add (aur_pkg);
 					} else {
 						aur_updates.add (aur_pkg);
@@ -2610,12 +2602,11 @@ namespace Pamac {
 						var local_pkgs = new GenericArray<string> ();
 						var vcs_local_pkgs = new GenericArray<string> ();
 						// set ignorepkgs
-						var full_ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
 						foreach (unowned string name in config.ignorepkgs) {
-							full_ignorepkgs.add (name);
+							alpm_handle.add_ignorepkg (name);
 						}
 						foreach (unowned string name in ignorepkgs) {
-							full_ignorepkgs.add (name);
+							alpm_handle.add_ignorepkg (name);
 						}
 						unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
 						while (pkgcache != null) {
@@ -2629,7 +2620,7 @@ namespace Pamac {
 									|| installed_pkg.name.has_suffix ("-bzr")
 									|| installed_pkg.name.has_suffix ("-hg"))) {
 									// for speed reason, do not check vcs update for ignored packages
-									if (!(installed_pkg.name in full_ignorepkgs)) {
+									if (alpm_handle.should_ignore (installed_pkg) == 0) {
 										local_pkgs.add (installed_pkg.name);
 										vcs_local_pkgs.add (installed_pkg.name);
 									}
@@ -2640,7 +2631,14 @@ namespace Pamac {
 							}
 							pkgcache.next ();
 						}
-						get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, full_ignorepkgs, ref updates);
+						get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, alpm_handle, ref updates);
+						// remove ignorepkgs
+						foreach (unowned string name in config.ignorepkgs) {
+							alpm_handle.remove_ignorepkg (name);
+						}
+						foreach (unowned string name in ignorepkgs) {
+							alpm_handle.remove_ignorepkg (name);
+						}
 					}
 					context.invoke (get_aur_updates_async.callback);
 					return 0;
