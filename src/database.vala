@@ -118,6 +118,10 @@ namespace Pamac {
 					critical (dgettext (null, "Failed to initialize alpm library"));
 					return;
 				} else {
+					// add ignorepkgs
+					foreach (unowned string name in config.ignorepkgs) {
+						alpm_handle.add_ignorepkg (name);
+					}
 					files_handle = alpm_config.get_handle (true);
 				}
 				aur_vcs_pkgs.remove_all ();
@@ -2320,7 +2324,7 @@ namespace Pamac {
 				if (tmp_handle == null) {
 					return;
 				}
-				// add config ignore_pkgs
+				// add config ignorepkgs
 				foreach (unowned string name in config.ignorepkgs) {
 					tmp_handle.add_ignorepkg (name);
 				}
@@ -2601,10 +2605,7 @@ namespace Pamac {
 						// get local pkgs
 						var local_pkgs = new GenericArray<string> ();
 						var vcs_local_pkgs = new GenericArray<string> ();
-						// set ignorepkgs
-						foreach (unowned string name in config.ignorepkgs) {
-							alpm_handle.add_ignorepkg (name);
-						}
+						// add ignorepkgs
 						foreach (unowned string name in ignorepkgs) {
 							alpm_handle.add_ignorepkg (name);
 						}
@@ -2632,10 +2633,6 @@ namespace Pamac {
 							pkgcache.next ();
 						}
 						get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
-						// remove ignorepkgs
-						foreach (unowned string name in config.ignorepkgs) {
-							alpm_handle.remove_ignorepkg (name);
-						}
 						foreach (unowned string name in ignorepkgs) {
 							alpm_handle.remove_ignorepkg (name);
 						}
