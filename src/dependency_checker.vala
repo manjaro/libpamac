@@ -23,9 +23,9 @@ int main (string[] args) {
 	var alpm_config = new AlpmConfig ("/etc/pacman.conf");
 	Alpm.Handle? alpm_handle = alpm_config.get_handle ();
 	if (alpm_handle == null) {
-		warning ("Failed to initialize alpm library");
 		return 1;
 	}
+	alpm_config.register_syncdbs (alpm_handle);
 	unowned string depend = args[1];
 	unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
 	while (syncdbs != null) {

@@ -42,6 +42,7 @@ namespace Pamac {
 		internal AlpmUtils alpm_utils { get; private set; }
 		internal size_t dbs_count { get; set; }
 		internal size_t dbs_index { get; set; }
+		internal bool dbs_missing { get; private set; }
 
 		public signal void get_updates_progress (uint percent);
 		public signal void emit_warning (string message);
@@ -86,7 +87,34 @@ namespace Pamac {
 					}
 				}
 			}
-			refresh ();
+			// init dbs
+			lock (alpm_config) {
+				// use a tmp handle
+				alpm_handle = alpm_config.get_handle (false, true);
+				if (alpm_handle == null) {
+					return;
+				} else {
+					// add ignorepkgs
+					foreach (unowned string name in config.ignorepkgs) {
+						alpm_handle.add_ignorepkg (name);
+					}
+					// register syncdbs with a callback if database file is missing
+					alpm_handle.set_eventcb (cb_evt, this);
+					alpm_config.register_syncdbs (alpm_handle);
+					// use a tmp handle
+					files_handle = alpm_config.get_handle (true, true);
+					alpm_config.register_syncdbs (files_handle);
+				}
+				aur_vcs_pkgs.remove_all ();
+				pkgs_cache.remove_all ();
+				aur_pkgs_cache.remove_all ();
+			}
+			if (config.enable_snap) {
+				snap_plugin.refresh ();
+			}
+			if (config.enable_flatpak) {
+				flatpak_plugin.refresh ();
+			}
 		}
 
 		public void enable_appstream () {
@@ -113,16 +141,19 @@ namespace Pamac {
 		public void refresh () {
 			lock (alpm_config) {
 				alpm_config.reload ();
-				alpm_handle = alpm_config.get_handle ();
+				// use a tmp handle
+				alpm_handle = alpm_config.get_handle (false, true);
 				if (alpm_handle == null) {
-					critical (dgettext (null, "Failed to initialize alpm library"));
 					return;
 				} else {
 					// add ignorepkgs
 					foreach (unowned string name in config.ignorepkgs) {
 						alpm_handle.add_ignorepkg (name);
 					}
-					files_handle = alpm_config.get_handle (true);
+					alpm_config.register_syncdbs (alpm_handle);
+					// use a tmp handle
+					files_handle = alpm_config.get_handle (true, true);
+					alpm_config.register_syncdbs (files_handle);
 				}
 				aur_vcs_pkgs.remove_all ();
 				pkgs_cache.remove_all ();
@@ -138,7 +169,11 @@ namespace Pamac {
 
 		internal Alpm.Handle? get_tmp_handle () {
 			lock (alpm_config) {
-				return alpm_config.get_handle (false, true);
+				var tmp_handle = alpm_config.get_handle (false, true);
+				if (tmp_handle != null) {
+					alpm_config.register_syncdbs (tmp_handle);
+				}
+				return tmp_handle;
 			}
 		}
 
@@ -2264,12 +2299,8 @@ namespace Pamac {
 
 		public void refresh_tmp_files_dbs () {
 			lock (alpm_config) {
-				var tmp_files_handle = alpm_config.get_handle (true, true);
-				if (tmp_files_handle == null) {
-					return;
-				}
-				unowned Alpm.List<unowned Alpm.DB> syncdbs = tmp_files_handle.syncdbs;
-				tmp_files_handle.update_dbs (syncdbs, 0);
+				unowned Alpm.List<unowned Alpm.DB> syncdbs = files_handle.syncdbs;
+				files_handle.update_dbs (syncdbs, 0);
 			}
 		}
 
@@ -2320,13 +2351,9 @@ namespace Pamac {
 					get_updates_progress (0);
 					return false;
 				});
-				var tmp_handle = get_tmp_handle ();
-				if (tmp_handle == null) {
-					return;
-				}
 				// add config ignorepkgs
 				foreach (unowned string name in config.ignorepkgs) {
-					tmp_handle.add_ignorepkg (name);
+					alpm_handle.add_ignorepkg (name);
 				}
 				bool refresh_tmp_dbs = true;
 				if (use_timestamp) {
@@ -2336,12 +2363,12 @@ namespace Pamac {
 					// refresh tmp dbs
 					// count this step as 90% of the total
 					bool success = true;
-					unowned Alpm.List<unowned Alpm.DB> syncdbs = tmp_handle.syncdbs;
+					unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
 					dbs_count = syncdbs.length ();
 					dbs_index = 0;
 					// callback to send progress signal
-					tmp_handle.set_dlcb (cb_dl, this);
-					if (tmp_handle.update_dbs (syncdbs, 0) < 0) {
+					alpm_handle.set_dlcb (cb_dl, this);
+					if (alpm_handle.update_dbs (syncdbs, 0) < 0) {
 						success = false;
 						string dbs_lock_path = "/var/tmp/pamac/dbs/db.lck";
 						var file = GLib.File.new_for_path (dbs_lock_path);
@@ -2390,25 +2417,25 @@ namespace Pamac {
 				unowned GenericArray<AlpmPackage> ignored_repos_updates = updates.ignored_repos_updates;
 				var local_pkgs = new GenericArray<string> ();
 				var vcs_local_pkgs = new GenericArray<string> ();
-				unowned Alpm.List<unowned Alpm.Package> pkgcache = tmp_handle.localdb.pkgcache;
+				unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
 				while (pkgcache != null) {
 					unowned Alpm.Package installed_pkg = pkgcache.data;
-					unowned Alpm.Package? candidate = installed_pkg.get_new_version (tmp_handle.syncdbs);
+					unowned Alpm.Package? candidate = installed_pkg.get_new_version (alpm_handle.syncdbs);
 					if (candidate != null) {
 						// check if installed_pkg is in IgnorePkg or IgnoreGroup
 						// check if candidate is in IgnorePkg or IgnoreGroup in case of replacer
-						if (tmp_handle.should_ignore (installed_pkg) == 1 ||
-							tmp_handle.should_ignore (candidate) == 1) {
-							var pkg = initialise_pkg_data (tmp_handle, installed_pkg, candidate);
+						if (alpm_handle.should_ignore (installed_pkg) == 1 ||
+							alpm_handle.should_ignore (candidate) == 1) {
+							var pkg = initialise_pkg_data (alpm_handle, installed_pkg, candidate);
 							ignored_repos_updates.add (pkg);
 						} else {
-							var pkg = initialise_pkg_data (tmp_handle, installed_pkg, candidate);
+							var pkg = initialise_pkg_data (alpm_handle, installed_pkg, candidate);
 							repos_updates.add (pkg);
 						}
 					} else {
 						if (config.check_aur_updates) {
 							// check if installed_pkg is a local pkg
-							unowned Alpm.Package? pkg = get_syncpkg (tmp_handle, installed_pkg.name);
+							unowned Alpm.Package? pkg = get_syncpkg (alpm_handle, installed_pkg.name);
 							if (pkg == null) {
 								if (config.check_aur_vcs_updates &&
 									(installed_pkg.name.has_suffix ("-git")
@@ -2416,7 +2443,7 @@ namespace Pamac {
 									|| installed_pkg.name.has_suffix ("-bzr")
 									|| installed_pkg.name.has_suffix ("-hg"))) {
 									// for speed reason, do not check vcs update for ignored packages
-									if (tmp_handle.should_ignore (installed_pkg) == 0) {
+									if (alpm_handle.should_ignore (installed_pkg) == 0) {
 										local_pkgs.add (installed_pkg.name);
 										vcs_local_pkgs.add (installed_pkg.name);
 									}
@@ -2633,9 +2660,6 @@ namespace Pamac {
 							pkgcache.next ();
 						}
 						get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
-						foreach (unowned string name in ignorepkgs) {
-							alpm_handle.remove_ignorepkg (name);
-						}
 					}
 					context.invoke (get_aur_updates_async.callback);
 					return 0;
@@ -2874,5 +2898,16 @@ void cb_dl (void* ctx, string filename, Alpm.Download.Event event_type, void* ev
 			});
 			database.dbs_index++;
 		}
+	}
+}
+
+void cb_evt (void* ctx, Alpm.Event.Data data) {
+	switch (data.type) {
+		case Alpm.Event.Type.DATABASE_MISSING:
+			Pamac.Database database = (Pamac.Database) ctx;
+			database.dbs_missing = true;
+			break;
+		default:
+			break;
 	}
 }

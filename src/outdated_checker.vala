@@ -40,9 +40,9 @@ int main (string[] args) {
 	var alpm_config = new AlpmConfig ("/etc/pacman.conf");
 	Alpm.Handle? alpm_handle = alpm_config.get_handle ();
 	if (alpm_handle == null) {
-		warning ("Failed to initialize alpm library");
 		return 1;
 	}
+	alpm_config.register_syncdbs (alpm_handle);
 	var now = new DateTime.now_utc ();
 	// get packages
 	TimeSpan years_time = TimeSpan.DAY * 365 * years;

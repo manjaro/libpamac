@@ -1353,8 +1353,21 @@ namespace Pamac {
 			return success;
 		}
 
+		public async void check_dbs () {
+			if (database.dbs_missing) {
+				bool check_aur_updates_backup = config.check_aur_updates;
+				bool check_aur_vcs_updates_backup = config.check_aur_vcs_updates;
+				config.check_aur_updates = false;
+				yield trans_refresh ();
+				config.check_aur_updates = check_aur_updates_backup;
+				config.check_aur_vcs_updates = check_aur_vcs_updates_backup;
+				database.refresh ();
+			}
+		}
+
 		async bool trans_refresh () {
-			bool success = yield get_authorization_async ();
+			// no authorization needed because tmp dbs are used
+			bool success = true;
 			if (success) {
 				try {
 					success = yield transaction_interface.trans_refresh (force_refresh);

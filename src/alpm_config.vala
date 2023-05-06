@@ -140,11 +140,17 @@ internal class AlpmConfig {
 					Process.spawn_command_line_sync ("mkdir -p %s".printf (tmp_dbpath));
 					Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_dbpath));
 					Process.spawn_command_line_sync ("ln -s %slocal %s".printf (dbpath, tmp_dbpath));
-					Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %ssync %s".printf (dbpath, tmp_dbpath));
-					Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
+					file = GLib.File.new_for_path ("%ssync".printf (dbpath));
+					if (file.query_exists ()) {
+						Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %ssync %s".printf (dbpath, tmp_dbpath));
+						Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
+					}
 				} else {
-					Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %ssync/* %s/sync'".printf (dbpath, tmp_dbpath));
 					Process.spawn_command_line_sync ("ln -sf %slocal %s".printf (dbpath, tmp_dbpath));
+					file = GLib.File.new_for_path ("%ssync".printf (dbpath));
+					if (file.query_exists ()) {
+						Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %ssync/* %s/sync'".printf (dbpath, tmp_dbpath));
+					}
 				}
 				// remove an existing pamac_aur.db file
 				Process.spawn_command_line_sync ("rm -f %s/sync/pamac_aur.db".printf (tmp_dbpath));
@@ -209,7 +215,10 @@ internal class AlpmConfig {
 		foreach (unowned string noupgrade in noupgrades) {
 			handle.add_noupgrade (noupgrade);
 		}
-		// register dbs
+		return handle;
+	}
+
+	public void register_syncdbs (Alpm.Handle handle) {
 		foreach (unowned AlpmRepo repo in repo_order) {
 			repo.siglevel = merge_siglevel (siglevel, repo.siglevel, repo.siglevel_mask);
 			unowned Alpm.DB db = handle.register_syncdb (repo.name, repo.siglevel);
@@ -222,7 +231,6 @@ internal class AlpmConfig {
 				db.usage = repo.usage;
 			}
 		}
-		return handle;
 	}
 
 	void parse_file (string path, string? section = null) {

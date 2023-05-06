@@ -291,7 +291,6 @@ namespace Pamac {
 			alpm_config.reload ();
 			var alpm_handle = alpm_config.get_handle (files_db, tmp_db);
 			if (alpm_handle == null) {
-				warning (_("Failed to initialize alpm library"));
 				var details = new GenericArray<string> (1);
 				details.add (_("Failed to initialize alpm library"));
 				do_emit_error ("Alpm Error", details);
@@ -302,6 +301,7 @@ namespace Pamac {
 				alpm_handle.set_fetchcb (cb_fetch, this);
 				alpm_handle.set_logcb (cb_log, this);
 			}
+			alpm_config.register_syncdbs (alpm_handle);
 			return alpm_handle;
 		}
 
@@ -400,9 +400,7 @@ namespace Pamac {
 
 		public bool refresh (string sender, bool force_refresh) {
 			this.sender = sender;
-			if (!do_get_authorization ()) {
-				return false;
-			}
+			// no authorization needed because tmp dbs are used
 			do_emit_action (_("Synchronizing package databases") + "...");
 			write_log_file ("synchronizing package lists");
 			cancellable.reset ();
@@ -502,6 +500,7 @@ namespace Pamac {
 			if (alpm_handle == null) {
 				return false;
 			}
+			alpm_config.register_syncdbs (alpm_handle);
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle.set_questioncb (cb_question, this);
 			cancellable.reset ();
@@ -1056,6 +1055,7 @@ namespace Pamac {
 				var file = File.new_for_path (tmp_path);
 				if (file.query_exists ()) {
 					try {
+						Process.spawn_command_line_sync ("mkdir -p %ssync".printf (alpm_config.dbpath));
 						Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/dbs/sync/* %ssync'".printf (tmp_path, alpm_config.dbpath));
 						// remove an existing pamac_aur.db file
 						Process.spawn_command_line_sync ("rm -f %ssync/pamac_aur.db".printf (alpm_config.dbpath));
