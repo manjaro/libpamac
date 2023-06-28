@@ -26,7 +26,7 @@ namespace Pamac {
 		public abstract HashTable<unowned string, App> get_category_apps (string category);
 	}
 
-	public abstract class App : Object {
+	internal abstract class App : Object {
 		public abstract string? name { get; }
 		public abstract string? id { get; }
 		public abstract string? pkgname { get; }

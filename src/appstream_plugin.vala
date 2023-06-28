@@ -18,7 +18,7 @@
  */
 
 namespace Pamac {
-	public class AppLinked : App {
+	internal class AppLinked : App {
 		// common
 		AppStream.Component? _as_app;
 		// Package
