@@ -1,7 +1,7 @@
 /*
  *  pamac-vala
  *
- *  Copyright (C) 2014-2022 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2014-2023 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,6 +43,9 @@ namespace Pamac {
 				}
 			}
 		}
+		public bool support_appstream { get; private set; }
+		public bool enable_appstream { get; set; }
+		PluginLoader<AppstreamPlugin> appstream_plugin_loader;
 		public bool support_snap { get; private set; }
 		public bool enable_snap { get; set; }
 		PluginLoader<SnapPlugin> snap_plugin_loader;
@@ -117,6 +120,12 @@ namespace Pamac {
 			}
 			// set default option
 			refresh_period = 6;
+			// load appstream plugin
+			support_appstream = false;
+			appstream_plugin_loader = new PluginLoader<AppstreamPlugin> ("pamac-appstream");
+			if (appstream_plugin_loader.load ()) {
+				support_appstream = true;
+			}
 			// load snap plugin
 			support_snap = false;
 			snap_plugin_loader = new PluginLoader<SnapPlugin> ("pamac-snap");
@@ -151,6 +160,7 @@ namespace Pamac {
 			refresh_period = 6;
 			no_update_hide_icon = false;
 			enable_aur = false;
+			enable_appstream = true;
 			enable_snap = false;
 			enable_flatpak = false;
 			check_flatpak_updates = false;
@@ -168,6 +178,9 @@ namespace Pamac {
 			if (refresh_period > 168) {
 				refresh_period = 168;
 			}
+			if (!support_appstream) {
+				enable_appstream = false;
+			}
 			if (!support_snap) {
 				enable_snap = false;
 			}
@@ -177,6 +190,13 @@ namespace Pamac {
 			if (!enable_flatpak) {
 				check_flatpak_updates = false;
 			}
+		}
+
+		internal AppstreamPlugin? get_appstream_plugin () {
+			if (support_appstream) {
+				return appstream_plugin_loader.new_object ();
+			}
+			return null;
 		}
 
 		internal SnapPlugin? get_snap_plugin () {

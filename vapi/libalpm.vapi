@@ -708,7 +708,7 @@ namespace Alpm {
 		 * @return a pointer to the matching file or NULL if not found
 		 */
 		[CCode (cname = "alpm_filelist_contains")]
-		unowned Alpm.File? contains(string path);
+		public unowned Alpm.File? contains(string path);
 	}
 
 	/** Local package or package file backup entry */

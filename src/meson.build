@@ -5,7 +5,6 @@ libalpm = dependency('libalpm')
 json = dependency('json-glib-1.0')
 libsoup = dependency('libsoup-3.0')
 polkit = dependency('polkit-gobject-1')
-appstream = dependency('appstream-glib')
 
 gmodule = dependency('gmodule-2.0')
 
@@ -25,9 +24,24 @@ libpamac_sources = ['package.vala', 'alpm_package.vala',
 					'aur.vala', 'database.vala', 'transaction.vala', 'transaction_interface.vala',
 					'alpm_utils.vala', 'transaction_interface_root.vala', 'daemon_interface.vala',
 					'transaction_interface_daemon.vala', 'snap_interface.vala', 'flatpak_interface.vala',
-					'updates_checker.vala']
+					'appstream_interface.vala', 'updates_checker.vala']
 
-libpamac_dependencies = [alpm_deps, math, json, appstream, libsoup, gmodule]
+libpamac_dependencies = [alpm_deps, math, json, libsoup, gmodule]
+
+if get_option('enable-appstream')
+	appstream = dependency('appstream')
+
+	libpamac_appstream = library('pamac-appstream',
+		sources: ['appstream_interface.vala', 'appstream_plugin.vala'],
+		vala_args: common_vala_args,
+		c_args: common_c_args,
+		dependencies: [gio, appstream, gmodule],
+		version: '11.5',
+		install: true,
+		install_dir: [true, true, true])
+
+	common_vala_args += '--define=ENABLE_APPSTREAM'
+endif
 
 if get_option('enable-snap')
 	snapd = dependency('snapd-glib-2')
@@ -84,7 +98,7 @@ custom_target('pamac typelib', command: [g_ir_compiler, '--shared-library', 'lib
 
 daemon_sources = ['version.vala', 'package.vala', 'alpm_package.vala', 'aur.vala', 'alpm_utils.vala',
 				'alpm_config.vala', 'pamac_config_daemon.vala', 'daemon.vala', 'plugin_loader.vala',
-				'database.vala', 'snap_interface.vala', 'flatpak_interface.vala']
+				'database.vala', 'appstream_interface.vala', 'snap_interface.vala', 'flatpak_interface.vala']
 daemon_dependencies = [vala_deps, alpm_deps, json, math, libsoup, polkit, appstream, gmodule]
 
 executable('pamac-daemon',

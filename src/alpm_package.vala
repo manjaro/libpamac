@@ -1,7 +1,7 @@
 /*
  *  pamac-vala
  *
- *  Copyright (C) 2014-2022 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2014-2023 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,67 +20,51 @@
 namespace Pamac {
 	public abstract class AlpmPackage : Package {
 		// Package
-		As.App? _as_app;
+		App? _app;
 		unowned string? _app_name;
 		unowned string? _app_id;
-		string? _long_desc;
+		unowned string? _long_desc;
 		unowned string? _launchable;
-		string? _icon;
+		unowned string? _icon;
 		GenericArray<string> _screenshots;
 
 		// Package
 		public override string? app_name {
 			get {
-				if (_app_name == null && _as_app != null) {
-					_app_name = _as_app.get_name (null);
+				if (_app_name == null && _app != null) {
+					_app_name = _app.name;
 				}
 				return _app_name;
 			}
 		}
 		public override string? app_id {
 			get {
-				if (_app_id == null && _as_app != null) {
-					_app_id = _as_app.get_id ();
+				if (_app_id == null && _app != null) {
+					_app_id = _app.id;
 				}
 				return _app_id;
 			}
 		}
 		public override string? long_desc {
 			get {
-				if (_long_desc == null && _as_app != null) {
-					try {
-						_long_desc = As.markup_convert_simple (_as_app.get_description (null));
-					} catch (Error e) {
-						warning (e.message);
-					}
+				if (_long_desc == null && _app != null) {
+					_long_desc = _app.long_desc;
 				}
 				return _long_desc;
 			}
 		}
 		public override string? launchable {
 			get {
-				if (_launchable == null && _as_app != null) {
-					As.Launchable? launchable = _as_app.get_launchable_by_kind (As.LaunchableKind.DESKTOP_ID);
-					if (launchable != null) {
-						return launchable.get_value ();
-					}
+				if (_launchable == null && _app != null) {
+					_launchable = _app.launchable;
 				}
 				return _launchable;
 			}
 		}
 		public override string? icon {
 			get {
-				if (_icon == null && _as_app != null) {
-					unowned GenericArray<As.Icon> icons = _as_app.get_icons ();
-					for (uint i = 0; i < icons.length; i++) {
-						As.Icon as_icon = icons[i];
-						if (as_icon.get_kind () == As.IconKind.CACHED) {
-							if (as_icon.get_height () == 64) {
-								_icon = "/usr/share/app-info/icons/archlinux-arch-%s/64x64/%s".printf (repo, as_icon.get_name ());
-								break;
-							}
-						}
-					}
+				if (_icon == null && _app != null) {
+					_icon = _app.icon;
 				}
 				return _icon;
 			}
@@ -88,18 +72,10 @@ namespace Pamac {
 		public override GenericArray<string> screenshots {
 			get {
 				if (_screenshots == null) {
-					_screenshots = new GenericArray<string> ();
-					if (_as_app != null) {
-						unowned GLib.GenericArray<As.Screenshot> as_screenshots = _as_app.get_screenshots ();
-						foreach (unowned As.Screenshot as_screenshot in as_screenshots) {
-							As.Image? as_image = as_screenshot.get_source ();
-							if (as_image != null) {
-								unowned string? url = as_image.get_url ();
-								if (url != null) {
-									_screenshots.add (url);
-								}
-							}
-						}
+					if (_app != null) {
+						_screenshots = _app.screenshots;
+					} else {
+						_screenshots = new GenericArray<string> ();
 					}
 				}
 				return _screenshots;
@@ -128,12 +104,12 @@ namespace Pamac {
 
 		public abstract async unowned GenericArray<string> get_files_async ();
 
-		internal void set_as_app (As.App? as_app) {
-			_as_app = as_app;
+		internal void set_app (App? app) {
+			_app = app;
 		}
 
-		internal unowned As.App? get_as_app () {
-			return _as_app;
+		internal unowned App? get_app () {
+			return _app;
 		}
 	}
 
@@ -196,8 +172,8 @@ namespace Pamac {
 		public override string id {
 			get {
 				if (_id == null) {
-					unowned As.App? as_app = get_as_app ();
-					if (as_app != null) {
+					unowned App? app = get_app ();
+					if (app != null) {
 						_id = "%s/%s".printf (name, app_name);
 					} else {
 						_id = name;
@@ -236,9 +212,9 @@ namespace Pamac {
 		public override string? desc {
 			get {
 				if (_desc == null) {
-					unowned As.App? as_app = get_as_app ();
-					if (as_app != null) {
-						unowned string? summary = as_app.get_comment (null);
+					unowned App? app = get_app ();
+					if (app != null) {
+						unowned string? summary = app.desc;
 						if (summary != null) {
 							_desc = summary;
 						}
