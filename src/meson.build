@@ -11,7 +11,6 @@ gmodule = dependency('gmodule-2.0')
 posix = meson.get_compiler('vala').find_library('posix')
 math = meson.get_compiler('c').find_library('m')
 
-vala_deps = [gobject]
 alpm_deps = [libalpm, gio, posix]
 
 alpm_c_args = ['-D_FILE_OFFSET_BITS=64']
@@ -19,14 +18,18 @@ alpm_c_args = ['-D_FILE_OFFSET_BITS=64']
 common_vala_args = ['--pkg=posix', '--vapidir=' + join_paths(meson.source_root(), 'vapi')]
 common_c_args = ['-DGETTEXT_PACKAGE="pamac"']
 
-libpamac_sources = ['package.vala', 'alpm_package.vala',
-					'plugin_loader.vala', 'alpm_config.vala', 'pamac_config.vala', 'version.vala',
-					'aur.vala', 'database.vala', 'transaction.vala', 'transaction_interface.vala',
-					'alpm_utils.vala', 'transaction_interface_root.vala', 'daemon_interface.vala',
-					'transaction_interface_daemon.vala', 'snap_interface.vala', 'flatpak_interface.vala',
-					'appstream_interface.vala', 'updates_checker.vala']
+if get_option('enable-aur')
+	libpamac_appstream = library('pamac-aur',
+		sources: ['aur_interface.vala', 'aur_plugin.vala', 'utils.vala', 'version.vala'],
+		vala_args: common_vala_args,
+		c_args: common_c_args,
+		dependencies: [alpm_deps, math, json, libsoup, gmodule],
+		version: '11.5',
+		install: true,
+		install_dir: [true, true, true])
 
-libpamac_dependencies = [alpm_deps, math, json, libsoup, gmodule]
+	common_vala_args += '--define=ENABLE_AUR'
+endif
 
 if get_option('enable-appstream')
 	appstream = dependency('appstream')
@@ -74,8 +77,13 @@ if get_option('enable-flatpak')
 endif
 
 libpamac = library('pamac',
-	sources: libpamac_sources,
-	dependencies: libpamac_dependencies,
+	sources: ['package.vala', 'alpm_package.vala', 'utils.vala',
+			'plugin_loader.vala', 'alpm_config.vala', 'pamac_config.vala', 'version.vala',
+			'aur_interface.vala', 'database.vala', 'transaction.vala', 'alpm_utils.vala',
+			'transaction_interface.vala', 'transaction_interface_root.vala', 'daemon_interface.vala',
+			'transaction_interface_daemon.vala', 'snap_interface.vala', 'flatpak_interface.vala',
+			'appstream_interface.vala', 'updates_checker.vala'],
+	dependencies: [alpm_deps, math, libsoup, gmodule],
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
 	version: '11.5',
@@ -96,28 +104,25 @@ custom_target('pamac typelib', command: [g_ir_compiler, '--shared-library', 'lib
 	install: true,
 	install_dir: join_paths(get_option('libdir'), 'girepository-1.0'))
 
-daemon_sources = ['version.vala', 'package.vala', 'alpm_package.vala', 'aur.vala', 'alpm_utils.vala',
-				'alpm_config.vala', 'pamac_config_daemon.vala', 'daemon.vala', 'plugin_loader.vala',
-				'database.vala', 'appstream_interface.vala', 'snap_interface.vala', 'flatpak_interface.vala']
-daemon_dependencies = [vala_deps, alpm_deps, json, math, libsoup, polkit, appstream, gmodule]
-
 executable('pamac-daemon',
-	sources: daemon_sources,
-	dependencies: daemon_dependencies,
+	sources: ['version.vala', 'package.vala', 'alpm_package.vala', 'aur_interface.vala', 'utils.vala',
+				'alpm_utils.vala', 'alpm_config.vala', 'pamac_config_daemon.vala', 'daemon.vala', 'plugin_loader.vala',
+				'database.vala', 'appstream_interface.vala', 'snap_interface.vala', 'flatpak_interface.vala'],
+	dependencies: [alpm_deps, math, libsoup, polkit, appstream, gmodule],
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
 	install : true)
 
 executable('dependency-checker',
 	sources: ['alpm_config.vala', 'dependency_checker.vala'],
-	dependencies: [vala_deps, alpm_deps],
+	dependencies: [alpm_deps],
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
 	install : true)
 
 executable('outdated-checker',
 	sources: ['alpm_config.vala', 'outdated_checker.vala'],
-	dependencies: [vala_deps, alpm_deps],
+	dependencies: [alpm_deps],
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
 	install : true)

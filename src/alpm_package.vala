@@ -591,7 +591,7 @@ namespace Pamac {
 		}
 	}
 
-	internal class AlpmPackageData : AlpmPackageLinked {
+	internal class AlpmPackageStatic : AlpmPackageLinked {
 		// Package
 		string _version;
 		string? _installed_version;
@@ -622,7 +622,7 @@ namespace Pamac {
 		// AlpmPackage
 		public override string? packager { get { return _packager; } }
 
-		internal AlpmPackageData (Alpm.Package alpm_pkg, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
+		internal AlpmPackageStatic (Alpm.Package alpm_pkg, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
 			// version
 			_version = alpm_pkg.version;
 			// desc
@@ -689,7 +689,7 @@ namespace Pamac {
 			set_sync_pkg (null);
 		}
 
-		internal AlpmPackageData.transaction (Alpm.Package alpm_pkg, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
+		internal AlpmPackageStatic.transaction (Alpm.Package alpm_pkg, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
 			// set pkgs
 			set_alpm_pkg (alpm_pkg);
 			set_local_pkg (local_pkg);
@@ -743,8 +743,7 @@ namespace Pamac {
 
 	internal class AURPackageLinked : AURPackage {
 		// common
-		Json.Object? json_object;
-		AUR? aur;
+		AURInfos? aur_infos;
 		unowned Alpm.Package? local_pkg;
 		unowned Database database;
 		bool is_update;
@@ -785,7 +784,7 @@ namespace Pamac {
 		GenericArray<string> _conflicts;
 		GenericArray<string> _backups;
 		GenericArray<string> _files;
-		// AURPackage
+		// AURInfos
 		unowned string? _packagebase;
 		unowned string? _maintainer;
 		double _popularity;
@@ -797,8 +796,8 @@ namespace Pamac {
 		// Package
 		public override string name {
 			get {
-				if (_name == null && json_object != null) {
-					_name = json_object.get_string_member ("Name");
+				if (_name == null && aur_infos != null) {
+					_name = aur_infos.name;
 				}
 				return _name;
 			}
@@ -806,8 +805,8 @@ namespace Pamac {
 		}
 		public override string id {
 			get {
-				if (_id == null && json_object != null) {
-					_id = json_object.get_string_member ("Name");
+				if (_id == null && aur_infos != null) {
+					_id = aur_infos.name;
 				}
 				return _id;
 			}
@@ -815,8 +814,8 @@ namespace Pamac {
 		}
 		public override string version {
 			get {
-				if (_version == null && json_object != null) {
-					_version = json_object.get_string_member ("Version");
+				if (_version == null && aur_infos != null) {
+					_version = aur_infos.version;
 				}
 				return _version;
 			}
@@ -839,11 +838,8 @@ namespace Pamac {
 				if (_desc == null) {
 					if (!is_update && local_pkg != null) {
 						_desc = local_pkg.desc;
-					} else if (json_object != null) {
-						unowned Json.Node? node = json_object.get_member ("Description");
-						if (node != null) {
-							_desc = node.get_string ();
-						}
+					} else if (aur_infos != null) {
+						_desc = aur_infos.desc;
 					}
 				}
 				return _desc;
@@ -877,23 +873,8 @@ namespace Pamac {
 						} else {
 							_license = dgettext (null, "Unknown");
 						}
-					} else if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("License");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								var license_str = new StringBuilder (json_array.get_string_element (0));
-								uint json_array_length = json_array.get_length ();
-								for (uint i = 1; i < json_array_length; i++) {
-									license_str.append (" ");
-									license_str.append (json_array.get_string_element (i));
-								}
-								_license = (owned) license_str.str;
-							} else {
-								_license = dgettext (null, "Unknown");
-							}
-						}
+					} else if (aur_infos != null) {
+						_license = aur_infos.license;
 					}
 				}
 				return _license;
@@ -904,11 +885,8 @@ namespace Pamac {
 				if (_url == null) {
 					if (!is_update && local_pkg != null) {
 						_url = local_pkg.url;
-					} else if (json_object != null) {
-						unowned Json.Node? node = json_object.get_member ("URL");
-						if (node != null) {
-							_url = node.get_string ();
-						}
+					} else if (aur_infos != null) {
+						_url = aur_infos.url;
 					}
 				}
 				return _url;
@@ -1025,15 +1003,8 @@ namespace Pamac {
 							_groups.add (list.data);
 							list.next ();
 						}
-					} else if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("Groups");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _groups);
-							}
-						}
+					} else if (aur_infos != null) {
+						_groups = aur_infos.groups;
 					}
 				}
 				return _groups;
@@ -1049,15 +1020,8 @@ namespace Pamac {
 							_depends.add (list.data.compute_string ());
 							list.next ();
 						}
-					} else if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("Depends");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _depends);
-							}
-						}
+					} else if (aur_infos != null) {
+						_depends = aur_infos.depends;
 					}
 				}
 				return _depends;
@@ -1074,15 +1038,8 @@ namespace Pamac {
 							_optdepends.add (list.data.compute_string ());
 							list.next ();
 						}
-					} else if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("OptDepends");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _optdepends);
-							}
-						}
+					} else if (aur_infos != null) {
+						_optdepends = aur_infos.optdepends;
 					}
 				}
 				return _optdepends;
@@ -1092,15 +1049,8 @@ namespace Pamac {
 			get {
 				if (_makedepends == null) {
 					_makedepends = new GenericArray<string> ();
-					if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("MakeDepends");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _makedepends);
-							}
-						}
+					if (aur_infos != null) {
+						_makedepends = aur_infos.makedepends;
 					}
 				}
 				return _makedepends;
@@ -1110,12 +1060,8 @@ namespace Pamac {
 			get {
 				if (_checkdepends == null) {
 					_checkdepends = new GenericArray<string> ();
-					if (json_object != null) {
-						unowned Json.Node? node = json_object.get_member ("CheckDepends");
-						if (node != null) {
-							unowned Json.Array json_array = node.get_array ();
-							populate_array (json_array, ref _checkdepends);
-						}
+					if (aur_infos != null) {
+						_checkdepends = aur_infos.checkdepends;
 					}
 				}
 				return _checkdepends;
@@ -1163,15 +1109,8 @@ namespace Pamac {
 							_provides.add (list.data.compute_string ());
 							list.next ();
 						}
-					} else if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("Provides");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _provides);
-							}
-						}
+					} else if (aur_infos != null) {
+						_provides = aur_infos.provides;
 					}
 				}
 				return _provides;
@@ -1188,15 +1127,8 @@ namespace Pamac {
 							_replaces.add (list.data.compute_string ());
 							list.next ();
 						}
-					} else if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("Replaces");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _replaces);
-							}
-						}
+					} else if (aur_infos != null) {
+						_replaces = aur_infos.replaces;
 					}
 				}
 				return _replaces;
@@ -1213,15 +1145,8 @@ namespace Pamac {
 							_conflicts.add (list.data.compute_string ());
 							list.next ();
 						}
-					} else if (aur != null) {
-						unowned Json.Object? full_json_object = aur.get_infos (name);
-						if (full_json_object != null) {
-							unowned Json.Node? node = full_json_object.get_member ("Conflicts");
-							if (node != null) {
-								unowned Json.Array json_array = node.get_array ();
-								populate_array (json_array, ref _conflicts);
-							}
-						}
+					} else if (aur_infos != null) {
+						_conflicts = aur_infos.conflicts;
 					}
 				}
 				return _conflicts;
@@ -1245,11 +1170,11 @@ namespace Pamac {
 				return _backups;
 			}
 		}
-		// AURPackage
+		// AURInfos
 		public override string? packagebase {
 			get {
-				if (_packagebase == null && json_object != null) {
-					_packagebase = json_object.get_string_member ("PackageBase");
+				if (_packagebase == null && aur_infos != null) {
+					_packagebase = aur_infos.packagebase;
 				}
 				return _packagebase;
 			}
@@ -1257,43 +1182,40 @@ namespace Pamac {
 		}
 		public override string? maintainer {
 			get {
-				if (_maintainer == null && json_object != null) {
-					_maintainer = json_object.get_string_member ("Maintainer");
+				if (_maintainer == null && aur_infos != null) {
+					_maintainer = aur_infos.maintainer;
 				}
 				return _maintainer;
 			}
 		}
 		public override double popularity {
 			get {
-				if (_popularity == 0 && json_object != null) {
-					_popularity = json_object.get_double_member ("Popularity");
+				if (_popularity == 0 && aur_infos != null) {
+					_popularity = aur_infos.popularity;
 				}
 				return _popularity;
 			}
 		}
 		public override DateTime? lastmodified {
 			get {
-				if (_lastmodified == null && json_object != null) {
-					_lastmodified = new DateTime.from_unix_local (json_object.get_int_member ("LastModified"));
+				if (_lastmodified == null && aur_infos != null) {
+					_lastmodified = aur_infos.lastmodified;
 				}
 				return _lastmodified;
 			}
 		}
 		public override DateTime? outofdate {
 			get {
-				if (_outofdate == null && json_object != null) {
-					unowned Json.Node? node = json_object.get_member ("OutOfDate");
-					if (!node.is_null ()) {
-						_outofdate = new DateTime.from_unix_local (node.get_int ());
-					}
+				if (_outofdate == null && aur_infos != null) {
+					_outofdate =aur_infos.outofdate;
 				}
 				return _outofdate;
 			}
 		}
 		public override DateTime? firstsubmitted {
 			get {
-				if (_firstsubmitted == null && json_object != null) {
-					_firstsubmitted = new DateTime.from_unix_local (json_object.get_int_member ("FirstSubmitted"));
+				if (_firstsubmitted == null && aur_infos != null) {
+					_firstsubmitted = aur_infos.firstsubmitted;
 				}
 				return _firstsubmitted;
 			}
@@ -1301,7 +1223,7 @@ namespace Pamac {
 		public override uint64 numvotes {
 			get {
 				if (_numvotes == 0) {
-					_numvotes = (uint64) json_object.get_int_member ("NumVotes");
+					_numvotes = aur_infos.numvotes;
 				}
 				return _numvotes;
 			}
@@ -1309,21 +1231,11 @@ namespace Pamac {
 
 		internal AURPackageLinked () {}
 
-		internal void initialise_from_json (Json.Object? json_object, AUR? aur, Alpm.Package? local_pkg, Database database, bool is_update = false) {
-			this.json_object = json_object;
-			this.aur = aur;
+		internal void initialise_from_aur_infos (AURInfos? aur_infos, Alpm.Package? local_pkg, Database database, bool is_update = false) {
+			this.aur_infos = aur_infos;
 			this.local_pkg = local_pkg;
 			this.database = database;
 			this.is_update = is_update;
-		}
-
-		void populate_array (Json.Array? json_array, ref GenericArray<string> array) {
-			if (json_array != null) {
-				uint json_array_length = json_array.get_length ();
-				for (uint i = 0; i < json_array_length; i++) {
-					array.add (json_array.get_string_element (i));
-				}
-			}
 		}
 
 		public override unowned GenericArray<string> get_files () {
@@ -1349,7 +1261,7 @@ namespace Pamac {
 		}
 	}
 
-	internal class AURPackageData : AURPackageLinked {
+	internal class AURPackageStatic : AURPackageLinked {
 		// Package
 		string? _desc;
 		// AURPackage
@@ -1366,7 +1278,7 @@ namespace Pamac {
 			internal set { _packagebase = value; }
 		}
 
-		internal AURPackageData () {}
+		internal AURPackageStatic () {}
 	}
 
 	public class TransactionSummary : Object {

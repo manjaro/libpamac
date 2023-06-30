@@ -17,34 +17,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-string? get_os_id () {
-	var file = GLib.File.new_for_path ("/etc/os-release");
-	if (file.query_exists ()) {
-		try {
-			var dis = new DataInputStream (file.read ());
-			string? line;
-			// Read lines until end of file (null) is reached
-			while ((line = dis.read_line ()) != null) {
-				if (line.has_prefix ("ID=")) {
-					return (owned) line.split ("ID=", 2)[1];
-				}
-			}
-		} catch (Error e) {
-			// silent error
-		}
-	}
-	return null;
-}
-
-string get_user_agent () {
-	string? id = get_os_id ();
-	if (id == null) {
-		return "Pamac/%s".printf (VERSION);
-	} else {
-		return "Pamac/%s_%s".printf (VERSION, id);
-	}
-}
-
 class Download: Object {
 	unowned Pamac.AlpmUtils alpm_utils;
 	unowned string cachedir;
@@ -489,7 +461,7 @@ namespace Pamac {
 				local_pkg = alpm_handle.localdb.get_pkg (alpm_pkg.name);
 				sync_pkg = get_syncpkg (alpm_handle, alpm_pkg.name);
 			}
-			return new AlpmPackageData.transaction (alpm_pkg, local_pkg, sync_pkg);
+			return new AlpmPackageStatic.transaction (alpm_pkg, local_pkg, sync_pkg);
 		}
 
 		public bool download_updates (string sender) {

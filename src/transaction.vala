@@ -32,7 +32,7 @@ namespace Pamac {
 		unowned MainContext context;
 		// run transaction data
 		AlpmUtils alpm_utils;
-		AUR aur;
+		AURPlugin aur_plugin;
 		bool sysupgrading;
 		bool force_refresh;
 		int trans_flags;
@@ -96,7 +96,7 @@ namespace Pamac {
 			config = database.config;
 			context = database.context;
 			alpm_utils = database.alpm_utils;
-			aur = database.aur;
+			aur_plugin = database.aur_plugin;
 			if (Posix.geteuid () == 0) {
 				// we are root
 				transaction_interface = new TransactionInterfaceRoot (alpm_utils, context);
@@ -129,6 +129,20 @@ namespace Pamac {
 			ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
 			overwrite_files = new GenericSet<string?> (str_hash, str_equal);
 			to_install_as_dep = new GenericSet<string?> (str_hash, str_equal);
+			if (config.support_aur) {
+				database.aur_plugin.emit_download_progress.connect ((status, progress) => {
+					context.invoke (() => {
+						emit_download_progress (_("Refreshing %s").printf (_("AUR")) + "...", status, progress);
+						return false;
+					});
+				});
+				database.aur_plugin.emit_download_error.connect ((message) => {
+					context.invoke (() => {
+						emit_script_output (message);
+						return false;
+					});
+				});
+			}
 			alpm_utils.choose_provider.connect (choose_provider_real);
 			alpm_utils.emit_action.connect ((sender, action) => {
 				context.invoke (() => {
@@ -244,7 +258,10 @@ namespace Pamac {
 		}
 
 		protected async GenericArray<string> get_build_files_async (string pkgname) {
-			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			if (!config.support_aur) {
+				return new GenericArray<string> ();
+			}
+			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 			string pkgdir_name = Path.build_filename (real_aur_build_dir, pkgname);
 			var files = new GenericArray<string> ();
 			// PKGBUILD
@@ -352,7 +369,10 @@ namespace Pamac {
 		}
 
 		public async void clean_build_files_async () {
-			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			if (!config.support_aur) {
+				return;
+			}
+			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 			try {
 				yield transaction_interface.clean_build_files (real_aur_build_dir);
 			} catch (Error e) {
@@ -476,7 +496,7 @@ namespace Pamac {
 			if (to_get_from_aur.length > 0) {
 				aur_pkgs = yield database.get_aur_pkgs_async (to_get_from_aur);
 			}
-			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 			foreach (unowned string pkgname in pkgnames) {
 				if (build_cancellable.is_cancelled ()) {
 					return false;
@@ -491,9 +511,9 @@ namespace Pamac {
 					if (aur_pkg == null) {
 						// may be a virtual package
 						// use search and add results
-						var providers = aur.get_providers (pkgname);
-						foreach (unowned Json.Object object in providers) {
-							unowned string provider_name = object.get_string_member ("Name");
+						var providers = aur_plugin.get_providers (pkgname);
+						foreach (unowned AURInfos info in providers) {
+							unowned string provider_name = info.name;
 							dep_to_check.add (provider_name);
 							clone_files.add (provider_name);
 							if (pkgname in clone_deps_files) {
@@ -715,7 +735,7 @@ namespace Pamac {
 								current_section = pkgname_found;
 								current_section_is_pkgbase = false;
 								if (!pkgnames_table.contains (pkgname_found)) {
-									var aur_pkg_found = new AURPackageData ();
+									var aur_pkg_found = new AURPackageStatic ();
 									aur_pkg_found.name = pkgname_found;
 									aur_pkg_found.version = version.str;
 									aur_pkg_found.desc = desc;
@@ -1290,7 +1310,7 @@ namespace Pamac {
 			if (to_install.length > 0) {
 				yield add_optdeps ();
 			}
-			if (sysupgrading && config.check_aur_updates) {
+			if (sysupgrading && database.config.support_aur && config.check_aur_updates) {
 				var updates = yield database.get_aur_updates_async (ignorepkgs);
 				foreach (unowned AURPackage aur_pkg in updates.aur_updates) {
 					add_pkg_to_build (aur_pkg.name, true, true);
@@ -1377,8 +1397,8 @@ namespace Pamac {
 					emit_error ("Daemon Error", details);
 					success = false;
 				}
-				if (config.check_aur_updates) {
-					bool aur_success = database.aur.update_db (force_refresh, true);
+				if (config.support_aur && config.check_aur_updates) {
+					bool aur_success = database.aur_plugin.update_db (force_refresh, true);
 					if (!aur_success) {
 						emit_warning (dgettext (null, "Failed to synchronize AUR database"));
 					}
@@ -1428,7 +1448,7 @@ namespace Pamac {
 							}
 						}
 						foreach (unowned string pkgname in alpm_utils.unresolvables) {
-							unowned string real_aur_build_dir = aur.get_real_build_dir ();
+							unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 							string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 							success = yield clone_build_files_if_needed (pkgdir, pkgname);
 							if (!success) {
@@ -1483,7 +1503,7 @@ namespace Pamac {
 					}
 				}
 				if (yield ask_edit_build_files_real (summary)) {
-					unowned string real_aur_build_dir = aur.get_real_build_dir ();
+					unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
 						string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 						bool success = yield clone_build_files_if_needed (pkgdir, pkgname);
@@ -1547,7 +1567,7 @@ namespace Pamac {
 				if (success) {
 					// clone build files and check signatures
 					if (summary.aur_pkgbases_to_build.length != 0) {
-						unowned string real_aur_build_dir = aur.get_real_build_dir ();
+						unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 						foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
 							string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 							success = yield clone_build_files_if_needed (pkgdir, pkgname);
@@ -1620,7 +1640,7 @@ namespace Pamac {
 				}
 				if (success) {
 					// clone build files and check signatures
-					unowned string real_aur_build_dir = aur.get_real_build_dir ();
+					unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
 						string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 						success = yield clone_build_files_if_needed (pkgdir, pkgname);
@@ -1686,6 +1706,9 @@ namespace Pamac {
 		}
 
 		public void add_pkg_to_build (string name, bool clone_build_files, bool clone_deps_build_files) {
+			if (!config.support_aur) {
+				return;
+			}
 			to_build.add (name);
 			if (clone_build_files) {
 				clone_files.add (name);
@@ -1903,7 +1926,7 @@ namespace Pamac {
 				string pkgname = to_build_queue.pop_head ();
 				build_cancellable.reset ();
 				var built_pkgs_path = new GenericArray<string> ();
-				unowned string real_aur_build_dir = aur.get_real_build_dir ();
+				unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 				string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 				bool as_root = Posix.geteuid () == 0;
 				// building

@@ -22,6 +22,7 @@ namespace Pamac {
 		public string path { get; private set; }
 		Type type;
 		Module module;
+		T? plugin;
 
 		delegate Type RegisterPluginFunction (Module module);
 
@@ -43,8 +44,11 @@ namespace Pamac {
 			return true;
 		}
 
-		public T new_object () {
-			return Object.new (type);
+		public T get_plugin () {
+			if (plugin == null && module != null) {
+				plugin = Object.new (type);
+			}
+			return plugin; 
 		}
 	}
 }

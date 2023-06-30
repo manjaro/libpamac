@@ -21,7 +21,9 @@ namespace Pamac {
 	public class Config: Object {
 		public string conf_path { get; construct; }
 		public uint64 refresh_period { get; set; }
+		public bool support_aur { get; private set; }
 		public bool enable_aur { get; set; }
+		PluginLoader<AURPlugin> aur_plugin_loader;
 		public bool support_appstream { get; private set; }
 		public bool enable_appstream { get; set; }
 		PluginLoader<AppstreamPlugin> appstream_plugin_loader;
@@ -51,6 +53,12 @@ namespace Pamac {
 		construct {
 			//get environment variables
 			alpm_config = new AlpmConfig ("/etc/pacman.conf");
+			// load aur plugin
+			support_aur = true;
+			aur_plugin_loader = new PluginLoader<AURPlugin> ("pamac-aur");
+			if (aur_plugin_loader.load ()) {
+				support_aur = true;
+			}
 			// load appstream plugin
 			support_appstream = false;
 			appstream_plugin_loader = new PluginLoader<AppstreamPlugin> ("pamac-appstream");
@@ -95,23 +103,30 @@ namespace Pamac {
 			}
 		}
 
+		internal AURPlugin? get_aur_plugin () {
+			if (support_aur) {
+				return aur_plugin_loader.get_plugin ();
+			}
+			return null;
+		}
+
 		internal AppstreamPlugin? get_appstream_plugin () {
 			if (support_appstream) {
-				return appstream_plugin_loader.new_object ();
+				return appstream_plugin_loader.get_plugin ();
 			}
 			return null;
 		}
 
 		internal SnapPlugin? get_snap_plugin () {
 			if (support_snap) {
-				return snap_plugin_loader.new_object ();
+				return snap_plugin_loader.get_plugin ();
 			}
 			return null;
 		}
 
 		internal FlatpakPlugin? get_flatpak_plugin () {
 			if (support_flatpak) {
-				return flatpak_plugin_loader.new_object ();
+				return flatpak_plugin_loader.get_plugin ();
 			}
 			return null;
 		}

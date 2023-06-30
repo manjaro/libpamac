@@ -1,3 +1,4 @@
 option('enable-appstream', type : 'boolean', value : true, description : 'support appstream data')
+option('enable-aur', type : 'boolean', value : true, description : 'support aur')
 option('enable-snap', type : 'boolean', value : false, description : 'support snap packages')
 option('enable-flatpak', type : 'boolean', value : false, description : 'support flatpak packages')

@@ -37,7 +37,7 @@ namespace Pamac {
 		public Config config { get; construct set; }
 		internal unowned MainContext context { get; private set; }
 		internal Soup.Session soup_session { get; private set; }
-		internal AUR aur { get; private set; }
+		internal AURPlugin aur_plugin { get; private set; }
 		internal AlpmUtils alpm_utils { get; private set; }
 		internal size_t dbs_count { get; set; }
 		internal size_t dbs_index { get; set; }
@@ -64,7 +64,6 @@ namespace Pamac {
 			// if we are root timeout is changed to a higher value in transaction.vala
 			soup_session.timeout = 1;
 			alpm_utils = new AlpmUtils (config, soup_session);
-			aur = new AUR (config, alpm_utils);
 			// set HTTP_USER_AGENT needed when downloading using libalpm like refreshing dbs
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			// init dbs
@@ -88,6 +87,18 @@ namespace Pamac {
 				aur_vcs_pkgs.remove_all ();
 				pkgs_cache.remove_all ();
 				aur_pkgs_cache.remove_all ();
+			}
+			// load aur plugin
+			if (config.support_aur) {
+				aur_plugin = config.get_aur_plugin ();
+				if (aur_plugin == null) {
+					config.enable_aur = false;
+				} else {
+					aur_plugin.set_real_build_dir (config.aur_build_dir);
+					config.notify["aur-build-dir"].connect (() => {
+						aur_plugin.set_real_build_dir (config.aur_build_dir);
+					});
+				}
 			}
 			// load appstream plugin
 			if (config.support_appstream) {
@@ -351,7 +362,7 @@ namespace Pamac {
 		}
 
 		void get_build_files_details_real (ref HashTable<string, uint64?> filenames_size) {
-			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 			var build_directory = File.new_for_path (real_aur_build_dir);
 			if (!build_directory.query_exists ()) {
 				return;
@@ -476,9 +487,9 @@ namespace Pamac {
 			return optdeps;
 		}
 
-		AlpmPackageData initialise_pkg_data (Alpm.Handle? handle, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
+		AlpmPackageStatic initialise_pkg_data (Alpm.Handle? handle, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
 			// only use for updates so it is a sync_pkg
-			var pkg = new AlpmPackageData (sync_pkg, local_pkg, sync_pkg);
+			var pkg = new AlpmPackageStatic (sync_pkg, local_pkg, sync_pkg);
 			if (config.enable_appstream) {
 				// find if pkgname provides only one app
 				GenericArray<App> matching_apps = appstream_plugin.get_pkgname_apps (sync_pkg.name);
@@ -508,7 +519,7 @@ namespace Pamac {
 				new_pkg.set_sync_pkg (found_sync_pkg);
 				new_pkg.set_local_pkg (alpm_pkg);
 				if (found_sync_pkg == null) {
-					if (aur.get_infos (alpm_pkg.name) != null) {
+					if (aur_plugin.get_infos (alpm_pkg.name) != null) {
 						new_pkg.repo = dgettext (null, "AUR");
 					}
 				}
@@ -592,9 +603,9 @@ namespace Pamac {
 			}
 			// get aur infos
 			if (foreign_pkgnames.length > 0) {
-				var json_objects = aur.get_multi_infos (foreign_pkgnames);
-				foreach (unowned Json.Object json_object in json_objects) {
-					unowned AlpmPackageLinked? pkg = data.lookup (json_object.get_string_member ("Name"));
+				var aur_infos_list = aur_plugin.get_multi_infos (foreign_pkgnames);
+				foreach (unowned AURInfos aur_infos in aur_infos_list) {
+					unowned AlpmPackageLinked? pkg = data.lookup (aur_infos.name);
 					if (pkg != null) {
 						pkg.repo = dgettext (null, "AUR");
 					}
@@ -1269,44 +1280,6 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		public async GenericArray<unowned string?> suggest_pkgnames_async (string search_string) {
-			string search_string_down = search_string.down ();
-			var result = new GenericArray<unowned string> ();
-			try {
-				new Thread<int>.try ("search_pkgs", () => {
-					lock (alpm_config) {
-						Alpm.List<unowned string> list = suggest_all_dbs (search_string_down);
-						while (list != null) {
-							unowned string pkgname = list.data;
-							result.add (pkgname);
-							list.next ();
-						}
-					}
-					context.invoke (suggest_pkgnames_async.callback);
-					return 0;
-				});
-				yield;
-			} catch (Error e) {
-				warning (e.message);
-			}
-			if (config.enable_aur) {
-				Json.Array? array = aur.suggest (search_string_down);
-				if (array != null) {
-					uint array_length = array.get_length ();
-					if (array_length > 0) {
-						for (uint i = 0; i < array_length; i++) {
-							unowned string pkgname = array.get_string_element (i);
-							if (!result.find_with_equal_func (pkgname, str_equal)) {
-								result.add (pkgname);
-							}
-						}
-						result.sort (strcmp);
-					}
-				}
-			}
-			return result;
-		}
-
 		void search_pkgs_real (string search_string, ref GenericArray<unowned AlpmPackage> pkgs) {
 			lock (alpm_config) {
 				Alpm.List<unowned Alpm.Package> result = search_all_dbs (search_string);
@@ -1353,15 +1326,15 @@ namespace Pamac {
 		}
 
 		void search_aur_pkgs_real (string search_string, ref GenericArray<unowned AURPackage> pkgs) {
-			var json_objects = aur.search (search_string);
+			var aur_infos_list = aur_plugin.search (search_string);
 			lock (alpm_config) {
-				foreach (unowned Json.Object json_object in json_objects) {
-					unowned string name = json_object.get_string_member ("Name");
+				foreach (unowned AURInfos aur_infos in aur_infos_list) {
+					unowned string name = aur_infos.name;
 					AURPackageLinked pkg = aur_pkgs_cache.lookup (name);
 					if (pkg == null) {
 						unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (name);
 						pkg = new AURPackageLinked ();
-						pkg.initialise_from_json (json_object, aur, local_pkg, this);
+						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
 						aur_pkgs_cache.replace (pkg.id, pkg);
 					}
 					pkgs.add (pkg);
@@ -1790,7 +1763,7 @@ namespace Pamac {
 			int status = 1;
 			GenericArray<string> cmdline;
 			var launcher = new SubprocessLauncher (SubprocessFlags.NONE);
-			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 			var builddir = File.new_for_path (real_aur_build_dir);
 			if (!builddir.query_exists ()) {
 				try {
@@ -1945,7 +1918,7 @@ namespace Pamac {
 		}
 
 		public bool regenerate_srcinfo (string pkgname, Cancellable? cancellable = null) {
-			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 			string pkgdir_name = Path.build_filename (real_aur_build_dir, pkgname);
 			var srcinfo = File.new_for_path (Path.build_filename (pkgdir_name, ".SRCINFO"));
 			var pkgbuild = File.new_for_path (Path.build_filename (pkgdir_name, "PKGBUILD"));
@@ -2029,11 +2002,11 @@ namespace Pamac {
 				lock (alpm_config) {
 					pkg = aur_pkgs_cache.lookup (pkgname);
 					if (pkg == null) {
-						unowned Json.Object? json_object = aur.get_infos (pkgname);
-						if (json_object != null) {
+						AURInfos? aur_infos = aur_plugin.get_infos (pkgname);
+						if (aur_infos != null) {
 							unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 							var new_pkg = new AURPackageLinked ();
-							new_pkg.initialise_from_json (json_object, aur, local_pkg, this);
+							new_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
 							pkg = new_pkg;
 							aur_pkgs_cache.replace (pkg.id, new_pkg);
 						}
@@ -2066,15 +2039,15 @@ namespace Pamac {
 			foreach (unowned string pkgname in pkgnames) {
 				data.insert (pkgname, null);
 			}
-			var json_objects = aur.get_multi_infos (pkgnames);
+			var aur_infos_list = aur_plugin.get_multi_infos (pkgnames);
 			lock (alpm_config) {
-				foreach (unowned Json.Object json_object in json_objects) {
-					unowned string name = json_object.get_string_member ("Name");
+				foreach (unowned AURInfos aur_infos in aur_infos_list) {
+					unowned string name = aur_infos.name;
 					AURPackageLinked pkg = aur_pkgs_cache.lookup (name);
 					if (pkg == null) {
 						unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (name);
 						pkg = new AURPackageLinked ();
-						pkg.initialise_from_json (json_object, aur, local_pkg, this);
+						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
 						aur_pkgs_cache.replace (pkg.id, pkg);
 					}
 					data.insert (name, pkg);
@@ -2180,6 +2153,7 @@ namespace Pamac {
 				foreach (unowned string name in config.ignorepkgs) {
 					alpm_handle.add_ignorepkg (name);
 				}
+				bool check_aur_updates = config.support_aur && config.check_aur_updates;
 				bool refresh_tmp_dbs = true;
 				if (use_timestamp) {
 					refresh_tmp_dbs = need_refresh ();
@@ -2205,8 +2179,8 @@ namespace Pamac {
 							}
 						}
 					}
-					if (config.check_aur_updates) {
-						success = aur.update_db (false, false);
+					if (check_aur_updates) {
+						success = aur_plugin.update_db (false, false);
 					}
 					if (success) {
 						// save now as last refresh time
@@ -2258,7 +2232,7 @@ namespace Pamac {
 							repos_updates.add (pkg);
 						}
 					} else {
-						if (config.check_aur_updates) {
+						if (check_aur_updates) {
 							// check if installed_pkg is a local pkg
 							unowned Alpm.Package? pkg = get_syncpkg (alpm_handle, installed_pkg.name);
 							if (pkg == null) {
@@ -2285,7 +2259,7 @@ namespace Pamac {
 				if (config.check_flatpak_updates) {
 					flatpak_plugin.get_flatpak_updates (ref flatpak_updates);
 				}
-				if (config.check_aur_updates) {
+				if (check_aur_updates) {
 					if (config.check_aur_vcs_updates && refresh_tmp_dbs) {
 						refresh_vcs_sources (vcs_local_pkgs);
 					}
@@ -2294,7 +2268,7 @@ namespace Pamac {
 						get_updates_progress (95);
 						return false;
 					});
-					get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
+					get_aur_updates_real (aur_plugin.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
 					context.invoke (() => {
 						get_updates_progress (100);
 						return false;
@@ -2332,12 +2306,12 @@ namespace Pamac {
 		void refresh_vcs_sources (GenericArray<string> vcs_local_pkgs) {
 			foreach (unowned string pkgname in vcs_local_pkgs) {
 				// get last build files
-				unowned Json.Object? json_object = aur.get_infos (pkgname);
-				if (json_object == null) {
+				AURInfos? aur_infos = aur_plugin.get_infos (pkgname);
+				if (aur_infos == null) {
 					// error
 					continue;
 				}
-				File? clone_dir = clone_build_files (json_object.get_string_member ("PackageBase"), false, null);
+				File? clone_dir = clone_build_files (aur_infos.packagebase, false, null);
 				if (clone_dir != null) {
 					// get last sources
 					// no output to not pollute checkupdates output
@@ -2360,7 +2334,7 @@ namespace Pamac {
 
 		HashTable<string, string> get_vcs_last_version (GenericArray<string> vcs_local_pkgs) {
 			var pkgnames_table = new HashTable<string, string> (str_hash, str_equal);
-			unowned string real_aur_build_dir = aur.get_real_build_dir ();
+			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
 			foreach (unowned string pkgname in vcs_local_pkgs) {
 				if (aur_vcs_pkgs.contains (pkgname)) {
 					continue;
@@ -2398,7 +2372,7 @@ namespace Pamac {
 			return pkgnames_table;
 		}
 
-		void get_aur_updates_real (GenericArray<Json.Object> aur_infos, GenericArray<string> vcs_local_pkgs, ref Updates updates) {
+		void get_aur_updates_real (GenericArray<unowned AURInfos> aur_infos_list, GenericArray<string> vcs_local_pkgs, ref Updates updates) {
 			unowned GenericArray<AURPackage> aur_updates = updates.aur_updates;
 			unowned GenericArray<AURPackage> outofdate = updates.outofdate;
 			unowned GenericArray<AURPackage> ignored_aur_updates = updates.ignored_aur_updates;
@@ -2406,8 +2380,8 @@ namespace Pamac {
 			if (config.check_aur_vcs_updates) {
 				vcs_versions = get_vcs_last_version (vcs_local_pkgs);
 			}
-			foreach (unowned Json.Object json_object in aur_infos) {
-				unowned string name = json_object.get_string_member ("Name");
+			foreach (unowned AURInfos aur_infos in aur_infos_list) {
+				unowned string name = aur_infos.name;
 				unowned Alpm.Package local_pkg = alpm_handle.localdb.get_pkg (name);
 				unowned string old_version = local_pkg.version;
 				unowned string new_version;
@@ -2419,10 +2393,10 @@ namespace Pamac {
 						if (vcs_version != null) {
 							new_version = vcs_version;
 						} else {
-							new_version = json_object.get_string_member ("Version");
+							new_version = aur_infos.version;
 						}
 						aur_pkg = new AURPackageLinked ();
-						aur_pkg.initialise_from_json (json_object, aur, local_pkg, this, true);
+						aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, true);
 						// set aur_pkg.version
 						aur_pkg.version = new_version;
 						aur_vcs_pkgs.insert (name, aur_pkg);
@@ -2430,9 +2404,9 @@ namespace Pamac {
 						new_version = aur_pkg.version;
 					}
 				} else {
-					new_version = json_object.get_string_member ("Version");
+					new_version = aur_infos.version;
 					aur_pkg = new AURPackageLinked ();
-					aur_pkg.initialise_from_json (json_object, aur, local_pkg, this, true);
+					aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, true);
 					// set aur_pkg.version
 					aur_pkg.version = new_version;
 				}
@@ -2442,7 +2416,7 @@ namespace Pamac {
 					} else {
 						aur_updates.add (aur_pkg);
 					}
-				} else if (!json_object.get_member ("OutOfDate").is_null ()) {
+				} else if (aur_infos.outofdate != null) {
 					// get out of date packages
 					outofdate.add (aur_pkg);
 				}
@@ -2484,7 +2458,7 @@ namespace Pamac {
 							}
 							pkgcache.next ();
 						}
-						get_aur_updates_real (aur.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
+						get_aur_updates_real (aur_plugin.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
 					}
 					context.invoke (get_aur_updates_async.callback);
 					return 0;

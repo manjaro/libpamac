@@ -21,7 +21,14 @@ namespace Pamac {
 	public class Config: Object {
 		HashTable<string, string> environment_variables_priv;
 		Daemon system_daemon;
+		bool _support_aur;
+		bool _support_appstream;
+		bool _support_snap;
+		bool _support_flatpak;
 		bool _enable_aur;
+		bool _enable_appstream;
+		bool _enable_snap;
+		bool _enable_flatpak;
 		bool _check_aur_updates;
 		bool _download_updates;
 
@@ -32,25 +39,91 @@ namespace Pamac {
 		public bool simple_install { get; set; }
 		public uint64 refresh_period { get; set; }
 		public bool no_update_hide_icon { get; set; }
+		public bool support_aur {
+			get {
+				return _support_aur;
+			}
+			private set {
+				_support_aur = value;
+				if (!_support_aur) {
+					enable_aur = false;
+				}
+			}
+		}
 		public bool enable_aur {
 			get {
 				return _enable_aur;
 			}
 			set {
-				_enable_aur = value;
+				_enable_aur = _support_aur && value;
 				if (!_enable_aur) {
 					check_aur_updates = false;
 				}
 			}
 		}
-		public bool support_appstream { get; private set; }
-		public bool enable_appstream { get; set; }
+		PluginLoader<AURPlugin> aur_plugin_loader;
+		public bool support_appstream {
+			get {
+				return _support_appstream;
+			}
+			private set {
+				_support_appstream = value;
+				if (!_support_appstream) {
+					enable_appstream = false;
+				}
+			}
+		}
+		public bool enable_appstream {
+			get {
+				return _enable_appstream;
+			}
+			set {
+				_enable_appstream = _support_appstream && value;
+			}
+		}
 		PluginLoader<AppstreamPlugin> appstream_plugin_loader;
-		public bool support_snap { get; private set; }
-		public bool enable_snap { get; set; }
+		public bool support_snap {
+			get {
+				return _support_snap;
+			}
+			private set {
+				_support_snap = value;
+				if (!_support_snap) {
+					enable_snap = false;
+				}
+			}
+		}
+		public bool enable_snap {
+			get {
+				return _enable_snap;
+			}
+			set {
+				_enable_snap = _support_snap && value;
+			}
+		}
 		PluginLoader<SnapPlugin> snap_plugin_loader;
-		public bool support_flatpak { get; private set; }
-		public bool enable_flatpak { get; set; }
+		public bool support_flatpak {
+			get {
+				return _support_flatpak;
+			}
+			set {
+				_support_flatpak = value;
+				if (!_support_flatpak) {
+					enable_flatpak = false;
+				}
+			}
+		}
+		public bool enable_flatpak {
+			get {
+				return _enable_flatpak;
+			}
+			set {
+				_enable_flatpak = _support_flatpak && value;
+				if (!_enable_flatpak) {
+					check_flatpak_updates = false;
+				}
+			}
+		}
 		public bool check_flatpak_updates { get; set; }
 		PluginLoader<FlatpakPlugin> flatpak_plugin_loader;
 		public string aur_build_dir { get; set; }
@@ -120,6 +193,12 @@ namespace Pamac {
 			}
 			// set default option
 			refresh_period = 6;
+			// load aur plugin
+			support_aur = false;
+			aur_plugin_loader = new PluginLoader<AURPlugin> ("pamac-aur");
+			if (aur_plugin_loader.load ()) {
+				support_aur = true;
+			}
 			// load appstream plugin
 			support_appstream = false;
 			appstream_plugin_loader = new PluginLoader<AppstreamPlugin> ("pamac-appstream");
@@ -163,7 +242,6 @@ namespace Pamac {
 			enable_appstream = true;
 			enable_snap = false;
 			enable_flatpak = false;
-			check_flatpak_updates = false;
 			aur_build_dir = "/var/tmp";
 			download_updates = false;
 			max_parallel_downloads = 1;
@@ -178,37 +256,32 @@ namespace Pamac {
 			if (refresh_period > 168) {
 				refresh_period = 168;
 			}
-			if (!support_appstream) {
-				enable_appstream = false;
+		}
+
+		internal AURPlugin? get_aur_plugin () {
+			if (support_aur) {
+				return aur_plugin_loader.get_plugin ();
 			}
-			if (!support_snap) {
-				enable_snap = false;
-			}
-			if (!support_flatpak) {
-				enable_flatpak = false;
-			}
-			if (!enable_flatpak) {
-				check_flatpak_updates = false;
-			}
+			return null;
 		}
 
 		internal AppstreamPlugin? get_appstream_plugin () {
 			if (support_appstream) {
-				return appstream_plugin_loader.new_object ();
+				return appstream_plugin_loader.get_plugin ();
 			}
 			return null;
 		}
 
 		internal SnapPlugin? get_snap_plugin () {
 			if (support_snap) {
-				return snap_plugin_loader.new_object ();
+				return snap_plugin_loader.get_plugin ();
 			}
 			return null;
 		}
 
 		internal FlatpakPlugin? get_flatpak_plugin () {
 			if (support_flatpak) {
-				return flatpak_plugin_loader.new_object ();
+				return flatpak_plugin_loader.get_plugin ();
 			}
 			return null;
 		}
