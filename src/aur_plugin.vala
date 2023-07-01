@@ -397,6 +397,12 @@ namespace Pamac {
 			var emit_timer = new Timer ();
 			try {
 				var message = new Soup.Message ("GET", url);
+				if (force == 0 && destfile.query_exists ()) {
+					// start from scratch only download if our local is out of date.
+					FileInfo info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
+					DateTime time = info.get_modification_date_time ();
+					message.request_headers.append ("If-Modified-Since", Soup.date_time_to_string (time, Soup.DateFormat.HTTP));
+				}
 				if (tempfile.query_exists ()) {
 					// removing partial download
 					tempfile.delete ();
