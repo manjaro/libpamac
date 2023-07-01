@@ -447,6 +447,11 @@ namespace Pamac {
 			} catch (Error e) {
 				// cancelled download goes here
 				if (e.code != IOError.CANCELLED) {
+					// workaround for #1305
+					if (e.message == "Unacceptable TLS certificate") {
+						// return no error
+						return 0;
+					}
 					emit_download_error ("%s: %s".printf (url, e.message));
 				}
 				emit_timer.stop ();
