@@ -2826,10 +2826,6 @@ int dload (Pamac.AlpmUtils alpm_utils, string mirror, string filename, string lo
 				alpm_utils.multi_progress_mutex.lock ();
 				alpm_utils.current_action = _("Refreshing %s").printf (filename_copy) + "...";
 				alpm_utils.multi_progress_mutex.unlock ();
-			} else if (filename == "packages-meta-ext-v1.json.gz") {
-				alpm_utils.multi_progress_mutex.lock ();
-				alpm_utils.current_action = _("Refreshing %s").printf (_("AUR")) + "...";
-				alpm_utils.multi_progress_mutex.unlock ();
 			} else {
 				// compute name and version_release
 				string? name_version_release = filename.slice (0, filename.last_index_of_char ('-'));
