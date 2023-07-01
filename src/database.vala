@@ -22,9 +22,9 @@ namespace Pamac {
 		AlpmConfig alpm_config;
 		Alpm.Handle? alpm_handle;
 		Alpm.Handle? files_handle;
-		HashTable<string, AURPackageLinked> aur_vcs_pkgs;
+		HashTable<string, AURPackage> aur_vcs_pkgs;
 		HashTable<unowned string, AlpmPackageLinked> pkgs_cache;
-		HashTable<unowned string, AURPackageLinked> aur_pkgs_cache;
+		HashTable<unowned string, AURPackage> aur_pkgs_cache;
 		GenericArray<string> mirrors_countries;
 		string mirrors_choosen_country;
 		GenericArray<string> groups_names;
@@ -53,9 +53,9 @@ namespace Pamac {
 		construct {
 			alpm_config = config.alpm_config;
 			context = MainContext.default ();
-			aur_vcs_pkgs = new HashTable<string, AURPackageLinked> (str_hash, str_equal);
+			aur_vcs_pkgs = new HashTable<string, AURPackage> (str_hash, str_equal);
 			pkgs_cache = new HashTable<unowned string, AlpmPackageLinked> (str_hash, str_equal);
-			aur_pkgs_cache = new HashTable<unowned string, AURPackageLinked> (str_hash, str_equal);
+			aur_pkgs_cache = new HashTable<unowned string, AURPackage> (str_hash, str_equal);
 			// get_user_agent defined in alpm_utils.vala
 			string user_agent = get_user_agent ();
 			soup_session = new Soup.Session ();
@@ -487,9 +487,9 @@ namespace Pamac {
 			return optdeps;
 		}
 
-		AlpmPackageStatic initialise_pkg_data (Alpm.Handle? handle, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
+		AlpmPackageLinked initialise_pkg_data (Alpm.Handle? handle, Alpm.Package? local_pkg, Alpm.Package? sync_pkg) {
 			// only use for updates so it is a sync_pkg
-			var pkg = new AlpmPackageStatic (sync_pkg, local_pkg, sync_pkg);
+			var pkg = new AlpmPackageLinked.populate_data (sync_pkg, local_pkg, sync_pkg);
 			if (config.enable_appstream) {
 				// find if pkgname provides only one app
 				GenericArray<App> matching_apps = appstream_plugin.get_pkgname_apps (sync_pkg.name);
@@ -1330,11 +1330,11 @@ namespace Pamac {
 			lock (alpm_config) {
 				foreach (unowned AURInfos aur_infos in aur_infos_list) {
 					unowned string name = aur_infos.name;
-					AURPackageLinked pkg = aur_pkgs_cache.lookup (name);
+					AURPackage pkg = aur_pkgs_cache.lookup (name);
 					if (pkg == null) {
 						unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (name);
-						pkg = new AURPackageLinked ();
-						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
+						pkg = new AURPackage ();
+						pkg.initialise_from_aur_infos (aur_infos, local_pkg);
 						aur_pkgs_cache.replace (pkg.id, pkg);
 					}
 					pkgs.add (pkg);
@@ -1997,7 +1997,7 @@ namespace Pamac {
 		}
 
 		public unowned AURPackage? get_aur_pkg (string pkgname) {
-			unowned AURPackageLinked? pkg = null;
+			unowned AURPackage? pkg = null;
 			if (config.enable_aur) {
 				lock (alpm_config) {
 					pkg = aur_pkgs_cache.lookup (pkgname);
@@ -2005,8 +2005,8 @@ namespace Pamac {
 						AURInfos? aur_infos = aur_plugin.get_infos (pkgname);
 						if (aur_infos != null) {
 							unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
-							var new_pkg = new AURPackageLinked ();
-							new_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
+							var new_pkg = new AURPackage ();
+							new_pkg.initialise_from_aur_infos (aur_infos, local_pkg);
 							pkg = new_pkg;
 							aur_pkgs_cache.replace (pkg.id, new_pkg);
 						}
@@ -2034,7 +2034,7 @@ namespace Pamac {
 			return pkg;
 		}
 
-		void get_aur_pkgs_real (GenericArray<string> pkgnames, ref HashTable<string, unowned AURPackageLinked?> data) {
+		void get_aur_pkgs_real (GenericArray<string> pkgnames, ref HashTable<string, unowned AURPackage?> data) {
 			// prepare data with all keys
 			foreach (unowned string pkgname in pkgnames) {
 				data.insert (pkgname, null);
@@ -2043,11 +2043,11 @@ namespace Pamac {
 			lock (alpm_config) {
 				foreach (unowned AURInfos aur_infos in aur_infos_list) {
 					unowned string name = aur_infos.name;
-					AURPackageLinked pkg = aur_pkgs_cache.lookup (name);
+					AURPackage pkg = aur_pkgs_cache.lookup (name);
 					if (pkg == null) {
 						unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (name);
-						pkg = new AURPackageLinked ();
-						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
+						pkg = new AURPackage ();
+						pkg.initialise_from_aur_infos (aur_infos, local_pkg);
 						aur_pkgs_cache.replace (pkg.id, pkg);
 					}
 					data.insert (name, pkg);
@@ -2056,7 +2056,7 @@ namespace Pamac {
 		}
 
 		public HashTable<string, unowned AURPackage?> get_aur_pkgs (GenericArray<string> pkgnames) {
-			var data = new HashTable<string, unowned AURPackageLinked?> (str_hash, str_equal);
+			var data = new HashTable<string, unowned AURPackage?> (str_hash, str_equal);
 			if (!config.enable_aur) {
 				return data;
 			}
@@ -2065,7 +2065,7 @@ namespace Pamac {
 		}
 
 		public async HashTable<string, unowned AURPackage?> get_aur_pkgs_async (GenericArray<string> pkgnames) {
-			var data = new HashTable<string, unowned AURPackageLinked?> (str_hash, str_equal);
+			var data = new HashTable<string, unowned AURPackage?> (str_hash, str_equal);
 			if (!config.enable_aur) {
 				return data;
 			}
@@ -2385,7 +2385,7 @@ namespace Pamac {
 				unowned Alpm.Package local_pkg = alpm_handle.localdb.get_pkg (name);
 				unowned string old_version = local_pkg.version;
 				unowned string new_version;
-				AURPackageLinked? aur_pkg;
+				AURPackage? aur_pkg;
 				if (config.check_aur_vcs_updates) {
 					aur_pkg = aur_vcs_pkgs.lookup (name);
 					if (aur_pkg == null) {
@@ -2395,8 +2395,8 @@ namespace Pamac {
 						} else {
 							new_version = aur_infos.version;
 						}
-						aur_pkg = new AURPackageLinked ();
-						aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, true);
+						aur_pkg = new AURPackage ();
+						aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, true);
 						// set aur_pkg.version
 						aur_pkg.version = new_version;
 						aur_vcs_pkgs.insert (name, aur_pkg);
@@ -2405,8 +2405,8 @@ namespace Pamac {
 					}
 				} else {
 					new_version = aur_infos.version;
-					aur_pkg = new AURPackageLinked ();
-					aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, true);
+					aur_pkg = new AURPackage ();
+					aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, true);
 					// set aur_pkg.version
 					aur_pkg.version = new_version;
 				}

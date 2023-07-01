@@ -461,7 +461,7 @@ namespace Pamac {
 				local_pkg = alpm_handle.localdb.get_pkg (alpm_pkg.name);
 				sync_pkg = get_syncpkg (alpm_handle, alpm_pkg.name);
 			}
-			return new AlpmPackageStatic.transaction (alpm_pkg, local_pkg, sync_pkg);
+			return new AlpmPackageLinked.transaction (alpm_pkg, local_pkg, sync_pkg);
 		}
 
 		public bool download_updates (string sender) {
