@@ -26,7 +26,7 @@ if get_option('enable-aur')
 		dependencies: [alpm_deps, math, json, libsoup, gmodule],
 		version: '11.5',
 		install: true,
-		install_dir: [true, true, true])
+		install_dir: [true])
 
 	common_vala_args += '--define=ENABLE_AUR'
 endif
@@ -41,7 +41,7 @@ if get_option('enable-appstream')
 		dependencies: [gio, appstream, gmodule],
 		version: '11.5',
 		install: true,
-		install_dir: [true, true, true])
+		install_dir: [true])
 
 	common_vala_args += '--define=ENABLE_APPSTREAM'
 endif
@@ -56,7 +56,7 @@ if get_option('enable-snap')
 		dependencies: [gio, math, snapd, gmodule],
 		version: '11.5',
 		install: true,
-		install_dir: [true, true, true])
+		install_dir: [true])
 
 	common_vala_args += '--define=ENABLE_SNAP'
 endif
@@ -71,7 +71,7 @@ if get_option('enable-flatpak')
 		dependencies: [gio, math, flatpak, appstream, gmodule],
 		version: '11.5',
 		install: true,
-		install_dir: [true, true, true])
+		install_dir: [true])
 
 	common_vala_args += '--define=ENABLE_FLATPAK'
 endif
@@ -90,6 +90,7 @@ libpamac = library('pamac',
 	vala_gir: 'Pamac-11.gir',
 	install: true,
 	install_dir: [true, true, true, true])
+				# lib, header, vapi, gir
 
 # create pkg-config file
 pkg = import('pkgconfig')
