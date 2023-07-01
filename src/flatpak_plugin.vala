@@ -18,7 +18,7 @@
  */
 
 namespace Pamac {
-	public class FlatpakPackageLinked : FlatpakPackage {
+	internal class FlatpakPackageLinked : FlatpakPackage {
 		// common
 		Flatpak.InstalledRef? installed_ref;
 		Flatpak.RemoteRef? remote_ref;

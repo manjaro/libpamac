@@ -18,7 +18,7 @@
  */
 
 namespace Pamac {
-	public class SnapPackageLinked : SnapPackage {
+	internal class SnapPackageLinked : SnapPackage {
 		// common
 		Snapd.Snap snap;
 		Snapd.Snap? store_snap;
