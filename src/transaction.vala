@@ -735,7 +735,7 @@ namespace Pamac {
 								current_section = pkgname_found;
 								current_section_is_pkgbase = false;
 								if (!pkgnames_table.contains (pkgname_found)) {
-									var aur_pkg_found = new AURPackage();
+									var aur_pkg_found = new AURPackageStatic ();
 									aur_pkg_found.name = pkgname_found;
 									aur_pkg_found.version = version.str;
 									aur_pkg_found.desc = desc;
