@@ -142,14 +142,14 @@ internal class AlpmConfig {
 					Process.spawn_command_line_sync ("ln -s %slocal %s".printf (dbpath, tmp_dbpath));
 					file = GLib.File.new_for_path ("%ssync".printf (dbpath));
 					if (file.query_exists ()) {
-						Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %ssync %s".printf (dbpath, tmp_dbpath));
-						Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
+						//Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %ssync %s".printf (dbpath, tmp_dbpath));
+						//Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
 					}
 				} else {
 					Process.spawn_command_line_sync ("ln -sf %slocal %s".printf (dbpath, tmp_dbpath));
 					file = GLib.File.new_for_path ("%ssync".printf (dbpath));
 					if (file.query_exists ()) {
-						Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %ssync/* %s/sync'".printf (dbpath, tmp_dbpath));
+						//Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %ssync/* %s/sync'".printf (dbpath, tmp_dbpath));
 					}
 				}
 				// remove an existing pamac_aur.db file
