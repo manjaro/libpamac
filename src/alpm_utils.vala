@@ -400,7 +400,9 @@ namespace Pamac {
 
 		public bool refresh (string sender, bool force_refresh) {
 			this.sender = sender;
-			// no authorization needed because tmp dbs are used
+			if (!do_get_authorization ()) {
+				return false;
+			}
 			do_emit_action (_("Synchronizing package databases") + "...");
 			write_log_file ("synchronizing package lists");
 			cancellable.reset ();
@@ -413,8 +415,7 @@ namespace Pamac {
 					warning (e.message);
 				}
 			}
-			// use a tmp handle
-			var alpm_handle = get_handle (false, true);
+			var alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
