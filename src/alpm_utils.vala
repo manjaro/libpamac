@@ -434,15 +434,6 @@ namespace Pamac {
 			}
 			if (cancellable.is_cancelled ()) {
 				return false;
-			} else if (success) {
-				// save now as last refresh time
-				//try {
-					// touch the file
-					//string timestamp_path = "%ssync/refresh_timestamp".printf (alpm_handle.dbpath);
-					//Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
-				//} catch (SpawnError e) {
-					//warning (e.message);
-				//}
 			} else {
 				do_emit_warning (_("Failed to synchronize databases"));
 			}
@@ -1057,7 +1048,6 @@ namespace Pamac {
 				if (file.query_exists ()) {
 					try {
 						Process.spawn_command_line_sync ("mkdir -p %ssync".printf (alpm_config.dbpath));
-						//Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/dbs/sync/* %ssync'".printf (tmp_path, alpm_config.dbpath));
 						// remove an existing pamac_aur.db file
 						Process.spawn_command_line_sync ("rm -f %ssync/pamac_aur.db".printf (alpm_config.dbpath));
 					} catch (SpawnError e) {
