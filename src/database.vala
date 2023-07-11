@@ -2305,17 +2305,17 @@ namespace Pamac {
 		}
 
 		public DateTime? get_last_refresh_time () {
-			//string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
+			string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
 			// check if last refresh is older than config.refresh_period
-			//try {
-				//var timestamp_file = File.new_for_path (timestamp_path);
-				//if (timestamp_file.query_exists ()) {
-					//FileInfo info = timestamp_file.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
-					//return info.get_modification_date_time ().to_local ();
-				//}
-			//} catch (Error e) {
-				//warning (e.message);
-			//}
+			try {
+				var timestamp_file = File.new_for_path (timestamp_path);
+				if (timestamp_file.query_exists ()) {
+					FileInfo info = timestamp_file.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
+					return info.get_modification_date_time ().to_local ();
+				}
+			} catch (Error e) {
+				warning (e.message);
+			}
 			return null;
 		}
 
@@ -2357,7 +2357,7 @@ namespace Pamac {
 				}
 				bool refresh_tmp_dbs = true;
 				if (use_timestamp) {
-					//refresh_tmp_dbs = need_refresh ();
+					refresh_tmp_dbs = need_refresh ();
 				}
 				if (refresh_tmp_dbs) {
 					// refresh tmp dbs
@@ -2387,14 +2387,14 @@ namespace Pamac {
 						// save now as last refresh time
 						try {
 							// touch the file
-							//string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
-							//var file = GLib.File.new_for_path (timestamp_path);
-							//if (!file.query_exists ()) {
-								//Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
-								//Process.spawn_command_line_sync ("chmod a+w %s".printf (timestamp_path));
-							//} else {
-								//Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
-							//}
+							string timestamp_path = "/var/tmp/pamac/dbs/sync/refresh_timestamp";
+							var file = GLib.File.new_for_path (timestamp_path);
+							if (!file.query_exists ()) {
+								Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
+								Process.spawn_command_line_sync ("chmod a+w %s".printf (timestamp_path));
+							} else {
+								Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
+							}
 						} catch (SpawnError e) {
 							warning (e.message);
 						}
