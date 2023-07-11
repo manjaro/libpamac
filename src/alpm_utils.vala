@@ -434,7 +434,7 @@ namespace Pamac {
 			}
 			if (cancellable.is_cancelled ()) {
 				return false;
-			} else {
+			} else if (!success) {
 				do_emit_warning (_("Failed to synchronize databases"));
 			}
 			current_filename = "";
