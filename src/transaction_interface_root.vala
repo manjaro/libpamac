@@ -1,7 +1,7 @@
 /*
  *  pamac-vala
  *
- *  Copyright (C) 2018-2022 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2018-2023 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -119,7 +119,7 @@ namespace Pamac {
 			}
 			try {
 				new Thread<int>.try ("trans_refresh_real", () => {
-					trans_refresh_success = alpm_utils.refresh ("root", force);
+					trans_refresh_success = alpm_utils.trans_refresh ("root", force);
 					context.invoke (trans_refresh_real.callback);
 					return 0;
 				});

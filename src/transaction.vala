@@ -1,7 +1,7 @@
 /*
  *  pamac-vala
  *
- *  Copyright (C) 2014-2022 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2014-2023 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -252,7 +252,7 @@ namespace Pamac {
 			// do nothing
 		}
 
-		protected virtual async bool ask_import_key (string pkgname, string key, string owner) {
+		protected virtual async bool ask_import_key (string pkgname, string key, string? owner) {
 			// no import
 			return false;
 		}
@@ -1058,34 +1058,40 @@ namespace Pamac {
 						if (process.get_exit_status () != 0) {
 							// key is not imported in keyring
 							// try to get key infos
+							bool success = false;
 							launcher.set_flags (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
 							process = launcher.spawnv ({"gpg", "--with-colons", "--batch", "--search-keys", key});
 							yield process.wait_async ();
 							if (process.get_if_exited ()) {
 								if (process.get_exit_status () == 0) {
 									var dis = new DataInputStream (process.get_stdout_pipe ());
+									string? owner = null;
+									// check if an owner is set
 									string? line;
 									while ((line = yield dis.read_line_async ()) != null) {
 										// get first uid line
 										if ("uid:" in line) {
-											string owner = line.split (":", 3)[1];
-											if (yield ask_import_key (pkgname, key, owner)) {
-												var cmdline = new GenericArray<string> (5);
-												cmdline.add ("gpg");
-												cmdline.add ("--with-colons");
-												cmdline.add ("--batch");
-												cmdline.add ("--recv-keys");
-												cmdline.add (key);
-												int status = yield run_cmd_line_async (cmdline, null, build_cancellable);
-												emit_script_output ("");
-												if (status != 0) {
-													emit_error (dgettext (null, "key %s could not be imported").printf (key), new GenericArray<string> ());
-												}
-											}
+											owner = line.split (":", 3)[1];
 											break;
 										}
 									}
+									if (yield ask_import_key (pkgname, key, owner)) {
+										var cmdline = new GenericArray<string> (5);
+										cmdline.add ("gpg");
+										cmdline.add ("--with-colons");
+										cmdline.add ("--batch");
+										cmdline.add ("--recv-keys");
+										cmdline.add (key);
+										int status = yield run_cmd_line_async (cmdline, null, build_cancellable);
+										emit_script_output ("");
+										if (status == 0) {
+											success = true;
+										}
+									}
 								}
+							}
+							if (!success) {
+								emit_error (dgettext (null, "key %s could not be imported").printf (key), new GenericArray<string> ());
 							}
 						}
 					}
@@ -1386,8 +1392,7 @@ namespace Pamac {
 		}
 
 		async bool trans_refresh () {
-			// no authorization needed because tmp dbs are used
-			bool success = true;
+			bool success = yield get_authorization_async ();
 			if (success) {
 				try {
 					success = yield transaction_interface.trans_refresh (force_refresh);
@@ -1945,6 +1950,7 @@ namespace Pamac {
 				}
 				cmdline.add ("makepkg");
 				cmdline.add ("-cCf");
+				cmdline.add ("--nocheck");
 				if (!config.keep_built_pkgs) {
 					cmdline.add ("--nosign");
 					cmdline.add ("PKGDEST=%s".printf (pkgdir));

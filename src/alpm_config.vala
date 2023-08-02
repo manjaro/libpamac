@@ -1,7 +1,7 @@
 /*
  *  alpm_config
  *
- *  Copyright (C) 2014-2022 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2014-2023 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ internal class AlpmConfig {
 		syncfirsts.add ("manjaro-keyring");
 	}
 
-	public Alpm.Handle? get_handle (bool files_db = false, bool tmp_db = false) {
+	public Alpm.Handle? get_handle (bool files_db = false, bool tmp_db = false, bool copy_dbs = true) {
 		Alpm.Errno error = 0;
 		Alpm.Handle? handle = null;
 		if (tmp_db) {
@@ -136,20 +136,27 @@ internal class AlpmConfig {
 					Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_path));
 				}
 				file = GLib.File.new_for_path (tmp_dbpath);
+				// dbpath can be defined by the user with or without a trailing slash
+				string localdb_path = Path.build_filename (dbpath, "local");
+				string syncdb_path = Path.build_filename (dbpath, "sync");
 				if (!file.query_exists ()) {
 					Process.spawn_command_line_sync ("mkdir -p %s".printf (tmp_dbpath));
 					Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_dbpath));
-					Process.spawn_command_line_sync ("ln -s %slocal %s".printf (dbpath, tmp_dbpath));
-					file = GLib.File.new_for_path ("%ssync".printf (dbpath));
-					if (file.query_exists ()) {
-						Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %ssync %s".printf (dbpath, tmp_dbpath));
-						Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
+					Process.spawn_command_line_sync ("ln -s %s %s".printf (localdb_path, tmp_dbpath));
+					if (copy_dbs) {
+						file = GLib.File.new_for_path (syncdb_path);
+						if (file.query_exists ()) {
+							Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %s %s".printf (syncdb_path, tmp_dbpath));
+							Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
+						}
 					}
 				} else {
-					Process.spawn_command_line_sync ("ln -sf %slocal %s".printf (dbpath, tmp_dbpath));
-					file = GLib.File.new_for_path ("%ssync".printf (dbpath));
-					if (file.query_exists ()) {
-						Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %ssync/* %s/sync'".printf (dbpath, tmp_dbpath));
+					Process.spawn_command_line_sync ("ln -sf %s %s".printf (localdb_path, tmp_dbpath));
+					if (copy_dbs) {
+						file = GLib.File.new_for_path (syncdb_path);
+						if (file.query_exists ()) {
+							Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/* %s/sync'".printf (syncdb_path, tmp_dbpath));
+						}
 					}
 				}
 				// remove an existing pamac_aur.db file
@@ -501,7 +508,7 @@ internal class AlpmConfig {
 					siglevel_mask |= (Alpm.Signature.Level.DATABASE_MARGINAL_OK | Alpm.Signature.Level.DATABASE_UNKNOWN_OK);
 				}
 			} else {
-				GLib.stderr.printf("unrecognized siglevel: %s\n", conf_string);
+				stderr.printf ("unrecognized siglevel: %s\n", conf_string);
 			}
 		}
 		siglevel &= ~Alpm.Signature.Level.USE_DEFAULT;

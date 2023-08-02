@@ -1,7 +1,7 @@
 /*
  *  pamac-vala
  *
- *  Copyright (C) 2019-2022 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2019-2023 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,7 +24,8 @@ namespace Pamac {
 		Snapd.Snap? store_snap;
 		Snapd.Snap? installed_snap;
 		// Package
-		string? _id;
+		string _name;
+		string _id;
 		unowned string? _version;
 		string? _app_id;
 		string? _launchable;
@@ -34,14 +35,17 @@ namespace Pamac {
 		GenericArray<string> _channels;
 
 		// Package
-		public override string name { get; internal set; }
+		public override string name {
+			get { return _name; }
+			internal set { /* not used */ }
+		}
 		public override string id {
 			get { return _id; }
-			internal set { _id = value; }
+			internal set { /* not used */ }
 		}
 		public override string version {
-			get { return _version; }
-			internal set { _version = value; }
+			get { return snap.version; }
+			internal set { /* not used */ }
 		}
 		public override string? installed_version {
 			get {
@@ -146,9 +150,8 @@ namespace Pamac {
 			this.snap = snap;
 			this.store_snap = store_snap;
 			this.installed_snap = installed_snap;
-			name = snap.name;
+			_name = snap.name;
 			_id = "Snap/%s".printf (snap.name);
-			_version = snap.version;
 			unowned Snapd.App? primary_app = Snap.get_primary_app (this.snap);
 			if (primary_app != null) {
 				unowned string? desktop_file = primary_app.desktop_file;

@@ -1,7 +1,7 @@
 /*
  *  pamac-vala
  *
- *  Copyright (C) 2018-2022 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2018-2023 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -370,9 +370,11 @@ namespace Pamac {
 			return success;
 		}
 
-		public bool refresh (string sender, bool force_refresh) {
+		public bool trans_refresh (string sender, bool force_refresh) {
 			this.sender = sender;
-			// no authorization needed because tmp dbs are used
+			if (!do_get_authorization ()) {
+				return false;
+			}
 			do_emit_action (_("Synchronizing package databases") + "...");
 			write_log_file ("synchronizing package lists");
 			cancellable.reset ();
@@ -385,8 +387,7 @@ namespace Pamac {
 					warning (e.message);
 				}
 			}
-			// use a tmp handle
-			var alpm_handle = get_handle (false, true);
+			var alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
@@ -398,23 +399,14 @@ namespace Pamac {
 			// only refresh ".files" if force
 			if (force_refresh) {
 				// update ".files", do not need to know if we succeeded
-				var files_handle = get_handle (true, true);
+				var files_handle = get_handle (true, false);
 				if (files_handle != null) {
 					update_dbs (files_handle, force);
 				}
 			}
 			if (cancellable.is_cancelled ()) {
 				return false;
-			} else if (success) {
-				// save now as last refresh time
-				try {
-					// touch the file
-					string timestamp_path = "%ssync/refresh_timestamp".printf (alpm_handle.dbpath);
-					Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
-				} catch (SpawnError e) {
-					warning (e.message);
-				}
-			} else {
+			} else if (!success) {
 				do_emit_warning (_("Failed to synchronize databases"));
 			}
 			current_filename = "";
@@ -467,28 +459,28 @@ namespace Pamac {
 		public bool download_updates (string sender) {
 			this.sender = sender;
 			downloading_updates = true;
-			// use tmp handle with no callback
-			var alpm_handle = alpm_config.get_handle (false, true);
-			if (alpm_handle == null) {
+			// use tmp handle with no callback but not copy dbs
+			var tmp_handle = alpm_config.get_handle (false, true, false);
+			if (tmp_handle == null) {
 				return false;
 			}
-			alpm_config.register_syncdbs (alpm_handle);
+			alpm_config.register_syncdbs (tmp_handle);
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
-			alpm_handle.set_questioncb (cb_question, this);
+			tmp_handle.set_questioncb (cb_question, this);
 			cancellable.reset ();
 			bool success = false;
-			if (alpm_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
-				if (alpm_handle.trans_sysupgrade (0) == 0) {
+			if (tmp_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
+				if (tmp_handle.trans_sysupgrade (0) == 0) {
 					Alpm.List err_data;
-					if (alpm_handle.trans_prepare (out err_data) == 0) {
+					if (tmp_handle.trans_prepare (out err_data) == 0) {
 						// custom parallel downloads
-						download_files (alpm_handle, config.max_parallel_downloads, false);
-						if (alpm_handle.trans_commit (out err_data) == 0) {
+						download_files (tmp_handle, config.max_parallel_downloads, false);
+						if (tmp_handle.trans_commit (out err_data) == 0) {
 							success = true;
 						}
 					}
 				}
-				alpm_handle.trans_release ();
+				tmp_handle.trans_release ();
 			}
 			downloading_updates = false;
 			// enable offline upgrade
@@ -1021,26 +1013,7 @@ namespace Pamac {
 			this.trans_flags &= ~Alpm.TransFlag.CASCADE;
 			this.trans_flags &= ~Alpm.TransFlag.RECURSE;
 			// use an handle with no callback to avoid double prepare signals
-			Alpm.Handle? alpm_handle = null;
-			if ((trans_flags & Alpm.TransFlag.DOWNLOADONLY) == 0) {
-				// copy refresh dbs from tmp
-				var file = File.new_for_path (tmp_path);
-				if (file.query_exists ()) {
-					try {
-						Process.spawn_command_line_sync ("mkdir -p %ssync".printf (alpm_config.dbpath));
-						Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/dbs/sync/* %ssync'".printf (tmp_path, alpm_config.dbpath));
-						// remove an existing pamac_aur.db file
-						Process.spawn_command_line_sync ("rm -f %ssync/pamac_aur.db".printf (alpm_config.dbpath));
-					} catch (SpawnError e) {
-						warning (e.message);
-					}
-				}
-				// a handle using copied databases
-				alpm_handle = get_handle (false, false, false);
-			} else {
-				// use a tmp handle
-				alpm_handle = get_handle (false, true, false);
-			}
+			Alpm.Handle? alpm_handle = get_handle (false, false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
@@ -1697,12 +1670,13 @@ namespace Pamac {
 			unowned Alpm.List<unowned Alpm.Package> pkgs_to_remove = alpm_handle.trans_to_remove ();
 			while (pkgs_to_remove != null) {
 				unowned Alpm.Package trans_pkg = pkgs_to_remove.data;
+				unowned string trans_pkg_name = trans_pkg.name;
 				var pkg = initialise_pkg (alpm_handle, trans_pkg);
 				// add the reason why trans_pkg must be removed
-				if (trans_pkg.name in to_remove) {
+				if (trans_pkg_name in to_remove) {
 					// 1 - direct to_remove
 					summary.to_remove.add (pkg);
-				} else if (trans_pkg.name in required_to_remove) {
+				} else if (trans_pkg_name in required_to_remove) {
 					// 2 - depends on a package to_remove
 					bool dep_found = false;
 					unowned Alpm.Package check_pkg = trans_pkg;
@@ -1730,7 +1704,7 @@ namespace Pamac {
 						}
 					}
 					summary.to_remove.add (pkg);
-				} else if (trans_pkg.name in orphans_to_remove) {
+				} else if (trans_pkg_name in orphans_to_remove) {
 					// 3 - orphans
 					bool dep_found = false;
 					unowned Alpm.Package check_pkg = trans_pkg;
@@ -2314,7 +2288,7 @@ namespace Pamac {
 					do_emit_warning ("%s: %s".printf (dgettext (null, "Warning"), dgettext (null, "%1$s optionally requires %2$s").printf (details[0], details[1])));
 					break;
 				case 27: //Alpm.Event.Type.DATABASE_MISSING
-					do_emit_script_output (dgettext (null, "Database file for %s does not exist").printf (details[0]) + ".");
+					//do_emit_script_output (dgettext (null, "Database file for %s does not exist").printf (details[0]) + ".");
 					break;
 				case 28: //Alpm.Event.Type.KEYRING_START
 					current_action = dgettext (null, "Checking keyring") + "...";

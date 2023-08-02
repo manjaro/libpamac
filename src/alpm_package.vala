@@ -19,68 +19,6 @@
 
 namespace Pamac {
 	public abstract class AlpmPackage : Package {
-		// Package
-		App? _app;
-		unowned string? _app_name;
-		unowned string? _app_id;
-		unowned string? _long_desc;
-		unowned string? _launchable;
-		unowned string? _icon;
-		GenericArray<string> _screenshots;
-
-		// Package
-		public override string? app_name {
-			get {
-				if (_app_name == null && _app != null) {
-					_app_name = _app.name;
-				}
-				return _app_name;
-			}
-		}
-		public override string? app_id {
-			get {
-				if (_app_id == null && _app != null) {
-					_app_id = _app.id;
-				}
-				return _app_id;
-			}
-		}
-		public override string? long_desc {
-			get {
-				if (_long_desc == null && _app != null) {
-					_long_desc = _app.long_desc;
-				}
-				return _long_desc;
-			}
-		}
-		public override string? launchable {
-			get {
-				if (_launchable == null && _app != null) {
-					_launchable = _app.launchable;
-				}
-				return _launchable;
-			}
-		}
-		public override string? icon {
-			get {
-				if (_icon == null && _app != null) {
-					_icon = _app.icon;
-				}
-				return _icon;
-			}
-		}
-		public override GenericArray<string> screenshots {
-			get {
-				if (_screenshots == null) {
-					if (_app != null) {
-						_screenshots = _app.screenshots;
-					} else {
-						_screenshots = new GenericArray<string> ();
-					}
-				}
-				return _screenshots;
-			}
-		}
 		// AlpmPackage
 		public abstract DateTime? build_date { get;  }
 		public abstract string? packager { get; }
@@ -103,18 +41,30 @@ namespace Pamac {
 		public abstract unowned GenericArray<string> get_files ();
 
 		public abstract async unowned GenericArray<string> get_files_async ();
-
-		internal void set_app (App? app) {
-			_app = app;
-		}
-
-		internal unowned App? get_app () {
-			return _app;
-		}
 	}
 
 	internal class AlpmPackageLinked : AlpmPackage {
-		// common
+		// Package
+		string _name;
+		string _id;
+		unowned string _version;
+		unowned string? _installed_version;
+		unowned string? _desc;
+		unowned string? _repo;
+		string? _license;
+		unowned string? _url;
+		uint64 _installed_size;
+		uint64 _download_size;
+		DateTime? _install_date;
+		// App
+		App? _app;
+		unowned string? _app_name;
+		unowned string? _app_id;
+		unowned string? _long_desc;
+		unowned string? _launchable;
+		unowned string? _icon;
+		GenericArray<string> _screenshots;
+		// AlpmPackage
 		unowned Database database;
 		unowned Alpm.Package? alpm_pkg;
 		unowned Alpm.Package? local_pkg;
@@ -129,19 +79,6 @@ namespace Pamac {
 		bool download_size_set;
 		bool installed_size_set;
 		bool reason_set;
-		// Package
-		string _name;
-		string _id;
-		unowned string _version;
-		unowned string? _installed_version;
-		unowned string? _desc;
-		unowned string? _repo;
-		string? _license;
-		unowned string? _url;
-		uint64 _installed_size;
-		uint64 _download_size;
-		DateTime? _install_date;
-		// AlpmPackage
 		DateTime? _build_date;
 		unowned string? _packager;
 		unowned string? _reason;
@@ -172,8 +109,7 @@ namespace Pamac {
 		public override string id {
 			get {
 				if (_id == null) {
-					unowned App? app = get_app ();
-					if (app != null) {
+					if (_app != null) {
 						_id = "%s/%s".printf (name, app_name);
 					} else {
 						_id = name;
@@ -212,11 +148,12 @@ namespace Pamac {
 		public override string? desc {
 			get {
 				if (_desc == null) {
-					unowned App? app = get_app ();
-					if (app != null) {
-						unowned string? summary = app.desc;
+					if (_app != null) {
+						unowned string? summary = _app.desc;
 						if (summary != null) {
 							_desc = summary;
+						} else {
+							_desc = alpm_pkg.desc;
 						}
 					} else {
 						_desc = alpm_pkg.desc;
@@ -282,9 +219,7 @@ namespace Pamac {
 			get {
 				if (!download_size_set) {
 					download_size_set = true;
-					if (alpm_pkg != null) {
-						_download_size = alpm_pkg.download_size;
-					}
+					_download_size = alpm_pkg.download_size;
 				}
 				return _download_size;
 			}
@@ -301,13 +236,64 @@ namespace Pamac {
 				return _install_date;
 			}
 		}
+		// App
+		public override string? app_name {
+			get {
+				if (_app_name == null && _app != null) {
+					_app_name = _app.name;
+				}
+				return _app_name;
+			}
+		}
+		public override string? app_id {
+			get {
+				if (_app_id == null && _app != null) {
+					_app_id = _app.id;
+				}
+				return _app_id;
+			}
+		}
+		public override string? long_desc {
+			get {
+				if (_long_desc == null && _app != null) {
+					_long_desc = _app.long_desc;
+				}
+				return _long_desc;
+			}
+		}
+		public override string? launchable {
+			get {
+				if (_launchable == null && _app != null) {
+					_launchable = _app.launchable;
+				}
+				return _launchable;
+			}
+		}
+		public override string? icon {
+			get {
+				if (_icon == null && _app != null) {
+					_icon = _app.icon;
+				}
+				return _icon;
+			}
+		}
+		public override GenericArray<string> screenshots {
+			get {
+				if (_screenshots == null) {
+					if (_app != null) {
+						_screenshots = _app.screenshots;
+					} else {
+						_screenshots = new GenericArray<string> ();
+					}
+				}
+				return _screenshots;
+			}
+		}
 		// AlpmPackage
 		public override DateTime? build_date {
 			get {
 				if (_build_date == null) {
-					if (alpm_pkg != null) {
-						_build_date = new DateTime.from_unix_local (alpm_pkg.builddate);
-					}
+					_build_date = new DateTime.from_unix_local (alpm_pkg.builddate);
 				}
 				return _build_date;
 			}
@@ -551,12 +537,10 @@ namespace Pamac {
 		void found_local_pkg () {
 			if  (!local_pkg_set) {
 				local_pkg_set = true;
-				if (alpm_pkg != null) {
-					if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
-						local_pkg = alpm_pkg;
-					} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
-						local_pkg = database.intern_get_local_pkg (alpm_pkg.name);
-					}
+				if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
+					local_pkg = alpm_pkg;
+				} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
+					local_pkg = database.intern_get_local_pkg (alpm_pkg.name);
 				}
 			}
 		}
@@ -564,12 +548,10 @@ namespace Pamac {
 		void found_sync_pkg () {
 			if  (!sync_pkg_set) {
 				sync_pkg_set = true;
-				if (alpm_pkg != null) {
-					if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
-						sync_pkg = database.intern_get_syncpkg (alpm_pkg.name);
-					} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
-						sync_pkg = alpm_pkg;
-					}
+				if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
+					sync_pkg = database.intern_get_syncpkg (alpm_pkg.name);
+				} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
+					sync_pkg = alpm_pkg;
 				}
 			}
 		}
@@ -588,6 +570,10 @@ namespace Pamac {
 				_files = yield database.get_pkg_files_async (name, local_pkg);
 			}
 			return _files;
+		}
+
+		internal void set_app (App? app) {
+			_app = app;
 		}
 	}
 
@@ -742,11 +728,7 @@ namespace Pamac {
 	}
 
 	internal class AURPackageLinked : AURPackage {
-		// common
-		AURInfos? aur_infos;
-		unowned Alpm.Package? local_pkg;
-		unowned Database database;
-		bool is_update;
+		// Package
 		bool installed_version_set;
 		bool install_date_set;
 		bool installed_size_set;
@@ -755,7 +737,6 @@ namespace Pamac {
 		bool reason_set;
 		bool packager_set;
 		bool build_date_set;
-		// Package
 		string _name;
 		string _id;
 		string _version;
@@ -768,6 +749,8 @@ namespace Pamac {
 		uint64 _download_size;
 		DateTime? _install_date;
 		// AlpmPackage
+		unowned Alpm.Package? local_pkg;
+		unowned Database database;
 		DateTime? _build_date;
 		unowned string? _packager;
 		unowned string? _reason;
@@ -784,7 +767,11 @@ namespace Pamac {
 		GenericArray<string> _conflicts;
 		GenericArray<string> _backups;
 		GenericArray<string> _files;
+		// App
+		GenericArray<string> _screenshots;
 		// AURInfos
+		AURInfos? aur_infos;
+		bool is_update;
 		unowned string? _packagebase;
 		unowned string? _maintainer;
 		double _popularity;
@@ -923,6 +910,20 @@ namespace Pamac {
 					}
 				}
 				return _install_date;
+			}
+		}
+		// App
+		public override string? app_name { get { return null; } }
+		public override string? app_id { get { return null; } }
+		public override string? long_desc { get { return null; } }
+		public override string? launchable { get { return null; } }
+		public override string? icon { get { return null; } }
+		public override GenericArray<string> screenshots {
+			get {
+				if (_screenshots == null) {
+					_screenshots = new GenericArray<string> ();
+				}
+				return _screenshots;
 			}
 		}
 		// AlpmPackage
