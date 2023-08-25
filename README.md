@@ -3,8 +3,8 @@ Library for Pamac package manager based on libalpm
 
 #### Features
 
- - AUR support
- - Appstream support
+ - Optional AUR support
+ - Optional Appstream support
  - Optional Flatpak support
  - Optional Snap support
  - Library usable in Vala, C, C++, Python, Javascript and all languages supporting [GObject Introspection](https://gi.readthedocs.io/en/latest/users.html)
@@ -16,7 +16,7 @@ In the source directory run:
 
 `mkdir builddir && cd builddir`
 
-`meson setup --prefix=/usr --sysconfdir=/etc -Denable-snap=true -Denable-flatpak=true --buildtype=release`
+`meson setup --prefix=/usr --sysconfdir=/etc -Denable-aur=true -Denable-appstream=true -Denable-snap=true -Denable-flatpak=true --buildtype=release`
 
 `meson compile`
 
