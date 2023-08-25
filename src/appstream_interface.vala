@@ -20,10 +20,10 @@
 namespace Pamac {
 	internal interface AppstreamPlugin : Object {
 		public abstract void load (GenericArray<string> repos_names);
-		public abstract GenericArray<HashTable<unowned string, App>> get_apps ();
-		public abstract GenericArray<App> search (string[] search_tokens);
-		public abstract GenericArray<App> get_pkgname_apps (string pkgname);
-		public abstract HashTable<unowned string, App> get_category_apps (string category);
+		public abstract unowned GenericArray<HashTable<unowned string, App>> get_apps ();
+		public abstract GenericArray<unowned App> search (string[] search_tokens);
+		public abstract GenericArray<unowned App> get_pkgname_apps (string pkgname);
+		public abstract HashTable<unowned string, unowned App> get_category_apps (string category);
 	}
 
 	internal abstract class App : Object {

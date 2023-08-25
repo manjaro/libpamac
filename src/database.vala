@@ -490,7 +490,7 @@ namespace Pamac {
 			var pkg = new AlpmPackageStatic (sync_pkg, local_pkg, sync_pkg);
 			if (config.enable_appstream) {
 				// find if pkgname provides only one app
-				GenericArray<App> matching_apps = appstream_plugin.get_pkgname_apps (sync_pkg.name);
+				GenericArray<unowned App> matching_apps = appstream_plugin.get_pkgname_apps (sync_pkg.name);
 				if (matching_apps.length == 1) {
 					pkg.set_app (matching_apps[0]);
 				}
@@ -524,7 +524,7 @@ namespace Pamac {
 			}
 			if (config.enable_appstream) {
 				// find if pkgname provides only one app
-				GenericArray<App> matching_apps = appstream_plugin.get_pkgname_apps (pkgname);
+				GenericArray<unowned App> matching_apps = appstream_plugin.get_pkgname_apps (pkgname);
 				if (matching_apps.length == 1) {
 					new_pkg.set_app (matching_apps[0]);
 				}
@@ -558,7 +558,7 @@ namespace Pamac {
 					}
 				}
 				if (config.enable_appstream) {
-					GenericArray<App> apps = appstream_plugin.get_pkgname_apps (pkgname);
+					GenericArray<unowned App> apps = appstream_plugin.get_pkgname_apps (pkgname);
 					uint apps_length = apps.length;
 					if (apps_length > 0) {
 						// alpm_pkg provide some apps
@@ -977,21 +977,6 @@ namespace Pamac {
 			}
 		}
 
-		Alpm.List<unowned string> custom_db_suggest (Alpm.DB db, string search_string) {
-			Alpm.List<unowned string> result = null;
-			unowned Alpm.List<unowned Alpm.Package> pkgcache = db.pkgcache;
-			while (pkgcache != null) {
-				unowned Alpm.Package pkg = pkgcache.data;
-				unowned string name = pkg.name;
-				// check if name begins by search_string
-				if (name.has_prefix (search_string)) {
-					result.add (name);
-				}
-				pkgcache.next ();
-			}
-			return result;
-		}
-
 		Alpm.List<unowned Alpm.Package> custom_db_search (Alpm.DB db, Alpm.List<unowned string> needles) {
 			Alpm.List<unowned Alpm.Package> needle_match = null;
 			//if((db.usage & Alpm.DB.Usage.SEARCH) == 0) {
@@ -1182,28 +1167,6 @@ namespace Pamac {
 				warning (e.message);
 			}
 			return pkgs;
-		}
-
-		Alpm.List<unowned string> suggest_all_dbs (string search_string) {
-			// add local pkgs found
-			Alpm.List<unowned string> result = custom_db_suggest (alpm_handle.localdb, search_string);
-			// search sync pkgs
-			Alpm.List<unowned string> syncpkgnames = null;
-			unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
-			while (syncdbs != null) {
-				unowned Alpm.DB db = syncdbs.data;
-				if (syncpkgnames == null) {
-					syncpkgnames = custom_db_suggest (db, search_string);
-				} else {
-					syncpkgnames.join (custom_db_suggest (db, search_string).diff (syncpkgnames, (Alpm.List.CompareFunc) strcmp));
-				}
-				syncdbs.next ();
-			}
-			// add sync pkgs not already found in localdb
-			result.join (syncpkgnames.diff (result, (Alpm.List.CompareFunc) strcmp));
-			// sort by name
-			result.sort (result.length (), (Alpm.List.CompareFunc) strcmp);
-			return result;
 		}
 
 		Alpm.List<unowned Alpm.Package> search_all_dbs (string search_string) {
@@ -1445,9 +1408,9 @@ namespace Pamac {
 			return categories_names;
 		}
 
-		GenericArray<unowned AlpmPackage> get_apps_pkgs (HashTable<unowned string, App> apps) {
+		GenericArray<unowned AlpmPackage> get_apps_pkgs (HashTable<unowned string, unowned App> apps) {
 			var pkgs = new GenericArray<unowned AlpmPackage> ();
-			var iter = HashTableIter<unowned string, App> (apps);
+			var iter = HashTableIter<unowned string, unowned App> (apps);
 			unowned App app;
 			while (iter.next (null, out app)) {
 				unowned string pkgname = app.pkgname;
@@ -1490,7 +1453,7 @@ namespace Pamac {
 						lock (alpm_config) {
 							switch (category_copy) {
 								case "Featured":
-									HashTable<unowned string, App> featured_apps = appstream_plugin.get_category_apps (category_copy);
+									HashTable<unowned string, unowned App> featured_apps = appstream_plugin.get_category_apps (category_copy);
 									pkgs = get_apps_pkgs (featured_apps);
 									break;
 								case "Photo & Video":
@@ -1501,7 +1464,7 @@ namespace Pamac {
 								case "Games":
 								case "Utilities":
 								case "Development":
-									HashTable<unowned string, App> category_apps = appstream_plugin.get_category_apps (category_copy);
+									HashTable<unowned string, unowned App> category_apps = appstream_plugin.get_category_apps (category_copy);
 									pkgs = get_apps_pkgs (category_apps);
 									break;
 								default:

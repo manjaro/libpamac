@@ -147,8 +147,8 @@ namespace Pamac {
 
 	internal class Appstream: Object, AppstreamPlugin {
 		GenericArray<HashTable<unowned string, App>> stores_table;
-		HashTable<string, GenericArray<App>> pkgname_apps_cache;
-		HashTable<string, HashTable<unowned string, App>> categories_cache;
+		HashTable<string, GenericArray<unowned App>> pkgname_apps_cache;
+		HashTable<string, HashTable<unowned string, unowned App>> categories_cache;
 		GenericArray<string> repos_names;
 
 		public Appstream () {
@@ -158,21 +158,21 @@ namespace Pamac {
 		construct {
 			repos_names = new GenericArray<string> ();
 			stores_table = new GenericArray<HashTable<unowned string, App>> ();
-			categories_cache = new HashTable<string, HashTable<unowned string, App>> (str_hash, str_equal);
-			pkgname_apps_cache = new HashTable<string, GenericArray<App>> (str_hash, str_equal);
+			categories_cache = new HashTable<string, HashTable<unowned string, unowned App>> (str_hash, str_equal);
+			pkgname_apps_cache = new HashTable<string, GenericArray<unowned App>> (str_hash, str_equal);
 		}
 
 		void load (GenericArray<string> repos_names) {
 			this.repos_names = repos_names;
 			// populate caches
-			categories_cache.insert ("Photo & Video", new HashTable<unowned string, App> (str_hash, str_equal));
-			categories_cache.insert ("Music & Audio", new HashTable<unowned string, App> (str_hash, str_equal));
-			categories_cache.insert ("Productivity", new HashTable<unowned string, App> (str_hash, str_equal));
-			categories_cache.insert ("Communication & News", new HashTable<unowned string, App> (str_hash, str_equal));
-			categories_cache.insert ("Education & Science", new HashTable<unowned string, App> (str_hash, str_equal));
-			categories_cache.insert ("Games", new HashTable<unowned string, App> (str_hash, str_equal));
-			categories_cache.insert ("Utilities", new HashTable<unowned string, App> (str_hash, str_equal));
-			categories_cache.insert ("Development", new HashTable<unowned string, App> (str_hash, str_equal));
+			categories_cache.insert ("Photo & Video", new HashTable<unowned string, unowned App> (str_hash, str_equal));
+			categories_cache.insert ("Music & Audio", new HashTable<unowned string, unowned App> (str_hash, str_equal));
+			categories_cache.insert ("Productivity", new HashTable<unowned string, unowned App> (str_hash, str_equal));
+			categories_cache.insert ("Communication & News", new HashTable<unowned string, unowned App> (str_hash, str_equal));
+			categories_cache.insert ("Education & Science", new HashTable<unowned string, unowned App> (str_hash, str_equal));
+			categories_cache.insert ("Games", new HashTable<unowned string, unowned App> (str_hash, str_equal));
+			categories_cache.insert ("Utilities", new HashTable<unowned string, unowned App> (str_hash, str_equal));
+			categories_cache.insert ("Development", new HashTable<unowned string, unowned App> (str_hash, str_equal));
 			foreach (unowned string repo in repos_names) {
 				try {
 					File appstream_file = File.new_for_path ("/usr/share/app-info/xmls/%s.xml.gz".printf (repo));
@@ -189,9 +189,9 @@ namespace Pamac {
 								if (pkgname == null) {
 									continue;
 								}
-								GenericArray<App>? pkgname_apps = pkgname_apps_cache.lookup (pkgname);
+								GenericArray<unowned App>? pkgname_apps = pkgname_apps_cache.lookup (pkgname);
 								if (pkgname_apps == null) {
-									pkgname_apps = new GenericArray<App> ();
+									pkgname_apps = new GenericArray<unowned App> ();
 									pkgname_apps_cache.insert (pkgname, pkgname_apps);
 								}
 								var new_app = new AppLinked (app, repo);
@@ -245,12 +245,12 @@ namespace Pamac {
 			}
 		}
 
-		public GenericArray<HashTable<unowned string, App>> get_apps () {
+		public unowned GenericArray<HashTable<unowned string, App>> get_apps () {
 			return stores_table;
 		}
 
-		public GenericArray<App> search (string[] search_tokens) {
-			var result = new GenericArray<App> ();
+		public GenericArray<unowned App> search (string[] search_tokens) {
+			var result = new GenericArray<unowned App> ();
 			foreach (unowned HashTable<unowned string, App> apps in stores_table) {
 				var iter = HashTableIter<unowned string, App> (apps);
 				unowned string repo;
@@ -266,18 +266,18 @@ namespace Pamac {
 			return result;
 		}
 
-		public GenericArray<App> get_pkgname_apps (string pkgname) {
-			GenericArray<App>? apps = pkgname_apps_cache.lookup (pkgname);
+		public GenericArray<unowned  App> get_pkgname_apps (string pkgname) {
+			GenericArray<unowned App>? apps = pkgname_apps_cache.lookup (pkgname);
 			if (apps == null) {
-				apps = new GenericArray<App> ();
+				apps = new GenericArray<unowned App> ();
 			}
 			return apps;
 		}
 
-		public HashTable<unowned string, App> get_category_apps (string category) {
-			HashTable<unowned string, App>? apps_table = categories_cache.lookup (category);
+		public HashTable<unowned string, unowned App> get_category_apps (string category) {
+			HashTable<unowned string, unowned App>? apps_table = categories_cache.lookup (category);
 			if (apps_table == null) {
-				apps_table = new HashTable<unowned string, App> (str_hash, str_equal);
+				apps_table = new HashTable<unowned string, unowned App> (str_hash, str_equal);
 				if (category == "Featured") {
 					var names = new GenericArray<string> ();
 					names.add ("firefox");
@@ -293,7 +293,7 @@ namespace Pamac {
 					names.add ("retroarch");
 					names.add ("virtualbox");
 					foreach (unowned string name in names) {
-						unowned GenericArray<App>? apps = pkgname_apps_cache.lookup (name);
+						unowned GenericArray<unowned App>? apps = pkgname_apps_cache.lookup (name);
 						if (apps == null) {
 							continue;
 						}

@@ -26,7 +26,6 @@ namespace Pamac {
 		// Package
 		string _name;
 		string _id;
-		unowned string? _version;
 		string? _app_id;
 		string? _launchable;
 		GenericArray<string> _screenshots;

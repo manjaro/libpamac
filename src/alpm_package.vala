@@ -57,7 +57,7 @@ namespace Pamac {
 		uint64 _download_size;
 		DateTime? _install_date;
 		// App
-		App? _app;
+		unowned App? _app;
 		unowned string? _app_name;
 		unowned string? _app_id;
 		unowned string? _long_desc;
