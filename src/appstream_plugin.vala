@@ -105,7 +105,7 @@ namespace Pamac {
 					foreach (unowned AppStream.Icon as_icon in as_icons) {
 						if (as_icon.get_kind () == AppStream.IconKind.CACHED) {
 							if (as_icon.get_height () == 64) {
-								_icon = "/usr/share/app-info/icons/archlinux-arch-%s/64x64/%s".printf (_repo, as_icon.get_name ());
+								_icon = "/usr/share/swcatalog/icons/archlinux-arch-%s/64x64/%s".printf (_repo, as_icon.get_name ());
 								break;
 							}
 						}
@@ -175,7 +175,7 @@ namespace Pamac {
 			categories_cache.insert ("Development", new HashTable<unowned string, unowned App> (str_hash, str_equal));
 			foreach (unowned string repo in repos_names) {
 				try {
-					File appstream_file = File.new_for_path ("/usr/share/app-info/xmls/%s.xml.gz".printf (repo));
+					File appstream_file = File.new_for_path ("/usr/share/swcatalog/xml/%s.xml.gz".printf (repo));
 					if (appstream_file.query_exists ()) {
 						var mdata = new AppStream.Metadata ();
 						mdata.set_format_style (AppStream.FormatStyle.COLLECTION);
