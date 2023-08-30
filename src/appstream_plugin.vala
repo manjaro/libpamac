@@ -225,6 +225,15 @@ namespace Pamac {
 											categories_cache.lookup ("Education & Science").insert (id, new_app);
 											break;
 										case "Games":
+										case "Game":
+										case "ActionGame":
+										case "ArcadeGame":
+										case "BoardGame":
+										case "LogicGame":
+										case "StrategyGame":
+										case "AdventureGame":
+										case "CardGame":
+										case "KidsGame":
 											categories_cache.lookup ("Games").insert (id, new_app);
 											break;
 										case "Utility":
