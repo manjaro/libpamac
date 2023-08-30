@@ -210,18 +210,13 @@ namespace Pamac {
 										case "VectorGraphics":
 										case "2DGraphics":
 										case "3DGraphics":
-										case "AudioVideoEditing":
 											categories_cache.lookup ("Photo & Video").insert (id, new_app);
 											break;
 										case "Audio":
 										case "Music":
-										case "Audio":
-										case "AudioVideo":
-										case "AudioVideoEditing":
 										case "Midi":
 										case "Mixer":
 										case "Multimedia":
-										case "Music":
 											categories_cache.lookup ("Music & Audio").insert (id, new_app);
 											break;
 										case "WebBrowser":
@@ -288,7 +283,6 @@ namespace Pamac {
 											break;
 										case "Utility":
 										case "Monitor":
-										case "Network":
 										case "Accessibility":
 										case "Archiving":
 										case "Compression":
