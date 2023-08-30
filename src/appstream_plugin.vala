@@ -204,42 +204,117 @@ namespace Pamac {
 								foreach (unowned string cat in app_categories) {
 									switch (cat) {
 										case "Photography":
+										case "ImageProcessing":
 										case "Graphics":
 										case "Video":
+										case "VectorGraphics":
+										case "2DGraphics":
+										case "3DGraphics":
+										case "AudioVideoEditing":
 											categories_cache.lookup ("Photo & Video").insert (id, new_app);
 											break;
 										case "Audio":
+										case "Music":
+										case "Audio":
+										case "AudioVideo":
+										case "AudioVideoEditing":
+										case "Midi":
+										case "Mixer":
+										case "Multimedia":
 										case "Music":
 											categories_cache.lookup ("Music & Audio").insert (id, new_app);
 											break;
 										case "WebBrowser":
 										case "Email":
 										case "Office":
+										case "Calculator":
+										case "Calendar":
+										case "Clock":
+										case "ContactManagement":
+										case "Dictionary":
+										case "Documentation":
+										case "Finance":
+										case "FlowChart":
+										case "Presentation":
+										case "Productivity":
+										case "Spreadsheet":
+										case "WordProcessor":
+										case "Publishing":
 											categories_cache.lookup ("Productivity").insert (id, new_app);
 											break;
 										case "Network":
+										case "Chat":
+										case "News":
+										case "Feed":
+										case "Communication":
+										case "InstantMessaging":
+										case "IRCClient":
+										case "Telephony":
+										case "VideoConference":
 											categories_cache.lookup ("Communication & News").insert (id, new_app);
 											break;
 										case "Education":
 										case "Science":
+										case "Astronomy":
+										case "Chemistry":
+										case "ComputerScience":
+										case "Electricity":
+										case "Electronics":
+										case "Physics":
+										case "Engineering":
+										case "Geography":
+										case "Geoscience":
+										case "Languages":
+										case "Literature":
+										case "Maps":
+										case "Math":
+										case "NumericalAnalysis":
 											categories_cache.lookup ("Education & Science").insert (id, new_app);
 											break;
 										case "Games":
 										case "Game":
 										case "ActionGame":
 										case "ArcadeGame":
+										case "BlocksGame":
 										case "BoardGame":
 										case "LogicGame":
 										case "StrategyGame":
+										case "RolePlaying":
 										case "AdventureGame":
 										case "CardGame":
 										case "KidsGame":
+										case "Emulator":
 											categories_cache.lookup ("Games").insert (id, new_app);
 											break;
 										case "Utility":
+										case "Monitor":
+										case "Network":
+										case "Accessibility":
+										case "Archiving":
+										case "Compression":
+										case "ConsoleOnly":
+										case "Core":
+										case "DesktopSettings":
+										case "DiscBurning":
+										case "Settings":
+										case "FileManager":
+										case "Filesystem":
+										case "FileTools":
+										case "PackageManager":
+										case "FileTransfer":
+										case "HardwareSettings":
 											categories_cache.lookup ("Utilities").insert (id, new_app);
 											break;
 										case "Development":
+										case "IDE":
+										case "Building":
+										case "Construction":
+										case "Database":
+										case "DataVisualization":
+										case "Debugger":
+										case "GUIDesigner":
+										case "Java":
+										case "WebDevelopment":
 											categories_cache.lookup ("Development").insert (id, new_app);
 											break;
 									}
