@@ -556,11 +556,13 @@ namespace Pamac {
 									// app origin was set to remote name in load_appstream_data ()
 									remote_ref = installation.fetch_remote_ref_sync (remote, Flatpak.RefKind.APP, name, arch, branch);
 									remote_refs_table.insert (id, remote_ref);
-									new_pkg = new FlatpakPackageLinked (null, remote_ref, app, installation);
-									pkgs_cache.insert (id, new_pkg);
 								} catch (Error e) {
 									warning (e.message);
 								}
+							}
+							if (remote_ref != null) {
+								new_pkg = new FlatpakPackageLinked (null, remote_ref, app, installation);
+								pkgs_cache.insert (id, new_pkg);
 							}
 						} else {
 							warning (e.message);
