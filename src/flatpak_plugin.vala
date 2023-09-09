@@ -250,7 +250,7 @@ namespace Pamac {
 	internal class FlatPak: Object, FlatpakPlugin {
 		string sender;
 		Flatpak.Installation installation;
-		GenericArray<HashTable<unowned string, AppStream.Component>> stores_table;
+		GenericArray<HashTable<string, AppStream.Component>> stores_table;
 		HashTable<string, Flatpak.RemoteRef> remote_refs_table;
 		HashTable<string, FlatpakPackageLinked> pkgs_cache;
 		HashTable<string, HashTable<unowned string, AppStream.Component>> categories_cache;
@@ -264,7 +264,7 @@ namespace Pamac {
 
 		construct {
 			cancellable = new Cancellable ();
-			stores_table = new GenericArray<HashTable<unowned string, AppStream.Component>> ();
+			stores_table = new GenericArray<HashTable<string, AppStream.Component>> ();
 			remote_refs_table = new HashTable<string, Flatpak.RemoteRef> (str_hash, str_equal);
 			pkgs_cache = new HashTable<string, FlatpakPackageLinked> (str_hash, str_equal);
 			categories_cache = new HashTable<string, HashTable<unowned string, AppStream.Component>> (str_hash, str_equal);
@@ -302,7 +302,7 @@ namespace Pamac {
 						var mdata = new AppStream.Metadata ();
 						mdata.set_format_style (AppStream.FormatStyle.COLLECTION);
 						mdata.parse_file (appstream_file, AppStream.FormatKind.XML);
-						var desktop_apps = new HashTable<unowned string, AppStream.Component> (str_hash, str_equal);
+						var desktop_apps = new HashTable<string, AppStream.Component> (str_hash, str_equal);
 						unowned GenericArray<AppStream.Component> apps = mdata.get_components ();
 						foreach (unowned AppStream.Component app in apps) {
 							if (app.get_kind () == AppStream.ComponentKind.DESKTOP_APP) {
@@ -424,7 +424,7 @@ namespace Pamac {
 			unowned AppStream.Component? matching_app = null;
 			string id = "%s/%s".printf (installed_ref.get_origin (), installed_ref.format_ref ());
 			lock (stores_table) {
-				foreach (unowned HashTable<unowned string, AppStream.Component> apps in stores_table) {
+				foreach (unowned HashTable<string, AppStream.Component> apps in stores_table) {
 					matching_app = apps.lookup (id);
 					if (matching_app != null) {
 						return matching_app;
@@ -438,7 +438,7 @@ namespace Pamac {
 			unowned AppStream.Component? matching_app = null;
 			string id = "%s/%s".printf (remote_ref.remote_name, remote_ref.format_ref ());
 			lock (stores_table) {
-				foreach (unowned HashTable<unowned string, AppStream.Component> apps in stores_table) {
+				foreach (unowned HashTable<string, AppStream.Component> apps in stores_table) {
 					matching_app = apps.lookup (id);
 					if (matching_app != null) {
 						return matching_app;
@@ -511,8 +511,8 @@ namespace Pamac {
 				other_app_id = app_id + ".desktop";
 			}
 			lock (stores_table) {
-				foreach (unowned HashTable<unowned string, AppStream.Component> apps in stores_table) {
-					var iter = HashTableIter<unowned string, AppStream.Component> (apps);
+				foreach (unowned HashTable<string, AppStream.Component> apps in stores_table) {
+					var iter = HashTableIter<string, AppStream.Component> (apps);
 					unowned AppStream.Component app;
 					while (iter.next (null, out app)) {
 						unowned string current_app_id = app.id;
@@ -621,8 +621,8 @@ namespace Pamac {
 
 		public void search_flatpaks (string search_string, ref GenericArray<unowned FlatpakPackage> pkgs) {
 			lock (stores_table) {
-				foreach (unowned HashTable<unowned string, AppStream.Component> apps in stores_table) {
-					var iter = HashTableIter<unowned string, AppStream.Component> (apps);
+				foreach (unowned HashTable<string, AppStream.Component> apps in stores_table) {
+					var iter = HashTableIter<string, AppStream.Component> (apps);
 					unowned AppStream.Component app;
 					while (iter.next (null, out app)) {
 						string[] search_tokens = search_string.split (" ");
@@ -640,8 +640,8 @@ namespace Pamac {
 
 		public void search_uninstalled_flatpaks_sync (string[] search_terms, ref GenericArray<unowned FlatpakPackage> pkgs) {
 			lock (stores_table) {
-				foreach (unowned HashTable<unowned string, AppStream.Component> apps in stores_table) {
-					var iter = HashTableIter<unowned string, AppStream.Component> (apps);
+				foreach (unowned HashTable<string, AppStream.Component> apps in stores_table) {
+					var iter = HashTableIter<string, AppStream.Component> (apps);
 					unowned AppStream.Component app;
 					while (iter.next (null, out app)) {
 						uint match_score = app.search_matches_all (search_terms);
@@ -703,7 +703,7 @@ namespace Pamac {
 					GenericArray<unowned Flatpak.InstalledRef> update_apps = installation.list_installed_refs_for_update ();
 					foreach (unowned Flatpak.InstalledRef installed_ref in update_apps) {
 						if (installed_ref.kind == Flatpak.RefKind.APP) {
-							string id = "%s/%s".printf (installed_ref.get_origin (), installed_ref.name);
+							string id = "%s/%s".printf (installed_ref.get_origin (), installed_ref.format_ref ());
 							FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
 							if (pkg == null) {
 								AppStream.Component? app = get_installed_ref_matching_app (installed_ref);
