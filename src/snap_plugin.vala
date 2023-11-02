@@ -507,16 +507,9 @@ namespace Pamac {
 			emit_error (sender, message, details);
 		}
 
-		bool do_get_authorization () {
-			return get_authorization (sender);
-		}
-
 		public bool trans_run (string sender, string[] to_install, string[] to_remove) {
 			this.sender = sender;
 			cancellable.reset ();
-			if (!do_get_authorization ()) {
-				return false;
-			}
 			bool success = true;
 			foreach (unowned string name in to_remove) {
 				success = remove (name);

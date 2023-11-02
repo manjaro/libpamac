@@ -26,6 +26,8 @@ namespace Pamac {
 		SourceFunc download_updates_callback;
 		SourceFunc get_authorization_callback;
 		bool get_authorization_authorized;
+		string[] download_paths;
+		SourceFunc download_pkgs_callback;
 		SourceFunc clean_cache_callback;
 		bool clean_cache_success;
 		SourceFunc clean_build_files_callback;
@@ -173,6 +175,24 @@ namespace Pamac {
 			}
 		}
 
+		public async string[] download_pkgs (GenericArray<string> urls) throws Error {
+			download_pkgs_callback = download_pkgs.callback;
+			try {
+				system_daemon.start_download_pkgs (urls.data);
+				yield;
+				return download_paths;
+			} catch (Error e) {
+				throw e;
+			}
+		}
+
+		void on_download_pkgs_finished (string sender, string[] dload_paths) {
+			if (sender == this.sender) {
+				download_paths = dload_paths;
+				download_pkgs_callback ();
+			}
+		}
+
 		public async bool trans_refresh (bool force) throws Error {
 			trans_refresh_callback = trans_refresh.callback;
 			try {
@@ -199,7 +219,8 @@ namespace Pamac {
 								int trans_flags,
 								GenericArray<string> to_install,
 								GenericArray<string> to_remove,
-								GenericArray<string> to_load,
+								GenericArray<string> to_load_local,
+								GenericArray<string> to_load_remote,
 								GenericArray<string> to_install_as_dep,
 								GenericArray<string> ignorepkgs,
 								GenericArray<string> overwrite_files) throws Error {
@@ -212,7 +233,8 @@ namespace Pamac {
 												trans_flags,
 												to_install.data,
 												to_remove.data,
-												to_load.data,
+												to_load_local.data,
+												to_load_remote.data,
 												to_install_as_dep.data,
 												ignorepkgs.data,
 												overwrite_files.data);
@@ -411,7 +433,8 @@ namespace Pamac {
 			system_daemon.set_pkgreason_finished.connect (on_set_pkgreason_finished);
 			system_daemon.trans_refresh_finished.connect (on_trans_refresh_finished);
 			system_daemon.trans_run_finished.connect (on_trans_run_finished);
-			system_daemon.download_updates_finished.connect (on_download_updates_finished );
+			system_daemon.download_updates_finished.connect (on_download_updates_finished);
+			system_daemon.download_pkgs_finished.connect (on_download_pkgs_finished);
 			system_daemon.generate_mirrors_list_data.connect (on_generate_mirrors_list_data);
 			system_daemon.generate_mirrors_list_finished.connect (on_generate_mirrors_list_finished);
 			system_daemon.snap_trans_run_finished.connect (on_snap_trans_run_finished);

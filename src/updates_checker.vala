@@ -64,10 +64,7 @@ namespace Pamac {
 			config.reload ();
 			if (config.refresh_period != 0) {
 				// get updates
-				string[] cmds = {"pamac", "checkupdates", "-q", "--refresh-tmp-files-dbs", "--use-timestamp"};
-				if (config.download_updates) {
-					cmds+= "--download-updates";
-				}
+				string[] cmds = {"pamac-checkupdates"};
 				message ("check updates");
 				try {
 					var process = new Subprocess.newv (cmds, SubprocessFlags.STDOUT_PIPE);

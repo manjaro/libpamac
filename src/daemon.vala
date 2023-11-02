@@ -56,6 +56,7 @@ namespace Pamac {
 		public signal void trans_refresh_finished (string sender, bool success);
 		public signal void trans_run_finished (string sender, bool success);
 		public signal void download_updates_finished (string sender, bool success);
+		public signal void download_pkgs_finished (string sender, string[] dload_paths);
 		public signal void get_authorization_finished (string sender, bool authorized);
 		public signal void write_alpm_config_finished (string sender);
 		public signal void write_pamac_config_finished (string sender);
@@ -128,14 +129,8 @@ namespace Pamac {
 			alpm_utils.important_details_outpout.connect ((sender, must_show) => {
 				important_details_outpout (sender, must_show);
 			});
-			alpm_utils.get_authorization.connect ((sender) => {
-				return get_authorization_sync (sender);
-			});
 			if (config.support_snap) {
 				snap_plugin = config.get_snap_plugin ();
-				snap_plugin.get_authorization.connect ((sender) => {
-					return get_authorization_sync (sender);
-				});
 				snap_plugin.emit_action_progress.connect ((sender, action, status, progress) => {
 					emit_action_progress (sender, action, status, progress);
 				});
@@ -157,9 +152,6 @@ namespace Pamac {
 			}
 			if (config.support_flatpak) {
 				flatpak_plugin = config.get_flatpak_plugin ();
-				flatpak_plugin.get_authorization.connect ((sender) => {
-					return get_authorization_sync (sender);
-				});
 				flatpak_plugin.emit_action_progress.connect ((sender, action, status, progress) => {
 					emit_action_progress (sender, action, status, progress);
 				});
@@ -234,31 +226,6 @@ namespace Pamac {
 				Polkit.Authority authority = yield Polkit.Authority.get_async ();
 				Polkit.Subject subject = new Polkit.SystemBusName (sender);
 				var result = yield authority.check_authorization (
-					subject,
-					"org.manjaro.pamac.commit",
-					null,
-					Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION);
-				authorized = result.get_is_authorized ();
-				if (!authorized) {
-					emit_error (sender, _("Authentication failed"), {});
-				}
-			} catch (Error e) {
-				emit_error (sender, _("Authentication failed"), {e.message});
-			}
-			return authorized;
-		}
-
-		bool get_authorization_sync (string sender) {
-			authorization_mutex.lock ();
-			bool authorized = authorized_senders.contains (sender);
-			authorization_mutex.unlock ();
-			if (authorized) {
-				return true;
-			}
-			try {
-				Polkit.Authority authority = Polkit.Authority.get_sync ();
-				Polkit.Subject subject = new Polkit.SystemBusName (sender);
-				var result = authority.check_authorization_sync (
 					subject,
 					"org.manjaro.pamac.commit",
 					null,
@@ -411,21 +378,25 @@ namespace Pamac {
 		}
 
 		public void start_set_pkgreason (string pkgname, uint reason, BusName sender) throws Error {
-			try {
-				new Thread<int>.try ("set_pkgreason", () => {
-					AtomicInt.inc (ref running_threads);
-					bool success = false;
-					lockfile_mutex.lock ();
-					success = alpm_utils.set_pkgreason (sender, pkgname, reason);
-					lockfile_mutex.unlock ();
-					set_pkgreason_finished (sender, success);
-					AtomicInt.dec_and_test (ref running_threads);
-					return 0;
-				});
-			} catch (ThreadError e) {
-				emit_error (sender, "Daemon Error", {e.message});
-				set_pkgreason_finished (sender, false);
-			}
+			check_authorization.begin (sender, (obj, res) => {
+				bool authorized = check_authorization.end (res);
+				if (authorized) {
+					try {
+						new Thread<int>.try ("set_pkgreason", () => {
+							AtomicInt.inc (ref running_threads);
+							lockfile_mutex.lock ();
+							bool success = alpm_utils.set_pkgreason (sender, pkgname, reason);
+							lockfile_mutex.unlock ();
+							set_pkgreason_finished (sender, success);
+							AtomicInt.dec_and_test (ref running_threads);
+							return 0;
+						});
+					} catch (Error e) {
+						emit_error (sender, "Daemon Error", {e.message});
+						set_pkgreason_finished (sender, false);
+					}
+				}
+			});
 		}
 
 		public void start_download_updates (BusName sender) throws Error {
@@ -449,10 +420,33 @@ namespace Pamac {
 					AtomicInt.dec_and_test (ref running_threads);
 					return 0;
 				});
-			} catch (ThreadError e) {
+			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
 				download_updates_finished (sender, false);
 			}
+		}
+
+		public void start_download_pkgs (string[] urls, BusName sender) throws Error {
+			string[] urls_copy = urls;
+			check_authorization.begin (sender, (obj, res) => {
+				bool authorized = check_authorization.end (res);
+				if (authorized) {
+					try {
+						new Thread<int>.try ("download_pkgs", () => {
+							AtomicInt.inc (ref running_threads);
+							lockfile_mutex.lock ();
+							GenericArray<string> dload_paths = alpm_utils.download_pkgs (sender, urls_copy);
+							lockfile_mutex.unlock ();
+							download_pkgs_finished (sender, dload_paths.data);
+							AtomicInt.dec_and_test (ref running_threads);
+							return 0;
+						});
+					} catch (Error e) {
+						emit_error (sender, "Daemon Error", {e.message});
+						download_pkgs_finished (sender, {});
+					}
+				}
+			});
 		}
 
 		bool wait_for_lock (string sender, Cancellable cancellable, bool quiet = false) {
@@ -495,6 +489,7 @@ namespace Pamac {
 		}
 
 		public void start_trans_refresh (bool force, BusName sender) throws Error {
+			// do not check authorization
 			try {
 				if (!cancellables_table.contains (sender)) {
 					cancellables_table.insert (sender, new Cancellable ());
@@ -515,7 +510,7 @@ namespace Pamac {
 					AtomicInt.dec_and_test (ref running_threads);
 					return 0;
 				});
-			} catch (ThreadError e) {
+			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
 				trans_refresh_finished (sender, false);
 			}
@@ -528,52 +523,62 @@ namespace Pamac {
 									int trans_flags,
 									string[] to_install,
 									string[] to_remove,
-									string[] to_load,
+									string[] to_load_local,
+									string[] to_load_remote,
 									string[] to_install_as_dep,
 									string[] ignorepkgs,
 									string[] overwrite_files,
 									BusName sender) throws Error {
-			try {
-				string[] to_install_copy = to_install;
-				string[] to_remove_copy = to_remove;
-				string[] to_load_copy = to_load;
-				string[] to_install_as_dep_copy = to_install_as_dep;
-				string[] ignorepkgs_copy = ignorepkgs;
-				string[] overwrite_files_copy = overwrite_files;
-				if (!cancellables_table.contains (sender)) {
-					cancellables_table.insert (sender, new Cancellable ());
+			string[] to_install_copy = to_install;
+			string[] to_remove_copy = to_remove;
+			string[] to_load_local_copy = to_load_local;
+			string[] to_load_remote_copy = to_load_remote;
+			string[] to_install_as_dep_copy = to_install_as_dep;
+			string[] ignorepkgs_copy = ignorepkgs;
+			string[] overwrite_files_copy = overwrite_files;
+			check_authorization.begin (sender, (obj, res) => {
+				bool authorized = check_authorization.end (res);
+				if (authorized) {
+					try {
+						if (!cancellables_table.contains (sender)) {
+							cancellables_table.insert (sender, new Cancellable ());
+						}
+						var cancellable = cancellables_table.lookup (sender);
+						new Thread<int>.try ("trans_run", () => {
+							AtomicInt.inc (ref running_threads);
+							if (alpm_utils.downloading_updates) {
+								// cancel download updates
+								alpm_utils.cancellable.cancel ();
+							}
+							bool success = wait_for_lock (sender, cancellable);
+							if (success) {
+								success = alpm_utils.trans_run (sender,
+															sysupgrade,
+															enable_downgrade,
+															simple_install,
+															keep_built_pkgs,
+															trans_flags,
+															to_install_copy,
+															to_remove_copy,
+															to_load_local_copy,
+															to_load_remote_copy,
+															to_install_as_dep_copy,
+															ignorepkgs_copy,
+															overwrite_files_copy);
+								lockfile_mutex.unlock ();
+							}
+							trans_run_finished (sender, success);
+							AtomicInt.dec_and_test (ref running_threads);
+							return 0;
+						});
+					} catch (Error e) {
+						emit_error (sender, "Daemon Error", {e.message});
+						trans_run_finished (sender, false);
+					}
+				} else {
+					trans_run_finished (sender, false);
 				}
-				var cancellable = cancellables_table.lookup (sender);
-				new Thread<int>.try ("trans_run", () => {
-					AtomicInt.inc (ref running_threads);
-					if (alpm_utils.downloading_updates) {
-						// cancel download updates
-						alpm_utils.cancellable.cancel ();
-					}
-					bool success = wait_for_lock (sender, cancellable);
-					if (success) {
-						success = alpm_utils.trans_run (sender,
-													sysupgrade,
-													enable_downgrade,
-													simple_install,
-													keep_built_pkgs,
-													trans_flags,
-													to_install_copy,
-													to_remove_copy,
-													to_load_copy,
-													to_install_as_dep_copy,
-													ignorepkgs_copy,
-													overwrite_files_copy);
-						lockfile_mutex.unlock ();
-					}
-					trans_run_finished (sender, success);
-					AtomicInt.dec_and_test (ref running_threads);
-					return 0;
-				});
-			} catch (ThreadError e) {
-				emit_error (sender, "Daemon Error", {e.message});
-				trans_run_finished (sender, false);
-			}
+			});
 		}
 
 		public void start_snap_trans_run (string[] to_install, string[] to_remove, BusName sender) throws Error {
@@ -584,20 +589,27 @@ namespace Pamac {
 				});
 				return;
 			}
-			try {
-				string[] to_install_copy = to_install;
-				string[] to_remove_copy = to_remove;
-				new Thread<int>.try ("snap_trans_run", () => {
-					AtomicInt.inc (ref running_threads);
-					bool success = snap_plugin.trans_run (sender, to_install_copy, to_remove_copy);
-					snap_trans_run_finished (sender, success);
-					AtomicInt.dec_and_test (ref running_threads);
-					return 0;
-				});
-			} catch (ThreadError e) {
-				emit_error (sender, "Daemon Error", {e.message});
-				snap_trans_run_finished (sender, false);
-			}
+			string[] to_install_copy = to_install;
+			string[] to_remove_copy = to_remove;
+			check_authorization.begin (sender, (obj, res) => {
+				bool authorized = check_authorization.end (res);
+				if (authorized) {
+					try {
+						new Thread<int>.try ("snap_trans_run", () => {
+							AtomicInt.inc (ref running_threads);
+							bool success = snap_plugin.trans_run (sender, to_install_copy, to_remove_copy);
+							snap_trans_run_finished (sender, success);
+							AtomicInt.dec_and_test (ref running_threads);
+							return 0;
+						});
+					} catch (Error e) {
+						emit_error (sender, "Daemon Error", {e.message});
+						snap_trans_run_finished (sender, false);
+					}
+				} else {
+					snap_trans_run_finished (sender, false);
+				}
+			});
 		}
 
 		public void start_snap_switch_channel (string snap_name, string snap_channel, BusName sender) throws Error {
@@ -616,7 +628,7 @@ namespace Pamac {
 					AtomicInt.dec_and_test (ref running_threads);
 					return 0;
 				});
-			} catch (ThreadError e) {
+			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
 				snap_switch_channel_finished (sender, false);
 			}
@@ -630,21 +642,26 @@ namespace Pamac {
 				});
 				return;
 			}
-			try {
-				string[] to_install_copy = to_install;
-				string[] to_remove_copy = to_remove;
-				string[] to_upgrade_copy = to_upgrade;
-				new Thread<int>.try ("snap_trans_run", () => {
-					AtomicInt.inc (ref running_threads);
-					bool success = flatpak_plugin.trans_run (sender, to_install_copy, to_remove_copy, to_upgrade_copy);
-					flatpak_trans_run_finished (sender, success);
-					AtomicInt.dec_and_test (ref running_threads);
-					return 0;
-				});
-			} catch (ThreadError e) {
-				emit_error (sender, "Daemon Error", {e.message});
-				flatpak_trans_run_finished (sender, false);
-			}
+			string[] to_install_copy = to_install;
+			string[] to_remove_copy = to_remove;
+			string[] to_upgrade_copy = to_upgrade;
+			check_authorization.begin (sender, (obj, res) => {
+				bool authorized = check_authorization.end (res);
+				if (authorized) {
+					try {
+						new Thread<int>.try ("snap_trans_run", () => {
+							AtomicInt.inc (ref running_threads);
+							bool success = flatpak_plugin.trans_run (sender, to_install_copy, to_remove_copy, to_upgrade_copy);
+							flatpak_trans_run_finished (sender, success);
+							AtomicInt.dec_and_test (ref running_threads);
+							return 0;
+						});
+					} catch (Error e) {
+						emit_error (sender, "Daemon Error", {e.message});
+						flatpak_trans_run_finished (sender, false);
+					}
+				}
+			});
 		}
 
 		public void trans_cancel (BusName sender) throws Error {

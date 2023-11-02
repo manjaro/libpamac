@@ -120,7 +120,6 @@ namespace Pamac {
 		public signal void emit_warning (string sender, string message);
 		public signal void emit_error (string sender, string message, GenericArray<string> details);
 		public signal void important_details_outpout (string sender, bool must_show);
-		public signal bool get_authorization (string sender);
 
 		public AlpmUtils (Config config, Soup.Session soup_session) {
 			sender = "";
@@ -199,10 +198,6 @@ namespace Pamac {
 			important_details_outpout (sender, must_show);
 		}
 
-		bool do_get_authorization () {
-			return get_authorization (sender);
-		}
-
 		void check_old_lock () {
 			var alpm_handle = get_handle (false, false, false);
 			if (alpm_handle == null) {
@@ -279,19 +274,17 @@ namespace Pamac {
 
 		public bool set_pkgreason (string sender, string pkgname, uint reason) {
 			this.sender = sender;
-			if (do_get_authorization ()) {
-				var alpm_handle = get_handle (false, false, false);
-				if (alpm_handle == null) {
-					return false;
-				}
-				unowned Alpm.Package? pkg = alpm_handle.localdb.get_pkg (pkgname);
-				if (pkg != null) {
-					// lock the database
-					if (alpm_handle.trans_init (0) == 0) {
-						pkg.reason = (Alpm.Package.Reason) reason;
-						alpm_handle.trans_release ();
-						return true;
-					}
+			var alpm_handle = get_handle (false, false, false);
+			if (alpm_handle == null) {
+				return false;
+			}
+			unowned Alpm.Package? pkg = alpm_handle.localdb.get_pkg (pkgname);
+			if (pkg != null) {
+				// lock the database
+				if (alpm_handle.trans_init (0) == 0) {
+					pkg.reason = (Alpm.Package.Reason) reason;
+					alpm_handle.trans_release ();
+					return true;
 				}
 			}
 			return false;
@@ -372,9 +365,6 @@ namespace Pamac {
 
 		public bool trans_refresh (string sender, bool force_refresh) {
 			this.sender = sender;
-			if (!do_get_authorization ()) {
-				return false;
-			}
 			do_emit_action (_("Synchronizing package databases") + "...");
 			write_log_file ("synchronizing package lists");
 			cancellable.reset ();
@@ -451,7 +441,7 @@ namespace Pamac {
 			} else {
 				// load pkg or built pkg
 				local_pkg = alpm_handle.localdb.get_pkg (alpm_pkg.name);
-				sync_pkg = get_syncpkg (alpm_handle, alpm_pkg.name);
+				sync_pkg = null;
 			}
 			return new AlpmPackageStatic.transaction (alpm_pkg, local_pkg, sync_pkg);
 		}
@@ -459,32 +449,34 @@ namespace Pamac {
 		public bool download_updates (string sender) {
 			this.sender = sender;
 			downloading_updates = true;
-			// use tmp handle with no callback but not copy dbs
-			var tmp_handle = alpm_config.get_handle (false, true, false);
-			if (tmp_handle == null) {
+			// use a handle with no callback
+			var alpm_handle = get_handle (false, false, false);
+			if (alpm_handle == null) {
 				return false;
 			}
-			alpm_config.register_syncdbs (tmp_handle);
+			alpm_config.register_syncdbs (alpm_handle);
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
-			tmp_handle.set_questioncb (cb_question, this);
+			alpm_handle.set_questioncb (cb_question, this);
 			cancellable.reset ();
-			bool success = false;
-			if (tmp_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
-				if (tmp_handle.trans_sysupgrade (0) == 0) {
-					Alpm.List err_data;
-					if (tmp_handle.trans_prepare (out err_data) == 0) {
-						// custom parallel downloads
-						download_files (tmp_handle, config.max_parallel_downloads, false);
-						if (tmp_handle.trans_commit (out err_data) == 0) {
-							success = true;
+			bool success = update_dbs (alpm_handle, 0);
+			if (success) {
+				if (alpm_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
+					if (alpm_handle.trans_sysupgrade (0) == 0) {
+						Alpm.List err_data;
+						if (alpm_handle.trans_prepare (out err_data) == 0) {
+							// custom parallel downloads
+							download_files (alpm_handle, config.max_parallel_downloads, false);
+							if (alpm_handle.trans_commit (out err_data) == 0) {
+								success = true;
+							}
 						}
 					}
+					alpm_handle.trans_release ();
 				}
-				tmp_handle.trans_release ();
 			}
 			downloading_updates = false;
 			// enable offline upgrade
-			if (config.offline_upgrade) {
+			if (success && config.offline_upgrade) {
 				try {
 					Process.spawn_command_line_sync ("touch /system-update");
 				} catch (SpawnError e) {
@@ -629,37 +621,50 @@ namespace Pamac {
 			}
 		}
 
-		GenericSet<string?>? download_pkgs (Alpm.Handle? alpm_handle, GenericSet<string?> urls) {
-			if (do_get_authorization ()) {
-				var result = new GenericSet<string?> (str_hash, str_equal);
-				foreach (unowned string url in urls) {
-					string mirror =  Path.get_dirname (url);
-					current_filename = Path.get_basename (url);
-					unowned string cachedir = alpm_handle.cachedirs.nth (0).data;
-					var destfile = File.new_for_path (Path.build_filename (cachedir, current_filename));
-					if (destfile.query_exists ()) {
-						// no need to download
-						result.add (destfile.get_path ());
-					} else {
-						int ret = dload (this, mirror, current_filename, cachedir, 0, false, true);
-						if (ret == 0) {
-							// try to download the signature
-							string sig_filename = current_filename + ".sig";
-							dload (this, mirror, sig_filename, cachedir, 0, false, false);
-							result.add (destfile.get_path ());
-						}
+		public GenericArray<string> download_pkgs (string sender, string[] urls) {
+			this.sender = sender;
+			var dload_paths = new GenericArray<string> ();
+			Alpm.Handle? alpm_handle = get_handle (false, false, false);
+			if (alpm_handle == null) {
+				return dload_paths;
+			}
+			// add log callback for warnings/errors
+			alpm_handle.set_logcb (cb_log, this);
+			foreach (unowned string url in urls) {
+				string mirror =  Path.get_dirname (url);
+				current_filename = Path.get_basename (url);
+				unowned string cachedir = alpm_handle.cachedirs.nth (0).data;
+				string dload_path = Path.build_filename (cachedir, current_filename);
+				var destfile = File.new_for_path (dload_path);
+				if (destfile.query_exists ()) {
+					// no need to download
+					dload_paths.add (dload_path);
+				} else {
+					int ret = dload (this, mirror, current_filename, cachedir, 0, false, true);
+					if (ret == 0) {
+						// try to download the signature
+						string sig_filename = current_filename + ".sig";
+						dload (this, mirror, sig_filename, cachedir, 0, false, false);
+						dload_paths.add (dload_path);
 					}
 				}
-				return result;
+				if (cancellable.is_cancelled ()) {
+					dload_paths = new GenericArray<string> ();
+					break;
+				}
 			}
-			return null;
+			if (dload_paths.length == 0 && !cancellable.is_cancelled ()) {
+				var details = new GenericArray<string> ();
+				details.add (_("failed to retrieve some files"));
+				do_emit_error (_("Failed to prepare transaction"), details);
+			}
+			return dload_paths;
 		}
 
 		bool trans_load_pkg (Alpm.Handle? alpm_handle, string path, int siglevel, bool emit_error = true) {
 			Alpm.Package* pkg;
-			string? pkgpath = path;
 			// load tarball
-			if (alpm_handle.load_tarball (pkgpath, 1, siglevel, out pkg) == -1) {
+			if (alpm_handle.load_tarball (path, 1, siglevel, out pkg) == -1) {
 				if (emit_error) {
 					var details = new GenericArray<string> ();
 					Alpm.Errno err_no = alpm_handle.errno ();
@@ -899,7 +904,8 @@ namespace Pamac {
 										int trans_flags,
 										GenericSet<string?> to_install,
 										GenericSet<string?> to_remove,
-										GenericSet<string?> to_load,
+										GenericSet<string?> local_paths,
+										GenericSet<string?> remote_paths,
 										GenericSet<string?> to_build,
 										GenericSet<string?> ignorepkgs,
 										GenericSet<string?> overwrite_files,
@@ -923,22 +929,11 @@ namespace Pamac {
 			foreach (unowned string name in to_remove) {
 				this.to_remove.add (name);
 			}
-			foreach (unowned string path in to_load) {
-				if ("://" in path) {
-					remote_paths.add (path);
-				} else {
-					local_paths.add (path);
-				}
+			foreach (unowned string path in local_paths) {
+				this.local_paths.add (path);
 			}
-			if (remote_paths.length > 0) {
-				// add log callback for warnings/errors
-				tmp_handle.set_logcb (cb_log, this);
-				tmp_handle.set_fetchcb (cb_fetch, this);
-				tmp_handle.set_logcb (null, null);
-				remote_paths = download_pkgs (tmp_handle, remote_paths);
-				if (remote_paths == null) {
-					return false;
-				}
+			foreach (unowned string path in remote_paths) {
+				this.remote_paths.add (path);
 			}
 			foreach (unowned string name in to_build) {
 				this.to_build.add (name);
@@ -998,7 +993,8 @@ namespace Pamac {
 								int trans_flags,
 								string[] to_install,
 								string[] to_remove,
-								string[] to_load,
+								string[] to_load_local,
+								string[] to_load_remote,
 								string[] to_install_as_dep,
 								string[] ignorepkgs,
 								string[] overwrite_files) {
@@ -1025,19 +1021,11 @@ namespace Pamac {
 			foreach (unowned string name in to_remove) {
 				this.to_remove.add (name);
 			}
-			foreach (unowned string path in to_load) {
-				if ("://" in path) {
-					remote_paths.add (path);
-				} else {
-					local_paths.add (path);
-				}
+			foreach (unowned string path in to_load_local) {
+				local_paths.add (path);
 			}
-			if (remote_paths.length > 0) {
-				// remote pkgs should already be downloaded in trans_check_prepare so they will be find quickly
-				remote_paths = download_pkgs (alpm_handle, remote_paths);
-				if (remote_paths == null) {
-					return false;
-				}
+			foreach (unowned string path in to_load_remote) {
+				remote_paths.add (path);
 			}
 			foreach (unowned string name in to_install_as_dep) {
 				this.to_install_as_dep.insert (name, name);
@@ -1058,18 +1046,12 @@ namespace Pamac {
 			if (success) {
 				if (alpm_handle.trans_to_add () != null ||
 					alpm_handle.trans_to_remove () != null) {
-					if (do_get_authorization ()) {
-						// add callbacks to have commit signals
-						alpm_handle.set_eventcb (cb_event, this);
-						alpm_handle.set_progresscb (cb_progress, this);
-						alpm_handle.set_fetchcb (cb_fetch, this);
-						alpm_handle.set_logcb (cb_log, this);
-						success = trans_commit (alpm_handle);
-					} else {
-						trans_release (alpm_handle);
-						trans_reset ();
-						success = false;
-					}
+					// add callbacks to have commit signals
+					alpm_handle.set_eventcb (cb_event, this);
+					alpm_handle.set_progresscb (cb_progress, this);
+					alpm_handle.set_fetchcb (cb_fetch, this);
+					alpm_handle.set_logcb (cb_log, this);
+					success = trans_commit (alpm_handle);
 				} else {
 					//do_emit_action (dgettext (null, "Nothing to do") + ".");
 					trans_release (alpm_handle);

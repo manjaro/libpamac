@@ -26,6 +26,7 @@ namespace Pamac {
 		public abstract async bool clean_build_files (string aur_build_dir) throws Error;
 		public abstract async bool set_pkgreason (string pkgname, uint reason) throws Error;
 		public abstract async bool download_updates () throws Error;
+		public abstract async string[] download_pkgs (GenericArray<string> urls) throws Error;
 		public abstract async bool trans_refresh (bool force) throws Error;
 		public abstract async bool trans_run (bool sysupgrade,
 										bool enable_downgrade,
@@ -34,7 +35,8 @@ namespace Pamac {
 										int trans_flags,
 										GenericArray<string> to_install,
 										GenericArray<string> to_remove,
-										GenericArray<string> to_load,
+										GenericArray<string> to_load_local,
+										GenericArray<string> to_load_remote,
 										GenericArray<string> to_install_as_dep,
 										GenericArray<string> ignorepkgs,
 										GenericArray<string> overwrite_files) throws Error;

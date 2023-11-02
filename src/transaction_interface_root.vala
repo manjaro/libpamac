@@ -73,6 +73,11 @@ namespace Pamac {
 			return alpm_utils.download_updates ("root");
 		}
 
+		public async string[] download_pkgs (GenericArray<string> urls) throws Error {
+			GenericArray<string> dload_paths = alpm_utils.download_pkgs ("root", urls.data);
+			return dload_paths.data;
+		}
+
 		async bool wait_for_lock () {
 			bool waiting = false;
 			bool success = false;
@@ -153,7 +158,8 @@ namespace Pamac {
 							int trans_flags,
 							GenericArray<string> to_install,
 							GenericArray<string> to_remove,
-							GenericArray<string> to_load,
+							GenericArray<string> to_load_local,
+							GenericArray<string> to_load_remote,
 							GenericArray<string> to_install_as_dep,
 							GenericArray<string> ignorepkgs,
 							GenericArray<string> overwrite_files) {
@@ -173,7 +179,8 @@ namespace Pamac {
 															trans_flags,
 															to_install.data,
 															to_remove.data,
-															to_load.data,
+															to_load_local.data,
+															to_load_remote.data,
 															to_install_as_dep.data,
 															ignorepkgs.data,
 															overwrite_files.data);
@@ -194,7 +201,8 @@ namespace Pamac {
 								int trans_flags,
 								GenericArray<string> to_install,
 								GenericArray<string> to_remove,
-								GenericArray<string> to_load,
+								GenericArray<string> to_load_local,
+								GenericArray<string> to_load_remote,
 								GenericArray<string> to_install_as_dep,
 								GenericArray<string> ignorepkgs,
 								GenericArray<string> overwrite_files) {
@@ -216,7 +224,8 @@ namespace Pamac {
 								trans_flags,
 								to_install,
 								to_remove,
-								to_load,
+								to_load_local,
+								to_load_remote,
 								to_install_as_dep,
 								ignorepkgs,
 								overwrite_files);

@@ -802,16 +802,9 @@ namespace Pamac {
 			emit_error (sender, message, details);
 		}
 
-		bool do_get_authorization () {
-			return get_authorization (sender);
-		}
-
 		public bool trans_run (string sender, string[] to_install, string[] to_remove, string[] to_upgrade) {
 			this.sender = sender;
 			cancellable.reset ();
-			if (!do_get_authorization ()) {
-				return false;
-			}
 			try {
 				var transaction = new Flatpak.Transaction.for_installation (installation, cancellable);
 				foreach (unowned string id in to_install) {

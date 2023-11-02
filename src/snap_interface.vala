@@ -19,7 +19,6 @@
 
 namespace Pamac {
 	internal interface SnapPlugin : Object {
-		public signal bool get_authorization (string sender);
 		public signal void emit_action_progress (string sender, string action, string status, double progress);
 		public signal void emit_download_progress (string sender, string action, string status, double progress);
 		public signal void emit_script_output (string sender, string message);

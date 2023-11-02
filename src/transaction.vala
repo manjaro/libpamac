@@ -38,7 +38,8 @@ namespace Pamac {
 		int trans_flags;
 		GenericSet<string?> to_install;
 		GenericSet<string?> to_remove;
-		GenericSet<string?> to_load;
+		GenericSet<string?> to_load_local;
+		GenericSet<string?> to_load_remote;
 		GenericSet<string?> to_build;
 		GenericSet<string?> clone_files;
 		GenericSet<string?> clone_deps_files;
@@ -122,7 +123,8 @@ namespace Pamac {
 			force_refresh = false;
 			to_install = new GenericSet<string?> (str_hash, str_equal);
 			to_remove = new GenericSet<string?> (str_hash, str_equal);
-			to_load = new GenericSet<string?> (str_hash, str_equal);
+			to_load_local = new GenericSet<string?> (str_hash, str_equal);
+			to_load_remote = new GenericSet<string?> (str_hash, str_equal);
 			to_build = new GenericSet<string?> (str_hash, str_equal);
 			clone_files = new GenericSet<string?> (str_hash, str_equal);
 			clone_deps_files = new GenericSet<string?> (str_hash, str_equal);
@@ -203,13 +205,6 @@ namespace Pamac {
 					important_details_outpout (must_show);
 					return false;
 				});
-			});
-			// only used as root in transaction_interface_root.vala
-			alpm_utils.get_authorization.connect ((sender) => {
-				if (Posix.geteuid () == 0) {
-					return true;
-				}
-				return false;
 			});
 			snap_to_install = new HashTable<string, SnapPackage> (str_hash, str_equal);
 			snap_to_remove = new HashTable<string, SnapPackage> (str_hash, str_equal);
@@ -1112,7 +1107,8 @@ namespace Pamac {
 			if (sysupgrading ||
 				to_install.length > 0 ||
 				to_remove.length > 0 ||
-				to_load.length > 0 ||
+				to_load_local.length > 0 ||
+				to_load_remote.length > 0 ||
 				to_build.length > 0) {
 				success = yield run_alpm_transaction ();
 				if (!dry_run && success) {
@@ -1152,7 +1148,8 @@ namespace Pamac {
 				force_refresh = false;
 				to_install.remove_all ();
 				to_remove.remove_all ();
-				to_load.remove_all ();
+				to_load_local.remove_all ();
+				to_load_remote.remove_all ();
 				to_build.remove_all ();
 				clone_files.remove_all ();
 				clone_deps_files.remove_all ();
@@ -1342,28 +1339,51 @@ namespace Pamac {
 			return success;
 		}
 
-		async bool trans_check_prepare (bool sysupgrade,
-										bool enable_downgrade,
-										bool simple_install,
-										int trans_flags,
-										GenericSet<string?> to_install,
-										GenericSet<string?> to_remove,
-										GenericSet<string?> to_load,
-										GenericSet<string?> to_build,
-										GenericSet<string?> ignorepkgs,
-										GenericSet<string?> overwrite_files,
-										out TransactionSummary summary) {
+		async bool trans_check_prepare (out TransactionSummary summary) {
 			bool success = false;
+			summary = new TransactionSummary ();
+			if (to_load_remote.length > 0) {
+				success = yield get_authorization_async ();
+				if (!success) {
+					return false;
+				}
+				try {
+					var to_load_remote_array = new GenericArray<string> (to_load_remote.length);
+					foreach (unowned string url in to_load_remote) {
+						to_load_remote_array.add (url);
+					}
+					string[] dload_paths = yield transaction_interface.download_pkgs (to_load_remote_array);
+					if (dload_paths.length == 0) {
+						// error
+						success = false;
+					} else {
+						// replace to_load_remote with the dload_paths
+						to_load_remote.remove_all ();
+						foreach (unowned string path in dload_paths) {
+							to_load_remote.add (path);
+						}
+					}
+				} catch (Error e) {
+					var details = new GenericArray<string> (1);
+					details.add ("download_pkgs: %s".printf (e.message));
+					emit_error ("Daemon Error", details);
+					success = false;
+				}
+				if (!success) {
+					return false;
+				}
+			}
 			var new_summary = new TransactionSummary ();
 			try {
 				new Thread<int>.try ("trans_check_prepare", () => {
-					success = alpm_utils.trans_check_prepare (sysupgrade,
-															enable_downgrade,
-															simple_install,
+					success = alpm_utils.trans_check_prepare (sysupgrading,
+															config.enable_downgrade,
+															config.simple_install,
 															trans_flags,
 															to_install,
 															to_remove,
-															to_load,
+															to_load_local,
+															to_load_remote,
 															to_build,
 															ignorepkgs,
 															overwrite_files,
@@ -1392,55 +1412,29 @@ namespace Pamac {
 		}
 
 		async bool trans_refresh () {
-			bool success = yield get_authorization_async ();
-			if (success) {
-				try {
-					success = yield transaction_interface.trans_refresh (force_refresh);
-				} catch (Error e) {
-					var details = new GenericArray<string> (1);
-					details.add ("trans_refresh: %s".printf (e.message));
-					emit_error ("Daemon Error", details);
-					success = false;
-				}
-				if (config.support_aur && config.check_aur_updates) {
-					bool aur_success = database.aur_plugin.update_db (force_refresh, true);
-					if (!aur_success) {
-						emit_warning (dgettext (null, "Failed to synchronize AUR database"));
-					}
+			bool success = false;
+			try {
+				success = yield transaction_interface.trans_refresh (force_refresh);
+			} catch (Error e) {
+				var details = new GenericArray<string> (1);
+				details.add ("trans_refresh: %s".printf (e.message));
+				emit_error ("Daemon Error", details);
+				success = false;
+			}
+			if (config.support_aur && config.check_aur_updates) {
+				bool aur_success = database.aur_plugin.update_db (force_refresh, true);
+				if (!aur_success) {
+					emit_warning (dgettext (null, "Failed to synchronize AUR database"));
 				}
 			}
 			return success;
 		}
 
 		async bool trans_prepare (out TransactionSummary summary) {
-			// check if urls to download are provided in to_load
-			// if yes get_authorization here before the download
-			if (to_load.length > 0) {
-				foreach (unowned string path in to_load) {
-					if ("://" in path) {
-						bool success = yield get_authorization_async ();
-						if (!success) {
-							summary = new TransactionSummary ();
-							return false;
-						}
-						break;
-					}
-				}
-			}
 			start_preparing ();
 			add_config_ignore_pkgs ();
 			set_flags ();
-			bool success = yield trans_check_prepare (sysupgrading,
-													config.enable_downgrade,
-													config.simple_install,
-													trans_flags,
-													to_install,
-													to_remove,
-													to_load,
-													to_build,
-													ignorepkgs,
-													overwrite_files,
-													out summary);
+			bool success = yield trans_check_prepare (out summary);
 			stop_preparing ();
 			if (!success) {
 				if (to_build.length > 0) {
@@ -1588,7 +1582,8 @@ namespace Pamac {
 					}
 					var to_install_array = new GenericArray<string> (to_install.length);
 					var to_remove_array = new GenericArray<string> (to_remove.length);
-					var to_load_array = new GenericArray<string> (to_load.length);
+					var to_load_local_array = new GenericArray<string> (to_load_local.length);
+					var to_load_remote_array = new GenericArray<string> (to_load_remote.length);
 					var to_install_as_dep_array = new GenericArray<string> (to_install_as_dep.length);
 					var ignorepkgs_array = new GenericArray<string> (ignorepkgs.length);
 					var overwrite_files_array = new GenericArray<string> (overwrite_files.length);
@@ -1598,8 +1593,11 @@ namespace Pamac {
 					foreach (unowned string name in to_remove) {
 						to_remove_array.add (name);
 					}
-					foreach (unowned string name in to_load) {
-						to_load_array.add (name);
+					foreach (unowned string name in to_load_local) {
+						to_load_local_array.add (name);
+					}
+					foreach (unowned string name in to_load_remote) {
+						to_load_remote_array.add (name);
 					}
 					foreach (unowned string name in to_install_as_dep) {
 						to_install_as_dep_array.add (name);
@@ -1622,7 +1620,8 @@ namespace Pamac {
 																	trans_flags,
 																	to_install_array,
 																	to_remove_array,
-																	to_load_array,
+																	to_load_local_array,
+																	to_load_remote_array,
 																	to_install_as_dep_array,
 																	ignorepkgs_array,
 																	overwrite_files_array);
@@ -1707,7 +1706,11 @@ namespace Pamac {
 		}
 
 		public void add_path_to_load (string path) {
-			to_load.add (path);
+			if ("://" in path) {
+				to_load_remote.add (path);
+			} else {
+				to_load_local.add (path);
+			}
 		}
 
 		public void add_pkg_to_build (string name, bool clone_build_files, bool clone_deps_build_files) {
@@ -2113,6 +2116,7 @@ namespace Pamac {
 															new GenericArray<string> (), // to_install
 															new GenericArray<string> (), // to_remove
 															to_load_array,
+															new GenericArray<string> (), // to_load_remote
 															to_install_as_dep_array,
 															new GenericArray<string> (), // ignorepkgs
 															new GenericArray<string> ()); // overwrite_files

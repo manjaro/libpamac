@@ -32,7 +32,7 @@ namespace Pamac {
 		public abstract void start_clean_build_files (string aur_build_dir) throws Error;
 		public abstract void start_set_pkgreason (string pkgname, uint reason) throws Error;
 		public abstract void start_download_updates () throws Error;
-		public abstract void start_download_pkg (string url) throws Error;
+		public abstract void start_download_pkgs (string[] urls) throws Error;
 		public abstract void start_trans_refresh (bool force) throws Error;
 		public abstract void start_trans_run (bool sysupgrade,
 											bool enable_downgrade,
@@ -41,7 +41,8 @@ namespace Pamac {
 											int trans_flags,
 											string[] to_install,
 											string[] to_remove,
-											string[] to_load,
+											string[] to_load_local,
+											string[] to_load_remote,
 											string[] to_install_as_dep,
 											string[] ignorepkgs,
 											string[] overwrite_files) throws Error;
@@ -61,7 +62,7 @@ namespace Pamac {
 		public signal void set_pkgreason_finished (string sender, bool success);
 		public signal void start_waiting (string sender);
 		public signal void stop_waiting (string sender);
-		public signal void download_pkg_finished (string sender, string path);
+		public signal void download_pkgs_finished (string sender, string[] dload_paths);
 		public signal void trans_refresh_finished (string sender, bool success);
 		public signal void trans_run_finished (string sender, bool success);
 		public signal void download_updates_finished (string sender, bool success);

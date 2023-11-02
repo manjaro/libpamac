@@ -114,6 +114,13 @@ executable('pamac-daemon',
 	c_args: [common_c_args, alpm_c_args],
 	install : true)
 
+libpamac_dep = declare_dependency(link_with: libpamac)
+
+executable('pamac-checkupdates',
+	sources: ['checkupdates.vala'],
+	dependencies: [gio, libpamac_dep],
+	install : true)
+
 executable('dependency-checker',
 	sources: ['alpm_config.vala', 'dependency_checker.vala'],
 	dependencies: [alpm_deps],
