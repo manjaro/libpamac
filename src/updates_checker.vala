@@ -58,6 +58,8 @@ namespace Pamac {
 		}
 
 		public void check_updates () {
+			local_monitor.changed.disconnect (on_localdb_changed);
+			sync_monitor.changed.disconnect (on_syncdb_changed);
 			if (loop.is_running ()) {
 				loop.run ();
 			}
@@ -97,6 +99,8 @@ namespace Pamac {
 				updates_available (_updates_nb);
 				message ("%u updates found", _updates_nb);
 			}
+			local_monitor.changed.connect (on_localdb_changed);
+			sync_monitor.changed.connect (on_syncdb_changed);
 		}
 
 		void on_localdb_changed (File src, File? dest, FileMonitorEvent event_type) {

@@ -223,6 +223,10 @@ namespace Pamac {
 			connecting_signals ();
 		}
 
+		~Transaction () {
+			quit_daemon ();
+		}
+
 		public void quit_daemon () {
 			try {
 				transaction_interface.quit_daemon ();
