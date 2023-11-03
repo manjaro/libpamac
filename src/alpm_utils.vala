@@ -2665,7 +2665,7 @@ int cb_fetch (void* ctx, string fileurl, string localpath, int force) {
 	int ret = dload (alpm_utils, mirror, alpm_utils.current_filename, localpath, force, false, true);
 	if (ret == 0) {
 		// download signature without signal from the same server
-		ret = dload (alpm_utils, mirror, alpm_utils.current_filename + ".sig", localpath, force, false, false);
+		dload (alpm_utils, mirror, alpm_utils.current_filename + ".sig", localpath, force, false, false);
 	}
 	alpm_utils.already_downloaded = 0;
 	alpm_utils.current_progress = 0;
