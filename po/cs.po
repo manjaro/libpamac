@@ -7,6 +7,7 @@
 # halfark <vojtechprecechtel@gmail.com>, 2014,2016
 # Jakub Zieba <jakzie2@gmail.com>, 2019
 # Libor Schejbal <libor.schejbal@gmail.com>, 2013
+# LiberteCzech <martin.kriz.czech@gmail.com>, 2023
 # Miroslav Sittek <miroslav.sittek@gmail.com>, 2015
 # Ondrej Cesik <ondrej.cesik@gmail.com>, 2017
 # Ondřej Vlk <vlkon321@gmail.com>, 2018
@@ -23,8 +24,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Tomáš Kvapil <thomickcz@gmail.com>, 2022\n"
-"Language-Team: Czech (http://www.transifex.com/manjarolinux/manjaro-pamac/language/cs/)\n"
+"Last-Translator: LiberteCzech <martin.kriz.czech@gmail.com>, 2023\n"
+"Language-Team: Czech (http://app.transifex.com/manjarolinux/manjaro-pamac/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -396,7 +397,7 @@ msgstr "%1$s: ignoruje aktualizaci balíčku (%2$s => %3$s)"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Selhala synchronizace databáze AUR"
 
 #: src/transaction.vala
 #, c-format
@@ -549,7 +550,7 @@ msgstr "Aktualizace k dispozici"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Váš systém je aktuální"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -1240,7 +1241,7 @@ msgstr "vynutit obnovení databází"
 
 #: src/cli.vala
 msgid "do not refresh the databases"
-msgstr ""
+msgstr "neobnovovat databáze"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1533,7 +1534,7 @@ msgstr "Automaticky stahovat aktualizace"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Upgradujte systém během vypínání"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

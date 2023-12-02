@@ -10,7 +10,7 @@
 # Eilidh Martin <maxqueue93+github@gmail.com>, 2017
 # Ordtrogen, 2020
 # Lennart Niemelä <lennart.niemela@gmail.com>, 2016
-# Luna Jernberg <bittin@cafe8bitar.se>, 2020-2022
+# Luna Jernberg <bittin@cafe8bitar.se>, 2020-2023
 # Mattias Johansson <cashew75s@gmail.com>, 2014
 # Niklas W <niklas@vividvisions.se>, 2018-2019
 # philm <philm@manjaro.org>, 2015
@@ -26,8 +26,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Luna Jernberg <bittin@cafe8bitar.se>, 2020-2022\n"
-"Language-Team: Swedish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sv/)\n"
+"Last-Translator: Luna Jernberg <bittin@cafe8bitar.se>, 2020-2023\n"
+"Language-Team: Swedish (http://app.transifex.com/manjarolinux/manjaro-pamac/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1522,7 +1522,7 @@ msgstr "Ladda automatiskt ned uppdateringar"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Uppgradera systemet vid avstängning"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: Xema Fuentes, 2020\n"
-"Language-Team: Catalan (Valencian) (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ca@valencia/)\n"
+"Language-Team: Catalan (Valencian) (http://app.transifex.com/manjarolinux/manjaro-pamac/language/ca@valencia/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1507,7 +1507,7 @@ msgstr "Baixa les actualitzacions automàticament"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Actualitza el sistema durant l'aturada"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

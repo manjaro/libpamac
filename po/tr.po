@@ -6,7 +6,7 @@
 # Translators:
 # Abidin <abidinkofficial@gmail.com>, 2020
 # Cihan Alkan <cihanalk@gmail.com>, 2018,2021
-# Demiray Muhterem <mdemiray@msn.com>, 2013-2022
+# Demiray Muhterem <mdemiray@msn.com>, 2013-2023
 # Demiray Muhterem <mdemiray@msn.com>, 2018
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # Muha Aliss <muhaaliss@gmail.com>, 2022
@@ -21,8 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Demiray Muhterem <mdemiray@msn.com>, 2013-2022\n"
-"Language-Team: Turkish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/tr/)\n"
+"Last-Translator: Yusuf Faruk DOĞAN <yfdogan@gmail.com>, 2013\n"
+"Language-Team: Turkish (http://app.transifex.com/manjarolinux/manjaro-pamac/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1517,7 +1517,7 @@ msgstr "Güncellemeleri otomatik olarak indir"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Kapatma sırasında sistemi yükselt"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

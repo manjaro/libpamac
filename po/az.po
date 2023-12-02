@@ -4,7 +4,7 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# Xəyyam Qocayev <xxmn77@gmail.com>, 2021-2022
+# Xəyyam Qocayev <xxmn77@gmail.com>, 2021-2023
 # d61c28696b35aa754de85b9fc22c53a5_f7d6eca, 2017
 msgid ""
 msgstr ""
@@ -12,8 +12,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Xəyyam Qocayev <xxmn77@gmail.com>, 2021-2022\n"
-"Language-Team: Azerbaijani (http://www.transifex.com/manjarolinux/manjaro-pamac/language/az/)\n"
+"Last-Translator: Xəyyam Qocayev <xxmn77@gmail.com>, 2021-2023\n"
+"Language-Team: Azerbaijani (http://app.transifex.com/manjarolinux/manjaro-pamac/language/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1508,7 +1508,7 @@ msgstr "Yenilənmələri avtomatik yükləmək"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Söndürüldükdə sistem yenilənsin"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

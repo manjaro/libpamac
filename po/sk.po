@@ -7,7 +7,7 @@
 # Dušan Kazik, 2014
 # Dušan Kazik <prescott66@gmail.com>, 2014-2022
 # Inoki Sakaeru, 2013
-# Jozef Gaal <preklady@mayday.sk>, 2020,2022
+# Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023
 # Miroslav Ďurian, 2018
 # Patrik Bubák, 2014
 # 5f8d388310b9a9304f619fae7149ed59_153be44, 2014
@@ -18,8 +18,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>, 2014-2022\n"
-"Language-Team: Slovak (http://www.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
+"Last-Translator: Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023\n"
+"Language-Team: Slovak (http://app.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1068,7 +1068,7 @@ msgstr "vypísať súbory, ktoré obsahuju zadané balíky"
 
 #: src/cli.vala
 msgid "Clone or sync packages build files from AUR"
-msgstr ""
+msgstr "Klonovať alebo synchronizovať súbory na zostavenie balíkov z AUR"
 
 #: src/cli.vala
 msgid "dir"
@@ -1145,7 +1145,7 @@ msgstr "prepísať konfliktné súbory. Je možné zadať viac vzorov ak ich odd
 
 #: src/cli.vala
 msgid "download all packages but do not install/upgrade anything"
-msgstr ""
+msgstr "stiahnuť všetky balíky, ale nič neinštalovať/neaktualizovať"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
@@ -1528,7 +1528,7 @@ msgstr "Automaticky prevziať aktualizácie"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Aktualizovať systém pri vypnutí"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
