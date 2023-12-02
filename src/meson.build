@@ -19,7 +19,7 @@ common_vala_args = ['--pkg=posix', '--vapidir=' + join_paths(meson.source_root()
 common_c_args = ['-DGETTEXT_PACKAGE="pamac"']
 
 if get_option('enable-aur')
-	libpamac_appstream = library('pamac-aur',
+	libpamac_aur = library('pamac-aur',
 		sources: ['aur_interface.vala', 'aur_plugin.vala', 'utils.vala', 'version.vala'],
 		vala_args: common_vala_args,
 		c_args: common_c_args,
