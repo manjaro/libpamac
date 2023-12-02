@@ -54,7 +54,7 @@ namespace Pamac {
 		}
 		public override string? repo {
 			get {
-//~ 				return as_app.get_origin ();
+				//return as_app.get_origin ();
 				if (installed_ref != null) {
 					return installed_ref.get_origin ();
 				} else if (remote_ref != null) {
@@ -133,7 +133,7 @@ namespace Pamac {
 				if (_long_desc == null) {
 					if (as_app != null) {
 						try {
-							_long_desc = AppStream.markup_convert_simple (as_app.get_description ());
+							_long_desc = AppStream.markup_convert (as_app.get_description (), AppStream.MarkupKind.MARKDOWN);
 						} catch (Error e) {
 							warning (e.message);
 						}
@@ -192,10 +192,10 @@ namespace Pamac {
 				if (_screenshots == null) {
 					_screenshots = new GenericArray<string> ();
 					if (as_app != null) {
-						unowned GenericArray<AppStream.Screenshot> as_screenshots = as_app.get_screenshots ();
+						unowned GenericArray<AppStream.Screenshot> as_screenshots = as_app.get_screenshots_all ();
 						foreach (unowned AppStream.Screenshot as_screenshot in as_screenshots) {
 							// get a url with small image 
-							unowned AppStream.Image as_image = as_screenshot.get_image (500, 300);
+							unowned AppStream.Image as_image = as_screenshot.get_image (500, 300, 1);
 							unowned string? url = as_image.get_url ();
 							if (url != null) {
 								_screenshots.add (url);
@@ -221,7 +221,7 @@ namespace Pamac {
 					_installed_version = installed_ref.commit;
 				}
 				if (is_update && this.as_app != null) {
-					unowned GenericArray<AppStream.Release> as_releases = as_app.get_releases ();
+					unowned GenericArray<AppStream.Release> as_releases = as_app.get_releases_plain ().get_entries ();
 					foreach (unowned AppStream.Release as_release in as_releases) {
 						if (as_release.get_kind () == AppStream.ReleaseKind.STABLE) {
 							_version = as_release.get_version ();
@@ -235,7 +235,7 @@ namespace Pamac {
 				_id = "%s/%s".printf (remote_ref.remote_name, remote_ref.format_ref ());
 				_name = remote_ref.get_name ();
 				if (this.as_app != null) {
-					unowned GenericArray<AppStream.Release> as_releases = as_app.get_releases ();
+					unowned GenericArray<AppStream.Release> as_releases = as_app.get_releases_plain ().get_entries ();
 					foreach (unowned AppStream.Release as_release in as_releases) {
 						if (as_release.get_kind () == AppStream.ReleaseKind.STABLE) {
 							_version = as_release.get_version ();
@@ -300,10 +300,10 @@ namespace Pamac {
 					if (appstream_file.query_exists ()) {
 						unowned string remote_name = remote.get_name ();
 						var mdata = new AppStream.Metadata ();
-						mdata.set_format_style (AppStream.FormatStyle.COLLECTION);
+						mdata.set_format_style (AppStream.FormatStyle.CATALOG);
 						mdata.parse_file (appstream_file, AppStream.FormatKind.XML);
 						var desktop_apps = new HashTable<string, AppStream.Component> (str_hash, str_equal);
-						unowned GenericArray<AppStream.Component> apps = mdata.get_components ();
+						unowned GenericArray<AppStream.Component> apps = mdata.get_components ().as_array ();
 						foreach (unowned AppStream.Component app in apps) {
 							if (app.get_kind () == AppStream.ComponentKind.DESKTOP_APP) {
 								unowned AppStream.Bundle? bundle = app.get_bundle (AppStream.BundleKind.FLATPAK);

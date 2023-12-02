@@ -69,7 +69,7 @@ namespace Pamac {
 			get {
 				if (_long_desc == null && _as_app != null) {
 					try {
-						_long_desc = AppStream.markup_convert_simple (_as_app.get_description ());
+						_long_desc = AppStream.markup_convert (_as_app.get_description (), AppStream.MarkupKind.MARKDOWN);
 					} catch (Error e) {
 						warning (e.message);
 					}
@@ -119,7 +119,7 @@ namespace Pamac {
 				if (_screenshots == null) {
 					_screenshots = new GenericArray<string> ();
 					if (_as_app != null) {
-						unowned GenericArray<AppStream.Screenshot> as_screenshots = _as_app.get_screenshots ();
+						unowned GenericArray<AppStream.Screenshot> as_screenshots = _as_app.get_screenshots_all ();
 						foreach (unowned AppStream.Screenshot as_screenshot in as_screenshots) {
 							unowned GenericArray<AppStream.Image> as_images = as_screenshot.get_images ();
 							foreach (unowned AppStream.Image as_image in as_images) {
@@ -178,10 +178,10 @@ namespace Pamac {
 					File appstream_file = File.new_for_path ("/usr/share/swcatalog/xml/%s.xml.gz".printf (repo));
 					if (appstream_file.query_exists ()) {
 						var mdata = new AppStream.Metadata ();
-						mdata.set_format_style (AppStream.FormatStyle.COLLECTION);
+						mdata.set_format_style (AppStream.FormatStyle.CATALOG);
 						mdata.parse_file (appstream_file, AppStream.FormatKind.XML);
 						var desktop_apps = new HashTable<unowned string, App> (str_hash, str_equal);
-						unowned GenericArray<AppStream.Component> apps = mdata.get_components ();
+						unowned GenericArray<AppStream.Component> apps = mdata.get_components ().as_array ();
 						foreach (unowned AppStream.Component app in apps) {
 							if (app.get_kind () == AppStream.ComponentKind.DESKTOP_APP) {
 								// add pkgnames
