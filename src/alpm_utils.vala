@@ -863,29 +863,17 @@ namespace Pamac {
 					to_remove.add (debug_pkg_name);
 				}
 			}
-			// base-devel group is needed to build pkgs
-			unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
-			while (syncdbs != null) {
-				unowned Alpm.DB db = syncdbs.data;
-				// base-devel group is in core
-				if (db.name == "core") {
-					unowned Alpm.Group? grp = db.get_group ("base-devel");
-					if (grp != null) {
-						unowned Alpm.List<unowned Alpm.Package> packages = grp.packages;
-						while (packages != null) {
-							unowned Alpm.Package pkg = packages.data;
-							if (Alpm.find_satisfier (alpm_handle.localdb.pkgcache, pkg.name) == null) {
-								to_install.add (pkg.name);
-							} else {
-								// remove the needed pkg from to_remove
-								to_remove.remove (pkg.name);
-							}
-							packages.next ();
-						}
-					}
-					break;
+			// base-devel pkg is needed to build pkgs
+			string devel_pkgname = "base-devel";
+			if (Alpm.find_satisfier (alpm_handle.localdb.pkgcache, devel_pkgname) == null) {
+				// add base-devel pkg in to_install
+				unowned Alpm.Package? pkg = alpm_handle.find_dbs_satisfier (alpm_handle.syncdbs, devel_pkgname);
+				if (pkg != null) {
+					to_install.add (devel_pkgname);
 				}
-				syncdbs.next ();
+			} else {
+				// remove base-devel pkg from to_remove
+				to_remove.remove (devel_pkgname);
 			}
 		}
 
