@@ -1,7 +1,7 @@
 gobject = dependency('gobject-2.0')
 gio = dependency('gio-2.0')
 gthread = dependency('gthread-2.0')
-libalpm = dependency('libalpm')
+libalpm = dependency('libalpm', version : '>=14.0')
 json = dependency('json-glib-1.0')
 libsoup = dependency('libsoup-3.0')
 polkit = dependency('polkit-gobject-1')
@@ -32,7 +32,7 @@ if get_option('enable-aur')
 endif
 
 if get_option('enable-appstream')
-	appstream = dependency('appstream')
+	appstream = dependency('appstream', version : '>=1.0')
 
 	libpamac_appstream = library('pamac-appstream',
 		sources: ['appstream_interface.vala', 'appstream_plugin.vala'],

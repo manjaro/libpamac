@@ -401,6 +401,15 @@ namespace Alpm {
 			[CCode (cname = "alpm_db_set_servers")] set;
 		}
 
+		public unowned Alpm.List<unowned string> cache_servers {
+			[CCode (cname = "alpm_db_get_cache_servers")] get;
+			[CCode (cname = "alpm_db_set_cache_servers")] set;
+		}
+		[CCode (cname = "alpm_db_add_cache_server")]
+		public int add_cache_server(string url);
+		[CCode (cname = "alpm_db_remove_cache_server")]
+		public int remove_cache_server(string url);
+
 		public unowned Alpm.List<unowned Package> pkgcache {
 			[CCode (cname = "alpm_db_get_pkgcache")] get;
 		}
@@ -550,7 +559,9 @@ namespace Alpm {
 			/** Explicitly requested by the user. */
 			EXPLICIT = 0,
 			/** Installed as a dependency for another package. */
-			DEPEND = 1
+			DEPEND = 1,
+			/** Failed parsing of local database */
+			UNKNOWN = 2
 		}
 
 		/** Location a package object was loaded from. */
@@ -645,10 +656,8 @@ namespace Alpm {
 	[CCode (cname = "alpm_conflict_t", free_function = "alpm_conflict_free")]
 	[Compact]
 	public class Conflict {
-		public ulong package1_hash;
-		public ulong package2_hash;
-		public string package1;
-		public string package2;
+		public unowned Package package1;
+		public unowned Package package2;
 		public unowned Depend reason;
 	}
 
@@ -1209,8 +1218,10 @@ namespace Alpm {
 			public Type type;
 			/** Answer: whether or not to import key. */
 			public int import;
-			/** The key to import. */
-			public Signature.PGPKey key;
+			/** UID of the key to import */
+			public unowned string uid;
+			/** Fingerprint the key to import */
+			public unowned string fingerprint;
 		}
 
 		/** This is an union passed to the callback, that allows the frontend to know

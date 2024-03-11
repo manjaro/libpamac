@@ -2603,13 +2603,8 @@ void cb_question (void* ctx, Alpm.Question.Data data) {
 			data.corrupted_remove = 1;
 			break;
 		case Alpm.Question.Type.IMPORT_KEY:
-			if (data.import_key_key.revoked == 1) {
-				// Do not get revoked key
-				data.import_key_import = 0;
-			} else {
-				// Auto get not revoked key
-				data.import_key_import = 1;
-			}
+			// Auto get key
+			data.import_key_import = 1;
 			break;
 		default:
 			data.any_answer = 0;
