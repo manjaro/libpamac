@@ -70,11 +70,34 @@ namespace Pamac {
 		}
 
 		public async bool download_updates () {
-			return alpm_utils.download_updates ("root");
+			bool success = false;
+			// thread to exit when cancelled
+			try {
+				var thread = new Thread<int>.try ("download_updates", () => {
+					success = alpm_utils.download_updates ("root");
+					return 0;
+				});
+				thread.join ();
+			} catch (Error e) {
+				warning (e.message);
+			}
+			return success;
 		}
 
 		public async string[] download_pkgs (GenericArray<string> urls) throws Error {
-			GenericArray<string> dload_paths = alpm_utils.download_pkgs ("root", urls.data);
+			GenericArray<string> urls_copy = urls.copy (strdup);
+			var dload_paths = new GenericArray<string> ();
+			// thread to exit when cancelled
+			try {
+				var thread = new Thread<int>.try ("download_pkgs", () => {
+					alpm_utils.download_pkgs ("root", urls_copy.data, ref dload_paths);
+					return 0;
+				});
+				thread.join ();
+			} catch (Error e) {
+				warning (e.message);
+				trans_refresh_success = false;
+			}
 			return dload_paths.data;
 		}
 
@@ -124,7 +147,17 @@ namespace Pamac {
 			}
 			try {
 				new Thread<int>.try ("trans_refresh_real", () => {
-					trans_refresh_success = alpm_utils.trans_refresh ("root", force);
+					// nested thread to exit when cancelled
+					try {
+						var thread = new Thread<int>.try ("trans_refresh", () => {
+							trans_refresh_success = alpm_utils.trans_refresh ("root", force);
+							return 0;
+						});
+						thread.join ();
+					} catch (Error e) {
+						warning (e.message);
+						trans_refresh_success = false;
+					}
 					context.invoke (trans_refresh_real.callback);
 					return 0;
 				});
@@ -171,19 +204,29 @@ namespace Pamac {
 			}
 			try {
 				new Thread<int>.try ("trans_run_real", () => {
-					trans_run_success = alpm_utils.trans_run ("root",
-															sysupgrade,
-															enable_downgrade,
-															simple_install,
-															keep_built_pkgs,
-															trans_flags,
-															to_install.data,
-															to_remove.data,
-															to_load_local.data,
-															to_load_remote.data,
-															to_install_as_dep.data,
-															ignorepkgs.data,
-															overwrite_files.data);
+					// nested thread to exit when download is cancelled
+					try {
+						var thread = new Thread<int>.try ("trans_run", () => {
+							trans_run_success = alpm_utils.trans_run ("root",
+																sysupgrade,
+																enable_downgrade,
+																simple_install,
+																keep_built_pkgs,
+																trans_flags,
+																to_install.data,
+																to_remove.data,
+																to_load_local.data,
+																to_load_remote.data,
+																to_install_as_dep.data,
+																ignorepkgs.data,
+																overwrite_files.data);
+							return 0;
+						});
+						thread.join ();
+					} catch (Error e) {
+						warning (e.message);
+						trans_run_success = false;
+					}
 					context.invoke (trans_run_real.callback);
 					return 0;
 				});

@@ -71,11 +71,8 @@ namespace Pamac {
 		public Daemon () {
 			config = new Config ("/etc/pamac.conf");
 			string user_agent = get_user_agent ();
-			var soup_session = new Soup.Session ();
-			soup_session.user_agent = user_agent;
-			soup_session.timeout = 30;
-			alpm_utils = new AlpmUtils (config, soup_session);
-			// set HTTP_USER_AGENT needed when downloading using libalpm like refreshing dbs in alpm_utils.vala
+			alpm_utils = new AlpmUtils (config);
+			// set HTTP_USER_AGENT needed when downloading using libalpm
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			lockfile_cond = Cond ();
 			lockfile_mutex = Mutex ();
@@ -400,6 +397,10 @@ namespace Pamac {
 		}
 
 		public void start_download_updates (BusName sender) throws Error {
+			if (alpm_utils.downloading_updates) {
+				// already downloading updates
+				return;
+			}
 			try {
 				if (!cancellables_table.contains (sender)) {
 					cancellables_table.insert (sender, new Cancellable ());
@@ -407,13 +408,19 @@ namespace Pamac {
 				var cancellable = cancellables_table.lookup (sender);
 				new Thread<int>.try ("download_updates", () => {
 					AtomicInt.inc (ref running_threads);
-					if (alpm_utils.downloading_updates) {
-						// cancel download updates
-						alpm_utils.cancellable.cancel ();
-					}
 					bool success = wait_for_lock (sender, cancellable, true);
 					if (success) {
-						success = alpm_utils.download_updates (sender);
+						// nested thread to exit when cancelled
+						try {
+							var thread = new Thread<int>.try ("download_updates2", () => {
+								success = alpm_utils.download_updates (sender);
+								return 0;
+							});
+							thread.join ();
+						} catch (Error e) {
+							emit_error (sender, "Daemon Error", {e.message});
+							download_updates_finished (sender, false);
+						}
 						lockfile_mutex.unlock ();
 					}
 					download_updates_finished (sender, success);
@@ -432,11 +439,28 @@ namespace Pamac {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
 					try {
+						if (!cancellables_table.contains (sender)) {
+							cancellables_table.insert (sender, new Cancellable ());
+						}
+						var cancellable = cancellables_table.lookup (sender);
 						new Thread<int>.try ("download_pkgs", () => {
 							AtomicInt.inc (ref running_threads);
-							lockfile_mutex.lock ();
-							GenericArray<string> dload_paths = alpm_utils.download_pkgs (sender, urls_copy);
-							lockfile_mutex.unlock ();
+							var dload_paths = new GenericArray<string> ();
+							bool success = wait_for_lock (sender, cancellable, true);
+							if (success) {
+								// nested thread to exit when cancelled
+								try {
+									var thread = new Thread<int>.try ("download_pkgs2", () => {
+										success = alpm_utils.download_pkgs (sender, urls_copy, ref dload_paths);
+										return 0;
+									});
+									thread.join ();
+								} catch (Error e) {
+									emit_error (sender, "Daemon Error", {e.message});
+									download_pkgs_finished (sender, {});
+								}
+								lockfile_mutex.unlock ();
+							}
 							download_pkgs_finished (sender, dload_paths.data);
 							AtomicInt.dec_and_test (ref running_threads);
 							return 0;
@@ -503,7 +527,20 @@ namespace Pamac {
 					}
 					bool success = wait_for_lock (sender, cancellable);
 					if (success) {
-						success = alpm_utils.trans_refresh (sender, force);
+						// nested thread to exit when cancelled
+						try {
+							var thread = new Thread<int>.try ("trans_refresh2", () => {
+								success = alpm_utils.trans_refresh (sender, force);
+								return 0;
+							});
+							int ret = thread.join ();
+							if (ret == -1) {
+								success = false;
+							}
+						} catch (Error e) {
+							emit_error (sender, "Daemon Error", {e.message});
+							trans_refresh_finished (sender, false);
+						}
 						lockfile_mutex.unlock ();
 					}
 					trans_refresh_finished (sender, success);
@@ -552,7 +589,10 @@ namespace Pamac {
 							}
 							bool success = wait_for_lock (sender, cancellable);
 							if (success) {
-								success = alpm_utils.trans_run (sender,
+								// nested thread to exit when download is cancelled
+								try {
+									var thread = new Thread<int>.try ("trans_run2", () => {
+										success = alpm_utils.trans_run (sender,
 															sysupgrade,
 															enable_downgrade,
 															simple_install,
@@ -565,6 +605,13 @@ namespace Pamac {
 															to_install_as_dep_copy,
 															ignorepkgs_copy,
 															overwrite_files_copy);
+										return 0;
+									});
+									thread.join ();
+								} catch (Error e) {
+									emit_error (sender, "Daemon Error", {e.message});
+									trans_run_finished (sender, false);
+								}
 								lockfile_mutex.unlock ();
 							}
 							trans_run_finished (sender, success);

@@ -56,14 +56,12 @@ namespace Pamac {
 			aur_vcs_pkgs = new HashTable<string, AURPackageLinked> (str_hash, str_equal);
 			pkgs_cache = new HashTable<unowned string, AlpmPackageLinked> (str_hash, str_equal);
 			aur_pkgs_cache = new HashTable<unowned string, AURPackageLinked> (str_hash, str_equal);
-			// get_user_agent defined in alpm_utils.vala
+			// get_user_agent defined in utils.vala
 			string user_agent = get_user_agent ();
 			soup_session = new Soup.Session ();
 			soup_session.user_agent = user_agent;
-			// set a little timeout, aur should be fast
-			// if we are root timeout is changed to a higher value in transaction.vala
-			soup_session.timeout = 1;
-			alpm_utils = new AlpmUtils (config, soup_session);
+			soup_session.timeout = 10;
+			alpm_utils = new AlpmUtils (config);
 			// set HTTP_USER_AGENT needed when downloading using libalpm like refreshing dbs
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			// init dbs

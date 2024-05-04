@@ -101,8 +101,6 @@ namespace Pamac {
 			if (Posix.geteuid () == 0) {
 				// we are root
 				transaction_interface = new TransactionInterfaceRoot (alpm_utils, context);
-				// adjust timeout set to 1s in database.vala to a better value to download packages
-				database.soup_session.timeout = 30;
 			} else {
 				// use dbus daemon
 				transaction_interface = new TransactionInterfaceDaemon (config);
@@ -1313,6 +1311,9 @@ namespace Pamac {
 			bool success = false;
 			if (!dry_run && !no_refresh && sysupgrading) {
 				success = yield trans_refresh ();
+				if (!success) {
+					return false;
+				}
 			}
 			if (to_install.length > 0) {
 				yield add_optdeps ();

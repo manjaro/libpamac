@@ -20,7 +20,7 @@ common_c_args = ['-DGETTEXT_PACKAGE="pamac"']
 
 if get_option('enable-aur')
 	libpamac_aur = library('pamac-aur',
-		sources: ['aur_interface.vala', 'aur_plugin.vala', 'utils.vala', 'version.vala'],
+		sources: ['aur_interface.vala', 'aur_plugin.vala', 'alpm_config.vala', 'utils.vala', 'version.vala'],
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [alpm_deps, math, json, libsoup, gmodule],

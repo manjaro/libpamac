@@ -17,51 +17,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Download: Object {
-	unowned Pamac.AlpmUtils alpm_utils;
-	unowned string cachedir;
-	unowned Alpm.Package alpm_pkg;
-	bool emit_signals;
-
-	public Download (Pamac.AlpmUtils alpm_utils, string cachedir, Alpm.Package alpm_pkg, bool emit_signals) {
-		this.alpm_utils = alpm_utils;
-		this.cachedir = cachedir;
-		this.alpm_pkg = alpm_pkg;
-		this.emit_signals = emit_signals;
-	}
-
-	public void run () {
-		unowned Alpm.DB? db = alpm_pkg.db;
-		if (db == null) {
-			return;
-		}
-		// a copy is needed because trans pkg can be deleted when cancellation
-		string filename = alpm_pkg.filename;
-		unowned Alpm.List<unowned string> servers = db.servers;
-		while (servers != null) {
-			int ret;
-			unowned string mirror = servers.data;
-			if (emit_signals) {
-				ret = dload (alpm_utils, mirror, filename, cachedir, 0, true, true);
-			} else {
-				ret = dload (alpm_utils, mirror, filename, cachedir, 0, true, false);
-			}
-			if (ret == 0) {
-				// download signature without signal from the same server
-				ret = dload (alpm_utils, mirror, filename + ".sig", cachedir, 0, true, false);
-			}
-			if (ret == 0) {
-				// success
-				return;
-			}
-			if (alpm_utils.cancellable.is_cancelled ()) {
-				return;
-			}
-			servers.next ();
-		}
-	}
-}
-
 namespace Pamac {
 	internal class AlpmUtils: Object {
 		string sender;
@@ -70,6 +25,7 @@ namespace Pamac {
 		string tmp_path;
 		public File lockfile;
 		// run transaction data
+		public Alpm.Handle? alpm_handle;
 		uint8 commit_retries;
 		string current_status;
 		bool sysupgrade;
@@ -102,9 +58,7 @@ namespace Pamac {
 		// download data
 		public uint64 total_download;
 		public uint64 already_downloaded;
-		public Mutex multi_progress_mutex;
 		public HashTable<string, uint64?> multi_progress;
-		public Soup.Session soup_session;
 		public Timer rate_timer;
 		Queue<double?> download_rates;
 		double download_rate;
@@ -121,10 +75,9 @@ namespace Pamac {
 		public signal void emit_error (string sender, string message, GenericArray<string> details);
 		public signal void important_details_outpout (string sender, bool must_show);
 
-		public AlpmUtils (Config config, Soup.Session soup_session) {
+		public AlpmUtils (Config config) {
 			sender = "";
 			this.config = config;
-			multi_progress_mutex = Mutex ();
 			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
 			alpm_config = config.alpm_config;
 			tmp_path = "/var/tmp/pamac";
@@ -149,7 +102,6 @@ namespace Pamac {
 			rate_timer = new Timer ();
 			download_rates = new Queue<double?> ();
 			cancellable = new Cancellable ();
-			this.soup_session = soup_session;
 			downloading_updates = false;
 			check_old_lock ();
 		}
@@ -166,7 +118,7 @@ namespace Pamac {
 			stop_downloading (sender);
 		}
 
-		void do_emit_action (string action) {
+		public void do_emit_action (string action) {
 			emit_action (sender, action);
 		}
 
@@ -261,11 +213,13 @@ namespace Pamac {
 				var details = new GenericArray<string> (1);
 				details.add (_("Failed to initialize alpm library"));
 				do_emit_error ("Alpm Error", details);
-			} else if (callbacks) {
+				return alpm_handle;
+			}
+			if (callbacks) {
 				alpm_handle.set_eventcb (cb_event, this);
 				alpm_handle.set_progresscb (cb_progress, this);
 				alpm_handle.set_questioncb (cb_question, this);
-				alpm_handle.set_fetchcb (cb_fetch, this);
+				alpm_handle.set_dlcb (cb_download, this);
 				alpm_handle.set_logcb (cb_log, this);
 			}
 			alpm_config.register_syncdbs (alpm_handle);
@@ -354,10 +308,7 @@ namespace Pamac {
 							warning (e.message);
 						}
 					}
-					// download error details are set in cb_fetch
-					if (err_no != Alpm.Errno.EXTERNAL_DOWNLOAD) {
-						do_emit_warning (Alpm.strerror (err_no));
-					}
+					do_emit_warning (Alpm.strerror (err_no));
 				}
 			}
 			return success;
@@ -377,7 +328,7 @@ namespace Pamac {
 					warning (e.message);
 				}
 			}
-			var alpm_handle = get_handle (false, false);
+			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
@@ -389,9 +340,9 @@ namespace Pamac {
 			// only refresh ".files" if force
 			if (force_refresh) {
 				// update ".files", do not need to know if we succeeded
-				var files_handle = get_handle (true, false);
-				if (files_handle != null) {
-					update_dbs (files_handle, force);
+				alpm_handle = get_handle (true, false);
+				if (alpm_handle != null) {
+					update_dbs (alpm_handle, force);
 				}
 			}
 			if (cancellable.is_cancelled ()) {
@@ -450,11 +401,11 @@ namespace Pamac {
 			this.sender = sender;
 			downloading_updates = true;
 			// use a handle with no callback
-			var alpm_handle = get_handle (false, false, false);
+			alpm_handle = get_handle (false, false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
-			alpm_config.register_syncdbs (alpm_handle);
+			alpm_handle.parallel_downloads = (uint) config.max_parallel_downloads;
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle.set_questioncb (cb_question, this);
 			cancellable.reset ();
@@ -464,8 +415,6 @@ namespace Pamac {
 					if (alpm_handle.trans_sysupgrade (0) == 0) {
 						Alpm.List err_data;
 						if (alpm_handle.trans_prepare (out err_data) == 0) {
-							// custom parallel downloads
-							download_files (alpm_handle, config.max_parallel_downloads, false);
 							if (alpm_handle.trans_commit (out err_data) == 0) {
 								success = true;
 							}
@@ -621,44 +570,49 @@ namespace Pamac {
 			}
 		}
 
-		public GenericArray<string> download_pkgs (string sender, string[] urls) {
+		public bool download_pkgs (string sender, string[] urls, ref GenericArray<string> dload_paths) {
 			this.sender = sender;
-			var dload_paths = new GenericArray<string> ();
-			Alpm.Handle? alpm_handle = get_handle (false, false, false);
+			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
-				return dload_paths;
+				return false;
 			}
-			// add log callback for warnings/errors
-			alpm_handle.set_logcb (cb_log, this);
+			alpm_handle.parallel_downloads = (uint) config.max_parallel_downloads;
+			Alpm.List<string> urls_list = null;
 			foreach (unowned string url in urls) {
-				string mirror =  Path.get_dirname (url);
-				current_filename = Path.get_basename (url);
-				unowned string cachedir = alpm_handle.cachedirs.nth (0).data;
-				string dload_path = Path.build_filename (cachedir, current_filename);
-				var destfile = File.new_for_path (dload_path);
-				if (destfile.query_exists ()) {
-					// no need to download
-					dload_paths.add (dload_path);
-				} else {
-					int ret = dload (this, mirror, current_filename, cachedir, 0, false, true);
-					if (ret == 0) {
-						// try to download the signature
-						string sig_filename = current_filename + ".sig";
-						dload (this, mirror, sig_filename, cachedir, 0, false, false);
-						dload_paths.add (dload_path);
+				urls_list.add (url);
+			}
+			// fetch pkgs
+			Alpm.List<string> fetched = null;
+			int ret = alpm_handle.fetch_pkgurl (urls_list, out fetched);
+			if (ret != 0)  {
+				return false;
+			}
+			if (cancellable.is_cancelled ()) {
+				return false;
+			}
+			// found dload_paths
+			unowned Alpm.List<unowned string> cachedirs = alpm_handle.cachedirs;
+			while (cachedirs != null) {
+				unowned string cachedir = cachedirs.data;
+				while (fetched != null) {
+					unowned string url = fetched.data;
+					string filename = Path.get_basename (url);
+					string dload_path = Path.build_filename (cachedir, filename);
+					var destfile = File.new_for_path (dload_path);
+					if (destfile.query_exists ()) {
+						dload_paths.add ((owned) dload_path);
 					}
+					fetched.next ();
 				}
-				if (cancellable.is_cancelled ()) {
-					dload_paths = new GenericArray<string> ();
-					break;
-				}
+				cachedirs.next ();
 			}
 			if (dload_paths.length == 0 && !cancellable.is_cancelled ()) {
 				var details = new GenericArray<string> ();
 				details.add (_("failed to retrieve some files"));
 				do_emit_error (_("Failed to prepare transaction"), details);
+				return false;
 			}
-			return dload_paths;
+			return true;
 		}
 
 		bool trans_load_pkg (Alpm.Handle? alpm_handle, string path, int siglevel, bool emit_error = true) {
@@ -997,10 +951,11 @@ namespace Pamac {
 			this.trans_flags &= ~Alpm.TransFlag.CASCADE;
 			this.trans_flags &= ~Alpm.TransFlag.RECURSE;
 			// use an handle with no callback to avoid double prepare signals
-			Alpm.Handle? alpm_handle = get_handle (false, false, false);
+			alpm_handle = get_handle (false, false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
+			alpm_handle.parallel_downloads = (uint) config.max_parallel_downloads;
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle.set_questioncb (cb_question, this);
 			foreach (unowned string name in to_install) {
@@ -1037,7 +992,7 @@ namespace Pamac {
 					// add callbacks to have commit signals
 					alpm_handle.set_eventcb (cb_event, this);
 					alpm_handle.set_progresscb (cb_progress, this);
-					alpm_handle.set_fetchcb (cb_fetch, this);
+					alpm_handle.set_dlcb (cb_download, this);
 					alpm_handle.set_logcb (cb_log, this);
 					success = trans_commit (alpm_handle);
 				} else {
@@ -1743,55 +1698,6 @@ namespace Pamac {
 			}
 		}
 
-		void download_files (Alpm.Handle? handle, uint64 max_parallel_downloads, bool emit_signals) {
-			// create the table of async queues
-			// one queue per repo with files to download
-			total_download = 0;
-			var to_download = new GenericArray<unowned Alpm.Package> ();
-			unowned Alpm.List<unowned Alpm.Package> pkgs_to_add = handle.trans_to_add ();
-			while (pkgs_to_add != null) {
-				unowned Alpm.Package trans_pkg = pkgs_to_add.data;
-				uint64 download_size = trans_pkg.download_size;
-				if (download_size > 0) {
-					total_download += trans_pkg.download_size;
-					to_download.add (trans_pkg);
-				}
-				pkgs_to_add.next ();
-			}
-			if (total_download == 0) {
-				return;
-			}
-			if (emit_signals) {
-				emit_totaldownload (total_download);
-				emit_event (Alpm.Event.Type.PKG_RETRIEVE_START, 0, new GenericArray<string> ());
-				current_filename = "";
-			}
-			// create a thread pool which will download files
-			try {
-				var dload_thread_pool = new ThreadPool<Download>.with_owned_data (
-					// call alpm_action.run () on thread start
-					(download) => {
-						download.run ();
-					},
-					// max simultaneous threads = max simultaneous downloads
-					(int) max_parallel_downloads,
-					// exclusive threads
-					true
-				);
-				unowned string cachedir = handle.cachedirs.nth (0).data;
-				foreach (unowned Alpm.Package pkg in to_download) {
-					dload_thread_pool.add (new Download (this, cachedir, pkg, emit_signals));
-				}
-				// wait for all thread to finish
-				ThreadPool.free ((owned) dload_thread_pool, false, true);
-			} catch (ThreadError e) {
-				warning (e.message);
-			}
-			if (emit_signals) {
-				emit_event (Alpm.Event.Type.PKG_RETRIEVE_DONE, 0, new GenericArray<string> ());
-			}
-		}
-
 		bool need_reboot (Alpm.Handle? alpm_handle) {
 			bool reboot_needed = false;
 			string[] prefix = {"linux-", "linux4", "linux5", "linux6", "nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
@@ -2020,27 +1926,10 @@ namespace Pamac {
 
 		bool trans_commit_real (Alpm.Handle? alpm_handle, ref bool need_retry) {
 			bool success = true;
-			if (config.max_parallel_downloads >= 2) {
-				// custom parallel downloads
-				download_files (alpm_handle, config.max_parallel_downloads, true);
-				if (cancellable.is_cancelled ()) {
-					trans_release (alpm_handle);
-					do_emit_script_output ("");
-					do_emit_action (dgettext (null, "Transaction cancelled") + ".");
-					return false;
-				}
-			}
 			// real commit
 			Alpm.List err_data;
 			if (alpm_handle.trans_commit (out err_data) == -1) {
 				Alpm.Errno err_no = alpm_handle.errno ();
-				// cancel the download return an EXTERNAL_DOWNLOAD error
-				if (err_no == Alpm.Errno.EXTERNAL_DOWNLOAD && cancellable.is_cancelled ()) {
-					trans_release (alpm_handle);
-					do_emit_script_output ("");
-					do_emit_action (dgettext (null, "Transaction cancelled") + ".");
-					return false;
-				}
 				need_retry = false;
 				var details = new GenericArray<string> ();
 				switch (err_no) {
@@ -2124,9 +2013,6 @@ namespace Pamac {
 							delete filename;
 							list.next ();
 						}
-						break;
-					case Alpm.Errno.EXTERNAL_DOWNLOAD:
-						details.add (_("failed to retrieve some files"));
 						break;
 					default:
 						details.add (Alpm.strerror (err_no));
@@ -2238,18 +2124,27 @@ namespace Pamac {
 					do_start_downloading ();
 					break;
 				case 22: //Alpm.Event.Type.PKG_RETRIEVE_DONE
-				case 23: //Alpm.Event.Type.PKG_RETRIEVE_FAILED
 					do_stop_downloading ();
 					current_filename = "";
-					multi_progress_mutex.lock ();
 					multi_progress.remove_all ();
-					multi_progress_mutex.unlock ();
 					download_rates.clear ();
 					download_rate = 0;
 					current_progress = 0;
 					already_downloaded = 0;
 					current_status = "";
 					total_download = 0;
+					break;
+				case 23: //Alpm.Event.Type.PKG_RETRIEVE_FAILED
+					do_stop_downloading ();
+					current_filename = "";
+					multi_progress.remove_all ();
+					download_rates.clear ();
+					download_rate = 0;
+					current_progress = 0;
+					already_downloaded = 0;
+					current_status = "";
+					total_download = 0;
+					do_emit_warning (dgettext (null, "failed to retrieve some files"));
 					break;
 				case 24: //Alpm.Event.Type.DISKSPACE_START
 					current_action = dgettext (null, "Checking available disk space") + "...";
@@ -2355,7 +2250,6 @@ namespace Pamac {
 		}
 
 		public void emit_download (uint64 xfered, uint64 total) {
-			// this will be run in the threadpool
 			if (xfered == 0) {
 				rate_timer.start ();
 				if (total_download == 0) {
@@ -2477,7 +2371,7 @@ void write_log_file (string event) {
 }
 
 void cb_event (void* ctx, Alpm.Event.Data data) {
-	Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
+	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
 	var details = new GenericArray<string> ();
 	uint secondary_type = 0;
 	switch (data.type) {
@@ -2562,7 +2456,7 @@ void cb_event (void* ctx, Alpm.Event.Data data) {
 }
 
 void cb_question (void* ctx, Alpm.Question.Data data) {
-	Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
+	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
 	switch (data.type) {
 		case Alpm.Question.Type.INSTALL_IGNOREPKG:
 			// Do not install package in IgnorePkg/IgnoreGroup
@@ -2613,13 +2507,11 @@ void cb_question (void* ctx, Alpm.Question.Data data) {
 }
 
 void cb_progress (void* ctx, Alpm.Progress progress, string pkgname, int percent, uint n_targets, uint current_target) {
-	Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
+	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
 	alpm_utils.emit_progress ((uint) progress, pkgname, (uint) percent, n_targets, current_target);
 }
 
 void compute_multi_download_progress (Pamac.AlpmUtils alpm_utils) {
-	// this will be run in the threadpool
-	// multi_progress_mutex already locked
 	uint64 total_progress = 0;
 	var iter = HashTableIter<string, uint64?> (alpm_utils.multi_progress);
 	uint64? progress;
@@ -2629,146 +2521,32 @@ void compute_multi_download_progress (Pamac.AlpmUtils alpm_utils) {
 	alpm_utils.emit_download (total_progress, alpm_utils.total_download);
 }
 
-void cb_download (Pamac.AlpmUtils alpm_utils, string filename, uint64 xfered, uint64 total) {
-	// this will be run in the threadpool
+void emit_download (Pamac.AlpmUtils alpm_utils, string filename, uint64 xfered, uint64 total) {
 	if (alpm_utils.total_download == 0) {
 		alpm_utils.emit_download (xfered, total);
 	} else {
-		alpm_utils.multi_progress_mutex.lock ();
 		alpm_utils.multi_progress.insert (filename, xfered);
 		compute_multi_download_progress (alpm_utils);
-		alpm_utils.multi_progress_mutex.unlock ();
 	}
 }
 
-int cb_fetch (void* ctx, string fileurl, string localpath, int force) {
-	Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
-	string mirror =  Path.get_dirname (fileurl);
-	alpm_utils.current_filename = Path.get_basename (fileurl);
-	int ret = dload (alpm_utils, mirror, alpm_utils.current_filename, localpath, force, false, true);
-	if (ret == 0) {
-		// download signature without signal from the same server
-		dload (alpm_utils, mirror, alpm_utils.current_filename + ".sig", localpath, force, false, false);
-	}
-	alpm_utils.already_downloaded = 0;
-	alpm_utils.current_progress = 0;
-	if (alpm_utils.total_download == 0) {
-		alpm_utils.multi_progress_mutex.lock ();
-		alpm_utils.multi_progress.remove_all ();
-		alpm_utils.multi_progress_mutex.unlock ();
-	}
-	return ret;
-}
-
-int dload (Pamac.AlpmUtils alpm_utils, string mirror, string filename, string localpath, int force, bool parallel, bool emit_signals) {
+void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, void* event_data) {
+	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
 	if (alpm_utils.cancellable.is_cancelled ()) {
-		return -1;
+		// cancel download
+		alpm_utils.alpm_handle.unlock();
+		alpm_utils.do_emit_script_output ("");
+		alpm_utils.do_emit_action (dgettext (null, "Transaction cancelled") + ".");
+		Thread.exit(-1);
 	}
-
-	string url =  Path.build_filename (mirror, filename);
-	var destfile = File.new_for_path (Path.build_filename (localpath, filename));
-	var tempfile = File.new_for_path (destfile.get_path () + ".part");
 	string name = "";
 	string version_release = "";
-
-	bool remove_partial_download = true;
-	if (url.contains (".pkg.tar.") && !url.has_suffix (".sig")) {
-		remove_partial_download = false;
-	}
-
-	int64 size = 0;
-	string? last_modified = null;
-	bool continue_download = false;
-	var emit_timer = new Timer ();
-	try {
-		InputStream input;
-		if (url.has_prefix ("http")) {
-			var message = new Soup.Message ("GET", url);
-			if (force == 0) {
-				if (destfile.query_exists ()) {
-					// start from scratch only download if our local is out of date.
-					FileInfo info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
-					DateTime time = info.get_modification_date_time ();
-					message.request_headers.append ("If-Modified-Since", Soup.date_time_to_string (time, Soup.DateFormat.HTTP));
-					if (tempfile.query_exists ()) {
-						tempfile.delete ();
-					}
-				} else if (tempfile.query_exists ()) {
-					// try if removing partial download support helps
-					tempfile.delete ();
-					// a previous partial download exists, resume from end of file.
-					//FileInfo info = tempfile.query_info (FileAttribute.STANDARD_SIZE, FileQueryInfoFlags.NONE);
-					//int64 downloaded_size = info.get_size ();
-					//message.request_headers.set_range (downloaded_size, -1);
-					//continue_download = true;
-				}
-			} else {
-				if (tempfile.query_exists ()) {
-					tempfile.delete ();
-				}
-			}
-
-			input = alpm_utils.soup_session.send (message);
-			if (message.status_code == 304) {
-				// not modified, our existing file is up to date
-				return 1;
-			}
-			if (message.status_code >= 400) {
-				// do not report error for missing sig
-				if (!url.has_suffix (".sig")) {
-					alpm_utils.do_emit_script_output ("%s: %s %s".printf (url, _("Error"), message.status_code.to_string ()));
-				}
-				return -1;
-			}
-			size = message.response_headers.get_content_length ();
-			last_modified = message.response_headers.get_one ("Last-Modified");
-		} else {
-			// try standard file support for file:// url
-			var file = File.new_for_uri (url);
-			FileInfo new_info = file.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
-			DateTime new_time = new_info.get_modification_date_time ();
-			last_modified = new_time.format_iso8601 ();
-			if (force == 0) {
-				if (destfile.query_exists ()) {
-					// start from scratch only download if our local is out of date.
-					FileInfo old_info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
-					DateTime old_time = old_info.get_modification_date_time ();
-					TimeSpan elapsed_time = new_time.difference (old_time);
-					if (elapsed_time <= 0) {
-						// not modified, our existing file is up to date
-						return 1;
-					}
-					if (tempfile.query_exists ()) {
-						tempfile.delete ();
-					}
-				} else if (tempfile.query_exists ()) {
-					// don't support partial donwload here
-					tempfile.delete ();
-				}
-			} else {
-				if (tempfile.query_exists ()) {
-					tempfile.delete ();
-				}
-			}
-			input = file.read ();
-		}
-
-		FileOutputStream output;
-		if (continue_download) {
-			output = tempfile.append_to (FileCreateFlags.NONE);
-		} else {
-			output = tempfile.create (FileCreateFlags.NONE);
-		}
-
-		uint64 progress = 0;
-		uint8[] buf = new uint8[8192];
-		// start download
-		if (emit_signals) {
+	switch (event_type) {
+		case Alpm.Download.Event.INIT:
 			if (filename.has_suffix (".db") || filename.has_suffix (".files")) {
-				string filename_copy = filename;
-				alpm_utils.multi_progress_mutex.lock ();
-				alpm_utils.current_action = _("Refreshing %s").printf (filename_copy) + "...";
-				alpm_utils.multi_progress_mutex.unlock ();
+				// signal db download only when really started
+			} else if (filename.has_suffix (".sig")) {
+				// don't signal sig download
 			} else {
 				// compute name and version_release
 				string? name_version_release = filename.slice (0, filename.last_index_of_char ('-'));
@@ -2782,86 +2560,60 @@ int dload (Pamac.AlpmUtils alpm_utils, string mirror, string filename, string lo
 							string? tmp_version_release = name_version_release.slice (version_index + 1, name_version_release.length);
 							if (tmp_version_release != null) {
 								version_release = tmp_version_release;
-								alpm_utils.multi_progress_mutex.lock ();
-								if (parallel) {
-									alpm_utils.current_action = _("Download of %s started").printf ("%s (%s)".printf (name, version_release));
-								} else {
-									alpm_utils.current_action = _("Downloading %s").printf ("%s (%s)".printf (name, version_release)) + "...";
-								}
-								alpm_utils.multi_progress_mutex.unlock ();
+								alpm_utils.current_action = _("Download of %s started").printf ("%s (%s)".printf (name, version_release));
 							}
 						}
 					}
 				}
 			}
-			cb_download (alpm_utils, filename, 0, size);
-		}
-		if (emit_signals) {
-			emit_timer.start ();
-		}
-		while (true) {
-			ssize_t read = input.read (buf, alpm_utils.cancellable);
-			if (read == 0) {
-				// End of file reached
-				break;
-			}
-			output.write (buf[0:read]);
-			if (alpm_utils.cancellable.is_cancelled ()) {
-				break;
-			}
-			progress += read;
-			if (emit_signals && emit_timer.elapsed () > 0.1) {
-				cb_download (alpm_utils, filename, progress, size);
-				// reinitialize emit_timer
-				emit_timer.start ();
-			}
-		}
-	} catch (Error e) {
-		// cancelled download goes here
-		if (e.code != IOError.CANCELLED) {
-			alpm_utils.do_emit_script_output ("%s: %s".printf (url, e.message));
-		}
-		emit_timer.stop ();
-		if (remove_partial_download) {
-			try {
-				if (tempfile.query_exists ()) {
-					tempfile.delete ();
+			emit_download (alpm_utils, filename, 0, 0);
+			break;
+		case Alpm.Download.Event.PROGRESS:
+			if (!(filename in alpm_utils.current_action)) {
+				if (filename.has_suffix (".db") || filename.has_suffix (".files")) {
+					alpm_utils.current_action = _("Refreshing %s").printf (filename) + "...";
 				}
-			} catch (Error e) {
-				warning (e.message);
 			}
-		}
-		return -1;
-	}
-
-	// download succeeded
-	if (emit_signals) {
-		emit_timer.stop ();
-		if (parallel && name != "" && version_release != "") {
-			alpm_utils.multi_progress_mutex.lock ();
-			alpm_utils.current_action = _("Download of %s finished").printf ("%s (%s)".printf (name, version_release));
-			alpm_utils.multi_progress_mutex.unlock ();
-		}
-		cb_download (alpm_utils, filename, size, size);
-	}
-	try {
-		tempfile.move (destfile, FileCopyFlags.OVERWRITE);
-		// set modification time
-		if (last_modified != null) {
-			var datetime = Soup.date_time_new_from_http_string (last_modified);
-			FileInfo info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
-			info.set_modification_date_time (datetime);
-			destfile.set_attributes_from_info (info, FileQueryInfoFlags.NONE);
-		}
-		return 0;
-	} catch (Error e) {
-		warning (e.message);
-		return -1;
+			unowned Alpm.Download.Progress progress_data = (Alpm.Download.Progress) event_data;
+			emit_download (alpm_utils, filename, progress_data.downloaded, progress_data.total);
+			break;
+		case Alpm.Download.Event.COMPLETED:
+			unowned Alpm.Download.Completed completed_data = (Alpm.Download.Completed) event_data;
+			if (completed_data.result == 0) {
+				if (filename.has_suffix (".db") || filename.has_suffix (".files")) {
+					// don't signal end of db download
+				} else if (filename.has_suffix (".sig")) {
+					// don't signal sig download
+				} else {
+					// compute name and version_release
+					string? name_version_release = filename.slice (0, filename.last_index_of_char ('-'));
+					if (name_version_release != null) {
+						string? name_version = name_version_release.slice (0, name_version_release.last_index_of_char ('-'));
+						if (name_version != null) {
+							int version_index = name_version.last_index_of_char ('-');
+							string? tmp_name = name_version.slice (0, version_index);
+							if (tmp_name != null) {
+								name = tmp_name;
+								string? tmp_version_release = name_version_release.slice (version_index + 1, name_version_release.length);
+								if (tmp_version_release != null) {
+									version_release = tmp_version_release;
+									alpm_utils.current_action = _("Download of %s finished").printf ("%s (%s)".printf (name, version_release));
+								}
+							}
+						}
+					}
+					uint64 size = completed_data.total;
+					emit_download (alpm_utils, filename, size, size);
+				}
+			}
+			break;
+		default:
+			break;
 	}
 }
 
 void cb_log (void* ctx, Alpm.LogLevel level, string fmt, va_list args) {
-	Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
+	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
 	// do not log errors when download is cancelled
 	if (alpm_utils.cancellable.is_cancelled ()) {
 		return;

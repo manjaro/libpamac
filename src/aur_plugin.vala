@@ -258,15 +258,18 @@ namespace Pamac {
 	internal class AUR : Object, AURPlugin {
 		// AUR urls
 		const string aur_url = "https://aur.archlinux.org";
-		const string db_gz = "packages-meta-ext-v1.json.gz";
-		const string db_path = "/var/tmp/pamac";
-		Soup.Session soup_session;
+		const string manjaro_url = "https://aur.manjaro.org";
+		const string db_name = "packages-meta-ext-v1";
+		const string db_ext = ".json.gz";
+		const string db_path = "/var/tmp/pamac/dbs/sync";
+		AlpmConfig alpm_config;
+		public Alpm.Handle? alpm_handle;
 		HashTable<string, AURInfosLinked> cached_infos;
 		HashTable<string, GenericArray<AURInfosLinked>> search_results;
 		string real_build_dir;
 		bool db_loaded;
 		// download data
-		Cancellable cancellable;
+		public Cancellable cancellable;
 		uint64 already_downloaded;
 		double current_progress;
 		public Timer rate_timer;
@@ -283,12 +286,24 @@ namespace Pamac {
 			download_rates = new Queue<double?> ();
 			cached_infos = new HashTable<string, AURInfosLinked> (str_hash, str_equal);
 			search_results = new HashTable<string, GenericArray<Pamac.AURInfosLinked>> (str_hash, str_equal);
-			// get_user_agent defined in utils.vala
 			string user_agent = get_user_agent ();
-			soup_session = new Soup.Session ();
-			soup_session.user_agent = user_agent;
-			// set a little timeout, aur should be fast
-			soup_session.timeout = 1;
+			// set HTTP_USER_AGENT needed when downloading using libalpm
+			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
+			alpm_config = new AlpmConfig ("/etc/pacman.conf");
+			alpm_handle = alpm_config.get_handle (false, true, false);
+			if (alpm_handle != null) {
+				alpm_handle.dbext = db_ext;
+				unowned Alpm.DB db = alpm_handle.register_syncdb (db_name, Alpm.Signature.Level.USE_DEFAULT);
+				unowned string server;
+				string? id = get_os_id ();
+				if (id == null || id != "manjaro") {
+					server = aur_url;
+				} else {
+					server = manjaro_url;
+				}
+				db.add_server (server);
+				db.usage = Alpm.DB.Usage.ALL;
+			}
 		}
 
 		public unowned string get_real_build_dir () {
@@ -311,7 +326,7 @@ namespace Pamac {
 			if (!force && db_loaded) {
 				return;
 			}
-			string absolute_path = Path.build_filename (db_path, db_gz);
+			string absolute_path = Path.build_filename (db_path, db_name + db_ext);
 			var zipfile = File.new_for_path (absolute_path);
 			if (!zipfile.query_exists ()) {
 				message ("downloading AUR data");
@@ -356,137 +371,34 @@ namespace Pamac {
 		}
 
 		public bool update_db (bool force_refresh, bool emit_signal) {
-			var builddir = File.new_for_path (db_path);
-			if (!builddir.query_exists ()) {
-				try {
-					builddir.make_directory_with_parents ();
-				} catch (Error e) {
-					warning (e.message);
-					return false;
-				}
-			}
-			int force = 0;
-			if (force_refresh) {
-				force = 1;
-			}
-			string server = "https://aur.manjaro.org";
-			string? id = get_os_id ();
-			if (id == null || id != "manjaro") {
-				server = aur_url;
-			}
-			// dload defined in alpm_utils.vala
-			int ret = dload (server, db_gz, db_path, force, false, emit_signal);
-			if (ret < 0) {
+			if (alpm_handle == null) {
 				return false;
 			}
-			if (ret == 0) {
-				parse_db (true);
+			if (emit_signal) {
+				alpm_handle.set_dlcb (cb_download_aur, this);
+			} else {
+				alpm_handle.set_dlcb (null, null);
 			}
+			// thread to exit when cancelled
+			try {
+				var thread = new Thread<int>.try ("update_aur_db", () => {
+					int force = force_refresh ? 1 : 0;
+					unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
+					return alpm_handle.update_dbs (syncdbs, force);
+				});
+				int ret = thread.join();
+				if (ret < 0) {
+					return false;
+				}
+			} catch (Error e) {
+				warning (e.message);
+				return false;
+			}
+			parse_db (true);
 			return true;
 		}
 
-		int dload (string mirror, string filename, string localpath, int force, bool parallel, bool emit_signals) {
-			if (cancellable.is_cancelled ()) {
-				return -1;
-			}
-			string url =  Path.build_filename (mirror, filename);
-			var destfile = File.new_for_path (Path.build_filename (localpath, filename));
-			var tempfile = File.new_for_path (destfile.get_path () + ".part");
-			int64 size = 0;
-			string? last_modified = null;
-			var emit_timer = new Timer ();
-			try {
-				var message = new Soup.Message ("GET", url);
-				if (force == 0 && destfile.query_exists ()) {
-					// start from scratch only download if our local is out of date.
-					FileInfo info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
-					DateTime time = info.get_modification_date_time ();
-					message.request_headers.append ("If-Modified-Since", Soup.date_time_to_string (time, Soup.DateFormat.HTTP));
-				}
-				if (tempfile.query_exists ()) {
-					// removing partial download
-					tempfile.delete ();
-				}
-				InputStream input = soup_session.send (message);
-				if (message.status_code == 304) {
-					// not modified, our existing file is up to date
-					return 1;
-				}
-				if (message.status_code >= 400) {
-					return -1;
-				}
-				size = message.response_headers.get_content_length ();
-				last_modified = message.response_headers.get_one ("Last-Modified");
-				FileOutputStream output = tempfile.create (FileCreateFlags.NONE);
-				uint64 progress = 0;
-				uint8[] buf = new uint8[8192];
-				// start download
-				already_downloaded= 0;
-				current_progress = 0;
-				if (emit_signals) {
-					emit_download (0, size);
-					emit_timer.start ();
-				}
-				while (true) {
-					ssize_t read = input.read (buf, cancellable);
-					if (read == 0) {
-						// End of file reached
-						break;
-					}
-					output.write (buf[0:read]);
-					if (cancellable.is_cancelled ()) {
-						break;
-					}
-					progress += read;
-					if (emit_signals && emit_timer.elapsed () > 0.1) {
-						emit_download (progress, size);
-						// reinitialize emit_timer
-						emit_timer.start ();
-					}
-				}
-			} catch (Error e) {
-				// cancelled download goes here
-				if (e.code != IOError.CANCELLED) {
-					// workaround for #1305
-					if (e.message == "Unacceptable TLS certificate") {
-						// return no error
-						return 0;
-					}
-					emit_download_error ("%s: %s".printf (url, e.message));
-				}
-				emit_timer.stop ();
-				try {
-					if (tempfile.query_exists ()) {
-						tempfile.delete ();
-					}
-				} catch (Error e) {
-					warning (e.message);
-				}
-				return -1;
-			}
-			// download succeeded
-			if (emit_signals) {
-				emit_timer.stop ();
-				emit_download (size, size);
-			}
-			try {
-				tempfile.move (destfile, FileCopyFlags.OVERWRITE);
-				// set modification time
-				if (last_modified != null) {
-					var datetime = Soup.date_time_new_from_http_string (last_modified);
-					FileInfo info = destfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NONE);
-					info.set_modification_date_time (datetime);
-					destfile.set_attributes_from_info (info, FileQueryInfoFlags.NONE);
-				}
-				return 0;
-			} catch (Error e) {
-				warning (e.message);
-				return -1;
-			}
-		}
-
-		void emit_download (uint64 xfered, uint64 total) {
-			// this will be run in the threadpool
+		public void emit_download (uint64 xfered, uint64 total) {
 			if (xfered == 0) {
 				rate_timer.start ();
 				download_rates.clear ();
@@ -672,6 +584,27 @@ namespace Pamac {
 			}
 			return matched;
 		}
+	}
+}
+
+void cb_download_aur (void* ctx, string filename, Alpm.Download.Event event_type, void* event_data) {
+	unowned Pamac.AUR aur = (Pamac.AUR) ctx;
+	if (aur.cancellable.is_cancelled ()) {
+		// cancel download
+		aur.alpm_handle.unlock();
+		Thread.exit(-1);
+	}
+	switch (event_type) {
+		case Alpm.Download.Event.INIT:
+			break;
+		case Alpm.Download.Event.PROGRESS:
+			unowned Alpm.Download.Progress progress_data = (Alpm.Download.Progress) event_data;
+			aur.emit_download (progress_data.downloaded, progress_data.total);
+			break;
+		case Alpm.Download.Event.COMPLETED:
+			break;
+		default:
+			break;
 	}
 }
 
