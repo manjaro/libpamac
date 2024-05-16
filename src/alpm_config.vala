@@ -155,7 +155,8 @@ internal class AlpmConfig {
 					if (copy_dbs) {
 						file = GLib.File.new_for_path (syncdb_path);
 						if (file.query_exists ()) {
-							Process.spawn_command_line_sync ("bash -c 'cp --preserve=timestamps -u %s/* %s/sync'".printf (syncdb_path, tmp_dbpath));
+							Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %s %s".printf (syncdb_path, tmp_dbpath));
+							Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
 						}
 					}
 				}
