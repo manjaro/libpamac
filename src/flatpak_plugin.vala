@@ -702,7 +702,7 @@ namespace Pamac {
 				lock (pkgs_cache)  {
 					GenericArray<unowned Flatpak.InstalledRef> update_apps = installation.list_installed_refs_for_update ();
 					foreach (unowned Flatpak.InstalledRef installed_ref in update_apps) {
-						if (installed_ref.kind == Flatpak.RefKind.APP) {
+						if (installed_ref.kind == Flatpak.RefKind.APP || installed_ref.kind == Flatpak.RefKind.RUNTIME) {
 							string id = "%s/%s".printf (installed_ref.get_origin (), installed_ref.format_ref ());
 							FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
 							if (pkg == null) {
