@@ -43,6 +43,8 @@ internal class AlpmConfig {
 	public string? dbpath;
 	string? logfile;
 	string? gpgdir;
+	string download_user;
+	bool disable_sandbox;
 	int usesyslog;
 	public bool checkspace;
 	GenericArray<string> architectures;
@@ -80,6 +82,8 @@ internal class AlpmConfig {
 		syncfirsts.remove_all ();
 		usesyslog = 0;
 		checkspace = false;
+		disable_sandbox = false;
+		download_user = "alpm";
 		siglevel = Alpm.Signature.Level.PACKAGE | Alpm.Signature.Level.PACKAGE_OPTIONAL | Alpm.Signature.Level.DATABASE | Alpm.Signature.Level.DATABASE_OPTIONAL;
 		localfilesiglevel = Alpm.Signature.Level.USE_DEFAULT;
 		remotefilesiglevel = Alpm.Signature.Level.USE_DEFAULT;
@@ -223,6 +227,8 @@ internal class AlpmConfig {
 		foreach (unowned string noupgrade in noupgrades) {
 			handle.add_noupgrade (noupgrade);
 		}
+		handle.sandboxuser = download_user;
+		handle.disable_sandbox = disable_sandbox ? 1 : 0;
 		return handle;
 	}
 
@@ -345,6 +351,8 @@ internal class AlpmConfig {
 							foreach (unowned string name in val.split (" ")) {
 								noupgrades.add (name);
 							}
+						} else if (key == "DownloadUser") {
+							download_user = val;
 						}
 					} else {
 						foreach (unowned AlpmRepo repo in repo_order) {

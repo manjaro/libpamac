@@ -36,6 +36,10 @@ namespace Pamac {
 		bool set_pkgreason_success;
 		SourceFunc trans_refresh_callback;
 		bool trans_refresh_success;
+		SourceFunc trans_refresh_files_callback;
+		bool trans_refresh_files_success;
+		SourceFunc trans_refresh_aur_callback;
+		bool trans_refresh_aur_success;
 		SourceFunc trans_run_callback;
 		bool trans_run_success;
 		SourceFunc snap_trans_run_callback;
@@ -210,6 +214,44 @@ namespace Pamac {
 			}
 			trans_refresh_success = success;
 			trans_refresh_callback ();
+		}
+
+		public async bool trans_refresh_files (bool force) throws Error {
+			trans_refresh_files_callback = trans_refresh_files.callback;
+			try {
+				system_daemon.start_trans_refresh_files (force);
+				yield;
+				return trans_refresh_files_success;
+			} catch (Error e) {
+				throw e;
+			}
+		}
+
+		void on_trans_refresh_files_finished (string sender, bool success) {
+			if (sender != this.sender) {
+				return;
+			}
+			trans_refresh_files_success = success;
+			trans_refresh_files_callback ();
+		}
+
+		public async bool trans_refresh_aur (bool force) throws Error {
+			trans_refresh_aur_callback = trans_refresh_aur.callback;
+			try {
+				system_daemon.start_trans_refresh_aur (force);
+				yield;
+				return trans_refresh_aur_success;
+			} catch (Error e) {
+				throw e;
+			}
+		}
+
+		void on_trans_refresh_aur_finished (string sender, bool success) {
+			if (sender != this.sender) {
+				return;
+			}
+			trans_refresh_aur_success = success;
+			trans_refresh_aur_callback ();
 		}
 
 		public async bool trans_run (bool sysupgrade,
@@ -432,6 +474,8 @@ namespace Pamac {
 			system_daemon.clean_build_files_finished.connect (on_clean_clean_build_files_finished);
 			system_daemon.set_pkgreason_finished.connect (on_set_pkgreason_finished);
 			system_daemon.trans_refresh_finished.connect (on_trans_refresh_finished);
+			system_daemon.trans_refresh_files_finished.connect (on_trans_refresh_files_finished);
+			system_daemon.trans_refresh_aur_finished.connect (on_trans_refresh_aur_finished);
 			system_daemon.trans_run_finished.connect (on_trans_run_finished);
 			system_daemon.download_updates_finished.connect (on_download_updates_finished);
 			system_daemon.download_pkgs_finished.connect (on_download_pkgs_finished);

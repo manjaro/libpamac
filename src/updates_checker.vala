@@ -21,12 +21,9 @@ namespace Pamac {
 	public class UpdatesChecker : Object {
 		MainLoop loop;
 		Config config;
-		uint check_localdb_timeout_id;
-		uint check_syncdb_timeout_id;
-		GLib.File localdb;
-		GLib.File syncdb;
-		FileMonitor local_monitor;
-		FileMonitor sync_monitor;
+		uint check_lock_timeout_id;
+		GLib.File _lock;
+		FileMonitor lock_monitor;
 		uint16 _updates_nb;
 		string[] _updates_list;
 		public uint16 updates_nb { get { return _updates_nb; } }
@@ -43,26 +40,18 @@ namespace Pamac {
 		construct {
 			loop = new MainLoop ();
 			config = new Config ("/etc/pamac.conf");
-			string localdb_str = Path.build_filename (config.db_path, "local");
-			localdb = GLib.File.new_for_path (localdb_str);
-			string syncdb_str = Path.build_filename (config.db_path, "sync");
-			syncdb = GLib.File.new_for_path (syncdb_str);
+			string lock_str = Path.build_filename (config.db_path, "db.lck");
+			_lock = GLib.File.new_for_path (lock_str);
 			try {
-				local_monitor = localdb.monitor_directory (FileMonitorFlags.NONE);
-				local_monitor.changed.connect (on_localdb_changed);
-				sync_monitor = syncdb.monitor_directory (FileMonitorFlags.NONE);
-				sync_monitor.changed.connect (on_syncdb_changed);
+				lock_monitor = _lock.monitor_file (FileMonitorFlags.NONE);
+				lock_monitor.changed.connect (on_lock_changed);
 			} catch (Error e) {
 				warning (e.message);
 			}
 		}
 
 		public void check_updates () {
-			local_monitor.changed.disconnect (on_localdb_changed);
-			sync_monitor.changed.disconnect (on_syncdb_changed);
-			if (loop.is_running ()) {
-				loop.run ();
-			}
+			lock_monitor.changed.disconnect (on_lock_changed);
 			config.reload ();
 			if (config.refresh_period != 0) {
 				// get updates
@@ -97,32 +86,26 @@ namespace Pamac {
 					warning (e.message);
 				}
 				updates_available (_updates_nb);
-				message ("%u updates found", _updates_nb);
 			}
-			local_monitor.changed.connect (on_localdb_changed);
-			sync_monitor.changed.connect (on_syncdb_changed);
+			lock_monitor.changed.connect (on_lock_changed);
 		}
 
-		void on_localdb_changed (File src, File? dest, FileMonitorEvent event_type) {
-			if (check_localdb_timeout_id != 0) {
-				Source.remove (check_localdb_timeout_id);
+		void on_lock_changed (File src, File? dest, FileMonitorEvent event_type) {
+			if (event_type == FileMonitorEvent.CREATED) {
+				if (check_lock_timeout_id != 0) {
+					Source.remove (check_lock_timeout_id);
+				}
 			}
-			check_localdb_timeout_id = Timeout.add (5000, () => {
-				check_updates ();
-				check_localdb_timeout_id = 0;
-				return false;
-			});
-		}
-
-		void on_syncdb_changed (File src, File? dest, FileMonitorEvent event_type) {
-			if (check_syncdb_timeout_id != 0) {
-				Source.remove (check_syncdb_timeout_id);
+			if (event_type == FileMonitorEvent.DELETED) {
+				if (check_lock_timeout_id != 0) {
+					Source.remove (check_lock_timeout_id);
+				}
+				check_lock_timeout_id = Timeout.add (5000, () => {
+					check_updates ();
+					check_lock_timeout_id = 0;
+					return false;
+				});
 			}
-			check_syncdb_timeout_id = Timeout.add (5000, () => {
-				check_updates ();
-				check_syncdb_timeout_id = 0;
-				return false;
-			});
 		}
 	}
 }

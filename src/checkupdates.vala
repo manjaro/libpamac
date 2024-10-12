@@ -22,17 +22,26 @@
 		config.enable_appstream = false;
 		config.enable_snap = false;
 		var database = new Pamac.Database (config);
-		var updates = database.get_updates (true);
+		var transaction = new Pamac.Transaction (database);
+		var loop = new MainLoop ();
+		if (database.need_refresh ()) {
+			transaction.refresh_dbs_async.begin (() => {
+				loop.quit ();
+			});
+			loop.run ();
+		}
+		var updates = database.get_updates ();
 		uint updates_nb = updates.repos_updates.length + updates.aur_updates.length + updates.flatpak_updates.length;
 		if (updates_nb == 0) {
 			return 0;
 		} else {
-			// refresh tmp files dbs
-			database.refresh_tmp_files_dbs ();
+			// refresh files dbs
+			transaction.refresh_files_dbs_async.begin (() => {
+				loop.quit ();
+			});
+			loop.run ();
 			// download updates
 			if (config.download_updates) {
-				var transaction = new Pamac.Transaction (database);
-				var loop = new MainLoop ();
 				transaction.download_updates_async.begin (() => {
 					loop.quit ();
 				});

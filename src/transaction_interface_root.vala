@@ -21,6 +21,8 @@ namespace Pamac {
 	internal class TransactionInterfaceRoot: Object, TransactionInterface {
 		unowned AlpmUtils alpm_utils;
 		bool trans_refresh_success;
+		bool trans_refresh_files_success;
+		bool trans_refresh_aur_success;
 		bool trans_run_success;
 		Cancellable trans_cancellable;
 		MainContext context;
@@ -182,6 +184,98 @@ namespace Pamac {
 			}
 			yield trans_refresh_real (force);
 			return trans_refresh_success;
+		}
+
+		async void trans_refresh_files_real (bool force) {
+			bool success = yield wait_for_lock ();
+			if (!success) {
+				// cancelled
+				trans_refresh_files_success = false;
+				return;
+			}
+			try {
+				new Thread<int>.try ("trans_refresh_files_real", () => {
+					// nested thread to exit when cancelled
+					try {
+						var thread = new Thread<int>.try ("trans_refresh_files", () => {
+							trans_refresh_success = alpm_utils.trans_refresh_files ("root", force);
+							return 0;
+						});
+						thread.join ();
+					} catch (Error e) {
+						warning (e.message);
+						trans_refresh_files_success = false;
+					}
+					context.invoke (trans_refresh_files_real.callback);
+					return 0;
+				});
+				yield;
+			} catch (Error e) {
+				warning (e.message);
+				trans_refresh_files_success = false;
+			}
+		}
+
+		public async bool trans_refresh_files (bool force) {
+			if (alpm_utils.downloading_updates) {
+				alpm_utils.cancellable.cancel ();
+				// let time to cancel download updates
+				var timeout = new TimeoutSource (1000);
+				timeout.set_callback (() => {
+					context.invoke (trans_refresh_files.callback);
+					return false;
+				});
+				timeout.attach (context);
+				yield;
+			}
+			yield trans_refresh_files_real (force);
+			return trans_refresh_files_success;
+		}
+
+		async void trans_refresh_aur_real (bool force) {
+			bool success = yield wait_for_lock ();
+			if (!success) {
+				// cancelled
+				trans_refresh_aur_success = false;
+				return;
+			}
+			try {
+				new Thread<int>.try ("trans_refresh_aur_real", () => {
+					// nested thread to exit when cancelled
+					try {
+						var thread = new Thread<int>.try ("trans_refresh_aur", () => {
+							trans_refresh_success = alpm_utils.trans_refresh_aur ("root", force);
+							return 0;
+						});
+						thread.join ();
+					} catch (Error e) {
+						warning (e.message);
+						trans_refresh_aur_success = false;
+					}
+					context.invoke (trans_refresh_aur_real.callback);
+					return 0;
+				});
+				yield;
+			} catch (Error e) {
+				warning (e.message);
+				trans_refresh_aur_success = false;
+			}
+		}
+
+		public async bool trans_refresh_aur (bool force) {
+			if (alpm_utils.downloading_updates) {
+				alpm_utils.cancellable.cancel ();
+				// let time to cancel download updates
+				var timeout = new TimeoutSource (1000);
+				timeout.set_callback (() => {
+					context.invoke (trans_refresh_aur.callback);
+					return false;
+				});
+				timeout.attach (context);
+				yield;
+			}
+			yield trans_refresh_aur_real (force);
+			return trans_refresh_aur_success;
 		}
 
 		async void trans_run_real (bool sysupgrade,

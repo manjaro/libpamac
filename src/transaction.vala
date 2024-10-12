@@ -129,20 +129,6 @@ namespace Pamac {
 			ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
 			overwrite_files = new GenericSet<string?> (str_hash, str_equal);
 			to_install_as_dep = new GenericSet<string?> (str_hash, str_equal);
-			if (config.support_aur) {
-				database.aur_plugin.emit_download_progress.connect ((status, progress) => {
-					context.invoke (() => {
-						emit_download_progress (_("Refreshing %s").printf (_("AUR")) + "...", status, progress);
-						return false;
-					});
-				});
-				database.aur_plugin.emit_download_error.connect ((message) => {
-					context.invoke (() => {
-						emit_script_output (message);
-						return false;
-					});
-				});
-			}
 			alpm_utils.choose_provider.connect (choose_provider_real);
 			alpm_utils.emit_action.connect ((sender, action) => {
 				context.invoke (() => {
@@ -1310,7 +1296,11 @@ namespace Pamac {
 			}
 			bool success = false;
 			if (!dry_run && !no_refresh && sysupgrading) {
-				success = yield trans_refresh ();
+				success = yield get_authorization_async ();
+				if (!success) {
+					return false;
+				}
+				success = yield refresh_dbs_async ();
 				if (!success) {
 					return false;
 				}
@@ -1406,31 +1396,47 @@ namespace Pamac {
 
 		public async void check_dbs () {
 			if (database.dbs_missing) {
-				bool check_aur_updates_backup = config.check_aur_updates;
-				bool check_aur_vcs_updates_backup = config.check_aur_vcs_updates;
-				config.check_aur_updates = false;
-				yield trans_refresh ();
-				config.check_aur_updates = check_aur_updates_backup;
-				config.check_aur_vcs_updates = check_aur_vcs_updates_backup;
+				// aur db will also be refreshed if enabled
+				yield refresh_dbs_async ();
 				database.refresh ();
+			} else if (config.support_aur && config.check_aur_updates) {
+				string absolute_path = Path.build_filename (config.db_path, "sync", "packages-meta-ext-v1.json.gz");
+				var zipfile = File.new_for_path (absolute_path);
+				if (!zipfile.query_exists ()) {
+					yield refresh_dbs_async ();
+					database.refresh ();
+				}
 			}
 		}
 
-		async bool trans_refresh () {
+		public async bool refresh_dbs_async () {
 			bool success = false;
 			try {
 				success = yield transaction_interface.trans_refresh (force_refresh);
+				if (config.support_aur && config.check_aur_updates) {
+					bool aur_success = yield transaction_interface.trans_refresh_aur (force_refresh);
+					if (!aur_success) {
+						emit_warning (dgettext (null, "Failed to synchronize AUR database"));
+					}
+				}
 			} catch (Error e) {
 				var details = new GenericArray<string> (1);
 				details.add ("trans_refresh: %s".printf (e.message));
 				emit_error ("Daemon Error", details);
 				success = false;
 			}
-			if (config.support_aur && config.check_aur_updates) {
-				bool aur_success = database.aur_plugin.update_db (force_refresh, true);
-				if (!aur_success) {
-					emit_warning (dgettext (null, "Failed to synchronize AUR database"));
-				}
+			return success;
+		}
+
+		public async bool refresh_files_dbs_async () {
+			bool success = false;
+			try {
+				success = yield transaction_interface.trans_refresh_files (force_refresh);
+			} catch (Error e) {
+				var details = new GenericArray<string> (1);
+				details.add ("trans_refresh_files: %s".printf (e.message));
+				emit_error ("Daemon Error", details);
+				success = false;
 			}
 			return success;
 		}

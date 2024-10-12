@@ -120,6 +120,16 @@ namespace Alpm {
 			[CCode (cname = "alpm_option_set_gpgdir")] set;
 		}
 
+		public unowned string sandboxuser {
+			[CCode (cname = "alpm_option_get_sandboxuser")] get;
+			[CCode (cname = "alpm_option_set_sandboxuser")] set;
+		}
+
+		public int disable_sandbox {
+			/** 0 for enabled, 1 for disabled */
+			[CCode (cname = "alpm_option_set_disable_sandbox")] set;
+		}
+
 		public int usesyslog {
 			[CCode (cname = "alpm_option_get_usesyslog")] get;
 			/** Sets whether to use syslog (0 is FALSE, TRUE otherwise). */

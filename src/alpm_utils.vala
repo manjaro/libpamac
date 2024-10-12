@@ -350,8 +350,63 @@ namespace Pamac {
 			} else if (!success) {
 				do_emit_warning (_("Failed to synchronize databases"));
 			}
+			if (success) {
+				// save now as last refresh time
+				try {
+					// touch the file
+					string timestamp_path = Path.build_filename (alpm_handle.dbpath, "sync", "refresh_timestamp");
+					Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
+				} catch (SpawnError e) {
+					warning (e.message);
+				}
+			}
 			current_filename = "";
 			// return false only if cancelled
+			return true;
+		}
+
+		public bool trans_refresh_files (string sender, bool force_refresh) {
+			this.sender = sender;
+			cancellable.reset ();
+			// update ".files", do not need to know if we succeeded
+			alpm_handle = get_handle (true, false);
+			if (alpm_handle == null) {
+				return false;
+			}
+			int force = (force_refresh) ? 1 : 0;
+			update_dbs (alpm_handle, force);
+			if (cancellable.is_cancelled ()) {
+				return false;
+			}
+			return true;
+		}
+
+		public bool trans_refresh_aur (string sender, bool force_refresh) {
+			this.sender = sender;
+			cancellable.reset ();
+			// special aur handle
+			alpm_handle = alpm_config.get_handle (false, false, false);
+			if (alpm_handle == null) {
+				return false;
+			}
+			alpm_handle.dbext = ".json.gz";
+			alpm_handle.set_dlcb (cb_download, this);
+			unowned Alpm.DB db = alpm_handle.register_syncdb ("packages-meta-ext-v1", Alpm.Signature.Level.USE_DEFAULT);
+			unowned string server;
+			string? id = get_os_id ();
+			if (id == null || id != "manjaro") {
+				server = "https://aur.archlinux.org";
+			} else {
+				server = "https://aur.manjaro.org";
+			}
+			db.add_server (server);
+			db.usage = Alpm.DB.Usage.ALL;
+			// refresh
+			int force = (force_refresh) ? 1 : 0;
+			update_dbs (alpm_handle, force);
+			if (cancellable.is_cancelled ()) {
+				return false;
+			}
 			return true;
 		}
 
@@ -401,7 +456,7 @@ namespace Pamac {
 			this.sender = sender;
 			downloading_updates = true;
 			// use a handle with no callback
-			alpm_handle = get_handle (false, false, false);
+			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
@@ -409,19 +464,17 @@ namespace Pamac {
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle.set_questioncb (cb_question, this);
 			cancellable.reset ();
-			bool success = update_dbs (alpm_handle, 0);
-			if (success) {
-				if (alpm_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
-					if (alpm_handle.trans_sysupgrade (0) == 0) {
-						Alpm.List err_data;
-						if (alpm_handle.trans_prepare (out err_data) == 0) {
-							if (alpm_handle.trans_commit (out err_data) == 0) {
-								success = true;
-							}
+			bool success = false;
+			if (alpm_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
+				if (alpm_handle.trans_sysupgrade (0) == 0) {
+					Alpm.List err_data;
+					if (alpm_handle.trans_prepare (out err_data) == 0) {
+						if (alpm_handle.trans_commit (out err_data) == 0) {
+							success = true;
 						}
 					}
-					alpm_handle.trans_release ();
 				}
+				alpm_handle.trans_release ();
 			}
 			downloading_updates = false;
 			// enable offline upgrade
@@ -2256,6 +2309,7 @@ namespace Pamac {
 					download_rates.clear ();
 					download_rate = 0;
 				}
+				return;
 			}
 			var text = new StringBuilder ("%s".printf (format_size (xfered)));
 			// if previous progress is out of limit no need to continue
@@ -2543,7 +2597,7 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 	string version_release = "";
 	switch (event_type) {
 		case Alpm.Download.Event.INIT:
-			if (filename.has_suffix (".db") || filename.has_suffix (".files")) {
+			if (filename.has_suffix (".db") || filename.has_suffix (".files") || filename.has_suffix (".json.gz")) {
 				// signal db download only when really started
 			} else if (filename.has_suffix (".sig")) {
 				// don't signal sig download
@@ -2572,6 +2626,8 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 			if (!(filename in alpm_utils.current_action)) {
 				if (filename.has_suffix (".db") || filename.has_suffix (".files")) {
 					alpm_utils.current_action = _("Refreshing %s").printf (filename) + "...";
+				} else if (filename.has_suffix (".json.gz")) {
+					alpm_utils.current_action = _("Refreshing %s").printf (_("AUR")) + "...";
 				}
 			}
 			unowned Alpm.Download.Progress progress_data = (Alpm.Download.Progress) event_data;
@@ -2580,7 +2636,7 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 		case Alpm.Download.Event.COMPLETED:
 			unowned Alpm.Download.Completed completed_data = (Alpm.Download.Completed) event_data;
 			if (completed_data.result == 0) {
-				if (filename.has_suffix (".db") || filename.has_suffix (".files")) {
+				if (filename.has_suffix (".db") || filename.has_suffix (".files") || filename.has_suffix (".json.gz")) {
 					// don't signal end of db download
 				} else if (filename.has_suffix (".sig")) {
 					// don't signal sig download

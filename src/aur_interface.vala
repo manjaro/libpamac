@@ -21,7 +21,6 @@ namespace Pamac {
 	internal interface AURPlugin : Object {
 		public abstract void set_real_build_dir (string config_aur_build_dir);
 		public abstract unowned string get_real_build_dir ();
-		public abstract bool update_db (bool force_refresh, bool emit_signal);
 		public abstract AURInfos? get_infos (string pkgname);
 		public abstract GenericArray<unowned AURInfos> get_multi_infos (GenericArray<string> pkgnames);
 		public abstract GenericArray<unowned AURInfos> get_providers (string depend);

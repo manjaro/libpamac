@@ -28,6 +28,8 @@ namespace Pamac {
 		public abstract async bool download_updates () throws Error;
 		public abstract async string[] download_pkgs (GenericArray<string> urls) throws Error;
 		public abstract async bool trans_refresh (bool force) throws Error;
+		public abstract async bool trans_refresh_files (bool force) throws Error;
+		public abstract async bool trans_refresh_aur (bool force) throws Error;
 		public abstract async bool trans_run (bool sysupgrade,
 										bool enable_downgrade,
 										bool simple_install,

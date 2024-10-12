@@ -54,6 +54,8 @@ namespace Pamac {
 		public signal void start_waiting (string sender);
 		public signal void stop_waiting (string sender);
 		public signal void trans_refresh_finished (string sender, bool success);
+		public signal void trans_refresh_files_finished (string sender, bool success);
+		public signal void trans_refresh_aur_finished (string sender, bool success);
 		public signal void trans_run_finished (string sender, bool success);
 		public signal void download_updates_finished (string sender, bool success);
 		public signal void download_pkgs_finished (string sender, string[] dload_paths);
@@ -550,6 +552,88 @@ namespace Pamac {
 			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
 				trans_refresh_finished (sender, false);
+			}
+		}
+
+		public void start_trans_refresh_files (bool force, BusName sender) throws Error {
+			// do not check authorization
+			try {
+				if (!cancellables_table.contains (sender)) {
+					cancellables_table.insert (sender, new Cancellable ());
+				}
+				var cancellable = cancellables_table.lookup (sender);
+				new Thread<int>.try ("trans_refresh_files", () => {
+					AtomicInt.inc (ref running_threads);
+					if (alpm_utils.downloading_updates) {
+						// cancel download updates
+						alpm_utils.cancellable.cancel ();
+					}
+					bool success = wait_for_lock (sender, cancellable);
+					if (success) {
+						// nested thread to exit when cancelled
+						try {
+							var thread = new Thread<int>.try ("trans_refresh_files2", () => {
+								success = alpm_utils.trans_refresh_files (sender, force);
+								return 0;
+							});
+							int ret = thread.join ();
+							if (ret == -1) {
+								success = false;
+							}
+						} catch (Error e) {
+							emit_error (sender, "Daemon Error", {e.message});
+							trans_refresh_files_finished (sender, false);
+						}
+						lockfile_mutex.unlock ();
+					}
+					trans_refresh_files_finished (sender, success);
+					AtomicInt.dec_and_test (ref running_threads);
+					return 0;
+				});
+			} catch (Error e) {
+				emit_error (sender, "Daemon Error", {e.message});
+				trans_refresh_files_finished (sender, false);
+			}
+		}
+
+		public void start_trans_refresh_aur (bool force, BusName sender) throws Error {
+			// do not check authorization
+			try {
+				if (!cancellables_table.contains (sender)) {
+					cancellables_table.insert (sender, new Cancellable ());
+				}
+				var cancellable = cancellables_table.lookup (sender);
+				new Thread<int>.try ("trans_refresh_aur", () => {
+					AtomicInt.inc (ref running_threads);
+					if (alpm_utils.downloading_updates) {
+						// cancel download updates
+						alpm_utils.cancellable.cancel ();
+					}
+					bool success = wait_for_lock (sender, cancellable);
+					if (success) {
+						// nested thread to exit when cancelled
+						try {
+							var thread = new Thread<int>.try ("trans_refresh_aur2", () => {
+								success = alpm_utils.trans_refresh_aur (sender, force);
+								return 0;
+							});
+							int ret = thread.join ();
+							if (ret == -1) {
+								success = false;
+							}
+						} catch (Error e) {
+							emit_error (sender, "Daemon Error", {e.message});
+							trans_refresh_aur_finished (sender, false);
+						}
+						lockfile_mutex.unlock ();
+					}
+					trans_refresh_aur_finished (sender, success);
+					AtomicInt.dec_and_test (ref running_threads);
+					return 0;
+				});
+			} catch (Error e) {
+				emit_error (sender, "Daemon Error", {e.message});
+				trans_refresh_aur_finished (sender, false);
 			}
 		}
 

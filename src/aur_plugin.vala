@@ -290,7 +290,7 @@ namespace Pamac {
 			// set HTTP_USER_AGENT needed when downloading using libalpm
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			alpm_config = new AlpmConfig ("/etc/pacman.conf");
-			alpm_handle = alpm_config.get_handle (false, true, false);
+			alpm_handle = alpm_config.get_handle (false, false, false);
 			if (alpm_handle != null) {
 				alpm_handle.dbext = db_ext;
 				unowned Alpm.DB db = alpm_handle.register_syncdb (db_name, Alpm.Signature.Level.USE_DEFAULT);
@@ -323,15 +323,11 @@ namespace Pamac {
 		}
 
 		void parse_db (bool force = false) {
-			if (!force && db_loaded) {
+			if (alpm_handle == null || (!force && db_loaded)) {
 				return;
 			}
-			string absolute_path = Path.build_filename (db_path, db_name + db_ext);
+			string absolute_path = Path.build_filename (alpm_handle.dbpath, "sync", db_name + db_ext);
 			var zipfile = File.new_for_path (absolute_path);
-			if (!zipfile.query_exists ()) {
-				message ("downloading AUR data");
-				update_db (false, false);
-			}
 			try {
 				// decompress gzip
 				var src_stream = zipfile.read ();
@@ -368,97 +364,6 @@ namespace Pamac {
 			} catch (Error e) {
 				stderr.printf ("Failed to read AUR data from %s : %s\n", absolute_path, e.message);
 			}
-		}
-
-		public bool update_db (bool force_refresh, bool emit_signal) {
-			if (alpm_handle == null) {
-				return false;
-			}
-			if (emit_signal) {
-				alpm_handle.set_dlcb (cb_download_aur, this);
-			} else {
-				alpm_handle.set_dlcb (null, null);
-			}
-			// thread to exit when cancelled
-			try {
-				var thread = new Thread<int>.try ("update_aur_db", () => {
-					int force = force_refresh ? 1 : 0;
-					unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
-					return alpm_handle.update_dbs (syncdbs, force);
-				});
-				int ret = thread.join();
-				if (ret < 0) {
-					return false;
-				}
-			} catch (Error e) {
-				warning (e.message);
-				return false;
-			}
-			parse_db (true);
-			return true;
-		}
-
-		public void emit_download (uint64 xfered, uint64 total) {
-			if (xfered == 0) {
-				rate_timer.start ();
-				download_rates.clear ();
-				download_rate = 0;
-			}
-			var text = new StringBuilder ("%s".printf (format_size (xfered)));
-			// if previous progress is out of limit no need to continue
-			if (current_progress < 1) {
-				double fraction = (double) xfered / total;
-				if (fraction <= 1) {
-					text.append ("/%s".printf (format_size (total)));
-					double elapsed = rate_timer.elapsed ();
-					if (elapsed > 1) {
-						double current_rate = (xfered - already_downloaded) / elapsed;
-						already_downloaded = xfered;
-						// only keep the last 10 rates
-						if (download_rates.length > 10) {
-							download_rates.pop_head ();
-						}
-						download_rates.push_tail (current_rate);
-						if (xfered == total) {
-							rate_timer.stop ();
-						} else {
-							// reinitialize rate_timer
-							rate_timer.start ();
-						}
-						// calculate download on the last 10 rates
-						if (download_rates.length == 10) {
-							double total_rates = 0;
-							foreach (double previous_rate in download_rates.head) {
-								total_rates += previous_rate;
-							}
-							download_rate = total_rates /10;
-						}
-					}
-					if (download_rate > 0) {
-						uint remaining_seconds = (uint) Math.round ((total - xfered) / download_rate);
-						// display remaining
-						text.append (" ");
-						if (remaining_seconds > 0) {
-							if (remaining_seconds < 60) {
-								text.append (dngettext (null, "About %lu second remaining",
-											"About %lu seconds remaining", remaining_seconds).printf (remaining_seconds));
-							} else {
-								uint remaining_minutes = (uint) Math.round (remaining_seconds / 60);
-								text.append (dngettext (null, "About %lu minute remaining",
-											"About %lu minutes remaining", remaining_minutes).printf (remaining_minutes));
-							}
-						}
-					}
-				} else {
-					fraction = 1;
-					// rate_timer no more needed
-					rate_timer.stop ();
-				}
-				if (fraction != current_progress) {
-					current_progress = fraction;
-				}
-			}
-			emit_download_progress (text.str, current_progress);
 		}
 
 		public AURInfos? get_infos (string pkgname) {
@@ -584,27 +489,6 @@ namespace Pamac {
 			}
 			return matched;
 		}
-	}
-}
-
-void cb_download_aur (void* ctx, string filename, Alpm.Download.Event event_type, void* event_data) {
-	unowned Pamac.AUR aur = (Pamac.AUR) ctx;
-	if (aur.cancellable.is_cancelled ()) {
-		// cancel download
-		aur.alpm_handle.unlock();
-		Thread.exit(-1);
-	}
-	switch (event_type) {
-		case Alpm.Download.Event.INIT:
-			break;
-		case Alpm.Download.Event.PROGRESS:
-			unowned Alpm.Download.Progress progress_data = (Alpm.Download.Progress) event_data;
-			aur.emit_download (progress_data.downloaded, progress_data.total);
-			break;
-		case Alpm.Download.Event.COMPLETED:
-			break;
-		default:
-			break;
 	}
 }
 

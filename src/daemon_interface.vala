@@ -34,6 +34,8 @@ namespace Pamac {
 		public abstract void start_download_updates () throws Error;
 		public abstract void start_download_pkgs (string[] urls) throws Error;
 		public abstract void start_trans_refresh (bool force) throws Error;
+		public abstract void start_trans_refresh_files (bool force) throws Error;
+		public abstract void start_trans_refresh_aur (bool force) throws Error;
 		public abstract void start_trans_run (bool sysupgrade,
 											bool enable_downgrade,
 											bool simple_install,
@@ -64,6 +66,8 @@ namespace Pamac {
 		public signal void stop_waiting (string sender);
 		public signal void download_pkgs_finished (string sender, string[] dload_paths);
 		public signal void trans_refresh_finished (string sender, bool success);
+		public signal void trans_refresh_files_finished (string sender, bool success);
+		public signal void trans_refresh_aur_finished (string sender, bool success);
 		public signal void trans_run_finished (string sender, bool success);
 		public signal void download_updates_finished (string sender, bool success);
 		public signal void get_authorization_finished (string sender, bool authorized);
