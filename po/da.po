@@ -10,6 +10,7 @@
 # Dan Johansen (Strit), 2015
 # Dan Johansen, 2015,2019-2020
 # Dan Johansen, 2016-2017
+# Frederik Palmø, 2023-2024
 # GigoloJoe <Danielbygmarsh@gmail.com>, 2014
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # Linuxbruger <y.z@live.dk>, 2018
@@ -27,8 +28,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Dan Johansen, 2015,2019-2020\n"
-"Language-Team: Danish (http://www.transifex.com/manjarolinux/manjaro-pamac/language/da/)\n"
+"Last-Translator: Frederik Palmø, 2023-2024\n"
+"Language-Team: Danish (http://app.transifex.com/manjarolinux/manjaro-pamac/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,7 +38,7 @@ msgstr ""
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
-msgstr "Installér, opdatér eller fjern pakker"
+msgstr "Installer, opdater eller fjern pakker"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Authentication is required to install, update, or remove packages"
@@ -77,7 +78,7 @@ msgstr "pakken %s har ikke en gyldig arkitektur"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "kan ikke tilfredsstille afhængigheden '%1$s' som påkræves af %2$s "
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -87,7 +88,7 @@ msgstr "Advarsel"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "installation af %1$s (%2$s) bryder afhængigheden '%3$s' krævet af %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -102,12 +103,12 @@ msgstr "Hvis muligt, fjern %s og prøv igen"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "fjernelsen af %1$s bryder afhængigheden '%2$s' krævet af %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s og %2$s er i konflikt"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -125,7 +126,7 @@ msgstr "fjerner %s fra mål liste"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "En genstart påkræves før at ændringerne træder i kraft"
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
@@ -134,17 +135,17 @@ msgstr "Overførsel annulleret"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s eksisterer i både %2$s og %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s eksisterer allerede i filsystemet (ejet af %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s eksister allerede i filsystemet"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -153,7 +154,7 @@ msgstr "hvis denne fil ikke er påkrævet, fjern den og prøv igen"
 #: src/alpm_utils.vala
 #, c-format
 msgid "It has been backed up to %s"
-msgstr ""
+msgstr "Den er blevet sikkerhedskopieret til %s"
 
 #: src/alpm_utils.vala
 msgid "Removing invalid files and retrying"
@@ -242,7 +243,7 @@ msgstr "Tjekker tilgængelig diskplads"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s kræver valgfrit %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -260,12 +261,12 @@ msgstr "Downloader påkrævede nøgler"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s installeret som %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s installeret som %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -324,7 +325,7 @@ msgstr "Hentning af %s færdig"
 
 #: src/daemon.vala
 msgid "Authentication failed"
-msgstr "Autentificering mislykket"
+msgstr "Godkendelse mislykket"
 
 #: src/daemon.vala
 msgid "Waiting for another package manager to quit"
@@ -336,7 +337,7 @@ msgstr "Tidsgrænse udgået"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
-msgstr "Genopfrisker mirrorliste"
+msgstr "Genopfrisker mirror-liste"
 
 #: src/transaction.vala src/cli.vala
 #, c-format
@@ -375,7 +376,7 @@ msgstr "nøgle %s kunne ikke importeres"
 
 #: src/transaction.vala src/manager_window.vala
 msgid "Transaction successfully finished"
-msgstr "Overførslen er færdig"
+msgstr "Transaktion fuldført fejlfrit"
 
 #: src/transaction.vala
 msgid "Preparing"
@@ -392,16 +393,16 @@ msgstr "Intet at gøre"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: ignorerer pakkeopdatering (%2$s => %3$s)"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Synkronisering af AUR-database slog fejl"
 
 #: src/transaction.vala
 #, c-format
 msgid "Failed to build %s"
-msgstr "Byg af %s fejlede"
+msgstr "Kunne ikke bygge %s"
 
 #: src/transaction.vala
 #, c-format
@@ -436,7 +437,7 @@ msgstr "_Annuller"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "PGP-nøglen %1$s er påkrævet for at verificere %2$s kildefiler"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -465,7 +466,7 @@ msgstr "Afhænger af"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 msgid "Orphan Of"
-msgstr ""
+msgstr "Forældreløs af"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
@@ -506,7 +507,7 @@ msgstr "_Luk"
 
 #: src/transaction-gtk.vala
 msgid "Restart"
-msgstr ""
+msgstr "Genstart"
 
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/manager_window.ui
@@ -545,11 +546,11 @@ msgstr "pakke(r)"
 
 #: src/tray.vala
 msgid "Updates Available"
-msgstr ""
+msgstr "Opdateringer tilgængelige"
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Dit system er opdateret"
 
 #: src/tray.vala
 msgid "_Quit"
@@ -628,11 +629,11 @@ msgstr "Installeret"
 
 #: src/manager_window.vala
 msgid "Ignored"
-msgstr ""
+msgstr "Ignoreret"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -700,7 +701,7 @@ msgstr "Installationsdato"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "Valideret af"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -716,7 +717,7 @@ msgstr "Valgfri til"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Provides"
-msgstr "Leverer"
+msgstr "Udbyder"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Make Dependencies"
@@ -740,15 +741,15 @@ msgstr "Kanaler"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr ""
+msgstr "Opdateringer til styresystemet"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
-msgstr ""
+msgstr "Inkluderer hastigheds-, stabilitets- og sikkerheds-forbedringer"
 
 #: src/manager_window.vala
 msgid "Featured"
-msgstr "Featurede"
+msgstr "Fremhævet"
 
 #: src/manager_window.vala
 msgid "Photo & Video"
@@ -789,51 +790,51 @@ msgstr "Opdateringer"
 
 #: src/manager_window.vala
 msgid "Last refresh"
-msgstr ""
+msgstr "Sidste genopfriskning"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
-msgstr ""
+msgstr "hver 3. time"
 
 #: src/preferences_dialog.vala
 msgid "every 6 hours"
-msgstr ""
+msgstr "hver 6. time"
 
 #: src/preferences_dialog.vala
 msgid "every 12 hours"
-msgstr ""
+msgstr "hver 12. time"
 
 #: src/preferences_dialog.vala
 msgid "every day"
-msgstr ""
+msgstr "hver dag"
 
 #: src/preferences_dialog.vala
 msgid "every week"
-msgstr ""
+msgstr "hver uge"
 
 #: src/preferences_dialog.vala
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: src/preferences_dialog.vala
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #: src/preferences_dialog.vala
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #: src/preferences_dialog.vala
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #: src/preferences_dialog.vala
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #: src/preferences_dialog.vala
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #: src/preferences_dialog.vala
 msgid "Worldwide"
@@ -841,15 +842,15 @@ msgstr "Worldwide"
 
 #: src/preferences_dialog.vala
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/preferences_dialog.vala
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #: src/preferences_dialog.vala
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #: src/preferences_dialog.vala src/cli.vala
 msgid "To delete"
@@ -864,11 +865,11 @@ msgstr[1] "%u filer"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
-msgstr ""
+msgstr "Vælg byggemappe"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Vælg"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -902,19 +903,19 @@ msgstr "ja"
 
 #: src/transaction-cli.vala
 msgid "[e]"
-msgstr ""
+msgstr "[e]"
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
-msgstr "Gennemfør overførsel"
+msgstr "Gennemfør transaktion"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
-msgstr ""
+msgstr "[e/j/N]"
 
 #: src/transaction-cli.vala
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
@@ -955,20 +956,20 @@ msgstr "Se %s byggefiler forskel"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "Bygger pakker som en dynamisk bruger"
 
 #: src/cli.vala
 #, c-format
 msgid "Setting build directory to %s"
-msgstr ""
+msgstr "Sætter byggemappen til %s"
 
 #: src/cli.vala
 msgid "No PKGBUILD file found in current directory"
-msgstr "Ingen PKGBUILD fil blev fundet i nuværende mappe"
+msgstr "Ingen PKGBUILD-fil blev fundet i nuværende mappe"
 
 #: src/cli.vala
 msgid "Checking development packages updates as root"
-msgstr ""
+msgstr "Tjekker udviklingspakke-opdateringer som administrator (root)"
 
 #: src/cli.vala
 msgid "Available actions"
@@ -980,7 +981,7 @@ msgstr "handling"
 
 #: src/cli.vala
 msgid "options"
-msgstr "tilvalg"
+msgstr "valgmuligheder"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1037,7 +1038,7 @@ msgstr "oplist installerede pakker"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "vis eksplicit installerede pakker"
 
 #: src/cli.vala
 msgid ""
@@ -1174,7 +1175,7 @@ msgstr "fjern kun pakker hvis de ikke er påkrævet af andre pakker"
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "Fjern alle de valgte pakker, samt pakker der afhænger af de valgte pakker "
 
 #: src/cli.vala
 msgid ""
@@ -1234,7 +1235,7 @@ msgstr "gennemtving genopfriskningen af databaserne"
 
 #: src/cli.vala
 msgid "do not refresh the databases"
-msgstr ""
+msgstr "genopfrisk ikke pakkedatabaser"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1364,8 +1365,8 @@ msgstr "%s er kun tilgængelig fra AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Der findes %1$u medlem i gruppen %2$s"
+msgstr[1] "Der findes %1$u medlemmer i gruppe %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1379,7 +1380,7 @@ msgstr "Tilføj %s til geninstallering"
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "Installer %1$s fra %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1411,7 +1412,7 @@ msgstr "_Anvend"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr ""
+msgstr "Softwaretilstand"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
@@ -1463,7 +1464,7 @@ msgstr "Dato"
 
 #: resources/manager_window.ui
 msgid "Refresh"
-msgstr "Genopfrisk:"
+msgstr "Genopfrisk"
 
 #: resources/manager_window.ui
 msgid "Categories"
@@ -1515,7 +1516,7 @@ msgstr "Søg efter opdateringer"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Frekvens af opdateringstjek"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1523,27 +1524,27 @@ msgstr "Download automatisk opdateringer"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Opgrader systemet ved slukning"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Gem bakkeikon mens der ikke findes opdateringer"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
-msgstr ""
+msgstr "Hentet"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Parallelle hentninger"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Brug mirror-liste fra"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Genopfrisk mirror-liste"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1551,19 +1552,19 @@ msgstr "Cache"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Antal versioner at beholde fra hver pakke"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Fjern kun afinstallerede pakker"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Ryd op"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
-msgstr "Advanceret"
+msgstr "Avanceret"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1589,17 +1590,17 @@ msgstr "Aktivér nedgradering"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Ignorerede opgraderinger"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Tredjeparter"
 
 #: resources/preferences_dialog.ui
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "AUR er et arkiv som vedligeholdes af fællesskabet, så repræsenterer potientielle risici og problemer.\nAlle AUR-brugere bør være bekendt med byggeprocessen."
+msgstr "AUR er et arkiv som vedligeholdes af fællesskabet, og kan derfor repræsentere risici og problemer.\nAUR-brugere bør være bekendt med byggeprocessen."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"
@@ -1607,11 +1608,11 @@ msgstr "Aktivér AUR-understøttelse"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Behold byggede pakker"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"
-msgstr "Tjek efter udviklingspakke opdateringer"
+msgstr "Søg efter opdateringer til udviklingspakker"
 
 #: resources/preferences_dialog.ui
 msgid "Build directory"
@@ -1619,16 +1620,16 @@ msgstr "Byggemappe"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
-msgstr "Flatpak pakker er vedligeholdt af deres udgiver"
+msgstr "Flatpak-pakker er vedligeholdt af deres udgiver"
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
-msgstr "Aktivér Ftaltpak support"
+msgstr "Aktiver Flatpak-understøttelse"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
-msgstr "Snap pakker er vedligeholdt af deres udgiver"
+msgstr "Snap-pakker er vedligeholdt af deres udgiver"
 
 #: resources/preferences_dialog.ui
 msgid "Enable Snap support"
-msgstr "Aktivér Snap support"
+msgstr "Aktiver Snap-understøttelse"

@@ -5,15 +5,15 @@
 # 
 # Translators:
 # Puretech <terjemah.puretech@gmail.com>, 2013
-# Wei Chung Sim <sweizhong@yahoo.com>, 2020
+# Wei Chung Sim <sweizhong@yahoo.com>, 2020,2024
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Wei Chung Sim <sweizhong@yahoo.com>, 2020\n"
-"Language-Team: Malay (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ms/)\n"
+"Last-Translator: Wei Chung Sim <sweizhong@yahoo.com>, 2020,2024\n"
+"Language-Team: Malay (http://app.transifex.com/manjarolinux/manjaro-pamac/language/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -30,7 +30,7 @@ msgstr "Pengesahan diperlukan untuk memasang, mengemas kini atau membuang pakej"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
-msgstr ""
+msgstr "Gagal untuk memulakan pustaka"
 
 #: src/alpm_utils.vala
 msgid "Synchronizing package databases"
@@ -42,7 +42,7 @@ msgstr "Gagal menyelaras pangkalan data"
 
 #: src/alpm_utils.vala
 msgid "Failed to init transaction"
-msgstr ""
+msgstr "Gagal memulakan transaksi"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/installer.vala
@@ -62,7 +62,7 @@ msgstr "pakej %s tidak mempunyai arkitek yang sah"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr ""
+msgstr "tidak dapat memenuhi syarat kebergantungan '%1$s' yang diperlukan %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -72,7 +72,7 @@ msgstr "Amaran"
 #: src/alpm_utils.vala
 #, c-format
 msgid "installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s"
-msgstr ""
+msgstr "memasang %1$s(%2$s) akan merosakkan kebergantungan '%3$s' yang diperlukan %4$s"
 
 #: src/alpm_utils.vala src/cli.vala
 #, c-format
@@ -87,12 +87,12 @@ msgstr "jika boleh, keluarkan %s dan cuba semula"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr ""
+msgstr "membuang %1$s akan merosakkan kebergantungan '%2$s' yang diperlukan %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s and %2$s are in conflict"
-msgstr ""
+msgstr "%1$s dan %2$s mempunyai konflik"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -110,7 +110,7 @@ msgstr "membuang %s daripada senarai sasar"
 
 #: src/alpm_utils.vala src/transaction-gtk.vala
 msgid "A restart is required for the changes to take effect"
-msgstr ""
+msgstr "Mula semula diperlukan untuk perubahan berkuat kuasa"
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
@@ -119,17 +119,17 @@ msgstr "Transaksi dibatalkan"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s wujud dalam kedua-dua %2$s dan %3$s"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s telah wujud dalam sistem fail (dipunyai %3$s)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s telah wujud di dalam filesystem"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -218,7 +218,7 @@ msgstr "Mengkonfigurasi %s"
 #: src/alpm_utils.vala
 #, c-format
 msgid "Error while configuring %s"
-msgstr ""
+msgstr "Ralat berlaku semasa menetapkan %s"
 
 #: src/alpm_utils.vala
 msgid "Checking available disk space"

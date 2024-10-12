@@ -11,7 +11,8 @@
 # HowAbout No <tasnadi98@freemail.hu>, 2018
 # Lajos Pasztor <mrlajos@gmail.com>, 2013
 # Lajos Pasztor <mrlajos@gmail.com>, 2013-2017,2019
-# miku84, 2015-2017,2019,2021
+# miku84, 2015-2017,2019,2021,2024
+# 4b7bd6efadf10ad8d619f0732513f8d4_63f0d06 <6c82134afff501a5b58c68bd654d5ced_1121043>, 2024
 # osiixy <osiixy@gmail.com>, 2022
 # PB, 2020-2021
 # philm <philm@manjaro.org>, 2015
@@ -26,8 +27,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: osiixy <osiixy@gmail.com>, 2022\n"
-"Language-Team: Hungarian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/hu/)\n"
+"Last-Translator: miku84, 2015-2017,2019,2021,2024\n"
+"Language-Team: Hungarian (http://app.transifex.com/manjarolinux/manjaro-pamac/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -133,17 +134,17 @@ msgstr "Művelet visszavonva"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
-msgstr ""
+msgstr "%1$s előfordul itt %2$s és itt %3$s is"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem (owned by %3$s)"
-msgstr ""
+msgstr "%1$s: %2$s már létezik a fájlrendszerben (%3$s a tulajdonosa)"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s: %2$s already exists in filesystem"
-msgstr ""
+msgstr "%1$s: %2$s már létezik a fájlrendszerben"
 
 #: src/alpm_utils.vala
 msgid "if this file is not needed, remove it and retry"
@@ -241,7 +242,7 @@ msgstr "Elérhető tárterület ellenőrzése"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
+msgstr "%1$s opcionálisan igényli: %2$s"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -259,12 +260,12 @@ msgstr "Megkövetelt kulcsok letöltése"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacnew"
-msgstr ""
+msgstr "%1$s telepítve mint %2$s.pacnew"
 
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s installed as %2$s.pacsave"
-msgstr ""
+msgstr "%1$s telepítve mint %2$s.pacsave"
 
 #: src/alpm_utils.vala
 msgid "Running pre-transaction hooks"
@@ -391,11 +392,11 @@ msgstr "Semmi teendő"
 #: src/transaction.vala
 #, c-format
 msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
+msgstr "%1$s: csomagfrissítés kihagyása (%2$s => %3$s)"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Nem sikerült az AUR adatbázis szinkronizálása"
 
 #: src/transaction.vala
 #, c-format
@@ -435,7 +436,7 @@ msgstr "Mégse"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
+msgstr "A %1$s PGP kulcs szükséges %2$s forrásfájlok ellenőrzéséhez."
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -631,7 +632,7 @@ msgstr "Figyelmen kívül hagyott"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "Semelyik"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -699,7 +700,7 @@ msgstr "Telepítési dátum"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr ""
+msgstr "Érvényesítette:"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -867,7 +868,7 @@ msgstr "Építési könyvtár megadása"
 
 #: src/preferences_dialog.vala
 msgid "_Choose"
-msgstr ""
+msgstr "_Válassz"
 
 #: src/preferences_dialog.vala
 msgid "Choose Ignored Upgrades"
@@ -954,7 +955,7 @@ msgstr "%s build fájlok közötti különbségek"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "Csomagok építése dinamikus felhasználóként"
 
 #: src/cli.vala
 #, c-format
@@ -1036,7 +1037,7 @@ msgstr "telepített csomagok listázása"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "listázza a kifejezetten telepített csomagokat"
 
 #: src/cli.vala
 msgid ""
@@ -1173,7 +1174,7 @@ msgstr "csomagok eltávolítása csak akkor, ha nem igényli más csomag"
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "Távolítsa el az összes célcsomagot, valamint minden olyan csomagot, amely egy vagy több célcsomagtól függ"
 
 #: src/cli.vala
 msgid ""
@@ -1233,7 +1234,7 @@ msgstr "adatbázisok frissítésének kényszerítése"
 
 #: src/cli.vala
 msgid "do not refresh the databases"
-msgstr ""
+msgstr "Ne frissítse az adatbázisokat"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1378,7 +1379,7 @@ msgstr "%shozzáadása az újratelepítendőkhöz"
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "Telepítse a következőt %1$s innen: %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1522,7 +1523,7 @@ msgstr "Frissítések automatikus letöltése"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Frissítse a rendszert leállításkor"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
@@ -1538,11 +1539,11 @@ msgstr "Párhuzamos letöltések"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Használjon tükröket innen:"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Tükrök frissítése"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1550,11 +1551,11 @@ msgstr "Cache"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Az egyes csomagok megtartandó verzióinak száma"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Csak az eltávolított csomagokat törölje"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
@@ -1588,7 +1589,7 @@ msgstr "Régi verziókra való lépés engedélyezése"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Figyelmen kívül hagyott frissítések"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
@@ -1606,7 +1607,7 @@ msgstr "AUR támogatás engedélyezése"
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Tartsa meg az épített csomagokat"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

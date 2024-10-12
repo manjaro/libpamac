@@ -4,15 +4,15 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
-# ManjaroArchMint yotros, 2022
+# ManjaroArchMint yotros, 2022,2024
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: ManjaroArchMint yotros, 2022\n"
-"Language-Team: Afrikaans (http://www.transifex.com/manjarolinux/manjaro-pamac/language/af/)\n"
+"Last-Translator: ManjaroArchMint yotros, 2022,2024\n"
+"Language-Team: Afrikaans (http://app.transifex.com/manjarolinux/manjaro-pamac/language/af/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -380,7 +380,7 @@ msgstr "%1$s: ignoreer pakketopgradering  (%2$s => %3$s)"
 
 #: src/transaction.vala
 msgid "Failed to synchronize AUR database"
-msgstr ""
+msgstr "Kon nie databasisse sinchroniseer nie "
 
 #: src/transaction.vala
 #, c-format
@@ -533,7 +533,7 @@ msgstr "Opdaterings beskikbaar "
 
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up to date"
-msgstr ""
+msgstr "Jou stelsel is op datum "
 
 #: src/tray.vala
 msgid "_Quit"
@@ -1218,7 +1218,7 @@ msgstr "dwing die verversing van die databasisse af "
 
 #: src/cli.vala
 msgid "do not refresh the databases"
-msgstr ""
+msgstr "dwing die verversing van die databasisse af "
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1507,7 +1507,7 @@ msgstr "Laai opdaterings outomaties af "
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Gradeer die stelsel op wanneer dit afgesluit word"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"

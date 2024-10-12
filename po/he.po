@@ -9,8 +9,8 @@
 # gk <genghiskhan@gmx.ca>, 2013-2016
 # Ido Dana <idodana01@gmail.com>, 2019
 # Xc Vb <kassavlt@gmail.com>, 2014
-# עומר א״ש <omeritzicschwartz@gmail.com>, 2020,2022
-# עומר א״ש <omeritzicschwartz@gmail.com>, 2020
+# Omer I.S., 2020,2022,2024
+# 63f334ffc0709ba0fc2361b80bf3c0f0_00ffd1e <ab96c93ca0ac55ba7fa06385427e60dd_878890>, 2020
 # philm <philm@manjaro.org>, 2015
 # Xc Vb <kassavlt@gmail.com>, 2014
 msgid ""
@@ -19,13 +19,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: עומר א״ש <omeritzicschwartz@gmail.com>, 2020,2022\n"
-"Language-Team: Hebrew (http://www.transifex.com/manjarolinux/manjaro-pamac/language/he/)\n"
+"Last-Translator: Omer I.S., 2020,2022,2024\n"
+"Language-Team: Hebrew (http://app.transifex.com/manjarolinux/manjaro-pamac/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: he\n"
-"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
+"Plural-Forms: nplurals=3; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: 2;\n"
 
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
@@ -278,7 +278,6 @@ msgid_plural "About %lu seconds remaining"
 msgstr[0] "נותרה בסביבות שניה %lu"
 msgstr[1] "נותרו בסביבות %lu שניות"
 msgstr[2] "נותרו בסביבות %lu שניות"
-msgstr[3] "נותרו בסביבות %lu שניות"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -287,7 +286,6 @@ msgid_plural "About %lu minutes remaining"
 msgstr[0] "נותרה דקה %lu לערך"
 msgstr[1] "נותרו %lu דקות לערך"
 msgstr[2] "נותרו %lu דקות לערך"
-msgstr[3] "נותרו %lu דקות לערך"
 
 #: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
 msgid "Error"
@@ -558,7 +556,6 @@ msgid_plural "%u available updates"
 msgstr[0] "עדכון %u זמין"
 msgstr[1] "%u עדכונים זמינים"
 msgstr[2] "%u עדכונים זמינים"
-msgstr[3] "%u עדכונים זמינים"
 
 #: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
 msgid "Details"
@@ -600,7 +597,6 @@ msgid_plural "%u pending operations"
 msgstr[0] "פעולה %u ממתינה"
 msgstr[1] "%u פעולות ממתינות"
 msgstr[2] "%u פעולות ממתינות"
-msgstr[3] "%u פעולות ממתינות"
 
 #: src/manager_window.vala
 msgid "Pending"
@@ -732,7 +728,7 @@ msgstr "מוציא/ה לאור"
 
 #: src/manager_window.vala
 msgid "Confined in a Sandbox"
-msgstr ""
+msgstr "במתחם ארגז חול"
 
 #: src/manager_window.vala
 msgid "Channels"
@@ -862,7 +858,6 @@ msgid_plural "%u files"
 msgstr[0] "קובץ %u"
 msgstr[1] "%u קבצים"
 msgstr[2] "%u קבצים"
-msgstr[3] "%u קבצים"
 
 #: src/preferences_dialog.vala
 msgid "Select Build Directory"
@@ -1333,10 +1328,9 @@ msgstr "%s is owned by %s"
 #, c-format
 msgid "%u ignored update"
 msgid_plural "%u ignored updates"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%u ignored update"
+msgstr[1] "%u ignored updates"
+msgstr[2] "%u ignored updates"
 
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
@@ -1368,10 +1362,9 @@ msgstr "‏%s זמינה רק ב־AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "There is %1$u member in group %2$s"
+msgstr[1] "There are %1$u members in group %2$s"
+msgstr[2] "There are %1$u members in group %2$s"
 
 #: src/cli.vala
 msgid "all"

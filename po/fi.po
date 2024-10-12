@@ -12,6 +12,7 @@
 # efb9bfe4529d65c53b1ca1c06e8570c2_03b1415 <9b67c2c8b9e18d29a686c87484722408_745933>, 2018
 # Luki <jbkammer@gmail.com>, 2013,2015
 # Johannes Lakkisto <jclc@protonmail.com>, 2018
+# Kimmo Kujansuu <mrkujansuu@gmail.com>, 2024
 # Luki <jbkammer@gmail.com>, 2013,2015
 # Miika Launiainen <miika.launiainen@protonmail.com>, 2020
 # Oi Suomi On! <oisuomion@protonmail.com>, 2020,2022
@@ -29,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Ammuu5, 2017-2023\n"
+"Last-Translator: Kimmo Kujansuu <mrkujansuu@gmail.com>, 2024\n"
 "Language-Team: Finnish (http://app.transifex.com/manjarolinux/manjaro-pamac/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -458,7 +459,7 @@ msgstr "Pakettivarastot"
 #: src/transaction-gtk.vala src/manager_window.vala
 #: resources/preferences_dialog.ui
 msgid "Flatpak"
-msgstr "Flatpak-paketit"
+msgstr "Flatpak-ohjelmat"
 
 #: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
 #: src/cli.vala
@@ -590,7 +591,7 @@ msgstr "Alpm paketti"
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "Paketinhallintaohjelma Alpm, AUR, Flatpak ja Snap tuella"
+msgstr "Ohjelmiston hallintaohjelma tukee Alpm, AUR, Flatpak ja Snap"
 
 #: src/manager_window.vala src/snap_plugin.vala
 #: resources/preferences_dialog.ui
@@ -742,7 +743,7 @@ msgstr "Kanavat"
 
 #: src/manager_window.vala
 msgid "OS Updates"
-msgstr "Käyttöjärjestelmäpäivitykset"
+msgstr "Käyttöjärjestelmän päivitykset"
 
 #: src/manager_window.vala
 msgid "Includes performance, stability and security improvements"
@@ -1194,7 +1195,7 @@ msgstr "ohita tiedostojen varmuuskopiointi"
 
 #: src/cli.vala
 msgid "Safely check for updates without modifiying the databases"
-msgstr "Tarkista päivitykset turvallisesti ilman tietokantojen muokkaamista"
+msgstr "Tarkistaa päivitykset turvallisesti ilman tietokantojen muokkaamista"
 
 #: src/cli.vala
 msgid "Exit code is 100 if updates are available"
@@ -1208,11 +1209,11 @@ msgstr "koontihakemisto (käytä --devel vivun kanssa). Mikäli hakemistoa ei an
 
 #: src/cli.vala
 msgid "also check updates in AUR"
-msgstr "tarkista myös päivitykset AUR:ista"
+msgstr "tarkista myös AUR päivitykset"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr "älä tarkista päivityksiä AUR:ista"
+msgstr "älä tarkista AUR päivityksiä"
 
 #: src/cli.vala
 msgid "only print one line per update"
@@ -1224,7 +1225,7 @@ msgstr "tarkista myös kehityspakettien päivitykset (käytä --aur)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr "älä tarkista kehityspakettipäivityksiä"
+msgstr "älä tarkista päivityksiä kehityspaketeista"
 
 #: src/cli.vala
 msgid "Upgrade your system"
@@ -1621,11 +1622,11 @@ msgstr "Koontihakemisto"
 
 #: resources/preferences_dialog.ui
 msgid "Flatpak packages are maintained by their publisher."
-msgstr "Flatpak-paketteja ylläpitää julkaisija."
+msgstr "Flatpak-ohjelmat ylläpitää ohjelman koonnut julkaisija."
 
 #: resources/preferences_dialog.ui
 msgid "Enable Flatpak support"
-msgstr "Ota Flatpak-tuki käyttöön"
+msgstr "Flatpak-ohjelmien tuki käyttöön"
 
 #: resources/preferences_dialog.ui
 msgid "Snap packages are maintained by their publisher."
