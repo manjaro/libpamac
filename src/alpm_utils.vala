@@ -245,16 +245,15 @@ namespace Pamac {
 		}
 
 		public bool clean_cache (string[] filenames) {
-			try {
-				foreach (unowned string filename in filenames) {
-					var file = File.new_for_path (filename);
+			foreach (unowned string filename in filenames) {
+				var file = File.new_for_path (filename);
+				try {
 					file.delete ();
+				} catch (Error e) {
+					warning (e.message);
 				}
-				return true;
-			} catch (Error e) {
-				warning (e.message);
 			}
-			return false;
+			return true;
 		}
 
 		internal bool clean_build_files (string aur_build_dir) {

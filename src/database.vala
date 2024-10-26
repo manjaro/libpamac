@@ -250,6 +250,9 @@ namespace Pamac {
 						FileEnumerator enumerator = cachedir.enumerate_children ("standard::*", FileQueryInfoFlags.NONE);
 						FileInfo info;
 						while ((info = enumerator.next_file (null)) != null) {
+							if (info.get_file_type () != FileType.REGULAR) {
+								continue;
+							}
 							unowned string filename = info.get_name ();
 							string absolute_filename = "%s%s".printf (cachedir_name, filename);
 							string? name_version_release = filename.slice (0, filename.last_index_of_char ('-'));
