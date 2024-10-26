@@ -261,7 +261,6 @@ namespace Pamac {
 		const string manjaro_url = "https://aur.manjaro.org";
 		const string db_name = "packages-meta-ext-v1";
 		const string db_ext = ".json.gz";
-		const string db_path = "/var/tmp/pamac/dbs/sync";
 		AlpmConfig alpm_config;
 		public Alpm.Handle? alpm_handle;
 		HashTable<string, AURInfosLinked> cached_infos;
