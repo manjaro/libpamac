@@ -1,4 +1,4 @@
-const string VERSION = "11.6.4";
+const string VERSION = "11.7.0";
 
 namespace Pamac {
 	public string get_version () {
