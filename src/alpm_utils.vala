@@ -804,7 +804,7 @@ namespace Pamac {
 						unowned Alpm.List<Alpm.Conflict*> list = err_data;
 						while (list != null) {
 							Alpm.Conflict* conflict = list.data;
-							string conflict_detail = "- " + _("%1$s and %2$s are in conflict").printf (conflict->package1, conflict->package2);
+							string conflict_detail = "- " + _("%1$s and %2$s are in conflict").printf (conflict->package1.name, conflict->package2.name);
 							// only print reason if it contains new information
 							if (conflict->reason.mod != Alpm.Depend.Mode.ANY) {
 								conflict_detail += " (%s)".printf (conflict->reason.compute_string ());
