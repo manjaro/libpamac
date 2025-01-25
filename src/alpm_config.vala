@@ -131,13 +131,12 @@ internal class AlpmConfig {
 		Alpm.Errno error = 0;
 		Alpm.Handle? handle = null;
 		if (tmp_db) {
-			string tmp_path = "/var/tmp/pamac";
-			string tmp_dbpath = "/var/tmp/pamac/dbs";
+			string tmp_path = "/tmp/pamac-%s".printf (Environment.get_user_name ());
+			string tmp_dbpath = "%s/dbs".printf (tmp_path);
 			try {
 				var file = GLib.File.new_for_path (tmp_path);
 				if (!file.query_exists ()) {
 					Process.spawn_command_line_sync ("mkdir -p %s".printf (tmp_path));
-					Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_path));
 				}
 				file = GLib.File.new_for_path (tmp_dbpath);
 				// dbpath can be defined by the user with or without a trailing slash
@@ -145,23 +144,12 @@ internal class AlpmConfig {
 				string syncdb_path = Path.build_filename (dbpath, "sync");
 				if (!file.query_exists ()) {
 					Process.spawn_command_line_sync ("mkdir -p %s".printf (tmp_dbpath));
-					Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_dbpath));
-					Process.spawn_command_line_sync ("ln -s %s %s".printf (localdb_path, tmp_dbpath));
-					if (copy_dbs) {
-						file = GLib.File.new_for_path (syncdb_path);
-						if (file.query_exists ()) {
-							Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %s %s".printf (syncdb_path, tmp_dbpath));
-							Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
-						}
-					}
-				} else {
-					Process.spawn_command_line_sync ("ln -sf %s %s".printf (localdb_path, tmp_dbpath));
-					if (copy_dbs) {
-						file = GLib.File.new_for_path (syncdb_path);
-						if (file.query_exists ()) {
-							Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %s %s".printf (syncdb_path, tmp_dbpath));
-							Process.spawn_command_line_sync ("chmod -R a+w %s/sync".printf (tmp_dbpath));
-						}
+				}
+				Process.spawn_command_line_sync ("ln -sf %s %s".printf (localdb_path, tmp_dbpath));
+				if (copy_dbs) {
+					file = GLib.File.new_for_path (syncdb_path);
+					if (file.query_exists ()) {
+						Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %s %s".printf (syncdb_path, tmp_dbpath));
 					}
 				}
 				// remove an existing pamac_aur.db file

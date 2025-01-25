@@ -19,20 +19,12 @@
 
 namespace Pamac {
 	public class Transaction: Object {
-		enum Type {
-			INSTALL = (1 << 0),
-			REMOVE = (1 << 1),
-			UPDATE = (1 << 2),
-			BUILD = (1 << 3)
-		}
 		TransactionInterface transaction_interface;
-		delegate void TransactionAction ();
 		bool waiting;
 		unowned Config config;
 		unowned MainContext context;
 		// run transaction data
 		AlpmUtils alpm_utils;
-		AURPlugin aur_plugin;
 		bool sysupgrading;
 		bool force_refresh;
 		int trans_flags;
@@ -96,8 +88,7 @@ namespace Pamac {
 		construct {
 			config = database.config;
 			context = database.context;
-			alpm_utils = database.alpm_utils;
-			aur_plugin = database.aur_plugin;
+			alpm_utils = new AlpmUtils (config);
 			if (Posix.geteuid () == 0) {
 				// we are root
 				transaction_interface = new TransactionInterfaceRoot (alpm_utils, context);
@@ -196,8 +187,8 @@ namespace Pamac {
 			flatpak_to_remove = new HashTable<string, FlatpakPackage> (str_hash, str_equal);
 			flatpak_to_upgrade = new HashTable<string, FlatpakPackage> (str_hash, str_equal);
 			// building data
-			tmp_path = "/var/tmp/pamac";
-			aurdb_path = "/var/tmp/pamac/aur-%s".printf (Environment.get_user_name ());
+			tmp_path = "/tmp/pamac-%s".printf (Environment.get_user_name ());
+			aurdb_path = "%s/aur".printf (tmp_path);
 			already_checked_aur_dep = new GenericSet<string?> (str_hash, str_equal);
 			aur_desc_list = new GenericSet<string?> (str_hash, str_equal);
 			aur_pkgs_to_install = new GenericSet<string?> (str_hash, str_equal);
@@ -244,7 +235,7 @@ namespace Pamac {
 			if (!config.support_aur) {
 				return new GenericArray<string> ();
 			}
-			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+			unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 			string pkgdir_name = Path.build_filename (real_aur_build_dir, pkgname);
 			var files = new GenericArray<string> ();
 			// PKGBUILD
@@ -355,7 +346,7 @@ namespace Pamac {
 			if (!config.support_aur) {
 				return;
 			}
-			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+			unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 			try {
 				yield transaction_interface.clean_build_files (real_aur_build_dir);
 			} catch (Error e) {
@@ -422,11 +413,6 @@ namespace Pamac {
 		}
 
 		async bool compute_aur_build_list_real () {
-			var file = GLib.File.new_for_path (tmp_path);
-			if (!file.query_exists ()) {
-				yield launch_subprocess ({"mkdir", "-p", tmp_path});
-				yield launch_subprocess ({"chmod", "a+w", tmp_path});
-			}
 			yield launch_subprocess ({"mkdir", "-p", aurdb_path});
 			aur_desc_list.remove_all ();
 			already_checked_aur_dep.remove_all ();
@@ -452,11 +438,8 @@ namespace Pamac {
 				cmdline.length = cmdline.length + 1;
 				int ret = yield launch_subprocess (cmdline.data);
 				if (ret == 0) {
-					try {
-						Process.spawn_command_line_sync ("chmod a+w %s".printf (tmp_aurdb_path));
-					} catch (Error e) {
-						warning (e.message);
-					}
+					// remove aur db dir
+					yield launch_subprocess ({"rm", "-rf", aurdb_path});
 				} else {
 					success = false;
 				}
@@ -479,7 +462,7 @@ namespace Pamac {
 			if (to_get_from_aur.length > 0) {
 				aur_pkgs = yield database.get_aur_pkgs_async (to_get_from_aur);
 			}
-			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+			unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 			foreach (unowned string pkgname in pkgnames) {
 				if (build_cancellable.is_cancelled ()) {
 					return false;
@@ -494,7 +477,7 @@ namespace Pamac {
 					if (aur_pkg == null) {
 						// may be a virtual package
 						// use search and add results
-						var providers = aur_plugin.get_providers (pkgname);
+						var providers = database.get_aur_providers (pkgname);
 						foreach (unowned AURInfos info in providers) {
 							unowned string provider_name = info.name;
 							dep_to_check.add (provider_name);
@@ -1458,7 +1441,7 @@ namespace Pamac {
 							}
 						}
 						foreach (unowned string pkgname in alpm_utils.unresolvables) {
-							unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+							unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 							string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 							success = yield clone_build_files_if_needed (pkgdir, pkgname);
 							if (!success) {
@@ -1513,7 +1496,7 @@ namespace Pamac {
 					}
 				}
 				if (yield ask_edit_build_files_real (summary)) {
-					unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+					unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
 						string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 						bool success = yield clone_build_files_if_needed (pkgdir, pkgname);
@@ -1571,13 +1554,17 @@ namespace Pamac {
 				}
 				// ask_commit_real add flatpaks and snaps
 				bool success = yield ask_commit_real (summary);
+				// remove existing aur db
+				if (!success && summary.to_build.length != 0) {
+					yield launch_subprocess ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path)});
+				}
 				if (dry_run) {
 					return true;
 				}
 				if (success) {
 					// clone build files and check signatures
 					if (summary.aur_pkgbases_to_build.length != 0) {
-						unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+						unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 						foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
 							string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 							success = yield clone_build_files_if_needed (pkgdir, pkgname);
@@ -1650,12 +1637,16 @@ namespace Pamac {
 			} else if (summary.to_build.length != 0) {
 				// only AUR packages to build
 				bool success = yield ask_commit_real (summary);
+				// remove existing aur db
+				if (!success) {
+					yield launch_subprocess ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path)});
+				}
 				if (dry_run) {
 					return true;
 				}
 				if (success) {
 					// clone build files and check signatures
-					unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+					unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 					foreach (unowned string pkgname in summary.aur_pkgbases_to_build) {
 						string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 						success = yield clone_build_files_if_needed (pkgdir, pkgname);
@@ -1945,7 +1936,7 @@ namespace Pamac {
 				string pkgname = to_build_queue.pop_head ();
 				build_cancellable.reset ();
 				var built_pkgs_path = new GenericArray<string> ();
-				unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+				unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 				string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 				bool as_root = Posix.geteuid () == 0;
 				// building

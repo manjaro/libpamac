@@ -80,7 +80,7 @@ namespace Pamac {
 			this.config = config;
 			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
 			alpm_config = config.alpm_config;
-			tmp_path = "/var/tmp/pamac";
+			tmp_path = "/tmp/pamac-%s".printf (Environment.get_user_name ());
 			to_syncfirst = new GenericSet<string?> (str_hash, str_equal);
 			to_install = new GenericSet<string?> (str_hash, str_equal);
 			deps_to_install = new GenericSet<string?> (str_hash, str_equal);
@@ -1644,6 +1644,7 @@ namespace Pamac {
 				pkgs_to_add.next ();
 			}
 			// to_remove
+			checked.remove_all ();
 			unowned Alpm.List<unowned Alpm.Package> pkgs_to_remove = alpm_handle.trans_to_remove ();
 			while (pkgs_to_remove != null) {
 				unowned Alpm.Package trans_pkg = pkgs_to_remove.data;
@@ -1663,6 +1664,7 @@ namespace Pamac {
 							string depstring = depends_list.data.compute_string ();
 							unowned Alpm.Package? dep = Alpm.find_satisfier (alpm_handle.trans_to_remove (), depstring);
 							if (dep != null) {
+								checked.insert (check_pkg.name, 0);
 								if (dep.name in to_remove
 									|| dep.name in conflicts_to_remove) {
 									// found the top depend package
@@ -1670,7 +1672,12 @@ namespace Pamac {
 									dep_found = true;
 								} else {
 									// check dep depends
-									check_pkg = dep;
+									if (dep.name in checked) {
+										// already checked so we end the loop
+										dep_found = true;
+									} else {
+										check_pkg = dep;
+									}
 								}
 								break;
 							}
@@ -1702,6 +1709,10 @@ namespace Pamac {
 								if (check_pkg == null) {
 									break;
 								}
+								if (check_pkg.name in checked) {
+									break;
+								}
+								checked.insert (check_pkg.name, 0);
 							}
 						} else {
 							break;

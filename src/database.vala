@@ -30,17 +30,14 @@ namespace Pamac {
 		GenericArray<string> groups_names;
 		GenericArray<string> repos_names;
 		GenericArray<string> categories_names;
+		AURPlugin aur_plugin;
 		AppstreamPlugin appstream_plugin;
 		SnapPlugin snap_plugin;
 		FlatpakPlugin flatpak_plugin;
+		Soup.Session soup_session;
 
 		public Config config { get; construct set; }
 		internal unowned MainContext context { get; private set; }
-		internal Soup.Session soup_session { get; private set; }
-		internal AURPlugin aur_plugin { get; private set; }
-		internal AlpmUtils alpm_utils { get; private set; }
-		internal size_t dbs_count { get; set; }
-		internal size_t dbs_index { get; set; }
 		internal bool dbs_missing { get; private set; }
 
 		public signal void get_updates_progress (uint percent);
@@ -61,7 +58,6 @@ namespace Pamac {
 			soup_session = new Soup.Session ();
 			soup_session.user_agent = user_agent;
 			soup_session.timeout = 10;
-			alpm_utils = new AlpmUtils (config);
 			// set HTTP_USER_AGENT needed when downloading using libalpm like refreshing dbs
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			// init dbs
@@ -129,7 +125,7 @@ namespace Pamac {
 			}
 		}
 
-		public void refresh () {
+		internal void refresh () {
 			lock (alpm_config) {
 				alpm_config.reload ();
 				alpm_handle = alpm_config.get_handle ();
@@ -360,8 +356,16 @@ namespace Pamac {
 			return filenames_size;
 		}
 
+		public unowned string get_real_aur_build_dir () {
+			return aur_plugin.get_real_build_dir ();
+		}
+
+		internal GenericArray<unowned AURInfos> get_aur_providers (string pkgname) {
+			return aur_plugin.get_providers (pkgname);
+		}
+
 		void get_build_files_details_real (ref HashTable<string, uint64?> filenames_size) {
-			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+			unowned string real_aur_build_dir = get_real_aur_build_dir ();
 			var build_directory = File.new_for_path (real_aur_build_dir);
 			if (!build_directory.query_exists ()) {
 				return;
@@ -1725,7 +1729,7 @@ namespace Pamac {
 			int status = 1;
 			GenericArray<string> cmdline;
 			var launcher = new SubprocessLauncher (SubprocessFlags.NONE);
-			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+			unowned string real_aur_build_dir = get_real_aur_build_dir ();
 			var builddir = File.new_for_path (real_aur_build_dir);
 			if (!builddir.query_exists ()) {
 				try {
@@ -1880,7 +1884,7 @@ namespace Pamac {
 		}
 
 		public bool regenerate_srcinfo (string pkgname, Cancellable? cancellable = null) {
-			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+			unowned string real_aur_build_dir = get_real_aur_build_dir ();
 			string pkgdir_name = Path.build_filename (real_aur_build_dir, pkgname);
 			var srcinfo = File.new_for_path (Path.build_filename (pkgdir_name, ".SRCINFO"));
 			var pkgbuild = File.new_for_path (Path.build_filename (pkgdir_name, "PKGBUILD"));
@@ -2234,7 +2238,7 @@ namespace Pamac {
 
 		HashTable<string, string> get_vcs_last_version (GenericArray<string> vcs_local_pkgs) {
 			var pkgnames_table = new HashTable<string, string> (str_hash, str_equal);
-			unowned string real_aur_build_dir = aur_plugin.get_real_build_dir ();
+			unowned string real_aur_build_dir = get_real_aur_build_dir ();
 			foreach (unowned string pkgname in vcs_local_pkgs) {
 				if (aur_vcs_pkgs.contains (pkgname)) {
 					continue;

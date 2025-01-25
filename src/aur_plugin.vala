@@ -267,22 +267,12 @@ namespace Pamac {
 		HashTable<string, GenericArray<AURInfosLinked>> search_results;
 		string real_build_dir;
 		bool db_loaded;
-		// download data
-		public Cancellable cancellable;
-		uint64 already_downloaded;
-		double current_progress;
-		public Timer rate_timer;
-		Queue<double?> download_rates;
-		double download_rate;
 
 		public AUR () {
 			Object ();
 		}
 
 		construct {
-			cancellable = new Cancellable ();
-			rate_timer = new Timer ();
-			download_rates = new Queue<double?> ();
 			cached_infos = new HashTable<string, AURInfosLinked> (str_hash, str_equal);
 			search_results = new HashTable<string, GenericArray<Pamac.AURInfosLinked>> (str_hash, str_equal);
 			string user_agent = get_user_agent ();
