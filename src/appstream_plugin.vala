@@ -140,7 +140,7 @@ namespace Pamac {
 			_repo = repo;
 		}
 
-		public uint search_matches_all (string [] search_tokens) {
+		public uint search_matches_all (string[] search_tokens) {
 			return _as_app.search_matches_all (search_tokens);
 		}
 	}
