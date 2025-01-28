@@ -7,8 +7,8 @@
   <vendor_url>http://manjaro.org/</vendor_url>
   <icon_name>package-x-generic</icon_name>
   <action id="org.manjaro.pamac.commit">
-    <description gettext-domain="pamac">Install, update, or remove packages</description>
-    <message gettext-domain="pamac">Authentication is required to install, update, or remove packages</message>
+    <description>Install, update, or remove packages</description>
+    <message>Authentication is required to install, update, or remove packages</message>
     <defaults>
       <allow_any>auth_admin_keep</allow_any>
       <allow_inactive>auth_admin_keep</allow_inactive>
