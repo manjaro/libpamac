@@ -1291,7 +1291,7 @@ namespace Pamac {
 			if (to_install.length > 0) {
 				yield add_optdeps ();
 			}
-			if (sysupgrading && database.config.support_aur && config.check_aur_updates) {
+			if (sysupgrading && config.check_aur_updates) {
 				var updates = yield database.get_aur_updates_async (ignorepkgs);
 				foreach (unowned AURPackage aur_pkg in updates.aur_updates) {
 					add_pkg_to_build (aur_pkg.name, true, true);
@@ -1382,7 +1382,7 @@ namespace Pamac {
 				// aur db will also be refreshed if enabled
 				yield refresh_dbs_async ();
 				database.refresh ();
-			} else if (config.support_aur && config.check_aur_updates) {
+			} else if (config.enable_aur) {
 				string absolute_path = Path.build_filename (config.db_path, "sync", "packages-meta-ext-v1.json.gz");
 				var zipfile = File.new_for_path (absolute_path);
 				if (!zipfile.query_exists ()) {
@@ -1396,7 +1396,7 @@ namespace Pamac {
 			bool success = false;
 			try {
 				success = yield transaction_interface.trans_refresh (force_refresh);
-				if (config.support_aur && config.check_aur_updates) {
+				if (config.enable_aur) {
 					bool aur_success = yield transaction_interface.trans_refresh_aur (force_refresh);
 					if (!aur_success) {
 						emit_warning (dgettext (null, "Failed to synchronize AUR database"));

@@ -2114,7 +2114,6 @@ namespace Pamac {
 		void get_updates_real (ref Updates updates) {
 			// be sure we have the good updates
 			lock (alpm_config) {
-				bool check_aur_updates = config.support_aur && config.check_aur_updates;
 				// count this step as 5% of the total
 				unowned GenericArray<AlpmPackage> repos_updates = updates.repos_updates;
 				unowned GenericArray<AlpmPackage> ignored_repos_updates = updates.ignored_repos_updates;
@@ -2136,7 +2135,7 @@ namespace Pamac {
 							repos_updates.add (pkg);
 						}
 					} else {
-						if (check_aur_updates) {
+						if (config.check_aur_updates) {
 							// check if installed_pkg is a local pkg
 							unowned Alpm.Package? pkg = get_syncpkg (alpm_handle, installed_pkg.name);
 							if (pkg == null) {
@@ -2163,7 +2162,7 @@ namespace Pamac {
 				if (config.check_flatpak_updates) {
 					flatpak_plugin.get_flatpak_updates (ref flatpak_updates);
 				}
-				if (check_aur_updates) {
+				if (config.check_aur_updates) {
 					if (config.check_aur_vcs_updates) {
 						refresh_vcs_sources (vcs_local_pkgs);
 					}
