@@ -23,7 +23,7 @@ namespace Pamac {
 		AppStream.Component? _as_app;
 		// Package
 		unowned string? _name;
-		unowned string? _id;
+		string? _id;
 		unowned string? _pkgname;
 		unowned string? _desc;
 		string? _long_desc;
@@ -44,7 +44,7 @@ namespace Pamac {
 		public override string? id {
 			get {
 				if (_id == null && _as_app != null) {
-					_id = _as_app.get_id ();
+					_id = "%s/%s".printf (pkgname, _as_app.get_id ());
 				}
 				return _id;
 			}
@@ -184,6 +184,13 @@ namespace Pamac {
 						unowned GenericArray<AppStream.Component> apps = mdata.get_components ().as_array ();
 						foreach (unowned AppStream.Component app in apps) {
 							if (app.get_kind () == AppStream.ComponentKind.DESKTOP_APP) {
+								var new_app = new AppLinked (app, repo);
+								// add to app cache
+								unowned string id = new_app.id;
+								if (desktop_apps.contains (id)) {
+									// don't add duplicate app
+									continue;
+								}
 								// add pkgnames
 								unowned string? pkgname = app.get_pkgname ();
 								if (pkgname == null) {
@@ -194,10 +201,7 @@ namespace Pamac {
 									pkgname_apps = new GenericArray<unowned App> ();
 									pkgname_apps_cache.insert (pkgname, pkgname_apps);
 								}
-								var new_app = new AppLinked (app, repo);
 								pkgname_apps.add (new_app);
-								// add to app cache
-								unowned string id = new_app.id;
 								desktop_apps.insert (id, new_app);
 								// add categories
 								unowned GenericArray<string> app_categories = app.get_categories ();
