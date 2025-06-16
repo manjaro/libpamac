@@ -580,7 +580,7 @@ namespace Pamac {
 						}
 						for (uint i = 1; i < apps_length; i++) {
 							app = apps[i];
-							string id = "%s/%s".printf (pkgname, app.name);
+							string id = "%s/%s".printf (pkgname, app.id);
 							cached_pkg = pkgs_cache.lookup (id);
 							if (cached_pkg == null) {
 								var pkg_dup = new AlpmPackageLinked.from_alpm (alpm_pkg, this);
@@ -654,19 +654,14 @@ namespace Pamac {
 									unowned string pkgname = app.pkgname;
 									unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 									if (local_pkg != null) {
-										unowned string? app_name = app.name;
-										if (app_name != null) {
-											AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (local_pkg.name, app_name));
-											if (pkg != null) {
-												pkgs.add (pkg);
-												continue;
-											}
+										AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (local_pkg.name, app.id));
+										if (pkg == null) {
+											pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+											pkg.set_local_pkg (local_pkg);
+											pkg.set_app (app);
+											pkgs_cache.replace (pkg.id, pkg);
 										}
-										var pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
-										pkg.set_local_pkg (local_pkg);
-										pkg.set_app (app);
 										pkgs.add (pkg);
-										pkgs_cache.replace (pkg.id, pkg);
 									}
 								}
 							}
@@ -908,10 +903,15 @@ namespace Pamac {
 						unowned App app;
 						while (iter.next (null, out app)) {
 							unowned string current_app_id = app.id;
-							if (current_app_id == app_id_short || current_app_id == app_id_long) {
+							string[] splitted = current_app_id.split ("/", 2);
+							if (splitted.length == 1) {
+								// bad app_id format
+								continue;
+							}
+							unowned string real_app_id = splitted[1];
+							if (real_app_id == app_id_short || real_app_id == app_id_long) {
 								unowned string pkgname = app.pkgname;
-								string id = "%s/%s".printf (pkgname, app.name);
-								pkg = pkgs_cache.lookup (id);
+								pkg = pkgs_cache.lookup (app_id);
 								if (pkg == null) {
 									unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 									if (local_pkg != null) {
@@ -1419,17 +1419,14 @@ namespace Pamac {
 			unowned App app;
 			while (iter.next (null, out app)) {
 				unowned string pkgname = app.pkgname;
-				unowned string? app_name = app.name;
-				if (app_name != null) {
-					AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (pkgname, app_name));
-					if (pkg != null) {
-						pkgs.add (pkg);
-						continue;
-					}
+				AlpmPackageLinked? pkg = pkgs_cache.lookup (app.id);
+				if (pkg != null) {
+					pkgs.add (pkg);
+					continue;
 				}
 				unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 				if (local_pkg != null) {
-					var pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+					pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
 					pkg.set_local_pkg (local_pkg);
 					pkg.set_app (app);
 					pkgs.add (pkg);
@@ -1437,7 +1434,7 @@ namespace Pamac {
 				} else {
 					unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
 					if (sync_pkg != null) {
-						var pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
+						pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
 						pkg.set_local_pkg (local_pkg);
 						pkg.set_sync_pkg (sync_pkg);
 						pkg.set_app (app);

@@ -20,7 +20,7 @@
 namespace Pamac {
 	public abstract class AlpmPackage : Package {
 		// AlpmPackage
-		public abstract DateTime? build_date { get;  }
+		public abstract DateTime? build_date { get; }
 		public abstract string? packager { get; }
 		public abstract string? reason { get; }
 		public abstract GenericArray<string> validations { get; }
@@ -110,7 +110,7 @@ namespace Pamac {
 			get {
 				if (_id == null) {
 					if (_app != null) {
-						_id = "%s/%s".printf (name, app_name);
+						_id = "%s/%s".printf (name, app_id);
 					} else {
 						_id = name;
 					}
@@ -535,7 +535,7 @@ namespace Pamac {
 		}
 
 		void found_local_pkg () {
-			if  (!local_pkg_set) {
+			if (!local_pkg_set) {
 				local_pkg_set = true;
 				if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
 					local_pkg = alpm_pkg;
@@ -546,7 +546,7 @@ namespace Pamac {
 		}
 
 		void found_sync_pkg () {
-			if  (!sync_pkg_set) {
+			if (!sync_pkg_set) {
 				sync_pkg_set = true;
 				if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
 					sync_pkg = database.intern_get_syncpkg (alpm_pkg.name);
@@ -651,7 +651,7 @@ namespace Pamac {
 				// repo
 				_repo = sync_pkg.db.name;
 				// makedepends
-				unowned GenericArray<string> list =  makedepends;
+				unowned GenericArray<string> list = makedepends;
 				// checkdepends
 				list = checkdepends;
 			}
@@ -1208,7 +1208,7 @@ namespace Pamac {
 		public override DateTime? outofdate {
 			get {
 				if (_outofdate == null && aur_infos != null) {
-					_outofdate =aur_infos.outofdate;
+					_outofdate = aur_infos.outofdate;
 				}
 				return _outofdate;
 			}
