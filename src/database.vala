@@ -198,9 +198,6 @@ namespace Pamac {
 		}
 
 		public async unowned string get_mirrors_choosen_country_async () {
-			if (mirrors_choosen_country != null) {
-				return mirrors_choosen_country;
-			}
 			mirrors_choosen_country = "";
 			try {
 				new Thread<int>.try ("get_mirrors_choosen_country", () => {
