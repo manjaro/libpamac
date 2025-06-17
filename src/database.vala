@@ -1416,7 +1416,7 @@ namespace Pamac {
 			unowned App app;
 			while (iter.next (null, out app)) {
 				unowned string pkgname = app.pkgname;
-				AlpmPackageLinked? pkg = pkgs_cache.lookup (app.id);
+				AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (pkgname, app.id));
 				if (pkg != null) {
 					pkgs.add (pkg);
 					continue;
