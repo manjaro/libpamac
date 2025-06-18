@@ -531,8 +531,11 @@ namespace Pamac {
 					new_pkg.set_app (matching_apps[0]);
 				}
 			}
+			if (pkgs_cache.contains (new_pkg.id)) {
+				return pkgs_cache.lookup (new_pkg.id);
+			}
 			pkg = new_pkg;
-			pkgs_cache.replace (pkg.id, new_pkg);
+			pkgs_cache.replace (new_pkg.id, new_pkg);
 			return pkg;
 		}
 
