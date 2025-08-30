@@ -627,7 +627,7 @@ namespace Pamac {
 					while (iter.next (null, out app)) {
 						string[] search_tokens = search_string.split (" ");
 						uint match_score = app.search_matches_all (search_tokens);
-						if (match_score > 0 || search_string in app.get_id  ()) {
+						if (match_score > 0 || search_string in app.get_id  ().down ()) {
 							unowned FlatpakPackage? pkg = get_flatpak_from_app (app);
 							if (pkg != null) {
 								pkgs.add (pkg);
