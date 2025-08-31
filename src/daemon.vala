@@ -286,6 +286,8 @@ namespace Pamac {
 						emit_error (sender, "Daemon Error", {e.message});
 						write_alpm_config_finished (sender);
 					}
+				} else {
+					write_alpm_config_finished (sender);
 				}
 			});
 		}
@@ -351,6 +353,8 @@ namespace Pamac {
 						emit_error (sender, "Daemon Error", {e.message});
 						generate_mirrors_list_finished (sender);
 					}
+				} else {
+					generate_mirrors_list_finished (sender);
 				}
 			});
 		}
@@ -394,6 +398,8 @@ namespace Pamac {
 						emit_error (sender, "Daemon Error", {e.message});
 						set_pkgreason_finished (sender, false);
 					}
+				} else {
+					set_pkgreason_finished (sender, false);
 				}
 			});
 		}
@@ -471,6 +477,8 @@ namespace Pamac {
 						emit_error (sender, "Daemon Error", {e.message});
 						download_pkgs_finished (sender, {});
 					}
+				} else {
+					download_pkgs_finished (sender, {});
 				}
 			});
 		}
@@ -791,6 +799,8 @@ namespace Pamac {
 						emit_error (sender, "Daemon Error", {e.message});
 						flatpak_trans_run_finished (sender, false);
 					}
+				} else {
+					flatpak_trans_run_finished (sender, false);
 				}
 			});
 		}
