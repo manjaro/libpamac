@@ -1191,6 +1191,10 @@ namespace Pamac {
 					return false;
 				} else {
 					success = yield ask_commit (summary);
+					if (!success) {
+						stop_preparing ();
+						emit_action (dgettext (null, "Transaction cancelled") + ".");
+					}
 					if (dry_run) {
 						return true;
 					}
@@ -1199,24 +1203,24 @@ namespace Pamac {
 							snap_to_remove.length > 0) {
 							success = yield run_snap_transaction ();
 						}
+					}
+					if (success) {
 						if (flatpak_to_install.length > 0 ||
 							flatpak_to_remove.length > 0 ||
 							flatpak_to_upgrade.length > 0) {
 							success = yield run_flatpak_transaction ();
 						}
-						if (success) {
-							emit_action (dgettext (null, "Transaction successfully finished") + ".");
-						}
-						database.refresh ();
-					} else {
+					}
+					if (success) {
+						emit_action (dgettext (null, "Transaction successfully finished") + ".");
+					}
+					database.refresh ();
+					if (!success) {
 						snap_to_install.remove_all ();
 						snap_to_remove.remove_all ();
 						flatpak_to_install.remove_all ();
 						flatpak_to_remove.remove_all ();
 						flatpak_to_upgrade.remove_all ();
-						stop_preparing ();
-						emit_action (dgettext (null, "Transaction cancelled") + ".");
-						success = false;
 					}
 				}
 			}
