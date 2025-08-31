@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2019-2023 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2019-2025 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,51 +33,41 @@ int main (string[] args) {
 		unowned Alpm.List<unowned Alpm.Package> cache = db.pkgcache;
 		while (cache != null) {
 			unowned Alpm.Package pkg = cache.data;
-			bool found = false;
 			// deps
 			unowned Alpm.List<unowned Alpm.Depend> depends = pkg.depends;
 			while (depends != null) {
 				unowned Alpm.Depend dep = depends.data;
 				if (dep.name == depend) {
 					stdout.printf ("%s/%s depends on %s (built by %s)\n", db.name, pkg.name, dep.compute_string (), pkg.packager);
-					found = true;
 				}
 				depends.next ();
 			}
 			// optdeps
-			if (!found) {
-				depends = pkg.optdepends;
-				while (depends != null) {
-					unowned Alpm.Depend dep = depends.data;
-					if (dep.name == depend) {
-						stdout.printf ("%s/%s optionally depends on %s (built by %s)\n", db.name, pkg.name, dep.compute_string (), pkg.packager);
-						found = true;
-					}
-					depends.next ();
+			depends = pkg.optdepends;
+			while (depends != null) {
+				unowned Alpm.Depend dep = depends.data;
+				if (dep.name == depend) {
+					stdout.printf ("%s/%s optionally depends on %s (built by %s)\n", db.name, pkg.name, dep.compute_string (), pkg.packager);
 				}
+				depends.next ();
 			}
 			// makedeps
-			if (!found) {
-				depends = pkg.makedepends;
-				while (depends != null) {
-					unowned Alpm.Depend dep = depends.data;
-					if (dep.name == depend) {
-						stdout.printf ("%s/%s make depends on %s (built by %s)\n", db.name, pkg.name, dep.compute_string (), pkg.packager);
-						found = true;
-					}
-					depends.next ();
+			depends = pkg.makedepends;
+			while (depends != null) {
+				unowned Alpm.Depend dep = depends.data;
+				if (dep.name == depend) {
+					stdout.printf ("%s/%s make depends on %s (built by %s)\n", db.name, pkg.name, dep.compute_string (), pkg.packager);
 				}
+				depends.next ();
 			}
 			// checkdeps
-			if (!found) {
-				depends = pkg.checkdepends;
-				while (depends != null) {
-					unowned Alpm.Depend dep = depends.data;
-					if (dep.name == depend) {
-						stdout.printf ("%s/%s check depends on %s (built by %s)\n", db.name, pkg.name, dep.compute_string (), pkg.packager);
-					}
-					depends.next ();
+			depends = pkg.checkdepends;
+			while (depends != null) {
+				unowned Alpm.Depend dep = depends.data;
+				if (dep.name == depend) {
+					stdout.printf ("%s/%s check depends on %s (built by %s)\n", db.name, pkg.name, dep.compute_string (), pkg.packager);
 				}
+				depends.next ();
 			}
 			cache.next ();
 		}
