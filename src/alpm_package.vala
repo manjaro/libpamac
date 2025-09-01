@@ -110,7 +110,7 @@ namespace Pamac {
 			get {
 				if (_id == null) {
 					if (_app != null) {
-						_id = "%s/%s".printf (name, app_id);
+						_id = app_id;
 					} else {
 						_id = name;
 					}

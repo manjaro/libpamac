@@ -580,8 +580,7 @@ namespace Pamac {
 						}
 						for (uint i = 1; i < apps_length; i++) {
 							app = apps[i];
-							string id = "%s/%s".printf (pkgname, app.id);
-							cached_pkg = pkgs_cache.lookup (id);
+							cached_pkg = pkgs_cache.lookup (app.id);
 							if (cached_pkg == null) {
 								var pkg_dup = new AlpmPackageLinked.from_alpm (alpm_pkg, this);
 								pkg_dup.set_app (apps[i]);
@@ -654,7 +653,7 @@ namespace Pamac {
 									unowned string pkgname = app.pkgname;
 									unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 									if (local_pkg != null) {
-										AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (local_pkg.name, app.id));
+										AlpmPackageLinked? pkg = pkgs_cache.lookup (app.id);
 										if (pkg == null) {
 											pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
 											pkg.set_local_pkg (local_pkg);
@@ -886,79 +885,41 @@ namespace Pamac {
 		}
 
 		public unowned Package? get_app_by_id (string app_id) {
-			string app_id_short;
-			string app_id_long;
-			if (app_id.has_suffix (".desktop")) {
-				app_id_long = app_id.down();
-				app_id_short = app_id.replace (".desktop", "").down();
-			} else {
-				app_id_short = app_id.down();
-				app_id_long = app_id + ".desktop".down();
+			// fast search
+			unowned Package? pkg = pkgs_cache.lookup (app_id);
+			if (pkg != null) {
+				return pkg;
 			}
-			unowned Package? pkg = null;
 			lock (alpm_config) {
 				if (config.enable_appstream) {
 					foreach (unowned HashTable<unowned string, App> apps in appstream_plugin.get_apps ()) {
 						var iter = HashTableIter<unowned string, App> (apps);
+						unowned string current_app_id;
 						unowned App app;
-						while (iter.next (null, out app)) {
-							unowned string current_app_id = app.id;
-							string[] splitted = current_app_id.split ("/", 2);
-							if (splitted.length == 1) {
-								// bad app_id format
-								continue;
-							}
-							unowned string real_app_id = splitted[1];
-							if (real_app_id == app_id_short || real_app_id == app_id_long) {
+						while (iter.next (out current_app_id, out app)) {
+							if (current_app_id == app_id) {
 								unowned string pkgname = app.pkgname;
-								pkg = pkgs_cache.lookup (app_id);
-								if (pkg == null) {
-									unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
-									if (local_pkg != null) {
-										var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+								unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
+								if (local_pkg != null) {
+									var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+									new_pkg.set_local_pkg (local_pkg);
+									new_pkg.set_app (app);
+									pkgs_cache.replace (new_pkg.id, new_pkg);
+									pkg = new_pkg;
+								} else {
+									unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
+									if (sync_pkg != null) {
+										var new_pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
 										new_pkg.set_local_pkg (local_pkg);
+										new_pkg.set_sync_pkg (sync_pkg);
 										new_pkg.set_app (app);
 										pkgs_cache.replace (new_pkg.id, new_pkg);
 										pkg = new_pkg;
-									} else {
-										unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
-										if (sync_pkg != null) {
-											var new_pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
-											new_pkg.set_local_pkg (local_pkg);
-											new_pkg.set_sync_pkg (sync_pkg);
-											new_pkg.set_app (app);
-											pkgs_cache.replace (new_pkg.id, new_pkg);
-											pkg = new_pkg;
-										}
 									}
 								}
-							}
-						}
-					}
-				}
-				// try in installed files
-				if (pkg == null) {
-					bool found = false;
-					unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
-					while (pkgcache != null) {
-						unowned Alpm.Package local_pkg = pkgcache.data;
-						unowned Alpm.FileList filelist = local_pkg.files;
-						Alpm.File* file_ptr = filelist.files;
-						for (size_t i = 0; i < filelist.count; i++, file_ptr++) {
-							// exclude directory name
-							if (file_ptr->name.has_suffix (app_id_long)) {
-								found = true;
 								break;
 							}
 						}
-						if (found) {
-							var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
-							new_pkg.set_local_pkg (local_pkg);
-							pkgs_cache.replace (new_pkg.id, new_pkg);
-							pkg = new_pkg;
-							break;
-						}
-						pkgcache.next ();
 					}
 				}
 			}
@@ -1205,7 +1166,8 @@ namespace Pamac {
 			lock (alpm_config) {
 				Alpm.List<unowned Alpm.Package> appstream_result = null;
 				if (config.enable_appstream) {
-					foreach (unowned App app in appstream_plugin.search (search_terms.data)) {
+					string[] data = search_terms.data;
+					foreach (unowned App app in appstream_plugin.search (data)) {
 						unowned string pkgname = app.pkgname;
 						unowned Alpm.Package? alpm_pkg = alpm_handle.localdb.get_pkg (pkgname);
 						if (alpm_pkg == null) {
@@ -1419,7 +1381,7 @@ namespace Pamac {
 			unowned App app;
 			while (iter.next (null, out app)) {
 				unowned string pkgname = app.pkgname;
-				AlpmPackageLinked? pkg = pkgs_cache.lookup ("%s/%s".printf (pkgname, app.id));
+				AlpmPackageLinked? pkg = pkgs_cache.lookup (app.id);
 				if (pkg != null) {
 					pkgs.add (pkg);
 					continue;
