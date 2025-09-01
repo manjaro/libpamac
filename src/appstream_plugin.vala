@@ -340,7 +340,7 @@ namespace Pamac {
 				while (iter.next (out repo, out app)) {
 					unowned AppLinked applinked = app as AppLinked;
 					uint match_score = applinked.search_matches_all (search_tokens);
-					if (match_score > 0 || search_tokens[0] in app.id) {
+					if (match_score > 0 || search_tokens[0] in app.id.down ()) {
 						result.add (app);
 					}
 				}
