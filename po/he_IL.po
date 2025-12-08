@@ -1514,7 +1514,7 @@ msgstr "הורדת עדכונים אוטומטית"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "לשדרג את המערכת עם בחירה בכיבוי"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
