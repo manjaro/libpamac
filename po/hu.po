@@ -102,7 +102,7 @@ msgstr "ha lehetséges, távolítsd el a következőt: %s, és próbáld újra"
 #: src/alpm_utils.vala
 #, c-format
 msgid "removing %1$s breaks dependency '%2$s' required by %3$s"
-msgstr "%1$s eltávolítása függőséget okoz a(z) '%2$s' melyre a %3$scsomagnak szüksége van"
+msgstr "%1$s eltávolítása függőséget okoz a(z) '%2$s' melyre a %3$s csomagnak szüksége van"
 
 #: src/alpm_utils.vala
 #, c-format
