@@ -887,7 +887,7 @@ msgstr "ja"
 
 #: src/transaction-cli.vala
 msgid "[e]"
-msgstr ""
+msgstr "[e]"
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
@@ -895,11 +895,11 @@ msgstr "Overdracht toepassen"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
-msgstr ""
+msgstr "[e/y/N]"
 
 #: src/transaction-cli.vala
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
@@ -1159,7 +1159,7 @@ msgstr "pakketten alleen verwijderen als deze niet vereist zijn door andere pakk
 msgid ""
 "remove all target packages, as well as all packages that depend on one or "
 "more target packages"
-msgstr ""
+msgstr "Verwijder alle geselecteerde paketten en paketten die afhankelijk zijn van de geselecteerde paketten"
 
 #: src/cli.vala
 msgid ""
@@ -1169,7 +1169,7 @@ msgstr "afhankelijkheden verwijderen die niet vereist zijn door andere pakketten
 
 #: src/cli.vala
 msgid "do not remove dependencies that are not required by other packages"
-msgstr ""
+msgstr "Verwijder geen afhankelijke pakketten die niet vereist zijn "
 
 #: src/cli.vala
 msgid "ignore files backup"
@@ -1195,7 +1195,7 @@ msgstr "ook controleren op AUR-updates"
 
 #: src/cli.vala
 msgid "do not check updates in AUR"
-msgstr ""
+msgstr "Voer geen update controle uit voor pakketten uit de AUR"
 
 #: src/cli.vala
 msgid "only print one line per update"
@@ -1207,7 +1207,7 @@ msgstr "ook controleren op ontwikkelingspakketten-updates (gebruiken met --aur)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
-msgstr ""
+msgstr "Voor geen update controle uit voor pakketten die in ontwikkeling zijn. "
 
 #: src/cli.vala
 msgid "Upgrade your system"
@@ -1227,7 +1227,7 @@ msgstr "pakketten afwaarderen inschakelen"
 
 #: src/cli.vala
 msgid "disable package downgrades"
-msgstr ""
+msgstr "Schakel downgrades uit"
 
 #: src/cli.vala
 msgid "also upgrade packages installed from AUR"
@@ -1235,7 +1235,7 @@ msgstr "ook AUR-pakketten opwaarderen"
 
 #: src/cli.vala
 msgid "do not upgrade packages installed from AUR"
-msgstr ""
+msgstr "voor geen update controle uit voor pakketten uit de AUR"
 
 #: src/cli.vala
 msgid "also upgrade development packages (use with --aur)"
@@ -1243,7 +1243,7 @@ msgstr "ook ontwikkelingspakketten-updates (gebruiken met --aur)"
 
 #: src/cli.vala
 msgid "do not upgrade development packages"
-msgstr ""
+msgstr "Voer geen update controle uit voor pakketten die in ontwikkeling zijn. "
 
 #: src/cli.vala
 msgid ""
@@ -1338,7 +1338,7 @@ msgstr "Bouwbestanden verwijderen"
 #: src/cli.vala
 #, c-format
 msgid "Add %s to install"
-msgstr ""
+msgstr "Voeg 1%s aan installatie"
 
 #: src/cli.vala
 #, c-format
@@ -1349,8 +1349,8 @@ msgstr "%s is alleen beschikbaar via AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "There is %1$u member in group %2$s"
+msgstr[1] "Er zijn%1$u leden in groep %2$s"
 
 #: src/cli.vala
 msgid "all"
@@ -1359,12 +1359,12 @@ msgstr "Allemaal"
 #: src/cli.vala
 #, c-format
 msgid "Add %s to reinstall"
-msgstr ""
+msgstr "Voeg %s aan herinstallatie"
 
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr ""
+msgstr "Installeer %1$s vanuit %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1396,7 +1396,7 @@ msgstr "_Doorvoeren "
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr ""
+msgstr "Software modus"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
@@ -1500,7 +1500,7 @@ msgstr "Naar updates zoeken"
 
 #: resources/preferences_dialog.ui
 msgid "Updates check frequency"
-msgstr ""
+msgstr "Update controle frequentie"
 
 #: resources/preferences_dialog.ui
 msgid "Automatically download updates"
@@ -1508,11 +1508,11 @@ msgstr "Updates automatisch downloaden"
 
 #: resources/preferences_dialog.ui
 msgid "Upgrade the system at shutdown"
-msgstr ""
+msgstr "Upgrade systeem tijdens afsluiten"
 
 #: resources/preferences_dialog.ui
 msgid "Hide tray icon when no update"
-msgstr ""
+msgstr "Verberg taakbalk icoon bij geen beschikbare updates"
 
 #: resources/preferences_dialog.ui
 msgid "Downloads"
@@ -1520,15 +1520,15 @@ msgstr "Downloads"
 
 #: resources/preferences_dialog.ui
 msgid "Parallel downloads"
-msgstr ""
+msgstr "Parralelle downloads"
 
 #: resources/preferences_dialog.ui
 msgid "Use mirrors from"
-msgstr ""
+msgstr "Gebruik mirrors uit"
 
 #: resources/preferences_dialog.ui
 msgid "Refresh Mirrors"
-msgstr ""
+msgstr "Ververs Mirrors"
 
 #: resources/preferences_dialog.ui
 msgid "Cache"
@@ -1536,15 +1536,15 @@ msgstr "Cache"
 
 #: resources/preferences_dialog.ui
 msgid "Number of versions of each package to keep"
-msgstr ""
+msgstr "Aantal versies van pakketten te behouden"
 
 #: resources/preferences_dialog.ui
 msgid "Remove only the uninstalled packages"
-msgstr ""
+msgstr "Verwijder alleen niet geinstalleerde pakketten"
 
 #: resources/preferences_dialog.ui
 msgid "Clean"
-msgstr ""
+msgstr "Opschonen"
 
 #: resources/preferences_dialog.ui
 msgid "Advanced"
@@ -1574,11 +1574,11 @@ msgstr "Afwaarderen inschakelen"
 
 #: resources/preferences_dialog.ui
 msgid "Ignored upgrades"
-msgstr ""
+msgstr "Genegeerde upgrades"
 
 #: resources/preferences_dialog.ui
 msgid "Third Party"
-msgstr ""
+msgstr "Derde partijen"
 
 #: resources/preferences_dialog.ui
 msgid ""
@@ -1592,7 +1592,7 @@ msgstr "AUR ondersteuning aanzetten "
 
 #: resources/preferences_dialog.ui
 msgid "Keep built packages"
-msgstr ""
+msgstr "Behoudt gebouwde pakketten"
 
 #: resources/preferences_dialog.ui
 msgid "Check for development packages updates"

@@ -11,7 +11,7 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # Muha Aliss <muhaaliss@gmail.com>, 2022
 # philm <philm@manjaro.org>, 2015
-# Sabri Ünal <libreajans@gmail.com>, 2019
+# b83946de5835331df42b9ffcc43e6a33_05e65cd <73a30e0a984b2291d4915f37112ad292_814039>, 2019
 # Serdar Sağlam <teknomobil@msn.com>, 2019-2020
 # Yusuf Faruk DOĞAN <yfdogan@gmail.com>, 2013
 # Yusuf Faruk DOĞAN <yfdogan@gmail.com>, 2013

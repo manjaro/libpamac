@@ -7,7 +7,7 @@
 # Bieito de la Fuente <bieitodlf@mac.com>, 2020
 # David Rebolo Magariños <drgaga345@gmail.com>, 2021
 # Noel Rodríguez Freire <noelrf.ou@gmail.com>, 2015-2017
-# Xosé M. <correo@xmgz.eu>, 2019
+# 52eecbbb6621ed9be66a488ed48303cc_04cfba1 <b49f867453a9c3ae92357d713e527510_2117>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
@@ -15,7 +15,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: David Rebolo Magariños <drgaga345@gmail.com>, 2021\n"
-"Language-Team: Galician (http://www.transifex.com/manjarolinux/manjaro-pamac/language/gl/)\n"
+"Language-Team: Galician (http://app.transifex.com/manjarolinux/manjaro-pamac/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
