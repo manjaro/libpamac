@@ -216,7 +216,8 @@ internal class AlpmConfig {
 			handle.add_noupgrade (noupgrade);
 		}
 		handle.sandboxuser = download_user;
-		handle.disable_sandbox = disable_sandbox ? 1 : 0;
+		handle.disable_sandbox_filesystem = disable_sandbox ? 1 : 0;
+		handle.disable_sandbox_syscalls = disable_sandbox ? 1 : 0;
 		return handle;
 	}
 

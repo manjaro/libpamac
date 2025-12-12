@@ -1,7 +1,7 @@
 gobject = dependency('gobject-2.0')
 gio = dependency('gio-2.0')
 gthread = dependency('gthread-2.0')
-libalpm = dependency('libalpm', version : '>=15.0')
+libalpm = dependency('libalpm', version : '>=16.0')
 json = dependency('json-glib-1.0')
 libsoup = dependency('libsoup-3.0')
 polkit = dependency('polkit-gobject-1')
