@@ -8,7 +8,7 @@
 # angel_solomos, 2013
 # angel_solomos, 2013
 # angel_solomos, 2013
-# Efstathios Iosifidis <iefstathios@gmail.com>, 2016-2017
+# Efstathios Iosifidis <eiosifidis@gmail.com>, 2016-2017
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # Ioannis LM, 2023
 # Ioannis LM, 2023

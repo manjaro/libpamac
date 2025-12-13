@@ -8,8 +8,8 @@
 # Anderson Tavares <nocturne.pe@gmail.com>, 2013
 # Augusto Fornitani <augusto.fornitani@outlook.com>, 2019
 # Jonathan Reeve <jon.reeve@gmail.com>, 2019
-# Juan Jaramillo <juanda097@protonmail.ch>, 2015
-# Juan Jaramillo <juanda097@protonmail.ch>, 2015
+# JUAN DAVID JARAMILLO ORTIZ <juanda097@protonmail.ch>, 2015
+# JUAN DAVID JARAMILLO ORTIZ <juanda097@protonmail.ch>, 2015
 # Kurt Ankh Phoenix <kurtphoenix@tuta.io>, 2018
 # Kurt Ankh Phoenix <kurtphoenix@tuta.io>, 2018
 msgid ""
@@ -19,7 +19,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: Augusto Fornitani <augusto.fornitani@outlook.com>, 2019\n"
-"Language-Team: Esperanto (http://www.transifex.com/manjarolinux/manjaro-pamac/language/eo/)\n"
+"Language-Team: Esperanto (http://app.transifex.com/manjarolinux/manjaro-pamac/language/eo/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

@@ -7,8 +7,9 @@
 # Dušan Kazik, 2014
 # Dušan Kazik <prescott66@gmail.com>, 2014-2022
 # Inoki Sakaeru, 2013
-# Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023
+# Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023,2025
 # Miroslav Ďurian, 2018
+# Miroslav Ďurian, 2025
 # Patrik Bubák, 2014
 # 5f8d388310b9a9304f619fae7149ed59_153be44, 2014
 # philm <philm@manjaro.org>, 2015
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023\n"
+"Last-Translator: Miroslav Ďurian, 2025\n"
 "Language-Team: Slovak (http://app.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -631,7 +632,7 @@ msgstr "Ignorované"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr ""
+msgstr "Žiadne"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -719,7 +720,7 @@ msgstr "Poskytuje"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Make Dependencies"
-msgstr "Vytvoriť závislosti"
+msgstr "Závislosti pre zostavenie"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Check Dependencies"
@@ -903,7 +904,7 @@ msgstr "áno"
 
 #: src/transaction-cli.vala
 msgid "[e]"
-msgstr ""
+msgstr "[e]"
 
 #: src/transaction-cli.vala
 msgid "Apply transaction"
@@ -915,7 +916,7 @@ msgstr ""
 
 #: src/transaction-cli.vala
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: src/transaction-cli.vala
 msgid "To upgrade"
@@ -952,11 +953,11 @@ msgstr "Celková odstraňovaná veľkosť"
 #: src/transaction-cli.vala
 #, c-format
 msgid "View %s build files diff"
-msgstr ""
+msgstr "Zobraziť %s rozdiely v suboroch na zostavenie"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr ""
+msgstr "Zostaviť balíky ako dynamický používateľ"
 
 #: src/cli.vala
 #, c-format
@@ -1038,7 +1039,7 @@ msgstr "Vypísať nainštalované balíky"
 
 #: src/cli.vala
 msgid "list explicitly installed packages"
-msgstr ""
+msgstr "vypísať explicitne inštalované balíky"
 
 #: src/cli.vala
 msgid ""
@@ -1101,11 +1102,11 @@ msgstr "Ak nie je zadaný názov balíka, použije sa súbor PKGBUILD v aktuáln
 msgid ""
 "The build directory will be the parent directory, --builddir option will be "
 "ignored"
-msgstr ""
+msgstr "Priečinok na zostavenie bude rodičovský priečinok, voľba --builddir sa ignoruje"
 
 #: src/cli.vala
 msgid "and --no-clone option will be enforced"
-msgstr ""
+msgstr "a voľba --no-clone bude vynútená"
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
@@ -1117,11 +1118,11 @@ msgstr "po inštalácii neuchovávať zostavené balíky v medzipamäti"
 
 #: src/cli.vala
 msgid "only print what would be done but do not run the transaction"
-msgstr ""
+msgstr "len vypísať, čo sa má vykonať ale nespustiť transakciu"
 
 #: src/cli.vala
 msgid "do not clone build files from AUR, only use local files"
-msgstr ""
+msgstr "neklonovať súbory na zostavenie z AUR, ale použiť len miestne súbory"
 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
@@ -1149,7 +1150,7 @@ msgstr "stiahnuť všetky balíky, ale nič neinštalovať/neaktualizovať"
 
 #: src/cli.vala
 msgid "mark all packages installed as a dependency"
-msgstr ""
+msgstr "označiť všetky nainštalované balíky ako závislosti"
 
 #: src/cli.vala
 msgid "mark all packages explicitly installed"
@@ -1169,7 +1170,7 @@ msgstr "Preinštalovať balíky"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
-msgstr ""
+msgstr "odstrániť balíky len ak ich nevyžadujú žiadne iné balíky"
 
 #: src/cli.vala
 msgid ""
@@ -1189,7 +1190,7 @@ msgstr "neodstraňovať závislosti, ktoré nie sú vyžadované inými balíkmi
 
 #: src/cli.vala
 msgid "ignore files backup"
-msgstr ""
+msgstr "ignorovať zálohy súborov"
 
 #: src/cli.vala
 msgid "Safely check for updates without modifiying the databases"
@@ -1203,7 +1204,7 @@ msgstr "Ak sú dostupné aktualizácie, vystupný kód je 100"
 msgid ""
 "build directory (use with --devel), if no directory is given the one "
 "specified in pamac.conf file is used"
-msgstr ""
+msgstr "priečinok pre zostavovanie (použitím --devel), ak nie je určený priečinok, použije sa ten, čo je určený v pamac.conf"
 
 #: src/cli.vala
 msgid "also check updates in AUR"
@@ -1215,11 +1216,11 @@ msgstr "nekontrolovať aktualizácie v AUR"
 
 #: src/cli.vala
 msgid "only print one line per update"
-msgstr ""
+msgstr "pre každú aktualizáciu vypísať len jeden riadok"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
-msgstr ""
+msgstr "skontrolovať tiež aktualizácie balíkov vo vývoji (použiť s --aur)"
 
 #: src/cli.vala
 msgid "do not check development packages updates"
@@ -1278,17 +1279,17 @@ msgstr "číslo"
 #: src/cli.vala
 msgid ""
 "specify how many versions of each package are kept in the cache directory"
-msgstr ""
+msgstr "určiť koľko verzií každého balíka sa ponechá v priečinku cache"
 
 #: src/cli.vala
 msgid "only target uninstalled packages"
-msgstr ""
+msgstr "zamerať sa len na odinštalované balíky"
 
 #: src/cli.vala
 msgid ""
 "remove all build files, the build directory is the one specified in "
 "pamac.conf"
-msgstr ""
+msgstr "odstrániť všetky súbory na zostavovanie; priečinok na zostavovanie je ten, čo je určený v pamac.conf"
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
@@ -1367,10 +1368,10 @@ msgstr "%s je dostupné iba z AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "V skupine %2$s je %1$u člen"
+msgstr[1] "V skupine %2$s sú %1$u členovia"
+msgstr[2] "V skupine %2$s je %1$u členov"
+msgstr[3] "V skupine %2$s je %1$u členov"
 
 #: src/cli.vala
 msgid "all"

@@ -6,21 +6,21 @@
 # Translators:
 # John Smith <aboutafteragain@gmail.com>, 2015
 # John Smith <aboutafteragain@gmail.com>, 2015
-# Gontzal Pujana Onaindia <juchuf@gmail.com>, 2020
-# Gontzal Pujana Onaindia <juchuf@gmail.com>, 2018-2019,2021
+# Thadah D. Denyse <gontzalpujana@protonmail.com>, 2020
+# Thadah D. Denyse <gontzalpujana@protonmail.com>, 2018-2019,2021
 # Kiibakun, 2020
-# Osoitz <oelkoro@gmail.com>, 2015-2017
+# O, 2015-2017
 # Porrumentzio <porrumentzio@riseup.net>, 2021
 # Sergio Moreno <semosa@gmail.com>, 2014
 # Sergio Moreno <semosa@gmail.com>, 2014
-# Gontzal Pujana Onaindia <juchuf@gmail.com>, 2020-2023
+# Thadah D. Denyse <gontzalpujana@protonmail.com>, 2020-2023
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Gontzal Pujana Onaindia <juchuf@gmail.com>, 2020-2023\n"
+"Last-Translator: Thadah D. Denyse <gontzalpujana@protonmail.com>, 2020-2023\n"
 "Language-Team: Basque (http://app.transifex.com/manjarolinux/manjaro-pamac/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

@@ -10,8 +10,8 @@
 # cip <c1pr1an@tuta.io>, 2019-2020
 # Ciprian Constantin <ciprianfc@gmail.com>, 2018
 # Dexter Rufus, 2018
-# Dorin Chirițoiu <contact@dorinchiritoiu.eu>, 2017
-# Dorin Chirițoiu <contact@dorinchiritoiu.eu>, 2017
+# 4e57c85682ceb5ef0eb1019125ab1b79_e4089fa <8f6a3a336dcafc1bff15f14e711b4fcb_271991>, 2017
+# 4e57c85682ceb5ef0eb1019125ab1b79_e4089fa <8f6a3a336dcafc1bff15f14e711b4fcb_271991>, 2017
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # philm <philm@manjaro.org>, 2015
 msgid ""
@@ -21,7 +21,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
 "Last-Translator: cip <c1pr1an@tuta.io>, 2019-2020\n"
-"Language-Team: Romanian (http://www.transifex.com/manjarolinux/manjaro-pamac/language/ro/)\n"
+"Language-Team: Romanian (http://app.transifex.com/manjarolinux/manjaro-pamac/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

@@ -126,8 +126,21 @@ namespace Alpm {
 		}
 
 		public int disable_sandbox {
+			[CCode (cname = "alpm_option_get_disable_sandbox")] get;
 			/** 0 for enabled, 1 for disabled */
 			[CCode (cname = "alpm_option_set_disable_sandbox")] set;
+		}
+
+		public int disable_sandbox_filesystem {
+			[CCode (cname = "alpm_option_get_disable_sandbox_filesystem")] get;
+			/** 0 for enabled, 1 for disabled */
+			[CCode (cname = "alpm_option_set_disable_sandbox_filesystem")] set;
+		}
+
+		public int disable_sandbox_syscalls {
+			[CCode (cname = "alpm_option_get_disable_sandbox_syscalls")] get;
+			/** 0 for enabled, 1 for disabled */
+			[CCode (cname = "alpm_option_set_disable_sandbox_syscalls")] set;
 		}
 
 		public int usesyslog {
