@@ -37,6 +37,7 @@ namespace Pamac {
 		public string aur_build_dir { get; set; }
 		public bool check_aur_updates { get; set; }
 		public bool check_aur_vcs_updates { get; set; }
+		public uint64 aur_update_delay_days { get; set; }
 		public bool offline_upgrade { get; set; }
 		public uint64 max_parallel_downloads { get; set; }
 		public uint64 clean_keep_num_pkgs { get;  set; }
@@ -87,6 +88,7 @@ namespace Pamac {
 			aur_build_dir = "/var/tmp";
 			max_parallel_downloads = 1;
 			offline_upgrade = false;
+			aur_update_delay_days = 0;
 			parse_file (conf_path);
 			// limited max_parallel_downloads
 			if (max_parallel_downloads > 10) {
@@ -166,6 +168,11 @@ namespace Pamac {
 							if (splitted.length == 2) {
 								unowned string val = splitted[1]._strip ();
 								max_parallel_downloads = uint64.parse (val);
+							}
+						} else if (key == "AURUpdateDelayDays") {
+							if (splitted.length == 2) {
+								unowned string val = splitted[1]._strip ();
+								aur_update_delay_days = uint64.parse (val);
 							}
 						}
 					}
@@ -361,6 +368,14 @@ namespace Pamac {
 								data.append (line);
 								data.append ("\n");
 							}
+						} else if (line.contains ("AURUpdateDelayDays")) {
+							if (new_conf.lookup_extended ("AURUpdateDelayDays", null, out variant)) {
+								data.append ("AURUpdateDelayDays = %llu\n".printf (variant.get_uint64 ()));
+								new_conf.remove ("AURUpdateDelayDays");
+							} else {
+								data.append (line);
+								data.append ("\n");
+							}
 						} else if (line.contains ("DownloadUpdates")) {
 							if (new_conf.lookup_extended ("DownloadUpdates", null, out variant)) {
 								if (variant.get_boolean ()) {
@@ -491,6 +506,8 @@ namespace Pamac {
 						} else {
 							data.append ("#CheckAURVCSUpdates\n\n");
 						}
+					} else if (key == "AURUpdateDelayDays") {
+						data.append ("AURUpdateDelayDays = %llu\n\n".printf (val.get_uint64 ()));
 					} else if (key == "DownloadUpdates") {
 						if (val.get_boolean ()) {
 							data.append ("DownloadUpdates\n\n");
