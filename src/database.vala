@@ -2234,10 +2234,16 @@ namespace Pamac {
 			return pkgnames_table;
 		}
 
-		void get_aur_updates_real (GenericArray<unowned AURInfos> aur_infos_list, GenericArray<string> vcs_local_pkgs, ref Updates updates) {
+		void get_aur_updates_real (GenericArray<unowned AURInfos> aur_infos_list, GenericArray<string> vcs_local_pkgs, ref Updates updates, bool apply_aur_delay = true) {
 			unowned GenericArray<AURPackage> aur_updates = updates.aur_updates;
 			unowned GenericArray<AURPackage> outofdate = updates.outofdate;
 			unowned GenericArray<AURPackage> ignored_aur_updates = updates.ignored_aur_updates;
+			DateTime? now = null;
+			TimeSpan delay_span = 0;
+			if (apply_aur_delay && config.aur_update_delay_days > 0) {
+				now = new DateTime.now_local ();
+				delay_span = TimeSpan.DAY * (int64) config.aur_update_delay_days;
+			}
 			HashTable<string, string> vcs_versions = null;
 			if (config.check_aur_vcs_updates) {
 				vcs_versions = get_vcs_last_version (vcs_local_pkgs);
@@ -2271,6 +2277,11 @@ namespace Pamac {
 					aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, true);
 					// set aur_pkg.version
 					aur_pkg.version = new_version;
+				}
+				if (now != null && aur_infos.lastmodified != null) {
+					if (now.difference (aur_infos.lastmodified) < delay_span) {
+						continue;
+					}
 				}
 				if (Alpm.pkg_vercmp (new_version, old_version) == 1) {
 					if (alpm_handle.should_ignore (local_pkg) == 1) {
@@ -2320,7 +2331,7 @@ namespace Pamac {
 							}
 							pkgcache.next ();
 						}
-						get_aur_updates_real (aur_plugin.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
+						get_aur_updates_real (aur_plugin.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates, false);
 						// remove ignorepkgs
 						foreach (unowned string name in ignorepkgs) {
 							alpm_handle.remove_ignorepkg (name);
