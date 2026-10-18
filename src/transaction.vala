@@ -1083,10 +1083,11 @@ namespace Pamac {
 				to_build.length > 0) {
 				success = yield run_alpm_transaction ();
 				if (!dry_run && success) {
-					if (to_build_queue.get_length () != 0) {
+					if (!download_only && to_build_queue.get_length () != 0) {
 						success = yield build_aur_packages ();
 						build_cancellable.reset ();
 					}
+					to_build_queue.clear ();
 					if (success) {
 						if (snap_to_install.length > 0 ||
 							snap_to_remove.length > 0) {
