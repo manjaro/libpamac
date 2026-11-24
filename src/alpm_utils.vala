@@ -1915,30 +1915,19 @@ namespace Pamac {
 			success = trans_commit_real (alpm_handle, ref need_retry);
 			if (success) {
 				foreach (unowned string path in local_paths) {
-					// check tarball if it's a built package
-					// check for "/var/tmp/pamac-build" because
-					// default aur_build_dir is "/var/tmp/pamac-build-root" here
+					// only handle packages built by pamac, whatever the build directory is
 					// if a custom PKGDEST is set in makepkg.conf, package won't be moved or deleted
-					if (path.has_prefix ("/var/tmp/pamac-build")
-						|| path.has_prefix ("/tmp/pamac-build")
-						|| path.has_prefix (config.aur_build_dir)) {
-						if (keep_built_pkgs) {
-							// get first cachedir
-							unowned Alpm.List<unowned string> cachedirs = alpm_handle.cachedirs;
-							unowned string cachedir = cachedirs.data;
-							try {
-								Process.spawn_command_line_sync ("mv -f %s %s".printf (path, cachedir));
-							} catch (SpawnError e) {
-								warning (e.message);
-							}
-						} else {
-							// rm built package
-							try {
-								Process.spawn_command_line_sync ("rm -f %s".printf (path));
-							} catch (SpawnError e) {
-								warning (e.message);
-							}
-						}
+					if (!is_built_pkg (path)) {
+						continue;
+					}
+					if (keep_built_pkgs) {
+						// get first cachedir
+						unowned Alpm.List<unowned string> cachedirs = alpm_handle.cachedirs;
+						move_built_pkg_to_cache (path, cachedirs.data);
+					} else if (path.has_suffix (".pkg.tar")) {
+						// rm built package, pamac builds it with PKGEXT=.pkg.tar
+						// unlink does not follow symlinks
+						FileUtils.unlink (path);
 					}
 				}
 				to_install_as_dep.foreach_remove ((pkgname, val) => {
@@ -1969,6 +1958,37 @@ namespace Pamac {
 			}
 			trans_reset ();
 			return success;
+		}
+
+		// pamac builds packages with PKGDEST set to the package build directory,
+		// so a built package is next to its PKGBUILD
+		bool is_built_pkg (string path) {
+			if (!Path.is_absolute (path) || !(".pkg.tar" in Path.get_basename (path))) {
+				return false;
+			}
+			string pkgbuild = Path.build_filename (Path.get_dirname (path), "PKGBUILD");
+			return FileUtils.test (pkgbuild, FileTest.EXISTS);
+		}
+
+		void move_built_pkg_to_cache (string path, string cachedir) {
+			var src = File.new_for_path (path);
+			var dest = File.new_for_path (Path.build_filename (cachedir, Path.get_basename (path)));
+			try {
+				// the build directory belongs to an unprivileged user: only move a regular file
+				FileInfo info = src.query_info ("standard::type", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+				if (info.get_file_type () != FileType.REGULAR) {
+					warning ("%s is not a regular file", path);
+					return;
+				}
+				// copy to a new inode instead of moving: the user could keep a file descriptor
+				// or a hard link on the original file and modify the cached package later
+				FileUtils.unlink (dest.get_path ());
+				src.copy (dest, FileCopyFlags.NOFOLLOW_SYMLINKS | FileCopyFlags.TARGET_DEFAULT_PERMS);
+				Posix.chmod (dest.get_path (), 0644);
+				FileUtils.unlink (path);
+			} catch (Error e) {
+				warning (e.message);
+			}
 		}
 
 		string? backup_conflict_file (string file_path) {
