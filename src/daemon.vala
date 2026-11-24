@@ -36,6 +36,7 @@ namespace Pamac {
 		Mutex answer_mutex;
 		Mutex authorization_mutex;
 		GenericSet<string> authorized_senders;
+		HashTable<string, HashTable<string, string>> pending_environments;
 		HashTable<string, Cancellable> cancellables_table;
 		SnapPlugin snap_plugin;
 		FlatpakPlugin flatpak_plugin;
@@ -96,6 +97,7 @@ namespace Pamac {
 			answer_mutex = Mutex ();
 			authorization_mutex = Mutex ();
 			authorized_senders = new GenericSet<string> (str_hash, str_equal);
+			pending_environments = new HashTable<string, HashTable<string, string>> (str_hash, str_equal);
 			cancellables_table = new HashTable<string, Cancellable> (str_hash, str_equal);
 			alpm_utils.emit_action.connect ((sender, action) => {
 				emit_action (sender, action);
@@ -163,15 +165,44 @@ namespace Pamac {
 			}
 		}
 
-		public void set_environment_variables (HashTable<string,string> variables) throws Error {
+		public void set_environment_variables (HashTable<string,string> variables, BusName sender) throws Error {
+			// do not touch the daemon environment for an unauthorized caller:
+			// keep the variables until this sender is successfully authorized
 			string[] keys = {"http_proxy",
 							"https_proxy",
 							"ftp_proxy",
 							"socks_proxy",
 							"no_proxy"};
+			var accepted = new HashTable<string, string> (str_hash, str_equal);
 			foreach (unowned string key in keys) {
 				unowned string val;
 				if (variables.lookup_extended (key, null, out val)) {
+					accepted.insert (key, val);
+				}
+			}
+			authorization_mutex.lock ();
+			if (accepted.length == 0) {
+				pending_environments.remove (sender);
+			} else {
+				pending_environments.insert (sender, accepted);
+			}
+			authorization_mutex.unlock ();
+		}
+
+		void apply_pending_environment (string sender) {
+			authorization_mutex.lock ();
+			HashTable<string, string>? variables = pending_environments.lookup (sender);
+			pending_environments.remove (sender);
+			authorization_mutex.unlock ();
+			if (variables == null) {
+				return;
+			}
+			var iter = HashTableIter<string, string> (variables);
+			unowned string key;
+			unowned string val;
+			while (iter.next (out key, out val)) {
+				// avoid useless setenv calls, setenv is not thread-safe
+				if (Environment.get_variable (key) != val) {
 					Environment.set_variable (key, val, true);
 				}
 			}
@@ -230,7 +261,9 @@ namespace Pamac {
 					null,
 					Polkit.CheckAuthorizationFlags.ALLOW_USER_INTERACTION);
 				authorized = result.get_is_authorized ();
-				if (!authorized) {
+				if (authorized) {
+					apply_pending_environment (sender);
+				} else {
 					emit_error (sender, _("Authentication failed"), {});
 				}
 			} catch (Error e) {
