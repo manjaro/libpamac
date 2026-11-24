@@ -155,50 +155,27 @@ namespace Pamac {
 			}
 			lockfile = File.new_for_path (alpm_handle.lockfile);
 			if (lockfile.query_exists ()) {
-				int exit_status;
-				string output;
-				uint64 lockfile_time;
 				try {
 					// get lockfile modification time since epoch
-					Process.spawn_command_line_sync ("stat -c %Y %s".printf (alpm_handle.lockfile),
-													out output,
-													null,
-													out exit_status);
-					if (exit_status == 0) {
-						string[] splitted = output.split ("\n");
-						if (splitted.length == 2) {
-							if (uint64.try_parse (splitted[0], out lockfile_time)) {
-								uint64 boot_time;
-								// get boot time since epoch
-								Process.spawn_command_line_sync ("cat /proc/stat",
-																out output,
-																null,
-																out exit_status);
-								if (exit_status == 0) {
-									splitted = output.split ("\n");
-									foreach (unowned string line in splitted) {
-										if ("btime" in line) {
-											string[] space_splitted = line.split (" ");
-											if (space_splitted.length == 2) {
-												if (uint64.try_parse (space_splitted[1], out boot_time)) {
-													// check if lock file is older than boot time
-													if (lockfile_time < boot_time) {
-														// remove the unneeded lock file.
-														try {
-															lockfile.delete ();
-														} catch (Error e) {
-															warning (e.message);
-														}
-													}
-												}
-											}
-										}
-									}
+					FileInfo info = lockfile.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+					uint64 lockfile_time = info.get_attribute_uint64 (FileAttribute.TIME_MODIFIED);
+					// get boot time since epoch
+					string stat_content;
+					FileUtils.get_contents ("/proc/stat", out stat_content);
+					foreach (unowned string line in stat_content.split ("\n")) {
+						if (line.has_prefix ("btime ")) {
+							uint64 boot_time;
+							if (uint64.try_parse (line.substring (6).strip (), out boot_time)) {
+								// check if lock file is older than boot time
+								if (lockfile_time < boot_time) {
+									// remove the unneeded lock file.
+									lockfile.delete ();
 								}
 							}
+							break;
 						}
 					}
-				} catch (SpawnError e) {
+				} catch (Error e) {
 					warning (e.message);
 				}
 			}
@@ -360,13 +337,9 @@ namespace Pamac {
 			}
 			if (success) {
 				// save now as last refresh time
-				try {
-					// touch the file
-					string timestamp_path = Path.build_filename (alpm_handle.dbpath, "sync", "refresh_timestamp");
-					Process.spawn_command_line_sync ("touch %s".printf (timestamp_path));
-				} catch (SpawnError e) {
-					warning (e.message);
-				}
+				// touch the file
+				string timestamp_path = Path.build_filename (alpm_handle.dbpath, "sync", "refresh_timestamp");
+				run_command ({"touch", "--", timestamp_path});
 			}
 			current_filename = "";
 			// return false only if cancelled
@@ -487,11 +460,7 @@ namespace Pamac {
 			downloading_updates = false;
 			// enable offline upgrade
 			if (success && config.offline_upgrade) {
-				try {
-					Process.spawn_command_line_sync ("touch /system-update");
-				} catch (SpawnError e) {
-					warning (e.message);
-				}
+				run_command ({"touch", "/system-update"});
 			}
 			return success;
 		}
@@ -892,11 +861,7 @@ namespace Pamac {
 
 		void remove_aur_db (Alpm.Handle? alpm_handle) {
 			// remove fake aur db
-			try {
-				Process.spawn_command_line_sync ("rm -f %ssync/pamac_aur.db".printf (alpm_handle.dbpath));
-			} catch (SpawnError e) {
-				warning (e.message);
-			}
+			FileUtils.unlink (Path.build_filename (alpm_handle.dbpath, "sync", "pamac_aur.db"));
 		}
 
 		public bool trans_check_prepare (bool sysupgrade,
@@ -1943,11 +1908,7 @@ namespace Pamac {
 				}
 				if (sysupgrade) {
 					// removing a potential /system-update file
-					try {
-						Process.spawn_command_line_sync ("rm -f /system-update");
-					} catch (SpawnError e) {
-						warning (e.message);
-					}
+					FileUtils.unlink ("/system-update");
 				}
 			} else if (need_retry) {
 				// retry
@@ -2006,9 +1967,10 @@ namespace Pamac {
 			}
 			// mv the conflict file
 			try {
-				Process.spawn_command_line_sync ("mv -f %s %s".printf (file_path, backup_file.get_path ()));
+				// rename the file itself, even if it is a symlink, like mv does
+				File.new_for_path (file_path).move (backup_file, FileCopyFlags.NOFOLLOW_SYMLINKS);
 				return backup_file.get_path ();
-			} catch (SpawnError e) {
+			} catch (Error e) {
 				warning (e.message);
 			}
 			return null;
@@ -2094,11 +2056,7 @@ namespace Pamac {
 								details.add ("  " + _("you can remove this file and retry"));
 							} else {
 								// remove the invalid file
-								try {
-									Process.spawn_command_line_sync ("rm -f %s".printf (filename));
-								} catch (SpawnError e) {
-									warning (e.message);
-								}
+								FileUtils.unlink (filename);
 							}
 							delete filename;
 							list.next ();
