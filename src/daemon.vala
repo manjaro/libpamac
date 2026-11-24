@@ -759,18 +759,25 @@ namespace Pamac {
 				});
 				return;
 			}
-			try {
-				new Thread<int>.try ("snap_switch_channel", () => {
-					AtomicInt.inc (ref running_threads);
-					bool success = snap_plugin.switch_channel (sender, snap_name, snap_channel);
-					snap_switch_channel_finished (sender, success);
-					AtomicInt.dec_and_test (ref running_threads);
-					return 0;
-				});
-			} catch (Error e) {
-				emit_error (sender, "Daemon Error", {e.message});
-				snap_switch_channel_finished (sender, false);
-			}
+			check_authorization.begin (sender, (obj, res) => {
+				bool authorized = check_authorization.end (res);
+				if (authorized) {
+					try {
+						new Thread<int>.try ("snap_switch_channel", () => {
+							AtomicInt.inc (ref running_threads);
+							bool success = snap_plugin.switch_channel (sender, snap_name, snap_channel);
+							snap_switch_channel_finished (sender, success);
+							AtomicInt.dec_and_test (ref running_threads);
+							return 0;
+						});
+					} catch (Error e) {
+						emit_error (sender, "Daemon Error", {e.message});
+						snap_switch_channel_finished (sender, false);
+					}
+				} else {
+					snap_switch_channel_finished (sender, false);
+				}
+			});
 		}
 
 		public void start_flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade, BusName sender) throws Error {
