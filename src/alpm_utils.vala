@@ -883,6 +883,9 @@ namespace Pamac {
 			}
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
 			tmp_handle.set_questioncb (cb_question, this);
+			// start from a clean state: a previous transaction may have failed
+			// or been interrupted before resetting it
+			trans_reset ();
 			// compute arguments
 			this.sender = "";
 			this.sysupgrade = sysupgrade;
@@ -964,6 +967,9 @@ namespace Pamac {
 								string[] to_install_as_dep,
 								string[] ignorepkgs,
 								string[] overwrite_files) {
+			// start from a clean state: a previous transaction may have failed
+			// or been interrupted (download cancelled) before resetting it
+			trans_reset ();
 			this.sender = sender;
 			this.sysupgrade = sysupgrade;
 			this.enable_downgrade = enable_downgrade;
@@ -1003,7 +1009,10 @@ namespace Pamac {
 			foreach (unowned string name in overwrite_files) {
 				this.overwrite_files.add (name);
 			}
-			return trans_run_real (alpm_handle);
+			bool success = trans_run_real (alpm_handle);
+			// do not leave targets of a failed transaction for the next one
+			trans_reset ();
+			return success;
 		}
 
 		bool trans_run_real (Alpm.Handle? alpm_handle) {
@@ -2086,7 +2095,6 @@ namespace Pamac {
 				return;
 			}
 			cancellable.cancel ();
-			trans_reset ();
 		}
 
 		string remove_bash_colors (string msg) {
