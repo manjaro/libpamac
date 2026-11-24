@@ -262,16 +262,35 @@ namespace Pamac {
 				return true;
 			}
 			try {
-				FileEnumerator enumerator = build_directory.enumerate_children ("standard::*", FileQueryInfoFlags.NONE);
+				// the build directory is writable by an unprivileged user:
+				// refuse to follow a symlink and never pass its entries through a shell
+				FileInfo dir_info = build_directory.query_info ("standard::type", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+				if (dir_info.get_file_type () != FileType.DIRECTORY) {
+					warning ("%s is not a directory", aur_build_dir);
+					return false;
+				}
+				var cmdline = new GenericArray<string> ();
+				cmdline.add ("rm");
+				cmdline.add ("-rf");
+				cmdline.add ("--");
+				FileEnumerator enumerator = build_directory.enumerate_children ("standard::name", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
 				FileInfo info;
 				while ((info = enumerator.next_file (null)) != null) {
-					if (info.get_name () == "packages-meta-ext-v1.json.gz") {
+					unowned string name = info.get_name ();
+					if (name == "packages-meta-ext-v1.json.gz") {
 						continue;
 					}
-					string absolute_filename = Path.build_filename (build_directory.get_path (), info.get_name ());
-					Process.spawn_command_line_sync ("rm -rf %s".printf (absolute_filename));
+					cmdline.add (Path.build_filename (build_directory.get_path (), name));
 				}
-				return true;
+				if (cmdline.length == 3) {
+					// nothing to remove
+					return true;
+				}
+				// spawnv needs a null terminated array
+				cmdline.length = cmdline.length + 1;
+				var process = new Subprocess.newv (cmdline.data, SubprocessFlags.NONE);
+				process.wait ();
+				return process.get_if_exited () && process.get_exit_status () == 0;
 			} catch (Error e) {
 				warning (e.message);
 			}
