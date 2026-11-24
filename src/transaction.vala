@@ -187,7 +187,7 @@ namespace Pamac {
 			flatpak_to_remove = new HashTable<string, FlatpakPackage> (str_hash, str_equal);
 			flatpak_to_upgrade = new HashTable<string, FlatpakPackage> (str_hash, str_equal);
 			// building data
-			tmp_path = "/tmp/pamac-%s".printf (Environment.get_user_name ());
+			tmp_path = get_pamac_tmp_dir ();
 			aurdb_path = "%s/aur".printf (tmp_path);
 			already_checked_aur_dep = new GenericSet<string?> (str_hash, str_equal);
 			aur_desc_list = new GenericSet<string?> (str_hash, str_equal);

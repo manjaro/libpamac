@@ -22,7 +22,6 @@ namespace Pamac {
 		string sender;
 		Config config;
 		public AlpmConfig alpm_config;
-		string tmp_path;
 		public File lockfile;
 		// run transaction data
 		public Alpm.Handle? alpm_handle;
@@ -80,7 +79,6 @@ namespace Pamac {
 			this.config = config;
 			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
 			alpm_config = config.alpm_config;
-			tmp_path = "/tmp/pamac-%s".printf (Environment.get_user_name ());
 			to_syncfirst = new GenericSet<string?> (str_hash, str_equal);
 			to_install = new GenericSet<string?> (str_hash, str_equal);
 			deps_to_install = new GenericSet<string?> (str_hash, str_equal);
@@ -320,11 +318,7 @@ namespace Pamac {
 				if (err_no != 0) {
 					if (err_no == Alpm.Errno.HANDLE_LOCK) {
 						// remove remaining lock in tmp dbs cache
-						try {
-							Process.spawn_command_line_sync ("rm -f %s/dbs/db.lck".printf (tmp_path));
-						} catch (SpawnError e) {
-							warning (e.message);
-						}
+						FileUtils.unlink (Path.build_filename (get_pamac_tmp_dir (), "dbs", "db.lck"));
 					}
 					do_emit_warning (Alpm.strerror (err_no));
 				}
@@ -340,11 +334,7 @@ namespace Pamac {
 			int force = (force_refresh) ? 1 : 0;
 			if (force_refresh) {
 				// remove dbs in tmp
-				try {
-					Process.spawn_command_line_sync ("bash -c 'rm -rf %s/dbs'".printf (tmp_path));
-				} catch (SpawnError e) {
-					warning (e.message);
-				}
+				run_command ({"rm", "-rf", "--", Path.build_filename (get_pamac_tmp_dir (), "dbs")});
 			}
 			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
@@ -876,10 +866,8 @@ namespace Pamac {
 
 		void prepare_aur_db (Alpm.Handle? alpm_handle) {
 			// fake aur db
-			try {
-				Process.spawn_command_line_sync ("cp %s/pamac_aur.db %ssync".printf (tmp_path, alpm_handle.dbpath));
-			} catch (SpawnError e) {
-				do_emit_warning (e.message);
+			if (run_command ({"cp", "--", Path.build_filename (get_pamac_tmp_dir (), "pamac_aur.db"), Path.build_filename (alpm_handle.dbpath, "sync")}) != 0) {
+				do_emit_warning ("failed to copy pamac_aur.db");
 			}
 			// check if we need to remove debug package to avoid dep problem
 			foreach (unowned string name in to_build) {

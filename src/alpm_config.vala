@@ -17,6 +17,60 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+GLib.Once<string> pamac_tmp_dir_once;
+
+// /tmp/pamac-<user> is predictable: another user can create it first
+// and plant symlinks or fake databases in it.
+// Only use it if it is a real directory owned by us and not writable by others.
+bool is_private_dir (string path) {
+	if (Posix.mkdir (path, 0700) != 0 && Posix.errno != Posix.EEXIST) {
+		return false;
+	}
+	Posix.Stat st;
+	if (Posix.lstat (path, out st) != 0) {
+		return false;
+	}
+	if (!Posix.S_ISDIR (st.st_mode)) {
+		return false;
+	}
+	if (st.st_uid != Posix.geteuid ()) {
+		return false;
+	}
+	if ((st.st_mode & (Posix.S_IWGRP | Posix.S_IWOTH)) != 0) {
+		return false;
+	}
+	return true;
+}
+
+string get_pamac_tmp_dir () {
+	return pamac_tmp_dir_once.once (() => {
+		string path = "/tmp/pamac-%s".printf (Environment.get_user_name ());
+		if (is_private_dir (path)) {
+			return path;
+		}
+		warning ("%s is not a private directory, using a new one", path);
+		try {
+			return DirUtils.make_tmp ("pamac-%s-XXXXXX".printf (Environment.get_user_name ()));
+		} catch (FileError e) {
+			warning (e.message);
+		}
+		path = Path.build_filename (Environment.get_user_cache_dir (), "pamac-tmp");
+		DirUtils.create_with_parents (path, 0700);
+		return path;
+	});
+}
+
+// run a command without shell parsing of its arguments
+int run_command (string[] argv) {
+	int status = 1;
+	try {
+		Process.spawn_sync (null, argv, null, SpawnFlags.SEARCH_PATH, null, null, null, out status);
+	} catch (SpawnError e) {
+		warning (e.message);
+	}
+	return status;
+}
+
 [Compact]
 class AlpmRepo {
 	public string name;
@@ -131,40 +185,26 @@ internal class AlpmConfig {
 		Alpm.Errno error = 0;
 		Alpm.Handle? handle = null;
 		if (tmp_db) {
-			string tmp_path = "/tmp/pamac-%s".printf (Environment.get_user_name ());
-			string tmp_dbpath = "%s/dbs".printf (tmp_path);
-			try {
-				var file = GLib.File.new_for_path (tmp_path);
-				if (!file.query_exists ()) {
-					Process.spawn_command_line_sync ("mkdir -p %s".printf (tmp_path));
+			string tmp_dbpath = Path.build_filename (get_pamac_tmp_dir (), "dbs");
+			// dbpath can be defined by the user with or without a trailing slash
+			string localdb_path = Path.build_filename (dbpath, "local");
+			string syncdb_path = Path.build_filename (dbpath, "sync");
+			if (DirUtils.create_with_parents (tmp_dbpath, 0700) != 0) {
+				warning ("failed to create %s", tmp_dbpath);
+			}
+			run_command ({"ln", "-sfn", "--", localdb_path, Path.build_filename (tmp_dbpath, "local")});
+			if (copy_dbs) {
+				var file = GLib.File.new_for_path (syncdb_path);
+				if (file.query_exists ()) {
+					run_command ({"cp", "--preserve=timestamps", "-ru", "--", syncdb_path, tmp_dbpath});
 				}
-				file = GLib.File.new_for_path (tmp_dbpath);
-				// dbpath can be defined by the user with or without a trailing slash
-				string localdb_path = Path.build_filename (dbpath, "local");
-				string syncdb_path = Path.build_filename (dbpath, "sync");
-				if (!file.query_exists ()) {
-					Process.spawn_command_line_sync ("mkdir -p %s".printf (tmp_dbpath));
-				}
-				Process.spawn_command_line_sync ("ln -sf %s %s".printf (localdb_path, tmp_dbpath));
-				if (copy_dbs) {
-					file = GLib.File.new_for_path (syncdb_path);
-					if (file.query_exists ()) {
-						Process.spawn_command_line_sync ("cp --preserve=timestamps -ru %s %s".printf (syncdb_path, tmp_dbpath));
-					}
-				}
-				// remove an existing pamac_aur.db file
-				Process.spawn_command_line_sync ("rm -f %s/sync/pamac_aur.db".printf (tmp_dbpath));
+			}
+			// remove an existing pamac_aur.db file
+			FileUtils.unlink (Path.build_filename (tmp_dbpath, "sync", "pamac_aur.db"));
+			handle = new Alpm.Handle (rootdir, tmp_dbpath, out error);
+			if (error == Alpm.Errno.DB_VERSION) {
+				run_command ({"pacman-db-upgrade"});
 				handle = new Alpm.Handle (rootdir, tmp_dbpath, out error);
-				if (error == Alpm.Errno.DB_VERSION) {
-					try {
-						Process.spawn_command_line_sync ("pacman-db-upgrade");
-					} catch (SpawnError e) {
-						warning (e.message);
-					}
-					handle = new Alpm.Handle (rootdir, tmp_dbpath, out error);
-				}
-			} catch (SpawnError e) {
-				warning (e.message);
 			}
 		} else {
 			handle = new Alpm.Handle (rootdir, dbpath, out error);
