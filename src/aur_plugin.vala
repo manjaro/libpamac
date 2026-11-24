@@ -300,14 +300,27 @@ namespace Pamac {
 		}
 
 		public void set_real_build_dir (string config_aur_build_dir) {
+			string new_build_dir;
 			if (Posix.geteuid () == 0) {
 				// build as root with systemd-run
 				// set aur_build_dir to "/var/cache/pamac"
-				real_build_dir = "/var/cache/pamac";
+				new_build_dir = "/var/cache/pamac";
 			} else if (config_aur_build_dir == "/var/tmp" || config_aur_build_dir == "/tmp") {
-				real_build_dir = Path.build_filename (config_aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()));
+				new_build_dir = Path.build_filename (config_aur_build_dir, "pamac-build-%s".printf (Environment.get_user_name ()));
+				// the path is predictable in a shared directory:
+				// another user could create it first and modify build files
+				if (!is_private_dir (new_build_dir)) {
+					string fallback = Path.build_filename (Environment.get_user_cache_dir (), "pamac", "build");
+					warning ("%s is not a private directory, using %s", new_build_dir, fallback);
+					DirUtils.create_with_parents (fallback, 0700);
+					new_build_dir = (owned) fallback;
+				}
 			} else {
-				real_build_dir = config_aur_build_dir;
+				new_build_dir = config_aur_build_dir;
+			}
+			// only replace the string if needed, callers may hold an unowned reference
+			if (new_build_dir != real_build_dir) {
+				real_build_dir = (owned) new_build_dir;
 			}
 		}
 

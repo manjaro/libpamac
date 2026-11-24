@@ -1688,6 +1688,9 @@ namespace Pamac {
 			int status = 1;
 			GenericArray<string> cmdline;
 			var launcher = new SubprocessLauncher (SubprocessFlags.NONE);
+			// check again the build directory: it may have been removed
+			// since startup (e.g. by systemd-tmpfiles) and recreated by another user
+			aur_plugin.set_real_build_dir (config.aur_build_dir);
 			unowned string real_aur_build_dir = get_real_aur_build_dir ();
 			var builddir = File.new_for_path (real_aur_build_dir);
 			if (!builddir.query_exists ()) {
