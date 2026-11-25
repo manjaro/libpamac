@@ -139,6 +139,7 @@ namespace Pamac {
 			}
 		}
 		public bool check_aur_vcs_updates { get; set; }
+		public uint64 aur_update_delay_days { get; set; }
 		public bool download_updates {
 			get {
 				return _download_updates;
@@ -247,6 +248,7 @@ namespace Pamac {
 			max_parallel_downloads = 1;
 			clean_keep_num_pkgs = 3;
 			clean_rm_only_uninstalled = false;
+			aur_update_delay_days = 0;
 			parse_file (conf_path);
 			// limited max_parallel_downloads
 			if (max_parallel_downloads > 10) {
@@ -345,6 +347,11 @@ namespace Pamac {
 							check_aur_updates = true;
 						} else if (key == "CheckAURVCSUpdates") {
 							check_aur_vcs_updates = true;
+						} else if (key == "AURUpdateDelayDays") {
+							if (splitted.length == 2) {
+								unowned string val = splitted[1]._strip ();
+								aur_update_delay_days = uint64.parse (val);
+							}
 						} else if (key == "DownloadUpdates") {
 							download_updates = true;
 						} else if (key == "OfflineUpgrade") {
@@ -389,6 +396,7 @@ namespace Pamac {
 			new_pamac_conf.insert ("KeepBuiltPkgs", new Variant.boolean (keep_built_pkgs));
 			new_pamac_conf.insert ("CheckAURUpdates", new Variant.boolean (check_aur_updates));
 			new_pamac_conf.insert ("CheckAURVCSUpdates", new Variant.boolean (check_aur_vcs_updates));
+			new_pamac_conf.insert ("AURUpdateDelayDays", new Variant.uint64 (aur_update_delay_days));
 			new_pamac_conf.insert ("BuildDirectory", new Variant.string (aur_build_dir));
 			new_pamac_conf.insert ("EnableSnap", new Variant.boolean (enable_snap));
 			new_pamac_conf.insert ("EnableFlatpak", new Variant.boolean (enable_flatpak));
