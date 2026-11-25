@@ -1684,6 +1684,62 @@ namespace Pamac {
 			return status;
 		}
 
+		// files of an old clone can be removed by systemd-tmpfiles,
+		// checkout the tracked files missing in the working tree,
+		// local modifications of other files are kept
+		int restore_deleted_build_files (string cwd, GenericArray<string> dynamic_user_cmdline, Cancellable? cancellable) {
+			var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_SILENCE);
+			launcher.set_cwd (cwd);
+			var cmdline = dynamic_user_cmdline.copy (strdup);
+			cmdline.add ("git");
+			cmdline.add ("ls-files");
+			cmdline.add ("--deleted");
+			cmdline.add ("-z");
+			// spawnv needs a null terminated array
+			cmdline.length = cmdline.length + 1;
+			var deleted_files = new GenericArray<string> ();
+			try {
+				Subprocess process = launcher.spawnv (cmdline.data);
+				Bytes? stdout_buf;
+				process.communicate (null, cancellable, out stdout_buf, null);
+				if (!process.get_if_exited () || process.get_exit_status () != 0) {
+					return 1;
+				}
+				if (stdout_buf != null) {
+					unowned uint8[] data = stdout_buf.get_data ();
+					unowned string output = (string) data;
+					int start = 0;
+					for (int i = 0; i < data.length; i++) {
+						// each file name is terminated by a nul byte
+						if (data[i] == '\0') {
+							if (i > start) {
+								deleted_files.add (output.offset (start).substring (0, i - start));
+							}
+							start = i + 1;
+						}
+					}
+				}
+			} catch (Error e) {
+				warning (e.message);
+				return 1;
+			}
+			if (deleted_files.length == 0) {
+				return 0;
+			}
+			launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_SILENCE | SubprocessFlags.STDERR_SILENCE);
+			launcher.set_cwd (cwd);
+			cmdline = dynamic_user_cmdline.copy (strdup);
+			cmdline.add ("git");
+			cmdline.add ("checkout");
+			cmdline.add ("-q");
+			// file names from the AUR repository must not be read as options
+			cmdline.add ("--");
+			foreach (unowned string filename in deleted_files) {
+				cmdline.add (filename);
+			}
+			return launch_subprocess (launcher, cmdline, cancellable);
+		}
+
 		public File? clone_build_files (string pkgname, bool overwrite_files, Cancellable? cancellable = null) {
 			int status = 1;
 			GenericArray<string> cmdline;
@@ -1729,6 +1785,14 @@ namespace Pamac {
 					status = launch_subprocess (launcher, cmdline, cancellable);
 					if (cancellable.is_cancelled ()) {
 						return null;
+					}
+					// restore tracked files removed from the build directory,
+					// git merge would not bring them back
+					if (status == 0) {
+						status = restore_deleted_build_files (cwd, dynamic_user_cmdline, cancellable);
+						if (cancellable.is_cancelled ()) {
+							return null;
+						}
 					}
 					// write diff file
 					if (status == 0) {
