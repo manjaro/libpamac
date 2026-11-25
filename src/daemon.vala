@@ -30,7 +30,9 @@ namespace Pamac {
 		AlpmUtils alpm_utils;
 		int running_threads;
 		FileMonitor lockfile_monitor;
+		// signaled when the external lock file is removed
 		Cond lockfile_cond;
+		Mutex lockfile_cond_mutex;
 		Mutex lockfile_mutex;
 		Cond answer_cond;
 		Mutex answer_mutex;
@@ -80,6 +82,7 @@ namespace Pamac {
 			// set HTTP_USER_AGENT needed when downloading using libalpm
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			lockfile_cond = Cond ();
+			lockfile_cond_mutex = Mutex ();
 			lockfile_mutex = Mutex ();
 			if (alpm_utils.lockfile.query_exists ()) {
 				try {
@@ -251,26 +254,20 @@ namespace Pamac {
 		}
 
 		int set_extern_lock () {
-			if (lockfile_mutex.trylock ()) {
-				try {
-					var tmp_loop = new MainLoop ();
-					var unlock_monitor = alpm_utils.lockfile.monitor (FileMonitorFlags.NONE, null);
-					unlock_monitor.changed.connect ((src, dest, event_type) => {
-						if (event_type == FileMonitorEvent.DELETED) {
-							lockfile_mutex.unlock ();
-							tmp_loop.quit ();
-						}
-					});
-					// security check that lockfile still exists
-					if (!alpm_utils.lockfile.query_exists ()) {
-						lockfile_mutex.unlock ();
-						return 0;
-					}
-					tmp_loop.run ();
-				} catch (Error e) {
-					warning (e.message);
-				}
+			// hold lockfile_mutex while another package manager holds the lock file
+			// a GMutex must be unlocked by the thread which locked it:
+			// this thread does both and only waits for the lock file removal
+			if (!lockfile_mutex.trylock ()) {
+				return 0;
 			}
+			lockfile_cond_mutex.lock ();
+			while (alpm_utils.lockfile.query_exists ()) {
+				// woken up by check_extern_lock when the lock file is deleted,
+				// check again every second in case the event is missed
+				lockfile_cond.wait_until (lockfile_cond_mutex, get_monotonic_time () + TimeSpan.SECOND);
+			}
+			lockfile_cond_mutex.unlock ();
+			lockfile_mutex.unlock ();
 			return 0;
 		}
 
@@ -281,6 +278,10 @@ namespace Pamac {
 				} catch (Error e) {
 					warning (e.message);
 				}
+			} else if (event_type == FileMonitorEvent.DELETED) {
+				lockfile_cond_mutex.lock ();
+				lockfile_cond.broadcast ();
+				lockfile_cond_mutex.unlock ();
 			}
 		}
 
