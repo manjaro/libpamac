@@ -27,7 +27,6 @@ namespace Pamac {
 		public signal void stop_downloading (string sender);
 
 		public abstract void search_snaps (string search_string, ref GenericArray<unowned SnapPackage> pkgs);
-		public abstract void search_uninstalled_snaps_sync (string search_string, ref GenericArray<unowned SnapPackage> pkgs);
 		public abstract bool is_installed_snap (string name);
 		public abstract unowned SnapPackage? get_snap (string name);
 		public abstract unowned SnapPackage? get_snap_by_app_id (string app_id);

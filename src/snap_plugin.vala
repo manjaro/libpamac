@@ -19,6 +19,13 @@
 
 namespace Pamac {
 	internal class SnapPackageLinked : SnapPackage {
+		/* Screenshots uploaded as "banner.png", "banner.jpg", "banner-icon.png" or "banner-icon.jpg"
+		 * are not real screenshots. The server optionally adds a 7 character suffix onto it
+		 * if it would collide with an existing name, e.g. "banner_MgEy4MI.png"
+		 * See https://forum.snapcraft.io/t/improve-method-for-setting-featured-snap-banner-image-in-store/
+		 */
+		static Regex? banner_regex;
+
 		// common
 		Snapd.Snap snap;
 		Snapd.Snap? store_snap;
@@ -99,8 +106,7 @@ namespace Pamac {
 						foreach (unowned Snapd.Media media in medias) {
 							if (media.type == "screenshot") {
 								unowned string url = media.url;
-								string filename = Path.get_basename (url);
-								if (!is_banner_image (filename) && !is_banner_icon_image (filename)) {
+								if (!is_banner (Path.get_basename (url))) {
 									_screenshots.add (url);
 								}
 							}
@@ -113,7 +119,7 @@ namespace Pamac {
 		// Snap Package
 		public override string? channel {
 			get {
-				if (_channel == null) {
+				if (_channel == null && snap.channel != null) {
 					_channel = snap.channel.replace ("latest/", "");
 				}
 				return _channel;
@@ -156,37 +162,54 @@ namespace Pamac {
 				unowned string? desktop_file = primary_app.desktop_file;
 				if (desktop_file != null) {
 					_launchable = Path.get_basename (desktop_file);
-					_app_id = Path.get_basename (desktop_file);
+					_app_id = _launchable;
 				}
-			} else {
+			}
+			if (_app_id == null) {
 				_app_id = snap.name;
 			}
 		}
 
-		bool is_banner_image (string filename){
-			/* Check if this screenshot was uploaded as "banner.png" or "banner.jpg".
-			 * The server optionally adds a 7 character suffix onto it if it would collide with
-			 * an existing name, e.g. "banner_MgEy4MI.png"
-			 * See https://forum.snapcraft.io/t/improve-method-for-setting-featured-snap-banner-image-in-store/
-			 */
-			return Regex.match_simple ("^banner(?:_[a-zA-Z0-9]{7})?\\.(?:png|jpg)$", filename, 0, 0);
+		// store data can be missing if the package was created without network
+		internal void set_store_snap (Snapd.Snap store_snap) {
+			if (this.store_snap == null) {
+				this.store_snap = store_snap;
+				// computed again with store data
+				_screenshots = null;
+				_channels = null;
+			}
 		}
 
-		bool is_banner_icon_image (string filename) {
-			/* Check if this screenshot was uploaded as "banner-icon.png" or "banner-icon.jpg".
-			 * The server optionally adds a 7 character suffix onto it if it would collide with
-			 * an existing name, e.g. "banner-icon_Ugn6pmj.png"
-			 * See https://forum.snapcraft.io/t/improve-method-for-setting-featured-snap-banner-image-in-store/
-			 */
-			return Regex.match_simple ("^banner-icon(?:_[a-zA-Z0-9]{7})?\\.(?:png|jpg)$", filename, 0, 0);
+		static bool is_banner (string filename) {
+			// compiled once, at first use
+			if (banner_regex == null) {
+				try {
+					banner_regex = new Regex ("^banner(?:-icon)?(?:_[a-zA-Z0-9]{7})?\\.(?:png|jpg)$", RegexCompileFlags.OPTIMIZE);
+				} catch (Error e) {
+					warning (e.message);
+					return false;
+				}
+			}
+			return banner_regex.match (filename);
 		}
-
 	}
 
 	internal class Snap : Object, SnapPlugin {
+		const string[] FEATURED_SNAPS = {
+			"spotify",
+			"signal-desktop",
+			"discord"
+		};
+		// search as you type creates many cached results
+		const uint MAX_CACHED_SEARCHES = 50;
+		const int64 ICON_MAX_AGE = TimeSpan.DAY;
+
 		string sender;
 		Snapd.Client client;
+		// caches are protected by their own lock, never held during a request
 		HashTable<string, Snapd.Snap> store_snaps_cache;
+		// snaps not found in the store, protected by lock (store_snaps_cache)
+		GenericSet<string> missing_store_snaps;
 		HashTable<string, GenericArray<unowned Snapd.Snap>> search_snaps_cache;
 		HashTable<string, GenericArray<unowned Snapd.Snap>> category_snaps_cache;
 		HashTable<unowned string, SnapPackageLinked> pkgs_cache;
@@ -194,9 +217,10 @@ namespace Pamac {
 		Cancellable cancellable;
 		Timer timer;
 		bool downloading;
-		GenericSet<string> download_files;
+		// snaps whose download start and end were displayed
+		GenericSet<string> started_downloads;
+		GenericSet<string> finished_downloads;
 		bool init_download;
-		uint64 download_total;
 		uint64 previous_xfered;
 		uint64 download_rate;
 		uint64 rates_nb;
@@ -213,6 +237,7 @@ namespace Pamac {
 		construct {
 			client = new Snapd.Client ();
 			store_snaps_cache = new HashTable<string, Snapd.Snap> (str_hash, str_equal);
+			missing_store_snaps = new GenericSet<string> (str_hash, str_equal);
 			search_snaps_cache = new HashTable<string, GenericArray<unowned Snapd.Snap>> (str_hash, str_equal);
 			category_snaps_cache = new HashTable<string, GenericArray<unowned Snapd.Snap>> (str_hash, str_equal);
 			pkgs_cache = new HashTable<unowned string, SnapPackageLinked> (str_hash, str_equal);
@@ -220,7 +245,8 @@ namespace Pamac {
 			cancellable = new Cancellable ();
 			timer = new Timer ();
 			downloading = false;
-			download_files = new GenericSet<string> (str_hash, str_equal);
+			started_downloads = new GenericSet<string> (str_hash, str_equal);
+			finished_downloads = new GenericSet<string> (str_hash, str_equal);
 		}
 
 		internal static bool app_name_matches_snap_name (Snapd.Snap snap, Snapd.App app) {
@@ -250,65 +276,79 @@ namespace Pamac {
 			return primary_app;
 		}
 
-		unowned SnapPackage initialize_snap (Snapd.Snap snap) {
-			unowned SnapPackageLinked? pkg = null;
+		// snap: the data to display, the installed one or the store one
+		unowned SnapPackageLinked initialize_snap (Snapd.Snap snap, Snapd.Snap? installed_snap, Snapd.Snap? store_snap) {
 			lock (pkgs_cache) {
-				pkg = pkgs_cache.lookup ("Snap/%s".printf (snap.name));
-				if (pkg != null) {
-					return pkg;
+				unowned SnapPackageLinked? pkg = pkgs_cache.lookup ("Snap/%s".printf (snap.name));
+				if (pkg == null) {
+					var new_pkg = new SnapPackageLinked (snap, installed_snap, store_snap);
+					pkg = new_pkg;
+					pkgs_cache.insert (pkg.id, (owned) new_pkg);
 				}
-				Snapd.Snap? store_snap;
-				Snapd.Snap? installed_snap;
-				if (snap.install_date != null) {
-					installed_snap = snap;
-					store_snap = get_store_snap (snap.name);
-				} else {
-					installed_snap = get_local_snap (snap.name);
-					store_snap = snap;
+				return pkg;
+			}
+		}
+
+		// installed apps, in snapd order
+		GenericArray<unowned Snapd.Snap> get_installed_app_snaps () {
+			var app_snaps = new GenericArray<unowned Snapd.Snap> ();
+			try {
+				// keep snaps alive while returned
+				app_snaps = client.get_snaps_sync (Snapd.GetSnapsFlags.NONE, null, null);
+				for (uint i = app_snaps.length; i > 0; i--) {
+					if (app_snaps[i - 1].snap_type != Snapd.SnapType.APP) {
+						app_snaps.remove_index (i - 1);
+					}
 				}
-				var new_pkg = new SnapPackageLinked (snap, installed_snap, store_snap);
-				pkg = new_pkg;
-				pkgs_cache.insert (pkg.id, new_pkg);
-			} 
-			return pkg;
+			} catch (Error e) {
+				warning (e.message);
+			}
+			return app_snaps;
+		}
+
+		// installed apps by name, with only one request to snapd
+		HashTable<string, Snapd.Snap> get_installed_snaps_table () {
+			var installed_snaps = new HashTable<string, Snapd.Snap> (str_hash, str_equal);
+			foreach (unowned Snapd.Snap snap in get_installed_app_snaps ()) {
+				installed_snaps.insert (snap.name, snap);
+			}
+			return installed_snaps;
+		}
+
+		// add apps found in the store, each one only once
+		void add_store_snaps (GenericArray<unowned Snapd.Snap> found,
+							HashTable<string, Snapd.Snap> installed_snaps,
+							GenericSet<string> added,
+							GenericArray<unowned SnapPackage> pkgs) {
+			foreach (unowned Snapd.Snap snap in found) {
+				if (snap.snap_type != Snapd.SnapType.APP || snap.name in added) {
+					continue;
+				}
+				added.add (snap.name);
+				pkgs.add (initialize_snap (snap, installed_snaps.lookup (snap.name), snap));
+			}
 		}
 
 		public void search_snaps (string search_string, ref GenericArray<unowned SnapPackage> pkgs) {
-			try {
-				lock (search_snaps_cache) {
-					GenericArray<unowned Snapd.Snap>? found = search_snaps_cache.lookup (search_string);
-					if (found == null) {
-						found = client.find_sync (Snapd.FindFlags.SCOPE_WIDE, search_string, null, null);
-						search_snaps_cache.insert (search_string, found);
-					}
-					foreach (unowned Snapd.Snap snap in found) {
-						if (snap.snap_type == Snapd.SnapType.APP) {
-							pkgs.add (initialize_snap (snap));
-						}
-					}
-				}
-			} catch (Error e) {
-				warning (e.message);
+			GenericArray<unowned Snapd.Snap>? found;
+			lock (search_snaps_cache) {
+				found = search_snaps_cache.lookup (search_string);
 			}
-		}
-
-		public void search_uninstalled_snaps_sync (string search_string, ref GenericArray<unowned SnapPackage> pkgs) {
-			try {
-				lock (search_snaps_cache) {
-					GenericArray<unowned Snapd.Snap>? found = search_snaps_cache.lookup (search_string);
-					if (found == null) {
-						found = client.find_sync (Snapd.FindFlags.SCOPE_WIDE, search_string, null, null);
-						search_snaps_cache.insert (search_string, found);
-					}
-					foreach (unowned Snapd.Snap snap in found) {
-						if (snap.snap_type == Snapd.SnapType.APP && snap.install_date == null) {
-							pkgs.add (initialize_snap (snap));
-						}
-					}
+			if (found == null) {
+				try {
+					found = client.find_sync (Snapd.FindFlags.SCOPE_WIDE, search_string, null, null);
+				} catch (Error e) {
+					warning (e.message);
+					return;
 				}
-			} catch (Error e) {
-				warning (e.message);
+				lock (search_snaps_cache) {
+					if (search_snaps_cache.size () >= MAX_CACHED_SEARCHES) {
+						search_snaps_cache.remove_all ();
+					}
+					search_snaps_cache.insert (search_string, found);
+				}
 			}
+			add_store_snaps (found, get_installed_snaps_table (), new GenericSet<string> (str_hash, str_equal), pkgs);
 		}
 
 		public bool is_installed_snap (string name) {
@@ -316,36 +356,36 @@ namespace Pamac {
 		}
 
 		public unowned SnapPackage? get_snap (string name) {
-			unowned SnapPackage? pkg = null;
-			Snapd.Snap? found = get_local_snap (name);
-			if (found == null) {
-				found = get_store_snap (name);
+			Snapd.Snap? installed_snap = get_local_snap (name);
+			Snapd.Snap? store_snap = get_store_snap (name);
+			Snapd.Snap? snap = installed_snap ?? store_snap;
+			if (snap == null) {
+				return null;
 			}
-			if (found != null) {
-				pkg = initialize_snap (found);
+			unowned SnapPackageLinked pkg = initialize_snap (snap, installed_snap, store_snap);
+			if (store_snap != null) {
+				pkg.set_store_snap (store_snap);
 			}
 			return pkg;
 		}
 
 		public unowned SnapPackage? get_snap_by_app_id (string app_id) {
-			unowned SnapPackage? pkg = null;
-			try {
-				GenericArray<unowned Snapd.Snap> snaps = client.get_snaps_sync (Snapd.GetSnapsFlags.NONE, null, null);
-				foreach (unowned Snapd.Snap snap in snaps) {
-					if (snap.snap_type == Snapd.SnapType.APP) {
-						Snapd.App? primary_app = get_primary_app (snap);
-						if (primary_app != null) {
-							unowned string? desktop_file = primary_app.desktop_file;
-							if (desktop_file != null && desktop_file.has_suffix (app_id)) {
-								pkg = initialize_snap (snap);
-							}
-						}
-					}
+			string desktop_id = app_id.has_suffix (".desktop") ? app_id : app_id + ".desktop";
+			foreach (unowned Snapd.Snap snap in get_installed_app_snaps ()) {
+				unowned Snapd.App? primary_app = get_primary_app (snap);
+				if (primary_app == null || primary_app.desktop_file == null) {
+					continue;
 				}
-			} catch (Error e) {
-				warning (e.message);
+				if (Path.get_basename (primary_app.desktop_file) == desktop_id) {
+					Snapd.Snap? store_snap = get_store_snap (snap.name);
+					unowned SnapPackageLinked pkg = initialize_snap (snap, snap, store_snap);
+					if (store_snap != null) {
+						pkg.set_store_snap (store_snap);
+					}
+					return pkg;
+				}
 			}
-			return pkg;
+			return null;
 		}
 
 		Snapd.Snap? get_local_snap (string name) {
@@ -360,36 +400,112 @@ namespace Pamac {
 			return null;
 		}
 
-		Snapd.Snap? get_store_snap (string name) {
-			try {
-				lock (store_snaps_cache) {
-					unowned Snapd.Snap? found = store_snaps_cache.lookup (name);
-					if (found != null) {
-						return found;
-					}
-					GenericArray<unowned Snapd.Snap> founds = client.find_sync (Snapd.FindFlags.SCOPE_WIDE | Snapd.FindFlags.MATCH_NAME, name, null, null);
-					if (founds.length == 1) {
-						found = founds[0];
-						store_snaps_cache.insert (name, found);
-						return found;
-					}
-				}
-			} catch (Error e) {
-				// an error is reported if not found
+		// returns true if the store snap is known, found or not
+		bool lookup_store_snap (string name, out Snapd.Snap? found) {
+			lock (store_snaps_cache) {
+				found = store_snaps_cache.lookup (name);
+				return found != null || name in missing_store_snaps;
 			}
-			return null;
+		}
+
+		void cache_store_snap (string name, Snapd.Snap? found) {
+			lock (store_snaps_cache) {
+				if (found != null) {
+					store_snaps_cache.insert (name, found);
+				} else {
+					missing_store_snaps.add (name);
+				}
+			}
+		}
+
+		// network errors are not cached, only snaps not found
+		static bool is_store_snap_not_found (GenericArray<unowned Snapd.Snap>? founds, Error? error) {
+			if (error != null) {
+				return error is Snapd.Error.NOT_FOUND;
+			}
+			return founds.length != 1;
+		}
+
+		Snapd.Snap? get_store_snap (string name) {
+			Snapd.Snap? found;
+			if (lookup_store_snap (name, out found)) {
+				return found;
+			}
+			GenericArray<unowned Snapd.Snap>? founds = null;
+			Error? error = null;
+			try {
+				founds = client.find_sync (Snapd.FindFlags.SCOPE_WIDE | Snapd.FindFlags.MATCH_NAME, name, null, null);
+			} catch (Error e) {
+				error = e;
+			}
+			if (is_store_snap_not_found (founds, error)) {
+				cache_store_snap (name, null);
+			} else if (error == null) {
+				found = founds[0];
+				cache_store_snap (name, found);
+			}
+			return found;
+		}
+
+		async void fetch_store_snap (string name) {
+			GenericArray<unowned Snapd.Snap>? founds = null;
+			Error? error = null;
+			try {
+				string suggested_currency;
+				founds = yield client.find_async (Snapd.FindFlags.SCOPE_WIDE | Snapd.FindFlags.MATCH_NAME, name, null, out suggested_currency);
+			} catch (Error e) {
+				error = e;
+			}
+			if (is_store_snap_not_found (founds, error)) {
+				cache_store_snap (name, null);
+			} else if (error == null) {
+				cache_store_snap (name, founds[0]);
+			}
+		}
+
+		// get store data of several snaps with parallel requests
+		void prefetch_store_snaps (GenericArray<unowned Snapd.Snap> snaps) {
+			var context = new MainContext ();
+			context.push_thread_default ();
+			uint pending = 0;
+			foreach (unowned Snapd.Snap snap in snaps) {
+				Snapd.Snap? found;
+				if (lookup_store_snap (snap.name, out found)) {
+					continue;
+				}
+				pending++;
+				fetch_store_snap.begin (snap.name, () => {
+					pending--;
+				});
+			}
+			while (pending > 0) {
+				context.iteration (true);
+			}
+			context.pop_thread_default ();
 		}
 
 		public void get_installed_snaps (ref GenericArray<unowned SnapPackage> pkgs) {
-			try {
-				GenericArray<unowned Snapd.Snap> snaps = client.get_snaps_sync (Snapd.GetSnapsFlags.NONE, null, null);
-				foreach (unowned Snapd.Snap snap in snaps) {
-					if (snap.snap_type == Snapd.SnapType.APP) {
-						pkgs.add (initialize_snap (snap));
-					}
+			GenericArray<unowned Snapd.Snap> snaps = get_installed_app_snaps ();
+			// store data is needed to display channels and screenshots
+			prefetch_store_snaps (snaps);
+			foreach (unowned Snapd.Snap snap in snaps) {
+				Snapd.Snap? store_snap;
+				lookup_store_snap (snap.name, out store_snap);
+				unowned SnapPackageLinked pkg = initialize_snap (snap, snap, store_snap);
+				if (store_snap != null) {
+					pkg.set_store_snap (store_snap);
 				}
+				pkgs.add (pkg);
+			}
+		}
+
+		static int64 get_file_age (File file) {
+			try {
+				FileInfo info = file.query_info (FileAttribute.TIME_MODIFIED, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+				DateTime last_modified = info.get_modification_date_time ();
+				return new DateTime.now_utc ().difference (last_modified);
 			} catch (Error e) {
-				warning (e.message);
+				return int64.MAX;
 			}
 		}
 
@@ -402,85 +518,87 @@ namespace Pamac {
 			string icons_dir = Path.build_filename (Environment.get_user_cache_dir (), "pamac", "snap-icons");
 			DirUtils.create_with_parents (icons_dir, 0700);
 			var cached_icon = File.new_for_path (Path.build_filename (icons_dir, name));
-			if (!cached_icon.query_exists ()) {
-				Snapd.Icon icon = client.get_icon_sync (name, null);
-				// written to a temporary file then renamed: no partial icon is left on error
-				string? new_etag;
-				cached_icon.replace_contents (icon.data.get_data (), null, false, FileCreateFlags.PRIVATE, out new_etag);
+			// the icon can change with a snap update
+			if (get_file_age (cached_icon) > ICON_MAX_AGE) {
+				try {
+					Snapd.Icon icon = client.get_icon_sync (name, null);
+					// written to a temporary file then renamed: no partial icon is left on error
+					string? new_etag;
+					cached_icon.replace_contents (icon.data.get_data (), null, false, FileCreateFlags.PRIVATE, out new_etag);
+				} catch (Error e) {
+					// keep the previous icon if any
+					if (!cached_icon.query_exists ()) {
+						throw e;
+					}
+				}
 			}
 			return cached_icon.get_path ();
 		}
 
-		public void get_category_snaps (string category, ref GenericArray<unowned SnapPackage> pkgs) {
-			var snap_categories = new GenericArray<string> ();
+		// map pamac categories to snap store ones
+		static string[] get_snap_categories (string category) {
 			switch (category) {
-				case "Featured":
-					var featured_pkgs = new GenericArray<string> (3);
-					featured_pkgs.add ("spotify");
-					featured_pkgs.add ("signal-desktop");
-					featured_pkgs.add ("discord");
-					foreach (unowned string name in featured_pkgs) {
-						Snapd.Snap? found = get_local_snap (name);
-						if (found == null) {
-							found = get_store_snap (name);
-						}
-						if (found != null) {
-							pkgs.add (initialize_snap (found));
-						}
-					}
-					break;
 				case "Photo & Video":
-					snap_categories.add ("photo-and-video");
-					snap_categories.add ("art-and-design");
-					break;
+					return {"photo-and-video", "art-and-design"};
 				case "Music & Audio":
-					snap_categories.add ("music-and-audio");
-					break;
+					return {"music-and-audio"};
 				case "Productivity":
-					snap_categories.add ("productivity");
-					snap_categories.add ("finance");
-					break;
+					return {"productivity", "finance"};
 				case "Communication & News":
-					snap_categories.add ("social");
-					snap_categories.add ("news-and-weather");
-					snap_categories.add ("entertainment");
-					break;
+					return {"social", "news-and-weather", "entertainment"};
 				case "Education & Science":
-					snap_categories.add ("education");
-					snap_categories.add ("science");
-					break;
+					return {"education", "science"};
 				case "Games":
-					snap_categories.add ("games");
-					break;
+					return {"games"};
 				case "Utilities":
-					snap_categories.add ("utilities");
-					snap_categories.add ("health-and-fitness");
-					snap_categories.add ("personalisation");
-					break;
+					return {"utilities", "health-and-fitness", "personalisation"};
 				case "Development":
-					snap_categories.add ("development");
-					break;
+					return {"development"};
 				default:
-					break;
+					return {};
 			}
-			if (snap_categories.length > 0) {
-				foreach (unowned string snap_category in snap_categories) {
-					try {
-						lock (category_snaps_cache) {
-							GenericArray<unowned Snapd.Snap>? found = category_snaps_cache.lookup (snap_category);
-							if (found == null) {
-								found = client.find_section_sync (Snapd.FindFlags.NONE, snap_category, null, null, null);
-								category_snaps_cache.insert (snap_category, found);
-							}
-							foreach (unowned Snapd.Snap snap in found) {
-								if (snap.snap_type == Snapd.SnapType.APP) {
-									pkgs.add (initialize_snap (snap));
-								}
-							}
-						}
-					} catch (Error e) {
-						warning (e.message);
+		}
+
+		GenericArray<unowned Snapd.Snap>? find_category_snaps (string snap_category) {
+			GenericArray<unowned Snapd.Snap>? found;
+			lock (category_snaps_cache) {
+				found = category_snaps_cache.lookup (snap_category);
+			}
+			if (found == null) {
+				try {
+					found = client.find_category_sync (Snapd.FindFlags.NONE, snap_category, null, null);
+				} catch (Error e) {
+					warning (e.message);
+					return null;
+				}
+				lock (category_snaps_cache) {
+					category_snaps_cache.insert (snap_category, found);
+				}
+			}
+			return found;
+		}
+
+		public void get_category_snaps (string category, ref GenericArray<unowned SnapPackage> pkgs) {
+			if (category == "Featured") {
+				foreach (unowned string name in FEATURED_SNAPS) {
+					unowned SnapPackage? pkg = get_snap (name);
+					if (pkg != null) {
+						pkgs.add (pkg);
 					}
+				}
+				return;
+			}
+			string[] snap_categories = get_snap_categories (category);
+			if (snap_categories.length == 0) {
+				return;
+			}
+			HashTable<string, Snapd.Snap> installed_snaps = get_installed_snaps_table ();
+			// a snap can be in several snap categories
+			var added = new GenericSet<string> (str_hash, str_equal);
+			foreach (unowned string snap_category in snap_categories) {
+				GenericArray<unowned Snapd.Snap>? found = find_category_snaps (snap_category);
+				if (found != null) {
+					add_store_snaps (found, installed_snaps, added, pkgs);
 				}
 			}
 		}
@@ -509,37 +627,34 @@ namespace Pamac {
 			emit_error (sender, message, details);
 		}
 
-		public bool trans_run (string sender, string[] to_install, string[] to_remove) {
+		// a previous transaction can have been cancelled or have failed during a download
+		void begin_transaction (string sender) {
 			this.sender = sender;
 			cancellable.reset ();
-			bool success = true;
+			downloading = false;
+			started_downloads.remove_all ();
+			finished_downloads.remove_all ();
+		}
+
+		public bool trans_run (string sender, string[] to_install, string[] to_remove) {
+			begin_transaction (sender);
 			foreach (unowned string name in to_remove) {
-				success = remove (name);
-				if (cancellable.is_cancelled ()) {
-					success = false;
+				if (!remove (name) || cancellable.is_cancelled ()) {
+					return false;
 				}
-				if (!success) {
-					break;
-				}
-			}
-			if (!success) {
-				return false;
 			}
 			foreach (unowned string name in to_install) {
-				success = install (name);
-				if (cancellable.is_cancelled ()) {
-					success = false;
-				}
-				if (!success) {
-					break;
+				if (!install (name) || cancellable.is_cancelled ()) {
+					return false;
 				}
 			}
-			return success;
+			return true;
 		}
 
 		public void refresh () {
 			lock (store_snaps_cache) {
 				store_snaps_cache.remove_all ();
+				missing_store_snaps.remove_all ();
 			}
 			lock (search_snaps_cache) {
 				search_snaps_cache.remove_all ();
@@ -572,18 +687,18 @@ namespace Pamac {
 						return true;
 					} catch (Error e) {
 						if (!cancellable.is_cancelled ()) {
-							do_emit_error ("Snap install error", {e.message});
+							do_emit_error (dgettext (null, "Snap install error"), {e.message});
 						}
 					}
 				} else if (!cancellable.is_cancelled ()) {
-					do_emit_error ("Snap install error", {e.message});
+					do_emit_error (dgettext (null, "Snap install error"), {e.message});
 				}
 			}
 			return false;
 		}
 
 		public bool switch_channel (string sender, string name, string channel) {
-			this.sender = sender;
+			begin_transaction (sender);
 			try {
 				main_action = dgettext (null, "Installing %s").printf ("%s (%s)".printf (name, channel));
 				init_download = true;
@@ -591,7 +706,7 @@ namespace Pamac {
 				return true;
 			} catch (Error e) {
 				if (!cancellable.is_cancelled ()) {
-					do_emit_error ("Snap switch error", {e.message});
+					do_emit_error (dgettext (null, "Snap switch error"), {e.message});
 				}
 			}
 			return false;
@@ -604,7 +719,7 @@ namespace Pamac {
 				return true;
 			} catch (Error e) {
 				if (!cancellable.is_cancelled ()) {
-					do_emit_error ("Snap remove error", {e.message});
+					do_emit_error (dgettext (null, "Snap remove error"), {e.message});
 				}
 			}
 			return false;
@@ -618,19 +733,21 @@ namespace Pamac {
 				init_download = false;
 				download_rate = 0;
 				rates_nb = 0;
-				current_progress = 0;
 				previous_xfered = 0;
+				current_progress = 0;
 				fraction = 0;
 				timer.start ();
 			} else {
-				if (timer.elapsed () > 0.1) {
-					download_rate = ((download_rate * rates_nb) + (uint64) ((xfered - previous_xfered) / timer.elapsed ())) / (rates_nb + 1);
-					rates_nb++;
-				} else {
+				double elapsed = timer.elapsed ();
+				if (elapsed <= 0.1) {
 					return;
 				}
+				// never negative, even if snapd reports a lower progress
+				uint64 new_xfered = xfered > previous_xfered ? xfered - previous_xfered : 0;
+				download_rate = ((download_rate * rates_nb) + (uint64) (new_xfered / elapsed)) / (rates_nb + 1);
+				rates_nb++;
 				previous_xfered = xfered;
-				fraction = (double) xfered / total;
+				fraction = total > 0 ? (double) xfered / total : 0;
 				if (fraction <= 1) {
 					text.append ("%s/%s  ".printf (format_size (xfered), format_size (total)));
 					uint remaining_seconds = 0;
@@ -649,22 +766,20 @@ namespace Pamac {
 						}
 					}
 				} else {
-					text.append ("%s".printf (format_size (xfered)));
+					text.append (format_size (xfered));
 				}
 				timer.start ();
 			}
-			if (fraction != current_progress) {
-				current_progress = fraction;
-			}
-			if (text.str != current_status) {
-				current_status = text.str;
-			}
+			// the total can grow when the real size of a download replaces its estimation,
+			// never display a lower progress
+			current_progress = double.max (fraction, current_progress);
+			current_status = text.str;
 			do_emit_download_progress (current_action, current_status, current_progress);
 		}
 
 		// snapd download task summaries look like: Download snap "name" (rev) from channel "stable",
 		// fall back to the whole summary if it has no quoted name
-		string get_download_name (string summary) {
+		static string get_download_name (string summary) {
 			string[] splitted = summary.split ("\"", 3);
 			if (splitted.length < 3 || splitted[1].length == 0) {
 				return summary;
@@ -672,50 +787,75 @@ namespace Pamac {
 			return splitted[1];
 		}
 
+		// snapd only gives the size of a download when it starts,
+		// use the store size to not increase the total during the download
+		uint64 get_estimated_download_size (string name) {
+			Snapd.Snap? store_snap = get_store_snap (name);
+			if (store_snap != null) {
+				return store_snap.download_size;
+			}
+			return 0;
+		}
+
 		void progress_callback (Snapd.Client client, Snapd.Change change, void* deprecated) {
 			uint total = 0;
 			uint done = 0;
-			uint64 download_progress = 0;
+			// all downloads of the change: snapd runs them in parallel
+			uint64 download_xfered = 0;
+			uint64 download_total = 0;
+			bool downloads_pending = false;
 			unowned GenericArray<Snapd.Task> tasks = change.get_tasks ();
 			foreach (unowned Snapd.Task task in tasks) {
-				if ("Download" in task.summary) {
-					if (task.status == "Doing") {
-						// at the beginning task.progress_total = 1 because the total download size is unknonwn
-						if (task.progress_total > 1 ) {
-							string pkgname = get_download_name (task.summary);
-							if (!download_files.contains (pkgname)) {
-								current_action = dgettext (null, "Download of %s started").printf (pkgname);
-								download_files.add ((owned) pkgname);
-								download_total += task.progress_total;
+				total++;
+				if (task.status == "Done") {
+					done++;
+				}
+				// the summary is translated by snapd, not the kind
+				if (task.kind == "download-snap") {
+					string pkgname = get_download_name (task.summary);
+					// at the beginning task.progress_total = 1 because the download size is unknown
+					bool size_known = task.progress_total > 1;
+					uint64 size = size_known ? task.progress_total : get_estimated_download_size (pkgname);
+					download_total += size;
+					switch (task.status) {
+						case "Do":
+						case "Wait":
+							downloads_pending = true;
+							break;
+						case "Doing":
+							downloads_pending = true;
+							if (size_known) {
+								download_xfered += task.progress_done;
+								if (!(pkgname in started_downloads)) {
+									current_action = dgettext (null, "Download of %s started").printf (pkgname);
+									started_downloads.add (pkgname);
+									downloading = true;
+								}
 							}
-							downloading = true;
-							download_progress += task.progress_done;
-							emit_download (download_progress, download_total);
-						}
-					} else if (task.status == "Done") {
-						string pkgname = get_download_name (task.summary);
-						if (download_files.contains (pkgname)) {
-							current_action = dgettext (null, "Download of %s finished").printf (pkgname);
-							download_files.remove (pkgname);
-							download_progress += task.progress_done;
-							emit_download (download_progress, download_total);
-						}
+							break;
+						case "Done":
+							download_xfered += size;
+							if (pkgname in started_downloads && !(pkgname in finished_downloads)) {
+								current_action = dgettext (null, "Download of %s finished").printf (pkgname);
+								finished_downloads.add (pkgname);
+							}
+							break;
+						default:
+							// aborted or undone
+							break;
 					}
-				} else if (task.status == "Done") {
-					done += 1;
 				} else if (task.status == "Doing" && task.summary != current_details) {
 					current_details = task.summary;
 					do_emit_script_output (current_details);
 				}
-				total += 1;
 			}
 			if (downloading) {
-				if (download_files.length == 0) {
+				emit_download (download_xfered, download_total);
+				if (!downloads_pending) {
 					downloading = false;
-					download_total = 0;
 					do_stop_downloading ();
 				}
-			} else {
+			} else if (total > 0) {
 				do_emit_action_progress (main_action, "", (double) done / total);
 			}
 		}
