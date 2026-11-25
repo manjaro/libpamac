@@ -35,7 +35,7 @@ if get_option('enable-appstream')
 	appstream = dependency('appstream', version : '>=1.0')
 
 	libpamac_appstream = library('pamac-appstream',
-		sources: ['appstream_interface.vala', 'appstream_plugin.vala'],
+		sources: ['appstream_interface.vala', 'appstream_utils.vala', 'appstream_plugin.vala'],
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, appstream, gmodule],
@@ -65,7 +65,7 @@ if get_option('enable-flatpak')
 	flatpak = dependency('flatpak')
 
 	libpamac_flatpak = library('pamac-flatpak',
-		sources: ['flatpak_interface.vala', 'flatpak_plugin.vala', 'package.vala'],
+		sources: ['flatpak_interface.vala', 'appstream_utils.vala', 'flatpak_plugin.vala', 'package.vala'],
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, flatpak, appstream, gmodule],

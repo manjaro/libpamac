@@ -29,7 +29,6 @@ namespace Pamac {
 		public abstract void load_appstream_data ();
 		public abstract void get_remotes_names (ref GenericArray<unowned string> remotes_names);
 		public abstract void search_flatpaks (string search_string, ref GenericArray<unowned FlatpakPackage> pkgs);
-		public abstract void search_uninstalled_flatpaks_sync (string[] search_terms, ref GenericArray<unowned FlatpakPackage> pkgs);
 		public abstract bool is_installed_flatpak (string name);
 		public abstract unowned FlatpakPackage? get_flatpak_by_app_id (string app_id);
 		public abstract unowned FlatpakPackage? get_flatpak (string id);
