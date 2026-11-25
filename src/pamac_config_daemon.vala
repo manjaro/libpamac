@@ -177,7 +177,25 @@ namespace Pamac {
 			}
 		}
 
-		public void write (HashTable<string,Variant> new_conf) {
+		public void write (HashTable<string,Variant> received_conf) {
+			var expected_types = new HashTable<string, VariantType> (str_hash, str_equal);
+			foreach (unowned string key in new string[] {"RemoveUnrequiredDeps", "EnableDowngrade", "SimpleInstall",
+														"OnlyRmUninstalled", "NoUpdateHideIcon", "EnableAUR",
+														"KeepBuiltPkgs", "EnableSnap", "EnableFlatpak",
+														"CheckFlatpakUpdates", "CheckAURUpdates", "CheckAURVCSUpdates",
+														"DownloadUpdates", "OfflineUpgrade"}) {
+				expected_types.insert (key, VariantType.BOOLEAN);
+			}
+			foreach (unowned string key in new string[] {"RefreshPeriod", "KeepNumPackages", "MaxParallelDownloads"}) {
+				expected_types.insert (key, VariantType.UINT64);
+			}
+			expected_types.insert ("BuildDirectory", VariantType.STRING);
+			var new_conf = validate_new_conf (received_conf, expected_types);
+			unowned Variant? build_dir = new_conf.lookup ("BuildDirectory");
+			if (build_dir != null && !Path.is_absolute (build_dir.get_string ())) {
+				warning ("ignoring option BuildDirectory: not an absolute path");
+				new_conf.remove ("BuildDirectory");
+			}
 			var file = GLib.File.new_for_path (conf_path);
 			var data = new StringBuilder();
 			if (file.query_exists ()) {
@@ -398,10 +416,10 @@ namespace Pamac {
 							data.append ("\n");
 						}
 					}
-					// delete the file before rewrite it
-					file.delete ();
 				} catch (Error e) {
+					// do not write a truncated file
 					warning (e.message);
+					return;
 				}
 			} else {
 				warning ("File '%s' doesn't exist", conf_path);
@@ -509,13 +527,7 @@ namespace Pamac {
 				}
 			}
 			// write the file
-			try {
-				// creating a DataOutputStream to the file
-				var dos = new DataOutputStream (file.create (FileCreateFlags.REPLACE_DESTINATION));
-				dos.put_string (data.str);
-			} catch (Error e) {
-				warning (e.message);
-			}
+			write_config_file (file, data.str);
 		}
 	}
 }

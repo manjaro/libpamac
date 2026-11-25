@@ -60,6 +60,49 @@ string get_pamac_tmp_dir () {
 	});
 }
 
+// a value written in a configuration file must stay on its line:
+// a newline would allow to inject other directives
+bool is_safe_config_value (string val) {
+	for (int i = 0; i < val.length; i++) {
+		if (val[i] < 0x20 || val[i] == 0x7f) {
+			return false;
+		}
+	}
+	return true;
+}
+
+// keep only the options with the expected type and a safe value
+HashTable<string, Variant> validate_new_conf (HashTable<string, Variant> new_conf, HashTable<string, VariantType> expected_types) {
+	var valid_conf = new HashTable<string, Variant> (str_hash, str_equal);
+	var iter = HashTableIter<string, Variant> (new_conf);
+	unowned string key;
+	unowned Variant val;
+	while (iter.next (out key, out val)) {
+		unowned VariantType? expected_type = expected_types.lookup (key);
+		if (expected_type == null) {
+			warning ("ignoring unknown option %s", key);
+		} else if (!val.is_of_type (expected_type)) {
+			warning ("ignoring option %s: wrong type %s", key, val.get_type_string ());
+		} else if (val.is_of_type (VariantType.STRING) && !is_safe_config_value (val.get_string ())) {
+			warning ("ignoring option %s: invalid value", key);
+		} else {
+			valid_conf.insert (key, val);
+		}
+	}
+	return valid_conf;
+}
+
+// write a configuration file atomically:
+// a crash can not leave a missing or partially written file
+void write_config_file (File file, string data) {
+	try {
+		string? new_etag;
+		file.replace_contents (data.data, null, false, FileCreateFlags.NONE, out new_etag);
+	} catch (Error e) {
+		warning (e.message);
+	}
+}
+
 // run a command without shell parsing of its arguments
 int run_command (string[] argv) {
 	int status = 1;
@@ -406,7 +449,11 @@ internal class AlpmConfig {
 		}
 	}
 
-	public void write (HashTable<string,Variant> new_conf) {
+	public void write (HashTable<string,Variant> received_conf) {
+		var expected_types = new HashTable<string, VariantType> (str_hash, str_equal);
+		expected_types.insert ("IgnorePkg", VariantType.STRING);
+		expected_types.insert ("CheckSpace", VariantType.BOOLEAN);
+		var new_conf = validate_new_conf (received_conf, expected_types);
 		var file = GLib.File.new_for_path (conf_path);
 		if (file.query_exists ()) {
 			try {
@@ -453,11 +500,7 @@ internal class AlpmConfig {
 						data.append ("\n");
 					}
 				}
-				// delete the file before rewrite it
-				file.delete ();
-				// creating a DataOutputStream to the file
-				var dos = new DataOutputStream (file.create (FileCreateFlags.REPLACE_DESTINATION));
-				dos.put_string (data.str);
+				write_config_file (file, data.str);
 			} catch (Error e) {
 				warning (e.message);
 			}
