@@ -327,7 +327,7 @@ namespace Pamac {
 		public bool trans_refresh (string sender, bool force_refresh) {
 			this.sender = sender;
 			do_emit_action (_("Synchronizing package databases") + "...");
-			write_log_file ("synchronizing package lists");
+			write_log_file (alpm_config.logfile, "synchronizing package lists");
 			cancellable.reset ();
 			int force = (force_refresh) ? 1 : 0;
 			if (force_refresh) {
@@ -635,28 +635,31 @@ namespace Pamac {
 			// fetch pkgs
 			Alpm.List<string> fetched = null;
 			int ret = alpm_handle.fetch_pkgurl (urls_list, out fetched);
+			urls_list.free_inner (GLib.free);
 			if (ret != 0)  {
+				fetched.free_inner (GLib.free);
 				return false;
 			}
 			if (cancellable.is_cancelled ()) {
+				fetched.free_inner (GLib.free);
 				return false;
 			}
-			// found dload_paths
-			unowned Alpm.List<unowned string> cachedirs = alpm_handle.cachedirs;
-			while (cachedirs != null) {
-				unowned string cachedir = cachedirs.data;
-				while (fetched != null) {
-					unowned string url = fetched.data;
-					string filename = Path.get_basename (url);
-					string dload_path = Path.build_filename (cachedir, filename);
-					var destfile = File.new_for_path (dload_path);
-					if (destfile.query_exists ()) {
+			// found dload_paths, looking in every cache directory
+			unowned Alpm.List<string> fetched_item = fetched;
+			while (fetched_item != null) {
+				string filename = Path.get_basename (fetched_item.data);
+				unowned Alpm.List<unowned string> cachedirs = alpm_handle.cachedirs;
+				while (cachedirs != null) {
+					string dload_path = Path.build_filename (cachedirs.data, filename);
+					if (FileUtils.test (dload_path, FileTest.IS_REGULAR)) {
 						dload_paths.add ((owned) dload_path);
+						break;
 					}
-					fetched.next ();
+					cachedirs.next ();
 				}
-				cachedirs.next ();
+				fetched_item.next ();
 			}
+			fetched.free_inner (GLib.free);
 			if (dload_paths.length == 0 && !cancellable.is_cancelled ()) {
 				var details = new GenericArray<string> ();
 				details.add (_("failed to retrieve some files"));
@@ -2434,10 +2437,11 @@ namespace Pamac {
 	}
 }
 
-void write_log_file (string event) {
+void write_log_file (string? logfile, string event) {
 	var now = new DateTime.now_local ();
 	string log = "%s [PAMAC] %s\n".printf (now.format ("[%Y-%m-%dT%H:%M:%S%z]"), event);
-	var file = File.new_for_path ("/var/log/pacman.log");
+	// use the LogFile set in pacman.conf
+	var file = File.new_for_path (logfile ?? "/var/log/pacman.log");
 	try {
 		// creating a DataOutputStream to the file
 		var dos = new DataOutputStream (file.append_to (FileCreateFlags.NONE));

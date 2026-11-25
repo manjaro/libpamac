@@ -138,7 +138,7 @@ internal class AlpmConfig {
 	string conf_path;
 	string? rootdir;
 	public string? dbpath;
-	string? logfile;
+	public string? logfile;
 	string? gpgdir;
 	string download_user;
 	bool disable_sandbox;
