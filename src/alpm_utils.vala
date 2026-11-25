@@ -64,6 +64,12 @@ namespace Pamac {
 		public Timer rate_timer;
 		Queue<double?> download_rates;
 		double download_rate;
+		// libalpm calls the download callback for every chunk received by curl,
+		// so progress signals are rate-limited to avoid flooding the bus
+		const int64 DOWNLOAD_PROGRESS_INTERVAL = 100 * TimeSpan.MILLISECOND;
+		int64 last_download_progress_time;
+		string last_download_progress_action;
+		double last_download_progress_value;
 
 		public signal int choose_provider (string depend, GenericArray<string> providers);
 		public signal void start_downloading (string sender);
@@ -102,6 +108,9 @@ namespace Pamac {
 			current_status = "";
 			rate_timer = new Timer ();
 			download_rates = new Queue<double?> ();
+			last_download_progress_time = 0;
+			last_download_progress_action = "";
+			last_download_progress_value = 0;
 			sender_mutex = Mutex ();
 			cancellable = new Cancellable ();
 			downloading_updates = false;
@@ -2261,6 +2270,9 @@ namespace Pamac {
 					already_downloaded = 0;
 					current_status = "";
 					total_download = 0;
+					last_download_progress_time = 0;
+					last_download_progress_action = "";
+					last_download_progress_value = 0;
 					break;
 				case 23: //Alpm.Event.Type.PKG_RETRIEVE_FAILED
 					do_stop_downloading ();
@@ -2272,6 +2284,9 @@ namespace Pamac {
 					already_downloaded = 0;
 					current_status = "";
 					total_download = 0;
+					last_download_progress_time = 0;
+					last_download_progress_action = "";
+					last_download_progress_value = 0;
 					do_emit_warning (dgettext (null, "failed to retrieve some files"));
 					break;
 				case 24: //Alpm.Event.Type.DISKSPACE_START
@@ -2443,7 +2458,16 @@ namespace Pamac {
 			if (text.str != current_status) {
 				current_status = (owned) text.str;
 			}
-			do_emit_download_progress (current_action, current_status, current_progress);
+			// always emit action changes and completion, throttle the rest
+			int64 now = get_monotonic_time ();
+			if (current_action != last_download_progress_action
+				|| (current_progress >= 1 && last_download_progress_value < 1)
+				|| now - last_download_progress_time >= DOWNLOAD_PROGRESS_INTERVAL) {
+				last_download_progress_time = now;
+				last_download_progress_action = current_action;
+				last_download_progress_value = current_progress;
+				do_emit_download_progress (current_action, current_status, current_progress);
+			}
 		}
 
 		public void emit_totaldownload (uint64 total) {
@@ -2453,6 +2477,9 @@ namespace Pamac {
 			already_downloaded = 0;
 			current_status = "";
 			total_download = total;
+			last_download_progress_time = 0;
+			last_download_progress_action = "";
+			last_download_progress_value = 0;
 		}
 
 		public void emit_log (uint level, string msg) {
