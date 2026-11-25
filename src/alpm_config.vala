@@ -224,6 +224,10 @@ internal class AlpmConfig {
 		syncfirsts.add ("manjaro-keyring");
 	}
 
+	public unowned GenericArray<string> get_cachedirs () {
+		return cachedirs;
+	}
+
 	public Alpm.Handle? get_handle (bool files_db = false, bool tmp_db = false, bool copy_dbs = true) {
 		Alpm.Errno error = 0;
 		Alpm.Handle? handle = null;

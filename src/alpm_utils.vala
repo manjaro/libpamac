@@ -220,15 +220,36 @@ namespace Pamac {
 		}
 
 		public bool clean_cache (string[] filenames) {
+			// the list comes from the client: only remove regular files
+			// located directly in a package cache directory
+			var cachedirs = new GenericSet<string> (str_hash, str_equal);
+			foreach (unowned string cachedir in alpm_config.get_cachedirs ()) {
+				// File normalizes the path (trailing slash, "..", double slashes)
+				cachedirs.add (File.new_for_path (cachedir).get_path ());
+			}
+			bool success = true;
 			foreach (unowned string filename in filenames) {
 				var file = File.new_for_path (filename);
+				File? parent = file.get_parent ();
+				if (!Path.is_absolute (filename) || parent == null || !(parent.get_path () in cachedirs)) {
+					warning ("refusing to remove %s: not in a cache directory", filename);
+					success = false;
+					continue;
+				}
 				try {
+					FileInfo info = file.query_info ("standard::type", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+					if (info.get_file_type () != FileType.REGULAR) {
+						warning ("refusing to remove %s: not a regular file", filename);
+						success = false;
+						continue;
+					}
 					file.delete ();
 				} catch (Error e) {
 					warning (e.message);
+					success = false;
 				}
 			}
-			return true;
+			return success;
 		}
 
 		internal bool clean_build_files (string aur_build_dir) {
