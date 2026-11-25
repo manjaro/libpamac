@@ -1018,7 +1018,8 @@ namespace Pamac {
 			foreach (unowned string key in keys) {
 				var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_SILENCE | SubprocessFlags.STDERR_SILENCE);
 				try {
-					var process = launcher.spawnv ({"gpg", "--with-colons", "--batch", "--list-keys", key});
+					// keys come from the AUR package: "--" so they can't be read as options
+					var process = launcher.spawnv ({"gpg", "--with-colons", "--batch", "--list-keys", "--", key});
 					yield process.wait_async ();
 					if (process.get_if_exited ()) {
 						if (process.get_exit_status () != 0) {
@@ -1026,7 +1027,7 @@ namespace Pamac {
 							// try to get key infos
 							bool success = false;
 							launcher.set_flags (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
-							process = launcher.spawnv ({"gpg", "--with-colons", "--batch", "--search-keys", key});
+							process = launcher.spawnv ({"gpg", "--with-colons", "--batch", "--search-keys", "--", key});
 							yield process.wait_async ();
 							if (process.get_if_exited ()) {
 								if (process.get_exit_status () == 0) {
@@ -1047,6 +1048,7 @@ namespace Pamac {
 										cmdline.add ("--with-colons");
 										cmdline.add ("--batch");
 										cmdline.add ("--recv-keys");
+										cmdline.add ("--");
 										cmdline.add (key);
 										int status = yield run_cmd_line_async (cmdline, null, build_cancellable);
 										emit_script_output ("");

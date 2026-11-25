@@ -59,25 +59,26 @@ namespace Pamac {
 				message ("check updates");
 				try {
 					var process = new Subprocess.newv (cmds, SubprocessFlags.STDOUT_PIPE);
-					process.wait_async.begin (null, () => {
+					// read the output while the process runs: waiting for its end
+					// first blocks it as soon as the pipe buffer is full
+					process.communicate_utf8_async.begin (null, null, (obj, res) => {
 						_updates_nb = 0;
 						_updates_list = {};
-						if (process.get_if_exited ()) {
-							int status = process.get_exit_status ();
+						try {
+							string? output;
+							process.communicate_utf8_async.end (res, out output, null);
 							// status 100 means updates are available
-							if (status == 100) {
-								var dis = new DataInputStream (process.get_stdout_pipe ());
+							if (process.get_if_exited () && process.get_exit_status () == 100 && output != null) {
 								// count lines
-								try {
-									string line;
-									while ((line = dis.read_line ()) != null) {
+								foreach (unowned string line in output.split ("\n")) {
+									if (line.length > 0) {
 										_updates_nb++;
 										_updates_list += line;
 									}
-								} catch (Error e) {
-									warning (e.message);
 								}
 							}
+						} catch (Error e) {
+							warning (e.message);
 						}
 						loop.quit ();
 					});
