@@ -402,6 +402,15 @@ namespace Pamac {
 		}
 
 		public void start_generate_mirrors_list (string country, BusName sender) throws Error {
+			// the country must not be read as an option by pacman-mirrors
+			if (country.length == 0 || country.has_prefix ("-")) {
+				emit_error (sender, "Daemon Error", {"invalid country: %s".printf (country)});
+				Idle.add (() => {
+					generate_mirrors_list_finished (sender);
+					return false;
+				});
+				return;
+			}
 			check_authorization.begin (sender, (obj, res) => {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
@@ -411,7 +420,7 @@ namespace Pamac {
 						new Thread<int>.try ("generate_mirrors_list", () => {
 							try {
 								var process = new Subprocess.newv (
-									{"pacman-mirrors", "--no-color", "-c", country},
+									{"pacman-mirrors", "--no-color", "--country=" + country},
 									SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
 								var dis = new DataInputStream (process.get_stdout_pipe ());
 								string? line;

@@ -20,6 +20,9 @@
 namespace Pamac {
 	internal class AlpmUtils: Object {
 		string sender;
+		// trans_cancel reads sender from the main thread
+		// while worker threads replace it
+		Mutex sender_mutex;
 		Config config;
 		public AlpmConfig alpm_config;
 		public File lockfile;
@@ -99,6 +102,7 @@ namespace Pamac {
 			current_status = "";
 			rate_timer = new Timer ();
 			download_rates = new Queue<double?> ();
+			sender_mutex = Mutex ();
 			cancellable = new Cancellable ();
 			downloading_updates = false;
 			check_old_lock ();
@@ -202,7 +206,7 @@ namespace Pamac {
 		}
 
 		public bool set_pkgreason (string sender, string pkgname, uint reason) {
-			this.sender = sender;
+			set_sender (sender);
 			var alpm_handle = get_handle (false, false, false);
 			if (alpm_handle == null) {
 				return false;
@@ -325,7 +329,7 @@ namespace Pamac {
 		}
 
 		public bool trans_refresh (string sender, bool force_refresh) {
-			this.sender = sender;
+			set_sender (sender);
 			do_emit_action (_("Synchronizing package databases") + "...");
 			write_log_file (alpm_config.logfile, "synchronizing package lists");
 			cancellable.reset ();
@@ -368,7 +372,7 @@ namespace Pamac {
 		}
 
 		public bool trans_refresh_files (string sender, bool force_refresh) {
-			this.sender = sender;
+			set_sender (sender);
 			cancellable.reset ();
 			// update ".files", do not need to know if we succeeded
 			alpm_handle = get_handle (true, false);
@@ -384,7 +388,7 @@ namespace Pamac {
 		}
 
 		public bool trans_refresh_aur (string sender, bool force_refresh) {
-			this.sender = sender;
+			set_sender (sender);
 			cancellable.reset ();
 			// special aur handle
 			alpm_handle = alpm_config.get_handle (false, false, false);
@@ -455,7 +459,7 @@ namespace Pamac {
 		}
 
 		public bool download_updates (string sender) {
-			this.sender = sender;
+			set_sender (sender);
 			downloading_updates = true;
 			// use a handle with no callback
 			alpm_handle = get_handle (false, false);
@@ -622,7 +626,7 @@ namespace Pamac {
 		}
 
 		public bool download_pkgs (string sender, string[] urls, ref GenericArray<string> dload_paths) {
-			this.sender = sender;
+			set_sender (sender);
 			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
@@ -911,7 +915,7 @@ namespace Pamac {
 			// or been interrupted before resetting it
 			trans_reset ();
 			// compute arguments
-			this.sender = "";
+			set_sender ("");
 			this.sysupgrade = sysupgrade;
 			this.enable_downgrade = enable_downgrade;
 			this.simple_install = simple_install;
@@ -994,7 +998,7 @@ namespace Pamac {
 			// start from a clean state: a previous transaction may have failed
 			// or been interrupted (download cancelled) before resetting it
 			trans_reset ();
-			this.sender = sender;
+			set_sender (sender);
 			this.sysupgrade = sysupgrade;
 			this.enable_downgrade = enable_downgrade;
 			this.simple_install = simple_install;
@@ -2114,11 +2118,19 @@ namespace Pamac {
 			remove_overwrite_files (alpm_handle);
 		}
 
+		void set_sender (string sender) {
+			sender_mutex.lock ();
+			this.sender = sender;
+			sender_mutex.unlock ();
+		}
+
 		public void trans_cancel (string sender) {
-			if (sender != this.sender) {
-				return;
+			sender_mutex.lock ();
+			bool same_sender = sender == this.sender;
+			sender_mutex.unlock ();
+			if (same_sender) {
+				cancellable.cancel ();
 			}
-			cancellable.cancel ();
 		}
 
 		string remove_bash_colors (string msg) {
