@@ -22,6 +22,25 @@ msgstr ""
 "Language: is\n"
 "Plural-Forms: nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);\n"
 
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: src/transaction-gtk.vala src/tray.vala
+msgid "Package Manager"
+msgstr "Pakkastjórnun"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/cli.vala
+#: src/manager_window.vala src/tray.vala
+msgid "Your system is up to date"
+msgstr "Kerfið þitt er með öllum nýjasta hugbúnaðinum"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/tray.vala
+msgid "Updates Available"
+msgstr "Uppfærslur tiltækar"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
+msgid "Details"
+msgstr "Nánar"
+
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
 msgstr "Setja upp, uppfæra eða eyða pökkum"
@@ -30,7 +49,350 @@ msgstr "Setja upp, uppfæra eða eyða pökkum"
 msgid "Authentication is required to install, update, or remove packages"
 msgstr "Auðkenningar krafist til að setja inn, uppfæra eða eyða pökkum"
 
-#: src/alpm_utils.vala src/database.vala
+#: resources/choose_pkgs_dialog.ui resources/manager_window.ui
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: src/transaction-gtk.vala
+msgid "_Cancel"
+msgstr "_Hætta við"
+
+#: resources/choose_pkgs_dialog.ui resources/choose_provider_dialog.ui
+msgid "Choose"
+msgstr "Velja"
+
+#: resources/choose_provider_dialog.ui
+msgid "Choose a Provider"
+msgstr "Veldu útgefanda"
+
+#: resources/history_dialog.ui
+msgid "Pamac History"
+msgstr "Ferill Pamac"
+
+#: resources/manager_window.ui
+msgid "Software Mode"
+msgstr "Hugbúnaðaraðferð"
+
+#: resources/manager_window.ui
+msgid "Refresh databases"
+msgstr "Endurlesa gagnagrunna"
+
+#: resources/manager_window.ui
+msgid "View History"
+msgstr "Skoða feril"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Install Local Packages"
+msgstr "Setja upp staðværan pakka"
+
+#: resources/manager_window.ui
+msgid "Preferences"
+msgstr "Valkostir"
+
+#: resources/manager_window.ui
+msgid "About"
+msgstr "Um"
+
+#: resources/manager_window.ui
+msgid "Relevance"
+msgstr "Mikilvægi"
+
+#: resources/manager_window.ui src/cli.vala
+msgid "Name"
+msgstr "Nafn"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Repository"
+msgstr "Pakkageymsla"
+
+#: resources/manager_window.ui
+msgid "Size"
+msgstr "Stærð"
+
+#: resources/manager_window.ui
+msgid "Date"
+msgstr "Dagsetning"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Search"
+msgstr "Leita"
+
+#: resources/manager_window.ui
+msgid "Browse"
+msgstr "Flakka"
+
+#: resources/manager_window.ui
+msgid "Categories"
+msgstr "Flokkar"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Groups"
+msgstr "Hópar"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Repositories"
+msgstr "Pakkageymslur"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Installed"
+msgstr "Uppsett"
+
+#: resources/manager_window.ui resources/preferences_dialog.ui
+#: src/manager_window.vala
+msgid "Updates"
+msgstr "Uppfærslur"
+
+#: resources/manager_window.ui
+msgid "Remove all"
+msgstr "Fjarlægja allt"
+
+#: resources/manager_window.ui
+msgid "Install all"
+msgstr "Setja upp allt"
+
+#: resources/manager_window.ui
+msgid "Ignore all"
+msgstr "Hunsa allt"
+
+#: resources/manager_window.ui
+msgid "Refresh"
+msgstr "Endurnýjun"
+
+#: resources/manager_window.ui
+msgid "Launch"
+msgstr "Ræsa"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Install"
+msgstr "Setja upp"
+
+#: resources/manager_window.ui
+msgid "Remove"
+msgstr "Fjarlægja"
+
+#: resources/manager_window.ui
+msgid "Reinstall"
+msgstr "Enduruppsetning"
+
+#: resources/manager_window.ui
+msgid "Build"
+msgstr "Byggja"
+
+#: resources/manager_window.ui
+msgid "Dependencies"
+msgstr "Kerfiskröfur"
+
+#: resources/manager_window.ui
+msgid "Files"
+msgstr "Skrár"
+
+#: resources/manager_window.ui
+msgid "Build files"
+msgstr "Bygginga skrám"
+
+#: resources/manager_window.ui
+msgid "Reset build files"
+msgstr "Endurræsa bygginga skrám"
+
+#: resources/manager_window.ui resources/transaction_sum_dialog.ui
+msgid "_Apply"
+msgstr "_Virkja"
+
+#: resources/preferences_dialog.ui
+msgid "General"
+msgstr "Almennt"
+
+#: resources/preferences_dialog.ui
+msgid "Check for updates"
+msgstr "Athuga með uppfærslur"
+
+#: resources/preferences_dialog.ui
+msgid "Updates check frequency"
+msgstr "Tíðni uppfærsluskoðunar"
+
+#: resources/preferences_dialog.ui
+msgid "Automatically download updates"
+msgstr "Sjálfkrafa niðurhala uppfærslur"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Að endurnýja kerfið við lokun"
+
+#: resources/preferences_dialog.ui
+msgid "Hide tray icon when no update"
+msgstr "Fela táknmynd í bakka þegar engar uppfærslur"
+
+#: resources/preferences_dialog.ui
+msgid "Downloads"
+msgstr "Niðurhal"
+
+#: resources/preferences_dialog.ui
+msgid "Parallel downloads"
+msgstr "Samhliða niðurhal"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Official Repositories"
+msgstr "Opinber pakkageymslur"
+
+#: resources/preferences_dialog.ui
+msgid "Use mirrors from"
+msgstr "Nota spegla frá"
+
+#: resources/preferences_dialog.ui
+msgid "Refresh Mirrors"
+msgstr "Endurlesa spegla"
+
+#: resources/preferences_dialog.ui
+msgid "Cache"
+msgstr "Skyndiminni"
+
+#: resources/preferences_dialog.ui
+msgid "Number of versions of each package to keep"
+msgstr "Fjöldi af útgáfum af hverjum pakka til að halda í"
+
+#: resources/preferences_dialog.ui
+msgid "Remove only the uninstalled packages"
+msgstr "Aðeins fjarlægja eyddum pökkum"
+
+#: resources/preferences_dialog.ui
+msgid "Clean"
+msgstr "Hreinsa"
+
+#: resources/preferences_dialog.ui
+msgid "Advanced"
+msgstr "Þróaður"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"Misconfiguration of these options can lead to system breakage.\n"
+"Modify them only if you know what you are doing."
+msgstr "Mögulegur villustilling á þessum stillingum getur leitt til brots á kerfinu.\nBreyttu þeim einungis ef þú veist hvað þú ert að gera."
+
+#: resources/preferences_dialog.ui
+msgid "Check available disk space"
+msgstr "Athuga tiltækt diskpláss"
+
+#: resources/preferences_dialog.ui
+msgid "Remove unrequired dependencies"
+msgstr "Fjarlægja ónauðsynlegar kerfiskröfur"
+
+#: resources/preferences_dialog.ui
+msgid "Do not check for updates when installing"
+msgstr "Ekki athuga með uppfærslur þegar þú ert í uppsetningum"
+
+#: resources/preferences_dialog.ui
+msgid "Enable downgrade"
+msgstr "Virkja niðurfærslu"
+
+#: resources/preferences_dialog.ui
+msgid "Ignored upgrades"
+msgstr "Hunsa uppfærslur"
+
+#: resources/preferences_dialog.ui
+msgid "Third Party"
+msgstr "Þriðji aðili"
+
+#: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
+#: src/cli.vala src/database.vala src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "AUR"
+msgstr "AUR"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"AUR is a community maintained repository so it presents potential risks and problems.\n"
+"All AUR users should be familiar with the build process."
+msgstr "AUR er hugbúnaðarsafn sem viðhaldið er af fjölda sjálfboðaliða þannig að því fylgir ákveðin áhætta.\nAllir notendur AUR ættu að vera meðvitaðir um byggingaferlið."
+
+#: resources/preferences_dialog.ui
+msgid "Enable AUR support"
+msgstr "Virkja AUR-stuðning"
+
+#: resources/preferences_dialog.ui
+msgid "Keep built packages"
+msgstr "Varðveita uppsetta pakka"
+
+#: resources/preferences_dialog.ui
+msgid "Check for development packages updates"
+msgstr "Athuga þróunar uppfærslu pakka"
+
+#: resources/preferences_dialog.ui
+msgid "Build directory"
+msgstr "Byggja skrá"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Flatpak"
+msgstr "Flatpak"
+
+#: resources/preferences_dialog.ui
+msgid "Flatpak packages are maintained by their publisher."
+msgstr "Flatpak pakkar eru viðhaldsnir af útgefanda þeirra. "
+
+#: resources/preferences_dialog.ui
+msgid "Enable Flatpak support"
+msgstr "Virkja Flatpak-stuðning"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/snap_plugin.vala
+msgid "Snap"
+msgstr "Snap"
+
+#: resources/preferences_dialog.ui
+msgid "Snap packages are maintained by their publisher."
+msgstr "Snap pakkar eru viðhaldsnir af útgefanda þeirra. "
+
+#: resources/preferences_dialog.ui
+msgid "Enable Snap support"
+msgstr "Virkja Snap-stuðning"
+
+#: resources/progress_dialog.ui
+msgid "Progress"
+msgstr "Framvinda"
+
+#: resources/progress_dialog.ui src/database-gtk.vala src/transaction-gtk.vala
+msgid "_Close"
+msgstr "_Loka"
+
+#: resources/transaction_sum_dialog.ui
+msgid "Transaction Summary"
+msgstr "Samantekt aðgerðar"
+
+#: resources/updates_dialog.ui src/manager_window.vala
+msgid "OS Updates"
+msgstr "Stýrikerfis uppfærslur"
+
+#: src/alpm_package.vala src/aur_plugin.vala src/cli.vala
+#: src/manager_window.vala src/pgp_key.vala
+msgid "Unknown"
+msgstr "Óþekkt"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Explicitly installed"
+msgstr "Sérstaklega uppsett"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Installed as a dependency for another package"
+msgstr "Sett upp sem hæði fyrir annan pakka"
+
+#: src/alpm_package.vala src/cli.vala src/manager_window.vala
+msgid "None"
+msgstr "Ekkert"
+
+#: src/alpm_package.vala
+msgid "MD5 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "SHA-256 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "Signature"
+msgstr ""
+
+#: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
 msgstr "Mistókst að frumstilla alpm aðgerðasafnið"
 
@@ -46,15 +408,19 @@ msgstr "Mistókst að samstilla gagnagrunn"
 msgid "Failed to init transaction"
 msgstr "Mistókst að frumstilla aðgerð"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/installer.vala
+#: src/alpm_utils.vala src/installer.vala src/transaction-gtk.vala
+#: src/transaction.vala
 msgid "Failed to prepare transaction"
 msgstr "Mistókst að undirbúa aðgerð"
 
-#: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/installer.vala src/transaction.vala
 #, c-format
 msgid "target not found: %s"
 msgstr "markmið fannst ekki: %s"
+
+#: src/alpm_utils.vala
+msgid "failed to retrieve some files"
+msgstr "mistókst að sækja nokkrar skrár"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -66,8 +432,8 @@ msgstr "pakkinn %s hefur ekki gilt kerfissnið (architecture)"
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "Ekki hægt að fullnægja framfærslu '%1$s' sem er krafist af %2$s"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala src/transaction.vala
 msgid "Warning"
 msgstr "Aðvörun"
 
@@ -114,10 +480,6 @@ msgstr "eyði %s frá markaðsskrá"
 msgid "A restart is required for the changes to take effect"
 msgstr "Það þarf að endurræsa til að virkja breytingar"
 
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-msgid "Transaction cancelled"
-msgstr "Hætt við aðgerð"
-
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
@@ -156,10 +518,6 @@ msgid "you can remove this file and retry"
 msgstr "þú mátt eyða þessari skrá og reynt aftur"
 
 #: src/alpm_utils.vala
-msgid "failed to retrieve some files"
-msgstr "mistókst að sækja nokkrar skrár"
-
-#: src/alpm_utils.vala
 msgid "Failed to commit transaction"
 msgstr "Mistókst að framkvæma aðgerð"
 
@@ -179,12 +537,12 @@ msgstr "Leysi kerfiskröfur"
 msgid "Checking inter-conflicts"
 msgstr "Athuga innri árekstra"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
 msgstr "Set upp %s"
 
-#: src/alpm_utils.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala
 #, c-format
 msgid "Upgrading %s"
 msgstr "Uppfæri %s"
@@ -199,7 +557,7 @@ msgstr "Enduruppsetning %s"
 msgid "Downgrading %s"
 msgstr "Niðurfærsla á %s"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
 msgstr "Fjarlægi %s"
@@ -230,11 +588,6 @@ msgstr "Athuga tiltækt diskpláss"
 #, c-format
 msgid "%1$s optionally requires %2$s"
 msgstr "%1$s þarfnast mögulega %2$s"
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "Database file for %s does not exist"
-msgstr "Gagnagrunnsskrá fyrir %s er ekki til"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
@@ -280,19 +633,15 @@ msgid_plural "About %lu minutes remaining"
 msgstr[0] "Um það bil %lu mínúta eftir"
 msgstr[1] "Um það bil %lu mínútur eftir"
 
-#: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
 msgstr "Villa"
 
-#: src/alpm_utils.vala
-#, c-format
-msgid "Refreshing %s"
-msgstr "Endurles %s"
-
-#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
-#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
+#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
+#: src/transaction_interface_root.vala
+msgid "Transaction cancelled"
+msgstr "Hætt við aðgerð"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -301,644 +650,13 @@ msgstr "Niðurhal af %s byrjað"
 
 #: src/alpm_utils.vala
 #, c-format
-msgid "Downloading %s"
-msgstr "Sæki %s"
+msgid "Refreshing %s"
+msgstr "Endurles %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
 msgstr "Niðurhal af %s lokið"
-
-#: src/daemon.vala
-msgid "Authentication failed"
-msgstr "Auðkenning mistókst"
-
-#: src/daemon.vala
-msgid "Waiting for another package manager to quit"
-msgstr "Bíð eftir að annar pakkastjóri hætti"
-
-#: src/daemon.vala
-msgid "Timeout expired"
-msgstr "Tímamörk runnu út"
-
-#: src/transaction.vala
-msgid "Refreshing mirrors list"
-msgstr "Endurles speglalista"
-
-#: src/transaction.vala src/cli.vala
-#, c-format
-msgid "Cloning %s build files"
-msgstr "Klóna %s bygginga skrár"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to clone %s build files"
-msgstr "Mistókst að klóna %s bygginga skrár"
-
-#: src/transaction.vala
-#, c-format
-msgid "Generating %s information"
-msgstr "Bý til upplýsingar um  %s "
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to generate %s information"
-msgstr "Mistókst að búa til upplýsingar um %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Checking %s dependencies"
-msgstr "Athuga kerfiskröfur %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to check %s dependencies"
-msgstr "Mistókst að athuga kerfiskröfur fyrir %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "key %s could not be imported"
-msgstr "var ekki hægt að setja inn lykil %s"
-
-#: src/transaction.vala src/manager_window.vala
-msgid "Transaction successfully finished"
-msgstr "Aðgerð lokið - tókst"
-
-#: src/transaction.vala
-msgid "Preparing"
-msgstr "Undirbúa"
-
-#: src/transaction.vala src/snap_plugin.vala
-msgid "Yes"
-msgstr "Já"
-
-#: src/transaction.vala src/installer.vala src/cli.vala
-msgid "Nothing to do"
-msgstr "Ekkert sem hægt er að gera"
-
-#: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr "%1$s: hunsa uppfærslu á pakka (%2$s => %3$s)"
-
-#: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Mistókst að frumstilla AUR gagnagrunn"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to build %s"
-msgstr "Mistókst að byggja %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Byggi %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose optional dependencies for %s"
-msgstr "Veldu valkvæðar kerfiskröfur fyrir %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose a provider for %s"
-msgstr "Veldu útgefanda fyrir %s"
-
-#: src/transaction-gtk.vala
-msgid "Import PGP key"
-msgstr "Set inn PGP lykil"
-
-#: src/transaction-gtk.vala
-msgid "Trust and Import"
-msgstr "Traust og uppsetning"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
-msgid "_Cancel"
-msgstr "_Hætta við"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "Það þarf PGP lykil %1$s til að staðfesta frumskrár %2$s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Trust %s and import the PGP key"
-msgstr "Treystu %s og setja inn PGP lykil"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Official Repositories"
-msgstr "Opinber pakkageymslur"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Repositories"
-msgstr "Pakkageymslur"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Flatpak"
-msgstr "Flatpak"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Depends On"
-msgstr "Er háð"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Orphan Of"
-msgstr "Munaðarleysingi af"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Conflicts With"
-msgstr "Stangast á við "
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Required By"
-msgstr "Krafist af"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Replaces"
-msgstr "Kemur í staðinn fyrir"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Edit build files"
-msgstr "Breyta bygginga skrám"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-msgid "Total download size"
-msgstr "Heildarstærð niðurhals"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Edit %s build files"
-msgstr "Breyta bygginga skrám %s"
-
-#: src/transaction-gtk.vala
-msgid "Save"
-msgstr "Vista"
-
-#: src/transaction-gtk.vala resources/progress_dialog.ui
-#: resources/history_dialog.ui
-msgid "_Close"
-msgstr "_Loka"
-
-#: src/transaction-gtk.vala
-msgid "Restart"
-msgstr "Endurræsa"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Install"
-msgstr "Setja upp"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "The snap %s was published using classic confinement"
-msgstr "Snap-ið %s var birt með hefðbundinni innilokun"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
-msgstr "Set samt upp %s"
-
-#: src/transaction-gtk.vala src/tray.vala
-msgid "Package Manager"
-msgstr "Pakkastjórnun"
-
-#: src/installer.vala src/cli.vala
-msgid "Install packages from repositories, path or url"
-msgstr "Set upp pakka frá skráarsafni, leið eða vefslóð"
-
-#: src/installer.vala src/cli.vala
-msgid "Remove packages"
-msgstr "Fjarlægja pakka"
-
-#: src/installer.vala src/cli.vala
-msgid "Build packages from AUR and install them with their dependencies"
-msgstr "Byggja pakka frá AUR og setja þá upp með háði þeirra"
-
-#: src/installer.vala src/cli.vala
-msgid "package(s)"
-msgstr "pakka(r)"
-
-#: src/tray.vala
-msgid "Updates Available"
-msgstr "Uppfærslur tiltækar"
-
-#: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up to date"
-msgstr "Kerfið þitt er með öllum nýjasta hugbúnaðinum"
-
-#: src/tray.vala
-msgid "_Quit"
-msgstr "_Hætta"
-
-#: src/tray.vala src/cli.vala
-#, c-format
-msgid "%u available update"
-msgid_plural "%u available updates"
-msgstr[0] "%u fáanleg uppfærsla"
-msgstr[1] "%u tiltækar uppfærslur"
-
-#: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
-msgid "Details"
-msgstr "Nánar"
-
-#: src/manager_window.vala
-msgid "No package found"
-msgstr "Enginn pakki fannst"
-
-#: src/manager_window.vala
-msgid "Checking for Updates"
-msgstr "Athuga með uppfærslum"
-
-#: src/manager_window.vala resources/manager_window.ui
-msgid "Install Local Packages"
-msgstr "Setja upp staðværan pakka"
-
-#: src/manager_window.vala
-msgid "_Open"
-msgstr "_Opna"
-
-#: src/manager_window.vala
-msgid "Alpm Package"
-msgstr "Alpm pakki"
-
-#: src/manager_window.vala
-msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "Pakkastjórnandi með stuðning fyrir Alpm, AUR, Flatpak og Snap "
-
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
-msgid "Snap"
-msgstr "Snap"
-
-#: src/manager_window.vala
-#, c-format
-msgid "%u pending operation"
-msgid_plural "%u pending operations"
-msgstr[0] "%u aðgerð í bið"
-msgstr[1] "%u aðgerðir í bið"
-
-#: src/manager_window.vala
-msgid "Pending"
-msgstr "Óútkljáður"
-
-#: src/manager_window.vala
-msgid "All"
-msgstr "Allt"
-
-#: src/manager_window.vala
-msgid "Explicitly installed"
-msgstr "Sérstaklega uppsett"
-
-#: src/manager_window.vala
-msgid "Orphans"
-msgstr "Munaðarleysingjar"
-
-#: src/manager_window.vala
-msgid "Foreign"
-msgstr "Utanaðkomandi"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Installed"
-msgstr "Uppsett"
-
-#: src/manager_window.vala
-msgid "Ignored"
-msgstr "Hunsa"
-
-#: src/manager_window.vala src/cli.vala
-msgid "None"
-msgstr "Ekkert"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Reason"
-msgstr "Ástæða uppsetningar"
-
-#: src/manager_window.vala
-msgid "Installed as a dependency for another package"
-msgstr "Sett upp sem hæði fyrir annan pakka"
-
-#: src/manager_window.vala
-msgid "Mark as explicitly installed"
-msgstr "Merkja sem sérstaklega uppsett"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Licenses"
-msgstr "Notkunarleyfi"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Unknown"
-msgstr "Óþekkt"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Repository"
-msgstr "Pakkageymsla"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Package Base"
-msgstr "Grunnpakki"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Maintainer"
-msgstr "Umsjónarmaður"
-
-#: src/manager_window.vala src/cli.vala
-msgid "First Submitted"
-msgstr "Fyrst lagt fram"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Last Modified"
-msgstr "Síðast breytt"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Votes"
-msgstr "Atkvæði"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Out of Date"
-msgstr "Úrelt"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Groups"
-msgstr "Hópar"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Packager"
-msgstr "Pakkari"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Build Date"
-msgstr "Byggingardagsetning"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Date"
-msgstr "Uppsetningardagur"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Validated By"
-msgstr "Fullgilt af"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Backup files"
-msgstr "Öryggisafrit"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional Dependencies"
-msgstr "Valkvæðar kerfiskröfur"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional For"
-msgstr "Valfrjálst fyrir"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Provides"
-msgstr "Skaffar"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Geri kerfiskröfur"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Athuga kerfiskröfur"
-
-#: src/manager_window.vala
-msgid "Publisher"
-msgstr "Útgefandi"
-
-#: src/manager_window.vala
-msgid "Confined in a Sandbox"
-msgstr "Innilokað í sandkassa"
-
-#: src/manager_window.vala
-msgid "Channels"
-msgstr "Stöðvar/leiðir"
-
-#: src/manager_window.vala
-msgid "OS Updates"
-msgstr "Stýrikerfis uppfærslur"
-
-#: src/manager_window.vala
-msgid "Includes performance, stability and security improvements"
-msgstr "Felur í sér bætingu í afköstum, stöðuleika og öryggi"
-
-#: src/manager_window.vala
-msgid "Featured"
-msgstr "Valið"
-
-#: src/manager_window.vala
-msgid "Photo & Video"
-msgstr "Myndir og Myndbönd"
-
-#: src/manager_window.vala
-msgid "Music & Audio"
-msgstr "Tónlist og Hljóð"
-
-#: src/manager_window.vala
-msgid "Productivity"
-msgstr "Framleiðni"
-
-#: src/manager_window.vala
-msgid "Communication & News"
-msgstr "Samskipti og Fréttir"
-
-#: src/manager_window.vala
-msgid "Education & Science"
-msgstr "Nám og Vísindi"
-
-#: src/manager_window.vala
-msgid "Games"
-msgstr "Leikir"
-
-#: src/manager_window.vala
-msgid "Utilities"
-msgstr "Gagnlegt"
-
-#: src/manager_window.vala
-msgid "Development"
-msgstr "Þróun"
-
-#: src/manager_window.vala resources/manager_window.ui
-#: resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Uppfærslur"
-
-#: src/manager_window.vala
-msgid "Last refresh"
-msgstr "Síðasta endurnýjun"
-
-#: src/preferences_dialog.vala
-msgid "every 3 hours"
-msgstr "á 3 klst. fresti"
-
-#: src/preferences_dialog.vala
-msgid "every 6 hours"
-msgstr "á 6 klst. fresti"
-
-#: src/preferences_dialog.vala
-msgid "every 12 hours"
-msgstr "á 12 klst. fresti"
-
-#: src/preferences_dialog.vala
-msgid "every day"
-msgstr "Á hverjum degi"
-
-#: src/preferences_dialog.vala
-msgid "every week"
-msgstr "vikulega"
-
-#: src/preferences_dialog.vala
-msgid "1"
-msgstr "1"
-
-#: src/preferences_dialog.vala
-msgid "2"
-msgstr "2"
-
-#: src/preferences_dialog.vala
-msgid "4"
-msgstr "4"
-
-#: src/preferences_dialog.vala
-msgid "6"
-msgstr "6"
-
-#: src/preferences_dialog.vala
-msgid "8"
-msgstr "8"
-
-#: src/preferences_dialog.vala
-msgid "10"
-msgstr "10"
-
-#: src/preferences_dialog.vala
-msgid "Worldwide"
-msgstr "Út um allan heim"
-
-#: src/preferences_dialog.vala
-msgid "0"
-msgstr "0"
-
-#: src/preferences_dialog.vala
-msgid "3"
-msgstr "3"
-
-#: src/preferences_dialog.vala
-msgid "5"
-msgstr "5"
-
-#: src/preferences_dialog.vala src/cli.vala
-msgid "To delete"
-msgstr "Á að eyða"
-
-#: src/preferences_dialog.vala src/cli.vala
-#, c-format
-msgid "%u file"
-msgid_plural "%u files"
-msgstr[0] "%u skrá"
-msgstr[1] "%u skrár"
-
-#: src/preferences_dialog.vala
-msgid "Select Build Directory"
-msgstr "Veldu uppsetningarmöppu"
-
-#: src/preferences_dialog.vala
-msgid "_Choose"
-msgstr "_Velja"
-
-#: src/preferences_dialog.vala
-msgid "Choose Ignored Upgrades"
-msgstr "Velja að hunsa uppfærslur"
-
-#: src/transaction-cli.vala src/cli.vala
-#, c-format
-msgid "Enter a selection (default=%s)"
-msgstr "Sláðu inn val (sjálfvirkt=%s)"
-
-#: src/transaction-cli.vala
-msgid "none"
-msgstr "ekkert"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "Enter a number (default=%d)"
-msgstr "Sláðu inn númer (sjálfvirkt=%d)"
-
-#: src/transaction-cli.vala
-msgid "[y/N]"
-msgstr "[j/N]"
-
-#: src/transaction-cli.vala
-msgid "y"
-msgstr "j"
-
-#: src/transaction-cli.vala
-msgid "yes"
-msgstr "já"
-
-#: src/transaction-cli.vala
-msgid "[e]"
-msgstr "[e]"
-
-#: src/transaction-cli.vala
-msgid "Apply transaction"
-msgstr "Beita þýðingu"
-
-#: src/transaction-cli.vala
-msgid "[e/y/N]"
-msgstr "[e/y/N]"
-
-#: src/transaction-cli.vala
-msgid "e"
-msgstr "e"
-
-#: src/transaction-cli.vala
-msgid "To upgrade"
-msgstr "Til uppfærslu"
-
-#: src/transaction-cli.vala
-msgid "To reinstall"
-msgstr "Til enduruppsetningar"
-
-#: src/transaction-cli.vala
-msgid "To install"
-msgstr "Til uppsetningar"
-
-#: src/transaction-cli.vala
-msgid "To build"
-msgstr "Á að byggja"
-
-#: src/transaction-cli.vala
-msgid "To downgrade"
-msgstr "Á að niðurfæra"
-
-#: src/transaction-cli.vala
-msgid "To remove"
-msgstr "Á að fjarlægja"
-
-#: src/transaction-cli.vala
-msgid "Total installed size"
-msgstr "Heildarstærð uppsetningar"
-
-#: src/transaction-cli.vala
-msgid "Total removed size"
-msgstr "Heildarstærð eyðingu"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "View %s build files diff"
-msgstr "Skoða breytingar í bygginga skrám fyrir %s"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -968,6 +686,10 @@ msgstr "aðgerð"
 #: src/cli.vala
 msgid "options"
 msgstr "valmöguleikar"
+
+#: src/cli.vala src/installer.vala
+msgid "package(s)"
+msgstr "pakka(r)"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1078,6 +800,10 @@ msgstr "ekki prenta neinar útkomur"
 msgid "overwrite existing files"
 msgstr "skrifa yfir núverandi skrár"
 
+#: src/cli.vala src/installer.vala
+msgid "Build packages from AUR and install them with their dependencies"
+msgstr "Byggja pakka frá AUR og setja þá upp með háði þeirra"
+
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
@@ -1112,6 +838,10 @@ msgstr "klóna ekki bygginga skrár frá AUR, nota staðbundnar skrár"
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
 msgstr "fer á svig við staðfestinga skilaboð"
+
+#: src/cli.vala src/installer.vala
+msgid "Install packages from repositories, path or url"
+msgstr "Set upp pakka frá skráarsafni, leið eða vefslóð"
 
 #: src/cli.vala
 msgid "glob"
@@ -1152,6 +882,10 @@ msgstr "Ekki athuga með uppfærslur"
 #: src/cli.vala
 msgid "Reinstall packages"
 msgstr "Enduruppsetning pakka"
+
+#: src/cli.vala src/installer.vala
+msgid "Remove packages"
+msgstr "Fjarlægja pakka"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
@@ -1284,10 +1018,6 @@ msgstr "ekki eyða skrám, aðeins finna mögulegar pakkahermdir"
 msgid "also display all files names"
 msgstr "sýna einnig öll skránöfn"
 
-#: src/cli.vala resources/manager_window.ui
-msgid "Name"
-msgstr "Nafn"
-
 #: src/cli.vala
 msgid "Version"
 msgstr "Útgáfa"
@@ -1300,9 +1030,101 @@ msgstr "Lýsing"
 msgid "URL"
 msgstr "VEFSLÓÐ"
 
+#: src/cli.vala src/manager_window.vala
+msgid "Licenses"
+msgstr "Notkunarleyfi"
+
 #: src/cli.vala
 msgid "Installed Size"
 msgstr "Uppsett stærð"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Depends On"
+msgstr "Er háð"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional Dependencies"
+msgstr "Valkvæðar kerfiskröfur"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Make Dependencies"
+msgstr "Geri kerfiskröfur"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Check Dependencies"
+msgstr "Athuga kerfiskröfur"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Required By"
+msgstr "Krafist af"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional For"
+msgstr "Valfrjálst fyrir"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Provides"
+msgstr "Skaffar"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Replaces"
+msgstr "Kemur í staðinn fyrir"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Conflicts With"
+msgstr "Stangast á við "
+
+#: src/cli.vala src/manager_window.vala
+msgid "Packager"
+msgstr "Pakkari"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Build Date"
+msgstr "Byggingardagsetning"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Date"
+msgstr "Uppsetningardagur"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Reason"
+msgstr "Ástæða uppsetningar"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Validated By"
+msgstr "Fullgilt af"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Backup files"
+msgstr "Öryggisafrit"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Package Base"
+msgstr "Grunnpakki"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Maintainer"
+msgstr "Umsjónarmaður"
+
+#: src/cli.vala src/manager_window.vala
+msgid "First Submitted"
+msgstr "Fyrst lagt fram"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Last Modified"
+msgstr "Síðast breytt"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Votes"
+msgstr "Atkvæði"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Out of Date"
+msgstr "Úrelt"
 
 #: src/cli.vala
 #, c-format
@@ -1321,6 +1143,13 @@ msgid_plural "%u ignored updates"
 msgstr[0] "%u hunsa uppfærslu"
 msgstr[1] "%u hunsa uppfærslur"
 
+#: src/cli.vala src/tray.vala
+#, c-format
+msgid "%u available update"
+msgid_plural "%u available updates"
+msgstr[0] "%u fáanleg uppfærsla"
+msgstr[1] "%u tiltækar uppfærslur"
+
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
 msgstr "Aðeins fjarlægja útgáfum af eyddum pökkum"
@@ -1328,6 +1157,17 @@ msgstr "Aðeins fjarlægja útgáfum af eyddum pökkum"
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
 msgstr "Fjöldi af útgáfum af hverjum pakka til að halda í skyndiminni"
+
+#: src/cli.vala src/preferences_dialog.vala
+msgid "To delete"
+msgstr "Á að eyða"
+
+#: src/cli.vala src/preferences_dialog.vala
+#, c-format
+msgid "%u file"
+msgid_plural "%u files"
+msgstr[0] "%u skrá"
+msgstr[1] "%u skrár"
 
 #: src/cli.vala
 msgid "Clean cache"
@@ -1347,12 +1187,21 @@ msgstr "Bæta við %s til uppsettningar"
 msgid "%s is only available from AUR"
 msgstr "%s er aðeins fráanlegt frá AUR"
 
+#: src/cli.vala src/installer.vala src/transaction.vala
+msgid "Nothing to do"
+msgstr "Ekkert sem hægt er að gera"
+
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Það er %1$u meðlimur í hópi %2$s"
 msgstr[1] "Það eru %1$u meðlimir í hópi %2$s"
+
+#: src/cli.vala src/transaction-cli.vala
+#, c-format
+msgid "Enter a selection (default=%s)"
+msgstr "Sláðu inn val (sjálfvirkt=%s)"
 
 #: src/cli.vala
 msgid "all"
@@ -1363,259 +1212,507 @@ msgstr "allt"
 msgid "Add %s to reinstall"
 msgstr "Bæta við %s til enduruppsettningar"
 
+#: src/cli.vala src/transaction.vala
+#, c-format
+msgid "Cloning %s build files"
+msgstr "Klóna %s bygginga skrár"
+
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
 msgstr "Setja upp %1$s frá %2$s"
 
+#: src/daemon.vala
+msgid "Authentication failed"
+msgstr "Auðkenning mistókst"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Waiting for another package manager to quit"
+msgstr "Bíð eftir að annar pakkastjóri hætti"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Timeout expired"
+msgstr "Tímamörk runnu út"
+
+#: src/flatpak_plugin.vala
+msgid "Flatpak transaction failed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "No package found"
+msgstr "Enginn pakki fannst"
+
+#: src/manager_window.vala
+msgid "Checking for Updates"
+msgstr "Athuga með uppfærslum"
+
+#: src/manager_window.vala
+msgid "Alpm Package"
+msgstr "Alpm pakki"
+
+#: src/manager_window.vala
+msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr "Pakkastjórnandi með stuðning fyrir Alpm, AUR, Flatpak og Snap "
+
+#: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Total download size"
+msgstr "Heildarstærð niðurhals"
+
+#: src/manager_window.vala
+#, c-format
+msgid "%u pending operation"
+msgid_plural "%u pending operations"
+msgstr[0] "%u aðgerð í bið"
+msgstr[1] "%u aðgerðir í bið"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Óútkljáður"
+
+#: src/manager_window.vala
+msgid "All"
+msgstr "Allt"
+
+#: src/manager_window.vala
+msgid "Orphans"
+msgstr "Munaðarleysingjar"
+
+#: src/manager_window.vala
+msgid "Foreign"
+msgstr "Utanaðkomandi"
+
+#: src/manager_window.vala
+msgid "Ignored"
+msgstr "Hunsa"
+
+#: src/manager_window.vala
+msgid "Mark as explicitly installed"
+msgstr "Merkja sem sérstaklega uppsett"
+
+#: src/manager_window.vala
+msgid "Publisher"
+msgstr "Útgefandi"
+
+#: src/manager_window.vala
+msgid "Confined in a Sandbox"
+msgstr "Innilokað í sandkassa"
+
+#: src/manager_window.vala
+msgid "Channels"
+msgstr "Stöðvar/leiðir"
+
+#: src/manager_window.vala
+msgid "Includes performance, stability and security improvements"
+msgstr "Felur í sér bætingu í afköstum, stöðuleika og öryggi"
+
+#: src/manager_window.vala
+msgid "Featured"
+msgstr "Valið"
+
+#: src/manager_window.vala
+msgid "Photo & Video"
+msgstr "Myndir og Myndbönd"
+
+#: src/manager_window.vala
+msgid "Music & Audio"
+msgstr "Tónlist og Hljóð"
+
+#: src/manager_window.vala
+msgid "Productivity"
+msgstr "Framleiðni"
+
+#: src/manager_window.vala
+msgid "Communication & News"
+msgstr "Samskipti og Fréttir"
+
+#: src/manager_window.vala
+msgid "Education & Science"
+msgstr "Nám og Vísindi"
+
+#: src/manager_window.vala
+msgid "Games"
+msgstr "Leikir"
+
+#: src/manager_window.vala
+msgid "Utilities"
+msgstr "Gagnlegt"
+
+#: src/manager_window.vala
+msgid "Development"
+msgstr "Þróun"
+
+#: src/manager_window.vala
+msgid "Last refresh"
+msgstr "Síðasta endurnýjun"
+
+#: src/manager_window.vala src/transaction.vala
+msgid "Transaction successfully finished"
+msgstr "Aðgerð lokið - tókst"
+
+#: src/pgp_key.vala
+msgid "Fingerprint"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Algorithm"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Creation date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Expiration date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Never"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Unknown keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Source"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Required by"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%s build files (validpgpkeys)"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has been revoked by its owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has expired"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key is disabled on the keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%u keys match %s on the keyserver, only the first one is shown"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "The key found on the keyserver does not match the requested key %s"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid ""
+"Keyservers do not verify key owners: compare the fingerprint with the one "
+"published by the upstream project before trusting this key"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 3 hours"
+msgstr "á 3 klst. fresti"
+
+#: src/preferences_dialog.vala
+msgid "every 6 hours"
+msgstr "á 6 klst. fresti"
+
+#: src/preferences_dialog.vala
+msgid "every 12 hours"
+msgstr "á 12 klst. fresti"
+
+#: src/preferences_dialog.vala
+msgid "every day"
+msgstr "Á hverjum degi"
+
+#: src/preferences_dialog.vala
+msgid "every week"
+msgstr "vikulega"
+
+#: src/preferences_dialog.vala
+msgid "1"
+msgstr "1"
+
+#: src/preferences_dialog.vala
+msgid "2"
+msgstr "2"
+
+#: src/preferences_dialog.vala
+msgid "4"
+msgstr "4"
+
+#: src/preferences_dialog.vala
+msgid "6"
+msgstr "6"
+
+#: src/preferences_dialog.vala
+msgid "8"
+msgstr "8"
+
+#: src/preferences_dialog.vala
+msgid "10"
+msgstr "10"
+
+#: src/preferences_dialog.vala
+msgid "Worldwide"
+msgstr "Út um allan heim"
+
+#: src/preferences_dialog.vala
+msgid "0"
+msgstr "0"
+
+#: src/preferences_dialog.vala
+msgid "3"
+msgstr "3"
+
+#: src/preferences_dialog.vala
+msgid "5"
+msgstr "5"
+
+#: src/preferences_dialog.vala
+msgid "Select Build Directory"
+msgstr "Veldu uppsetningarmöppu"
+
+#: src/preferences_dialog.vala
+msgid "Choose Ignored Upgrades"
+msgstr "Velja að hunsa uppfærslur"
+
+#: src/snap_plugin.vala src/transaction.vala
+msgid "Yes"
+msgstr "Já"
+
 #: src/snap_plugin.vala
 msgid "No"
 msgstr "Nei"
 
-#: resources/choose_provider_dialog.ui
-msgid "Choose a Provider"
-msgstr "Veldu útgefanda"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose optional dependencies for %s"
+msgstr "Veldu valkvæðar kerfiskröfur fyrir %s"
 
-#: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
-msgid "Choose"
-msgstr "Velja"
+#: src/transaction-cli.vala
+msgid "none"
+msgstr "ekkert"
 
-#: resources/progress_dialog.ui
-msgid "Progress"
-msgstr "Framvinda"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose a provider for %s"
+msgstr "Veldu útgefanda fyrir %s"
 
-#: resources/history_dialog.ui
-msgid "Pamac History"
-msgstr "Ferill Pamac"
+#: src/transaction-cli.vala
+#, c-format
+msgid "Enter a number (default=%d)"
+msgstr "Sláðu inn númer (sjálfvirkt=%d)"
 
-#: resources/transaction_sum_dialog.ui
-msgid "Transaction Summary"
-msgstr "Samantekt aðgerðar"
+#: src/transaction-cli.vala
+msgid "[y/N]"
+msgstr "[j/N]"
 
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-msgid "_Apply"
-msgstr "_Virkja"
+#: src/transaction-cli.vala
+msgid "y"
+msgstr "j"
 
-#: resources/manager_window.ui
-msgid "Software Mode"
-msgstr "Hugbúnaðaraðferð"
+#: src/transaction-cli.vala
+msgid "yes"
+msgstr "já"
 
-#: resources/manager_window.ui
-msgid "Refresh databases"
-msgstr "Endurlesa gagnagrunna"
+#: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
+msgstr "Það þarf PGP lykil %1$s til að staðfesta frumskrár %2$s"
 
-#: resources/manager_window.ui
-msgid "View History"
-msgstr "Skoða feril"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Import the PGP key"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Preferences"
-msgstr "Valkostir"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Trust %s and import the PGP key"
+msgstr "Treystu %s og setja inn PGP lykil"
 
-#: resources/manager_window.ui
-msgid "About"
-msgstr "Um"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Edit build files"
+msgstr "Breyta bygginga skrám"
 
-#: resources/manager_window.ui
-msgid "Search"
-msgstr "Leita"
+#: src/transaction-cli.vala
+msgid "[e]"
+msgstr "[e]"
 
-#: resources/manager_window.ui
-msgid "Remove all"
-msgstr "Fjarlægja allt"
+#: src/transaction-cli.vala
+msgid "Apply transaction"
+msgstr "Beita þýðingu"
 
-#: resources/manager_window.ui
-msgid "Install all"
-msgstr "Setja upp allt"
+#: src/transaction-cli.vala
+msgid "[e/y/N]"
+msgstr "[e/y/N]"
 
-#: resources/manager_window.ui
-msgid "Ignore all"
-msgstr "Hunsa allt"
+#: src/transaction-cli.vala
+msgid "e"
+msgstr "e"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Orphan Of"
+msgstr "Munaðarleysingi af"
+
+#: src/transaction-cli.vala
+msgid "To upgrade"
+msgstr "Til uppfærslu"
+
+#: src/transaction-cli.vala
+msgid "To reinstall"
+msgstr "Til enduruppsetningar"
+
+#: src/transaction-cli.vala
+msgid "To install"
+msgstr "Til uppsetningar"
+
+#: src/transaction-cli.vala
+msgid "To build"
+msgstr "Á að byggja"
+
+#: src/transaction-cli.vala
+msgid "To downgrade"
+msgstr "Á að niðurfæra"
+
+#: src/transaction-cli.vala
+msgid "To remove"
+msgstr "Á að fjarlægja"
+
+#: src/transaction-cli.vala
+msgid "Total installed size"
+msgstr "Heildarstærð uppsetningar"
+
+#: src/transaction-cli.vala
+msgid "Total removed size"
+msgstr "Heildarstærð eyðingu"
+
+#: src/transaction-cli.vala
+#, c-format
+msgid "View %s build files diff"
+msgstr "Skoða breytingar í bygginga skrám fyrir %s"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Edit %s build files"
+msgstr "Breyta bygginga skrám %s"
+
+#: src/transaction-gtk.vala
+msgid "Import PGP key"
+msgstr "Set inn PGP lykil"
+
+#: src/transaction-gtk.vala
+msgid "Trust and Import"
+msgstr "Traust og uppsetning"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "Það þarf PGP lykil %s til að staðfesta frumskrár %s "
+
+#: src/transaction-gtk.vala
+msgid "Save"
+msgstr "Vista"
+
+#: src/transaction-gtk.vala
+msgid "Restart"
+msgstr "Endurræsa"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The snap %s was published using classic confinement"
+msgstr "Snap-ið %s var birt með hefðbundinni innilokun"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "Install %s anyway"
+msgstr "Set samt upp %s"
+
+#: src/transaction.vala
+msgid "Refreshing mirrors list"
+msgstr "Endurles speglalista"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to clone %s build files"
+msgstr "Mistókst að klóna %s bygginga skrár"
+
+#: src/transaction.vala
+#, c-format
+msgid "Generating %s information"
+msgstr "Bý til upplýsingar um  %s "
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to generate %s information"
+msgstr "Mistókst að búa til upplýsingar um %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Checking %s dependencies"
+msgstr "Athuga kerfiskröfur %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to check %s dependencies"
+msgstr "Mistókst að athuga kerfiskröfur fyrir %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "key %s could not be imported"
+msgstr "var ekki hægt að setja inn lykil %s"
+
+#: src/transaction.vala
+msgid "Preparing"
+msgstr "Undirbúa"
+
+#: src/transaction.vala
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr "%1$s: hunsa uppfærslu á pakka (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Mistókst að frumstilla AUR gagnagrunn"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Byggi %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to build %s"
+msgstr "Mistókst að byggja %s"
+
+#: src/transaction_interface_daemon.vala
+msgid "The transaction may still be running in the background"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "Connection to the daemon was lost"
+msgstr ""
+
+#: src/tray.vala
+msgid "_Quit"
+msgstr "_Hætta"
 
 #: resources/manager_window.ui
 msgid "Sort by"
 msgstr "Raða eftir"
 
-#: resources/manager_window.ui
-msgid "Relevance"
-msgstr "Mikilvægi"
+#: src/manager_window.vala
+msgid "_Open"
+msgstr "_Opna"
 
-#: resources/manager_window.ui
-msgid "Size"
-msgstr "Stærð"
-
-#: resources/manager_window.ui
-msgid "Date"
-msgstr "Dagsetning"
-
-#: resources/manager_window.ui
-msgid "Refresh"
-msgstr "Endurnýjun"
-
-#: resources/manager_window.ui
-msgid "Categories"
-msgstr "Flokkar"
-
-#: resources/manager_window.ui
-msgid "Browse"
-msgstr "Flakka"
-
-#: resources/manager_window.ui
-msgid "Launch"
-msgstr "Ræsa"
-
-#: resources/manager_window.ui
-msgid "Remove"
-msgstr "Fjarlægja"
-
-#: resources/manager_window.ui
-msgid "Reinstall"
-msgstr "Enduruppsetning"
-
-#: resources/manager_window.ui
-msgid "Build"
-msgstr "Byggja"
-
-#: resources/manager_window.ui
-msgid "Dependencies"
-msgstr "Kerfiskröfur"
-
-#: resources/manager_window.ui
-msgid "Files"
-msgstr "Skrár"
-
-#: resources/manager_window.ui
-msgid "Reset build files"
-msgstr "Endurræsa bygginga skrám"
-
-#: resources/manager_window.ui
-msgid "Build files"
-msgstr "Bygginga skrám"
-
-#: resources/preferences_dialog.ui
-msgid "General"
-msgstr "Almennt"
-
-#: resources/preferences_dialog.ui
-msgid "Check for updates"
-msgstr "Athuga með uppfærslur"
-
-#: resources/preferences_dialog.ui
-msgid "Updates check frequency"
-msgstr "Tíðni uppfærsluskoðunar"
-
-#: resources/preferences_dialog.ui
-msgid "Automatically download updates"
-msgstr "Sjálfkrafa niðurhala uppfærslur"
-
-#: resources/preferences_dialog.ui
-msgid "Upgrade the system at shutdown"
-msgstr "Að endurnýja kerfið við lokun"
-
-#: resources/preferences_dialog.ui
-msgid "Hide tray icon when no update"
-msgstr "Fela táknmynd í bakka þegar engar uppfærslur"
-
-#: resources/preferences_dialog.ui
-msgid "Downloads"
-msgstr "Niðurhal"
-
-#: resources/preferences_dialog.ui
-msgid "Parallel downloads"
-msgstr "Samhliða niðurhal"
-
-#: resources/preferences_dialog.ui
-msgid "Use mirrors from"
-msgstr "Nota spegla frá"
-
-#: resources/preferences_dialog.ui
-msgid "Refresh Mirrors"
-msgstr "Endurlesa spegla"
-
-#: resources/preferences_dialog.ui
-msgid "Cache"
-msgstr "Skyndiminni"
-
-#: resources/preferences_dialog.ui
-msgid "Number of versions of each package to keep"
-msgstr "Fjöldi af útgáfum af hverjum pakka til að halda í"
-
-#: resources/preferences_dialog.ui
-msgid "Remove only the uninstalled packages"
-msgstr "Aðeins fjarlægja eyddum pökkum"
-
-#: resources/preferences_dialog.ui
-msgid "Clean"
-msgstr "Hreinsa"
-
-#: resources/preferences_dialog.ui
-msgid "Advanced"
-msgstr "Þróaður"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"Misconfiguration of these options can lead to system breakage.\n"
-"Modify them only if you know what you are doing."
-msgstr "Mögulegur villustilling á þessum stillingum getur leitt til brots á kerfinu.\nBreyttu þeim einungis ef þú veist hvað þú ert að gera."
-
-#: resources/preferences_dialog.ui
-msgid "Check available disk space"
-msgstr "Athuga tiltækt diskpláss"
-
-#: resources/preferences_dialog.ui
-msgid "Remove unrequired dependencies"
-msgstr "Fjarlægja ónauðsynlegar kerfiskröfur"
-
-#: resources/preferences_dialog.ui
-msgid "Do not check for updates when installing"
-msgstr "Ekki athuga með uppfærslur þegar þú ert í uppsetningum"
-
-#: resources/preferences_dialog.ui
-msgid "Enable downgrade"
-msgstr "Virkja niðurfærslu"
-
-#: resources/preferences_dialog.ui
-msgid "Ignored upgrades"
-msgstr "Hunsa uppfærslur"
-
-#: resources/preferences_dialog.ui
-msgid "Third Party"
-msgstr "Þriðji aðili"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"AUR is a community maintained repository so it presents potential risks and problems.\n"
-"All AUR users should be familiar with the build process."
-msgstr "AUR er hugbúnaðarsafn sem viðhaldið er af fjölda sjálfboðaliða þannig að því fylgir ákveðin áhætta.\nAllir notendur AUR ættu að vera meðvitaðir um byggingaferlið."
-
-#: resources/preferences_dialog.ui
-msgid "Enable AUR support"
-msgstr "Virkja AUR-stuðning"
-
-#: resources/preferences_dialog.ui
-msgid "Keep built packages"
-msgstr "Varðveita uppsetta pakka"
-
-#: resources/preferences_dialog.ui
-msgid "Check for development packages updates"
-msgstr "Athuga þróunar uppfærslu pakka"
-
-#: resources/preferences_dialog.ui
-msgid "Build directory"
-msgstr "Byggja skrá"
-
-#: resources/preferences_dialog.ui
-msgid "Flatpak packages are maintained by their publisher."
-msgstr "Flatpak pakkar eru viðhaldsnir af útgefanda þeirra. "
-
-#: resources/preferences_dialog.ui
-msgid "Enable Flatpak support"
-msgstr "Virkja Flatpak-stuðning"
-
-#: resources/preferences_dialog.ui
-msgid "Snap packages are maintained by their publisher."
-msgstr "Snap pakkar eru viðhaldsnir af útgefanda þeirra. "
-
-#: resources/preferences_dialog.ui
-msgid "Enable Snap support"
-msgstr "Virkja Snap-stuðning"
+#: src/preferences_dialog.vala
+msgid "_Choose"
+msgstr "_Velja"

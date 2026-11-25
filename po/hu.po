@@ -43,6 +43,25 @@ msgstr ""
 "Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: src/transaction-gtk.vala src/tray.vala
+msgid "Package Manager"
+msgstr "Csomagkezelő"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/cli.vala
+#: src/manager_window.vala src/tray.vala
+msgid "Your system is up to date"
+msgstr "A rendszer naprakész"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/tray.vala
+msgid "Updates Available"
+msgstr "Frissítések érhetők el"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
+msgid "Details"
+msgstr "Részletek"
+
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
 msgstr "Csomagok telepítése, frissítése vagy eltávolítása"
@@ -51,7 +70,350 @@ msgstr "Csomagok telepítése, frissítése vagy eltávolítása"
 msgid "Authentication is required to install, update, or remove packages"
 msgstr "A csomagok telepítéséhez, frissítéséhez vagy eltávolításához hitelesítés szükséges"
 
-#: src/alpm_utils.vala src/database.vala
+#: resources/choose_pkgs_dialog.ui resources/manager_window.ui
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: src/transaction-gtk.vala
+msgid "_Cancel"
+msgstr "_Mégse"
+
+#: resources/choose_pkgs_dialog.ui resources/choose_provider_dialog.ui
+msgid "Choose"
+msgstr "Kiválasztás"
+
+#: resources/choose_provider_dialog.ui
+msgid "Choose a Provider"
+msgstr "Válasszon egy szolgáltatót"
+
+#: resources/history_dialog.ui
+msgid "Pamac History"
+msgstr "Pamac-előzmények"
+
+#: resources/manager_window.ui
+msgid "Software Mode"
+msgstr "Szoftvermód"
+
+#: resources/manager_window.ui
+msgid "Refresh databases"
+msgstr "Adatbázis frissítése"
+
+#: resources/manager_window.ui
+msgid "View History"
+msgstr "Előzmények megtekintése"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Install Local Packages"
+msgstr "Helyi csomagok telepítése"
+
+#: resources/manager_window.ui
+msgid "Preferences"
+msgstr "Beállítások"
+
+#: resources/manager_window.ui
+msgid "About"
+msgstr "Névjegy"
+
+#: resources/manager_window.ui
+msgid "Relevance"
+msgstr "Fontosság"
+
+#: resources/manager_window.ui src/cli.vala
+msgid "Name"
+msgstr "Név"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Repository"
+msgstr "Tároló"
+
+#: resources/manager_window.ui
+msgid "Size"
+msgstr "Méret"
+
+#: resources/manager_window.ui
+msgid "Date"
+msgstr "Dátum"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Search"
+msgstr "Keresés"
+
+#: resources/manager_window.ui
+msgid "Browse"
+msgstr "Böngészés"
+
+#: resources/manager_window.ui
+msgid "Categories"
+msgstr "Kategóriák"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Groups"
+msgstr "Csoportok"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Repositories"
+msgstr "Tárolók"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Installed"
+msgstr "Telepített"
+
+#: resources/manager_window.ui resources/preferences_dialog.ui
+#: src/manager_window.vala
+msgid "Updates"
+msgstr "Frissítések"
+
+#: resources/manager_window.ui
+msgid "Remove all"
+msgstr "Összes eltávolítása"
+
+#: resources/manager_window.ui
+msgid "Install all"
+msgstr "Összes telepítése"
+
+#: resources/manager_window.ui
+msgid "Ignore all"
+msgstr "Összes mellőzése"
+
+#: resources/manager_window.ui
+msgid "Refresh"
+msgstr "Frissítés"
+
+#: resources/manager_window.ui
+msgid "Launch"
+msgstr "Indítás"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Install"
+msgstr "Telepítés"
+
+#: resources/manager_window.ui
+msgid "Remove"
+msgstr "Eltávolítás"
+
+#: resources/manager_window.ui
+msgid "Reinstall"
+msgstr "Újratelepítés"
+
+#: resources/manager_window.ui
+msgid "Build"
+msgstr "Összeállítás"
+
+#: resources/manager_window.ui
+msgid "Dependencies"
+msgstr "Függőségek"
+
+#: resources/manager_window.ui
+msgid "Files"
+msgstr "Fájlok"
+
+#: resources/manager_window.ui
+msgid "Build files"
+msgstr "Összeállítási fájlok"
+
+#: resources/manager_window.ui
+msgid "Reset build files"
+msgstr "Összeállítási fájlok visszaállítása"
+
+#: resources/manager_window.ui resources/transaction_sum_dialog.ui
+msgid "_Apply"
+msgstr "_Alkalmaz"
+
+#: resources/preferences_dialog.ui
+msgid "General"
+msgstr "Általános"
+
+#: resources/preferences_dialog.ui
+msgid "Check for updates"
+msgstr "Frissítések ellenőrzése"
+
+#: resources/preferences_dialog.ui
+msgid "Updates check frequency"
+msgstr "Frissítések ellenőrzésének gyakorisága"
+
+#: resources/preferences_dialog.ui
+msgid "Automatically download updates"
+msgstr "Frissítések automatikus letöltése"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Rendszer frissítése leállításkor"
+
+#: resources/preferences_dialog.ui
+msgid "Hide tray icon when no update"
+msgstr "Tálcaikon elrejtése ha nincsenek frissítések"
+
+#: resources/preferences_dialog.ui
+msgid "Downloads"
+msgstr "Letöltések"
+
+#: resources/preferences_dialog.ui
+msgid "Parallel downloads"
+msgstr "Párhuzamos letöltések"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Official Repositories"
+msgstr "Hivatalos tárolók"
+
+#: resources/preferences_dialog.ui
+msgid "Use mirrors from"
+msgstr "Tükrök használata innen"
+
+#: resources/preferences_dialog.ui
+msgid "Refresh Mirrors"
+msgstr "Tükrök frissítése"
+
+#: resources/preferences_dialog.ui
+msgid "Cache"
+msgstr "Gyorsítótár"
+
+#: resources/preferences_dialog.ui
+msgid "Number of versions of each package to keep"
+msgstr "Az egyes csomagok megtartandó változatainak száma"
+
+#: resources/preferences_dialog.ui
+msgid "Remove only the uninstalled packages"
+msgstr "Csak az eltávolított csomagok törlése"
+
+#: resources/preferences_dialog.ui
+msgid "Clean"
+msgstr "Törlés"
+
+#: resources/preferences_dialog.ui
+msgid "Advanced"
+msgstr "Speciális"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"Misconfiguration of these options can lead to system breakage.\n"
+"Modify them only if you know what you are doing."
+msgstr "Ezeknek a beállításoknak a helytelen használata a rendszer meghibásodásához vezethet.\nCsak akkor módosítsa őket, ha tudja, mit csinál."
+
+#: resources/preferences_dialog.ui
+msgid "Check available disk space"
+msgstr "A rendelkezésre álló lemezterület ellenőrzése"
+
+#: resources/preferences_dialog.ui
+msgid "Remove unrequired dependencies"
+msgstr "Nem megkövetelt függőségek eltávolítása"
+
+#: resources/preferences_dialog.ui
+msgid "Do not check for updates when installing"
+msgstr "Telepítéskor ne ellenőrizze a frissítéseket"
+
+#: resources/preferences_dialog.ui
+msgid "Enable downgrade"
+msgstr "Visszafejlesztés engedélyezése"
+
+#: resources/preferences_dialog.ui
+msgid "Ignored upgrades"
+msgstr "Mellőzött frissítések"
+
+#: resources/preferences_dialog.ui
+msgid "Third Party"
+msgstr "Harmadik féltől származó"
+
+#: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
+#: src/cli.vala src/database.vala src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "AUR"
+msgstr "AUR"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"AUR is a community maintained repository so it presents potential risks and problems.\n"
+"All AUR users should be familiar with the build process."
+msgstr "Az AUR egy közösségileg karbantartott tároló, így lehetséges veszélyek és problémák forrása.\nAz összes AUR-felhasználónak ismernie kell az összeállítási folyamatot."
+
+#: resources/preferences_dialog.ui
+msgid "Enable AUR support"
+msgstr "AUR-támogatás engedélyezése"
+
+#: resources/preferences_dialog.ui
+msgid "Keep built packages"
+msgstr "Az összeállítási csomagok megőrzése"
+
+#: resources/preferences_dialog.ui
+msgid "Check for development packages updates"
+msgstr "Ellenőrizze a fejlesztés alatt álló csomagok frissítéseit"
+
+#: resources/preferences_dialog.ui
+msgid "Build directory"
+msgstr "Összeállítási könyvtár"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Flatpak"
+msgstr "Flatpak"
+
+#: resources/preferences_dialog.ui
+msgid "Flatpak packages are maintained by their publisher."
+msgstr "A Flatpak csomagokat a közzétevőjük tartja karban."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Flatpak support"
+msgstr "Flatpak támogatás engedélyezése"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/snap_plugin.vala
+msgid "Snap"
+msgstr "Snap"
+
+#: resources/preferences_dialog.ui
+msgid "Snap packages are maintained by their publisher."
+msgstr "A Snap csomagokat a közzétevőjük tartja karban."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Snap support"
+msgstr "Snap támogatás engedélyezése"
+
+#: resources/progress_dialog.ui
+msgid "Progress"
+msgstr "Folyamat"
+
+#: resources/progress_dialog.ui src/database-gtk.vala src/transaction-gtk.vala
+msgid "_Close"
+msgstr "_Bezárás"
+
+#: resources/transaction_sum_dialog.ui
+msgid "Transaction Summary"
+msgstr "Tranzakció összefoglalása"
+
+#: resources/updates_dialog.ui src/manager_window.vala
+msgid "OS Updates"
+msgstr "Rendszerfrissítések"
+
+#: src/alpm_package.vala src/aur_plugin.vala src/cli.vala
+#: src/manager_window.vala src/pgp_key.vala
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Explicitly installed"
+msgstr "Kifejezetten telepített"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Installed as a dependency for another package"
+msgstr "Egy másik csomag függőségeként telepítve"
+
+#: src/alpm_package.vala src/cli.vala src/manager_window.vala
+msgid "None"
+msgstr "Semelyik"
+
+#: src/alpm_package.vala
+msgid "MD5 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "SHA-256 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "Signature"
+msgstr ""
+
+#: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
 msgstr "Nem sikerült előkészíteni az ALPM-programkönyvtárat"
 
@@ -67,15 +429,19 @@ msgstr "Nem sikerült szinkronizálni az adatbázisokat"
 msgid "Failed to init transaction"
 msgstr "Nem sikerült előkészíteni a tranzakciót"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/installer.vala
+#: src/alpm_utils.vala src/installer.vala src/transaction-gtk.vala
+#: src/transaction.vala
 msgid "Failed to prepare transaction"
 msgstr "Nem sikerült felkészülni a tranzakcióra"
 
-#: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/installer.vala src/transaction.vala
 #, c-format
 msgid "target not found: %s"
 msgstr "a(z) %s cél nem található"
+
+#: src/alpm_utils.vala
+msgid "failed to retrieve some files"
+msgstr "nem sikerült letölteni néhány fájlt"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -87,8 +453,8 @@ msgstr "a(z) %s csomag nem tartalmaz érvényes architektúrát"
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "a(z) „%1$s” függőség nem teljesíthető, ami szükséges a következőhöz: %2$s"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala src/transaction.vala
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
@@ -135,10 +501,6 @@ msgstr "a(z) %s eltávolítása a céllistáról"
 msgid "A restart is required for the changes to take effect"
 msgstr "Újraindítás szükséges a módosítások érvénybe lépéséhez"
 
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-msgid "Transaction cancelled"
-msgstr "Tranzakció megszakítva"
-
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
@@ -177,10 +539,6 @@ msgid "you can remove this file and retry"
 msgstr "eltávolíthatja a fájlt és újrapróbálkozhat"
 
 #: src/alpm_utils.vala
-msgid "failed to retrieve some files"
-msgstr "nem sikerült letölteni néhány fájlt"
-
-#: src/alpm_utils.vala
 msgid "Failed to commit transaction"
 msgstr "Nem sikerült véglegesíteni a tranzakciót"
 
@@ -200,12 +558,12 @@ msgstr "Függőségek feloldása"
 msgid "Checking inter-conflicts"
 msgstr "Belső ütközések ellenőrzése"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
 msgstr "A(z) %s telepítése"
 
-#: src/alpm_utils.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala
 #, c-format
 msgid "Upgrading %s"
 msgstr "A(z) %s frissítése"
@@ -220,7 +578,7 @@ msgstr "A(z) %s újratelepítése"
 msgid "Downgrading %s"
 msgstr "A(z) %s visszafejlesztése"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
 msgstr "A(z) %s eltávolítása"
@@ -251,11 +609,6 @@ msgstr "A rendelkezésre álló lemezterület ellenőrzése"
 #, c-format
 msgid "%1$s optionally requires %2$s"
 msgstr "A(z) %1$s csomag nem kötelező függőségei: %2$s"
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "Database file for %s does not exist"
-msgstr "Az adatbázis-fájl nem található a következőhöz: %s"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
@@ -301,19 +654,15 @@ msgid_plural "About %lu minutes remaining"
 msgstr[0] "Körülbelül %lu perc van hátra"
 msgstr[1] "Körülbelül %lu perc van hátra"
 
-#: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
 msgstr "Hiba"
 
-#: src/alpm_utils.vala
-#, c-format
-msgid "Refreshing %s"
-msgstr "A(z) %s frissítése"
-
-#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
-#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
+#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
+#: src/transaction_interface_root.vala
+msgid "Transaction cancelled"
+msgstr "Tranzakció megszakítva"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -322,644 +671,13 @@ msgstr "A(z) %s letöltése megkezdődött"
 
 #: src/alpm_utils.vala
 #, c-format
-msgid "Downloading %s"
-msgstr "A(z) %s letöltése"
+msgid "Refreshing %s"
+msgstr "A(z) %s frissítése"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
 msgstr "A(z) %s letöltése befejeződött"
-
-#: src/daemon.vala
-msgid "Authentication failed"
-msgstr "Nem sikerült a hitelesítés"
-
-#: src/daemon.vala
-msgid "Waiting for another package manager to quit"
-msgstr "Várakozás egy másik csomagkezelő kilépésére"
-
-#: src/daemon.vala
-msgid "Timeout expired"
-msgstr "Az időkorlát lejárt"
-
-#: src/transaction.vala
-msgid "Refreshing mirrors list"
-msgstr "Tükrök listájának frissítése"
-
-#: src/transaction.vala src/cli.vala
-#, c-format
-msgid "Cloning %s build files"
-msgstr "A(z) %s összeállítási fájljainak klónozása"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to clone %s build files"
-msgstr "Nem sikerült klónozni a(z) %s összeállítási fájljait"
-
-#: src/transaction.vala
-#, c-format
-msgid "Generating %s information"
-msgstr "A(z) %s információinak előállítása"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to generate %s information"
-msgstr "Nem sikerült előállítani a(z) %s információit"
-
-#: src/transaction.vala
-#, c-format
-msgid "Checking %s dependencies"
-msgstr "A(z) %s függőségeinek ellenőrzése"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to check %s dependencies"
-msgstr "Nem sikerült ellenőrizni a(z) %s függőségeit"
-
-#: src/transaction.vala
-#, c-format
-msgid "key %s could not be imported"
-msgstr "nem sikerült importálni a(z) %s kulcsot"
-
-#: src/transaction.vala src/manager_window.vala
-msgid "Transaction successfully finished"
-msgstr "A tranzakció sikeresen végrehajtódott"
-
-#: src/transaction.vala
-msgid "Preparing"
-msgstr "Felkészülés"
-
-#: src/transaction.vala src/snap_plugin.vala
-msgid "Yes"
-msgstr "Igen"
-
-#: src/transaction.vala src/installer.vala src/cli.vala
-msgid "Nothing to do"
-msgstr "Nincs teendő"
-
-#: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr "%1$s: csomagfrissítés mellőzése (%2$s => %3$s)"
-
-#: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Nem sikerült szinkronizálni az AUR-adatbázist"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to build %s"
-msgstr "Nem sikerült összeállítani a következőt: %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "A(z) %s összeállítása"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose optional dependencies for %s"
-msgstr "Válassza ki a(z) %s csomag nem kötelező függőségeit"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose a provider for %s"
-msgstr "Válassza ki a szolgáltatót a következőhöz: %s"
-
-#: src/transaction-gtk.vala
-msgid "Import PGP key"
-msgstr "PGP-kulcs importálása"
-
-#: src/transaction-gtk.vala
-msgid "Trust and Import"
-msgstr "Megbízom benne és importálom"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
-msgid "_Cancel"
-msgstr "_Mégse"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "A(z) %1$s PGP-kulcs szükséges a(z) %2$s forrásfájljainak ellenőrzéséhez"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Trust %s and import the PGP key"
-msgstr "Megbízom a következőben: %s, és importálom a PGP-kulcsot"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Official Repositories"
-msgstr "Hivatalos tárolók"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Repositories"
-msgstr "Tárolók"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Flatpak"
-msgstr "Flatpak"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Depends On"
-msgstr "Függőségek"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Orphan Of"
-msgstr "Elárvult fájlja a következőnek"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Conflicts With"
-msgstr "Ütközik ezzel"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Required By"
-msgstr "Szükséges ehhez"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Replaces"
-msgstr "Cserék"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Edit build files"
-msgstr "Összeállítási fájlok szerkesztése"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-msgid "Total download size"
-msgstr "Teljes letöltési méret"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Edit %s build files"
-msgstr "A(z) %s összeállítási fájljainak szerkesztése"
-
-#: src/transaction-gtk.vala
-msgid "Save"
-msgstr "Mentés"
-
-#: src/transaction-gtk.vala resources/progress_dialog.ui
-#: resources/history_dialog.ui
-msgid "_Close"
-msgstr "_Bezárás"
-
-#: src/transaction-gtk.vala
-msgid "Restart"
-msgstr "Újraindítás"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Install"
-msgstr "Telepítés"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "The snap %s was published using classic confinement"
-msgstr "A(z) %s snap csomagot klasszikus korlátozással tették közzé"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
-msgstr "A(z) %s telepítése mindenképp"
-
-#: src/transaction-gtk.vala src/tray.vala
-msgid "Package Manager"
-msgstr "Csomagkezelő"
-
-#: src/installer.vala src/cli.vala
-msgid "Install packages from repositories, path or url"
-msgstr "Csomagok telepítése a tárolókból – útvonal vagy webcím"
-
-#: src/installer.vala src/cli.vala
-msgid "Remove packages"
-msgstr "Csomagok eltávolítása"
-
-#: src/installer.vala src/cli.vala
-msgid "Build packages from AUR and install them with their dependencies"
-msgstr "Csomagok összeállítása és telepítése a függőségeikkel együtt az AUR-ból"
-
-#: src/installer.vala src/cli.vala
-msgid "package(s)"
-msgstr "csomag(ok)"
-
-#: src/tray.vala
-msgid "Updates Available"
-msgstr "Frissítések érhetők el"
-
-#: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up to date"
-msgstr "A rendszer naprakész"
-
-#: src/tray.vala
-msgid "_Quit"
-msgstr "_Kilépés"
-
-#: src/tray.vala src/cli.vala
-#, c-format
-msgid "%u available update"
-msgid_plural "%u available updates"
-msgstr[0] "%u frissítés érhető el"
-msgstr[1] "%u frissítés érhető el"
-
-#: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
-msgid "Details"
-msgstr "Részletek"
-
-#: src/manager_window.vala
-msgid "No package found"
-msgstr "Nem található csomag"
-
-#: src/manager_window.vala
-msgid "Checking for Updates"
-msgstr "Frissítések ellenőrzése"
-
-#: src/manager_window.vala resources/manager_window.ui
-msgid "Install Local Packages"
-msgstr "Helyi csomagok telepítése"
-
-#: src/manager_window.vala
-msgid "_Open"
-msgstr "_Megnyitás"
-
-#: src/manager_window.vala
-msgid "Alpm Package"
-msgstr "ALPM-csomag"
-
-#: src/manager_window.vala
-msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "Egy csomagkezelő ALPM-, AUR-, Flatpak- és Snap támogatással"
-
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
-msgid "Snap"
-msgstr "Snap"
-
-#: src/manager_window.vala
-#, c-format
-msgid "%u pending operation"
-msgid_plural "%u pending operations"
-msgstr[0] "%u függőben lévő művelet"
-msgstr[1] "%u függőben lévő művelet"
-
-#: src/manager_window.vala
-msgid "Pending"
-msgstr "Függőben"
-
-#: src/manager_window.vala
-msgid "All"
-msgstr "Összes"
-
-#: src/manager_window.vala
-msgid "Explicitly installed"
-msgstr "Kifejezetten telepített"
-
-#: src/manager_window.vala
-msgid "Orphans"
-msgstr "Árvák"
-
-#: src/manager_window.vala
-msgid "Foreign"
-msgstr "Külső"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Installed"
-msgstr "Telepített"
-
-#: src/manager_window.vala
-msgid "Ignored"
-msgstr "Mellőzött"
-
-#: src/manager_window.vala src/cli.vala
-msgid "None"
-msgstr "Semelyik"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Reason"
-msgstr "Telepítés oka"
-
-#: src/manager_window.vala
-msgid "Installed as a dependency for another package"
-msgstr "Egy másik csomag függőségeként telepítve"
-
-#: src/manager_window.vala
-msgid "Mark as explicitly installed"
-msgstr "Megjelölés kifejezetten telepítettként"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Licenses"
-msgstr "Licencek"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Unknown"
-msgstr "Ismeretlen"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Repository"
-msgstr "Tároló"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Package Base"
-msgstr "Csomagalap"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Maintainer"
-msgstr "Karbantartó"
-
-#: src/manager_window.vala src/cli.vala
-msgid "First Submitted"
-msgstr "Először közzétéve"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Last Modified"
-msgstr "Utoljára módosítva"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Votes"
-msgstr "Szavazatok"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Out of Date"
-msgstr "Elavult"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Groups"
-msgstr "Csoportok"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Packager"
-msgstr "Csomagoló"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Build Date"
-msgstr "Összeállítás dátuma"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Date"
-msgstr "Telepítés dátuma"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Validated By"
-msgstr "Érvényesítette"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Backup files"
-msgstr "Biztonsági mentési fájlok"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional Dependencies"
-msgstr "Nem kötelező függőségek"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional For"
-msgstr "Nem kötelező ehhez"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Provides"
-msgstr "Szolgáltatja"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Fordítási függőségek"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Függőségek ellenőrzése"
-
-#: src/manager_window.vala
-msgid "Publisher"
-msgstr "Közzétette"
-
-#: src/manager_window.vala
-msgid "Confined in a Sandbox"
-msgstr "Bezárva egy homokozóba"
-
-#: src/manager_window.vala
-msgid "Channels"
-msgstr "Csatornák"
-
-#: src/manager_window.vala
-msgid "OS Updates"
-msgstr "Rendszerfrissítések"
-
-#: src/manager_window.vala
-msgid "Includes performance, stability and security improvements"
-msgstr "Teljesítmény-, stabilitási- és biztonsági fejlesztéseket tartalmaz"
-
-#: src/manager_window.vala
-msgid "Featured"
-msgstr "Kiemelt"
-
-#: src/manager_window.vala
-msgid "Photo & Video"
-msgstr "Kép és videó"
-
-#: src/manager_window.vala
-msgid "Music & Audio"
-msgstr "Zene és hang"
-
-#: src/manager_window.vala
-msgid "Productivity"
-msgstr "Iroda"
-
-#: src/manager_window.vala
-msgid "Communication & News"
-msgstr "Kommunikáció és hírek"
-
-#: src/manager_window.vala
-msgid "Education & Science"
-msgstr "Oktatás és tudomány"
-
-#: src/manager_window.vala
-msgid "Games"
-msgstr "Játékok"
-
-#: src/manager_window.vala
-msgid "Utilities"
-msgstr "Kellékek"
-
-#: src/manager_window.vala
-msgid "Development"
-msgstr "Fejlesztés"
-
-#: src/manager_window.vala resources/manager_window.ui
-#: resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Frissítések"
-
-#: src/manager_window.vala
-msgid "Last refresh"
-msgstr "Utoljára frissítve"
-
-#: src/preferences_dialog.vala
-msgid "every 3 hours"
-msgstr "3 óránként"
-
-#: src/preferences_dialog.vala
-msgid "every 6 hours"
-msgstr "6 óránként"
-
-#: src/preferences_dialog.vala
-msgid "every 12 hours"
-msgstr "12 óránként"
-
-#: src/preferences_dialog.vala
-msgid "every day"
-msgstr "naponta"
-
-#: src/preferences_dialog.vala
-msgid "every week"
-msgstr "hetente"
-
-#: src/preferences_dialog.vala
-msgid "1"
-msgstr "1"
-
-#: src/preferences_dialog.vala
-msgid "2"
-msgstr "2"
-
-#: src/preferences_dialog.vala
-msgid "4"
-msgstr "4"
-
-#: src/preferences_dialog.vala
-msgid "6"
-msgstr "6"
-
-#: src/preferences_dialog.vala
-msgid "8"
-msgstr "8"
-
-#: src/preferences_dialog.vala
-msgid "10"
-msgstr "10"
-
-#: src/preferences_dialog.vala
-msgid "Worldwide"
-msgstr "Világszerte"
-
-#: src/preferences_dialog.vala
-msgid "0"
-msgstr "0"
-
-#: src/preferences_dialog.vala
-msgid "3"
-msgstr "3"
-
-#: src/preferences_dialog.vala
-msgid "5"
-msgstr "5"
-
-#: src/preferences_dialog.vala src/cli.vala
-msgid "To delete"
-msgstr "Törlésre"
-
-#: src/preferences_dialog.vala src/cli.vala
-#, c-format
-msgid "%u file"
-msgid_plural "%u files"
-msgstr[0] "%u fájl"
-msgstr[1] "%u fájl"
-
-#: src/preferences_dialog.vala
-msgid "Select Build Directory"
-msgstr "Válassza ki az összeállítási könyvtárat"
-
-#: src/preferences_dialog.vala
-msgid "_Choose"
-msgstr "_Kiválasztás"
-
-#: src/preferences_dialog.vala
-msgid "Choose Ignored Upgrades"
-msgstr "Válassza ki a mellőzendő frissítéseket"
-
-#: src/transaction-cli.vala src/cli.vala
-#, c-format
-msgid "Enter a selection (default=%s)"
-msgstr "Adjon meg egy számot (alapértelmezett=%s)"
-
-#: src/transaction-cli.vala
-msgid "none"
-msgstr "semmi"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "Enter a number (default=%d)"
-msgstr "Adjon meg egy számot (alapértelmezett=%d)"
-
-#: src/transaction-cli.vala
-msgid "[y/N]"
-msgstr "[i/N]"
-
-#: src/transaction-cli.vala
-msgid "y"
-msgstr "i"
-
-#: src/transaction-cli.vala
-msgid "yes"
-msgstr "igen"
-
-#: src/transaction-cli.vala
-msgid "[e]"
-msgstr "[e]"
-
-#: src/transaction-cli.vala
-msgid "Apply transaction"
-msgstr "Tranzakció végrehajtása"
-
-#: src/transaction-cli.vala
-msgid "[e/y/N]"
-msgstr "[e/I/N]"
-
-#: src/transaction-cli.vala
-msgid "e"
-msgstr "e"
-
-#: src/transaction-cli.vala
-msgid "To upgrade"
-msgstr "Frissítendő"
-
-#: src/transaction-cli.vala
-msgid "To reinstall"
-msgstr "Újratelepítésre"
-
-#: src/transaction-cli.vala
-msgid "To install"
-msgstr "Telepítésre"
-
-#: src/transaction-cli.vala
-msgid "To build"
-msgstr "Összeállításra"
-
-#: src/transaction-cli.vala
-msgid "To downgrade"
-msgstr "Visszafejlesztésre"
-
-#: src/transaction-cli.vala
-msgid "To remove"
-msgstr "Eltávolításra"
-
-#: src/transaction-cli.vala
-msgid "Total installed size"
-msgstr "Teljes telepített méret"
-
-#: src/transaction-cli.vala
-msgid "Total removed size"
-msgstr "Teljes eltávolított méret"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "View %s build files diff"
-msgstr "A(z) %s összeállítási fájljai közötti különbségek megtekintése"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -989,6 +707,10 @@ msgstr "művelet"
 #: src/cli.vala
 msgid "options"
 msgstr "kapcsolók"
+
+#: src/cli.vala src/installer.vala
+msgid "package(s)"
+msgstr "csomag(ok)"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1099,6 +821,10 @@ msgstr "ne írjon ki semmilyen kimenetet"
 msgid "overwrite existing files"
 msgstr "meglévő fájlok felülírása"
 
+#: src/cli.vala src/installer.vala
+msgid "Build packages from AUR and install them with their dependencies"
+msgstr "Csomagok összeállítása és telepítése a függőségeikkel együtt az AUR-ból"
+
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
@@ -1133,6 +859,10 @@ msgstr "az AUR-ból származó összeállítási fájlok ne legyenek klónozva, 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
 msgstr "az összes megerősítési üzenet figyelmen kívül hagyása"
+
+#: src/cli.vala src/installer.vala
+msgid "Install packages from repositories, path or url"
+msgstr "Csomagok telepítése a tárolókból – útvonal vagy webcím"
 
 #: src/cli.vala
 msgid "glob"
@@ -1173,6 +903,10 @@ msgstr "ne ellenőrizze a frissítéseket"
 #: src/cli.vala
 msgid "Reinstall packages"
 msgstr "Csomagok újratelepítése"
+
+#: src/cli.vala src/installer.vala
+msgid "Remove packages"
+msgstr "Csomagok eltávolítása"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
@@ -1305,10 +1039,6 @@ msgstr "ne távolítson el fájlokat, csak a megfelelő csomagok keresése"
 msgid "also display all files names"
 msgstr "jelenítse meg az összes fájlnevet is"
 
-#: src/cli.vala resources/manager_window.ui
-msgid "Name"
-msgstr "Név"
-
 #: src/cli.vala
 msgid "Version"
 msgstr "Verzió"
@@ -1321,9 +1051,101 @@ msgstr "Leírás"
 msgid "URL"
 msgstr "Webcím"
 
+#: src/cli.vala src/manager_window.vala
+msgid "Licenses"
+msgstr "Licencek"
+
 #: src/cli.vala
 msgid "Installed Size"
 msgstr "Telepített méret"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Depends On"
+msgstr "Függőségek"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional Dependencies"
+msgstr "Nem kötelező függőségek"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Make Dependencies"
+msgstr "Fordítási függőségek"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Check Dependencies"
+msgstr "Függőségek ellenőrzése"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Required By"
+msgstr "Szükséges ehhez"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional For"
+msgstr "Nem kötelező ehhez"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Provides"
+msgstr "Szolgáltatja"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Replaces"
+msgstr "Cserék"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Conflicts With"
+msgstr "Ütközik ezzel"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Packager"
+msgstr "Csomagoló"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Build Date"
+msgstr "Összeállítás dátuma"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Date"
+msgstr "Telepítés dátuma"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Reason"
+msgstr "Telepítés oka"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Validated By"
+msgstr "Érvényesítette"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Backup files"
+msgstr "Biztonsági mentési fájlok"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Package Base"
+msgstr "Csomagalap"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Maintainer"
+msgstr "Karbantartó"
+
+#: src/cli.vala src/manager_window.vala
+msgid "First Submitted"
+msgstr "Először közzétéve"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Last Modified"
+msgstr "Utoljára módosítva"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Votes"
+msgstr "Szavazatok"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Out of Date"
+msgstr "Elavult"
 
 #: src/cli.vala
 #, c-format
@@ -1342,6 +1164,13 @@ msgid_plural "%u ignored updates"
 msgstr[0] "%u mellőzött frissítés"
 msgstr[1] "%u mellőzött frissítés"
 
+#: src/cli.vala src/tray.vala
+#, c-format
+msgid "%u available update"
+msgid_plural "%u available updates"
+msgstr[0] "%u frissítés érhető el"
+msgstr[1] "%u frissítés érhető el"
+
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
 msgstr "Csak az eltávolított csomagok verzióinak eltávolítása"
@@ -1349,6 +1178,17 @@ msgstr "Csak az eltávolított csomagok verzióinak eltávolítása"
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
 msgstr "A gyorsítótárban megtartandó egyes csomagok verzióinak száma"
+
+#: src/cli.vala src/preferences_dialog.vala
+msgid "To delete"
+msgstr "Törlésre"
+
+#: src/cli.vala src/preferences_dialog.vala
+#, c-format
+msgid "%u file"
+msgid_plural "%u files"
+msgstr[0] "%u fájl"
+msgstr[1] "%u fájl"
 
 #: src/cli.vala
 msgid "Clean cache"
@@ -1368,12 +1208,21 @@ msgstr "A(z) %s hozzáadása a telepítendőkhöz"
 msgid "%s is only available from AUR"
 msgstr "A(z) %s csak az AUR-ból érhető el"
 
+#: src/cli.vala src/installer.vala src/transaction.vala
+msgid "Nothing to do"
+msgstr "Nincs teendő"
+
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "%1$u tag van a(z) %2$s nevű csoportban"
 msgstr[1] "%1$u tag van a(z) %2$s nevű csoportban"
+
+#: src/cli.vala src/transaction-cli.vala
+#, c-format
+msgid "Enter a selection (default=%s)"
+msgstr "Adjon meg egy számot (alapértelmezett=%s)"
 
 #: src/cli.vala
 msgid "all"
@@ -1384,259 +1233,507 @@ msgstr "összes"
 msgid "Add %s to reinstall"
 msgstr "A(z) %s hozzáadása az újratelepítendőkhöz"
 
+#: src/cli.vala src/transaction.vala
+#, c-format
+msgid "Cloning %s build files"
+msgstr "A(z) %s összeállítási fájljainak klónozása"
+
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
 msgstr "A(z) %1$s telepítése innen: %2$s"
 
+#: src/daemon.vala
+msgid "Authentication failed"
+msgstr "Nem sikerült a hitelesítés"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Waiting for another package manager to quit"
+msgstr "Várakozás egy másik csomagkezelő kilépésére"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Timeout expired"
+msgstr "Az időkorlát lejárt"
+
+#: src/flatpak_plugin.vala
+msgid "Flatpak transaction failed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "No package found"
+msgstr "Nem található csomag"
+
+#: src/manager_window.vala
+msgid "Checking for Updates"
+msgstr "Frissítések ellenőrzése"
+
+#: src/manager_window.vala
+msgid "Alpm Package"
+msgstr "ALPM-csomag"
+
+#: src/manager_window.vala
+msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr "Egy csomagkezelő ALPM-, AUR-, Flatpak- és Snap támogatással"
+
+#: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Total download size"
+msgstr "Teljes letöltési méret"
+
+#: src/manager_window.vala
+#, c-format
+msgid "%u pending operation"
+msgid_plural "%u pending operations"
+msgstr[0] "%u függőben lévő művelet"
+msgstr[1] "%u függőben lévő művelet"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Függőben"
+
+#: src/manager_window.vala
+msgid "All"
+msgstr "Összes"
+
+#: src/manager_window.vala
+msgid "Orphans"
+msgstr "Árvák"
+
+#: src/manager_window.vala
+msgid "Foreign"
+msgstr "Külső"
+
+#: src/manager_window.vala
+msgid "Ignored"
+msgstr "Mellőzött"
+
+#: src/manager_window.vala
+msgid "Mark as explicitly installed"
+msgstr "Megjelölés kifejezetten telepítettként"
+
+#: src/manager_window.vala
+msgid "Publisher"
+msgstr "Közzétette"
+
+#: src/manager_window.vala
+msgid "Confined in a Sandbox"
+msgstr "Bezárva egy homokozóba"
+
+#: src/manager_window.vala
+msgid "Channels"
+msgstr "Csatornák"
+
+#: src/manager_window.vala
+msgid "Includes performance, stability and security improvements"
+msgstr "Teljesítmény-, stabilitási- és biztonsági fejlesztéseket tartalmaz"
+
+#: src/manager_window.vala
+msgid "Featured"
+msgstr "Kiemelt"
+
+#: src/manager_window.vala
+msgid "Photo & Video"
+msgstr "Kép és videó"
+
+#: src/manager_window.vala
+msgid "Music & Audio"
+msgstr "Zene és hang"
+
+#: src/manager_window.vala
+msgid "Productivity"
+msgstr "Iroda"
+
+#: src/manager_window.vala
+msgid "Communication & News"
+msgstr "Kommunikáció és hírek"
+
+#: src/manager_window.vala
+msgid "Education & Science"
+msgstr "Oktatás és tudomány"
+
+#: src/manager_window.vala
+msgid "Games"
+msgstr "Játékok"
+
+#: src/manager_window.vala
+msgid "Utilities"
+msgstr "Kellékek"
+
+#: src/manager_window.vala
+msgid "Development"
+msgstr "Fejlesztés"
+
+#: src/manager_window.vala
+msgid "Last refresh"
+msgstr "Utoljára frissítve"
+
+#: src/manager_window.vala src/transaction.vala
+msgid "Transaction successfully finished"
+msgstr "A tranzakció sikeresen végrehajtódott"
+
+#: src/pgp_key.vala
+msgid "Fingerprint"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Algorithm"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Creation date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Expiration date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Never"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Unknown keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Source"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Required by"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%s build files (validpgpkeys)"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has been revoked by its owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has expired"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key is disabled on the keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%u keys match %s on the keyserver, only the first one is shown"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "The key found on the keyserver does not match the requested key %s"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid ""
+"Keyservers do not verify key owners: compare the fingerprint with the one "
+"published by the upstream project before trusting this key"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 3 hours"
+msgstr "3 óránként"
+
+#: src/preferences_dialog.vala
+msgid "every 6 hours"
+msgstr "6 óránként"
+
+#: src/preferences_dialog.vala
+msgid "every 12 hours"
+msgstr "12 óránként"
+
+#: src/preferences_dialog.vala
+msgid "every day"
+msgstr "naponta"
+
+#: src/preferences_dialog.vala
+msgid "every week"
+msgstr "hetente"
+
+#: src/preferences_dialog.vala
+msgid "1"
+msgstr "1"
+
+#: src/preferences_dialog.vala
+msgid "2"
+msgstr "2"
+
+#: src/preferences_dialog.vala
+msgid "4"
+msgstr "4"
+
+#: src/preferences_dialog.vala
+msgid "6"
+msgstr "6"
+
+#: src/preferences_dialog.vala
+msgid "8"
+msgstr "8"
+
+#: src/preferences_dialog.vala
+msgid "10"
+msgstr "10"
+
+#: src/preferences_dialog.vala
+msgid "Worldwide"
+msgstr "Világszerte"
+
+#: src/preferences_dialog.vala
+msgid "0"
+msgstr "0"
+
+#: src/preferences_dialog.vala
+msgid "3"
+msgstr "3"
+
+#: src/preferences_dialog.vala
+msgid "5"
+msgstr "5"
+
+#: src/preferences_dialog.vala
+msgid "Select Build Directory"
+msgstr "Válassza ki az összeállítási könyvtárat"
+
+#: src/preferences_dialog.vala
+msgid "Choose Ignored Upgrades"
+msgstr "Válassza ki a mellőzendő frissítéseket"
+
+#: src/snap_plugin.vala src/transaction.vala
+msgid "Yes"
+msgstr "Igen"
+
 #: src/snap_plugin.vala
 msgid "No"
 msgstr "Nem"
 
-#: resources/choose_provider_dialog.ui
-msgid "Choose a Provider"
-msgstr "Válasszon egy szolgáltatót"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose optional dependencies for %s"
+msgstr "Válassza ki a(z) %s csomag nem kötelező függőségeit"
 
-#: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
-msgid "Choose"
-msgstr "Kiválasztás"
+#: src/transaction-cli.vala
+msgid "none"
+msgstr "semmi"
 
-#: resources/progress_dialog.ui
-msgid "Progress"
-msgstr "Folyamat"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose a provider for %s"
+msgstr "Válassza ki a szolgáltatót a következőhöz: %s"
 
-#: resources/history_dialog.ui
-msgid "Pamac History"
-msgstr "Pamac-előzmények"
+#: src/transaction-cli.vala
+#, c-format
+msgid "Enter a number (default=%d)"
+msgstr "Adjon meg egy számot (alapértelmezett=%d)"
 
-#: resources/transaction_sum_dialog.ui
-msgid "Transaction Summary"
-msgstr "Tranzakció összefoglalása"
+#: src/transaction-cli.vala
+msgid "[y/N]"
+msgstr "[i/N]"
 
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-msgid "_Apply"
-msgstr "_Alkalmaz"
+#: src/transaction-cli.vala
+msgid "y"
+msgstr "i"
 
-#: resources/manager_window.ui
-msgid "Software Mode"
-msgstr "Szoftvermód"
+#: src/transaction-cli.vala
+msgid "yes"
+msgstr "igen"
 
-#: resources/manager_window.ui
-msgid "Refresh databases"
-msgstr "Adatbázis frissítése"
+#: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
+msgstr "A(z) %1$s PGP-kulcs szükséges a(z) %2$s forrásfájljainak ellenőrzéséhez"
 
-#: resources/manager_window.ui
-msgid "View History"
-msgstr "Előzmények megtekintése"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Import the PGP key"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Preferences"
-msgstr "Beállítások"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Trust %s and import the PGP key"
+msgstr "Megbízom a következőben: %s, és importálom a PGP-kulcsot"
 
-#: resources/manager_window.ui
-msgid "About"
-msgstr "Névjegy"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Edit build files"
+msgstr "Összeállítási fájlok szerkesztése"
 
-#: resources/manager_window.ui
-msgid "Search"
-msgstr "Keresés"
+#: src/transaction-cli.vala
+msgid "[e]"
+msgstr "[e]"
 
-#: resources/manager_window.ui
-msgid "Remove all"
-msgstr "Összes eltávolítása"
+#: src/transaction-cli.vala
+msgid "Apply transaction"
+msgstr "Tranzakció végrehajtása"
 
-#: resources/manager_window.ui
-msgid "Install all"
-msgstr "Összes telepítése"
+#: src/transaction-cli.vala
+msgid "[e/y/N]"
+msgstr "[e/I/N]"
 
-#: resources/manager_window.ui
-msgid "Ignore all"
-msgstr "Összes mellőzése"
+#: src/transaction-cli.vala
+msgid "e"
+msgstr "e"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Orphan Of"
+msgstr "Elárvult fájlja a következőnek"
+
+#: src/transaction-cli.vala
+msgid "To upgrade"
+msgstr "Frissítendő"
+
+#: src/transaction-cli.vala
+msgid "To reinstall"
+msgstr "Újratelepítésre"
+
+#: src/transaction-cli.vala
+msgid "To install"
+msgstr "Telepítésre"
+
+#: src/transaction-cli.vala
+msgid "To build"
+msgstr "Összeállításra"
+
+#: src/transaction-cli.vala
+msgid "To downgrade"
+msgstr "Visszafejlesztésre"
+
+#: src/transaction-cli.vala
+msgid "To remove"
+msgstr "Eltávolításra"
+
+#: src/transaction-cli.vala
+msgid "Total installed size"
+msgstr "Teljes telepített méret"
+
+#: src/transaction-cli.vala
+msgid "Total removed size"
+msgstr "Teljes eltávolított méret"
+
+#: src/transaction-cli.vala
+#, c-format
+msgid "View %s build files diff"
+msgstr "A(z) %s összeállítási fájljai közötti különbségek megtekintése"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Edit %s build files"
+msgstr "A(z) %s összeállítási fájljainak szerkesztése"
+
+#: src/transaction-gtk.vala
+msgid "Import PGP key"
+msgstr "PGP-kulcs importálása"
+
+#: src/transaction-gtk.vala
+msgid "Trust and Import"
+msgstr "Megbízom benne és importálom"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "A %s PGP kulcs szükséges a (z) %s forrásfájlok ellenőrzéséhez"
+
+#: src/transaction-gtk.vala
+msgid "Save"
+msgstr "Mentés"
+
+#: src/transaction-gtk.vala
+msgid "Restart"
+msgstr "Újraindítás"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The snap %s was published using classic confinement"
+msgstr "A(z) %s snap csomagot klasszikus korlátozással tették közzé"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "Install %s anyway"
+msgstr "A(z) %s telepítése mindenképp"
+
+#: src/transaction.vala
+msgid "Refreshing mirrors list"
+msgstr "Tükrök listájának frissítése"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to clone %s build files"
+msgstr "Nem sikerült klónozni a(z) %s összeállítási fájljait"
+
+#: src/transaction.vala
+#, c-format
+msgid "Generating %s information"
+msgstr "A(z) %s információinak előállítása"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to generate %s information"
+msgstr "Nem sikerült előállítani a(z) %s információit"
+
+#: src/transaction.vala
+#, c-format
+msgid "Checking %s dependencies"
+msgstr "A(z) %s függőségeinek ellenőrzése"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to check %s dependencies"
+msgstr "Nem sikerült ellenőrizni a(z) %s függőségeit"
+
+#: src/transaction.vala
+#, c-format
+msgid "key %s could not be imported"
+msgstr "nem sikerült importálni a(z) %s kulcsot"
+
+#: src/transaction.vala
+msgid "Preparing"
+msgstr "Felkészülés"
+
+#: src/transaction.vala
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr "%1$s: csomagfrissítés mellőzése (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Nem sikerült szinkronizálni az AUR-adatbázist"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "A(z) %s összeállítása"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to build %s"
+msgstr "Nem sikerült összeállítani a következőt: %s"
+
+#: src/transaction_interface_daemon.vala
+msgid "The transaction may still be running in the background"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "Connection to the daemon was lost"
+msgstr ""
+
+#: src/tray.vala
+msgid "_Quit"
+msgstr "_Kilépés"
 
 #: resources/manager_window.ui
 msgid "Sort by"
 msgstr "Rendezési sorrend"
 
-#: resources/manager_window.ui
-msgid "Relevance"
-msgstr "Fontosság"
+#: src/manager_window.vala
+msgid "_Open"
+msgstr "_Megnyitás"
 
-#: resources/manager_window.ui
-msgid "Size"
-msgstr "Méret"
-
-#: resources/manager_window.ui
-msgid "Date"
-msgstr "Dátum"
-
-#: resources/manager_window.ui
-msgid "Refresh"
-msgstr "Frissítés"
-
-#: resources/manager_window.ui
-msgid "Categories"
-msgstr "Kategóriák"
-
-#: resources/manager_window.ui
-msgid "Browse"
-msgstr "Böngészés"
-
-#: resources/manager_window.ui
-msgid "Launch"
-msgstr "Indítás"
-
-#: resources/manager_window.ui
-msgid "Remove"
-msgstr "Eltávolítás"
-
-#: resources/manager_window.ui
-msgid "Reinstall"
-msgstr "Újratelepítés"
-
-#: resources/manager_window.ui
-msgid "Build"
-msgstr "Összeállítás"
-
-#: resources/manager_window.ui
-msgid "Dependencies"
-msgstr "Függőségek"
-
-#: resources/manager_window.ui
-msgid "Files"
-msgstr "Fájlok"
-
-#: resources/manager_window.ui
-msgid "Reset build files"
-msgstr "Összeállítási fájlok visszaállítása"
-
-#: resources/manager_window.ui
-msgid "Build files"
-msgstr "Összeállítási fájlok"
-
-#: resources/preferences_dialog.ui
-msgid "General"
-msgstr "Általános"
-
-#: resources/preferences_dialog.ui
-msgid "Check for updates"
-msgstr "Frissítések ellenőrzése"
-
-#: resources/preferences_dialog.ui
-msgid "Updates check frequency"
-msgstr "Frissítések ellenőrzésének gyakorisága"
-
-#: resources/preferences_dialog.ui
-msgid "Automatically download updates"
-msgstr "Frissítések automatikus letöltése"
-
-#: resources/preferences_dialog.ui
-msgid "Upgrade the system at shutdown"
-msgstr "Rendszer frissítése leállításkor"
-
-#: resources/preferences_dialog.ui
-msgid "Hide tray icon when no update"
-msgstr "Tálcaikon elrejtése ha nincsenek frissítések"
-
-#: resources/preferences_dialog.ui
-msgid "Downloads"
-msgstr "Letöltések"
-
-#: resources/preferences_dialog.ui
-msgid "Parallel downloads"
-msgstr "Párhuzamos letöltések"
-
-#: resources/preferences_dialog.ui
-msgid "Use mirrors from"
-msgstr "Tükrök használata innen"
-
-#: resources/preferences_dialog.ui
-msgid "Refresh Mirrors"
-msgstr "Tükrök frissítése"
-
-#: resources/preferences_dialog.ui
-msgid "Cache"
-msgstr "Gyorsítótár"
-
-#: resources/preferences_dialog.ui
-msgid "Number of versions of each package to keep"
-msgstr "Az egyes csomagok megtartandó változatainak száma"
-
-#: resources/preferences_dialog.ui
-msgid "Remove only the uninstalled packages"
-msgstr "Csak az eltávolított csomagok törlése"
-
-#: resources/preferences_dialog.ui
-msgid "Clean"
-msgstr "Törlés"
-
-#: resources/preferences_dialog.ui
-msgid "Advanced"
-msgstr "Speciális"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"Misconfiguration of these options can lead to system breakage.\n"
-"Modify them only if you know what you are doing."
-msgstr "Ezeknek a beállításoknak a helytelen használata a rendszer meghibásodásához vezethet.\nCsak akkor módosítsa őket, ha tudja, mit csinál."
-
-#: resources/preferences_dialog.ui
-msgid "Check available disk space"
-msgstr "A rendelkezésre álló lemezterület ellenőrzése"
-
-#: resources/preferences_dialog.ui
-msgid "Remove unrequired dependencies"
-msgstr "Nem megkövetelt függőségek eltávolítása"
-
-#: resources/preferences_dialog.ui
-msgid "Do not check for updates when installing"
-msgstr "Telepítéskor ne ellenőrizze a frissítéseket"
-
-#: resources/preferences_dialog.ui
-msgid "Enable downgrade"
-msgstr "Visszafejlesztés engedélyezése"
-
-#: resources/preferences_dialog.ui
-msgid "Ignored upgrades"
-msgstr "Mellőzött frissítések"
-
-#: resources/preferences_dialog.ui
-msgid "Third Party"
-msgstr "Harmadik féltől származó"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"AUR is a community maintained repository so it presents potential risks and problems.\n"
-"All AUR users should be familiar with the build process."
-msgstr "Az AUR egy közösségileg karbantartott tároló, így lehetséges veszélyek és problémák forrása.\nAz összes AUR-felhasználónak ismernie kell az összeállítási folyamatot."
-
-#: resources/preferences_dialog.ui
-msgid "Enable AUR support"
-msgstr "AUR-támogatás engedélyezése"
-
-#: resources/preferences_dialog.ui
-msgid "Keep built packages"
-msgstr "Az összeállítási csomagok megőrzése"
-
-#: resources/preferences_dialog.ui
-msgid "Check for development packages updates"
-msgstr "Ellenőrizze a fejlesztés alatt álló csomagok frissítéseit"
-
-#: resources/preferences_dialog.ui
-msgid "Build directory"
-msgstr "Összeállítási könyvtár"
-
-#: resources/preferences_dialog.ui
-msgid "Flatpak packages are maintained by their publisher."
-msgstr "A Flatpak csomagokat a közzétevőjük tartja karban."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Flatpak support"
-msgstr "Flatpak támogatás engedélyezése"
-
-#: resources/preferences_dialog.ui
-msgid "Snap packages are maintained by their publisher."
-msgstr "A Snap csomagokat a közzétevőjük tartja karban."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Snap support"
-msgstr "Snap támogatás engedélyezése"
+#: src/preferences_dialog.vala
+msgid "_Choose"
+msgstr "_Kiválasztás"

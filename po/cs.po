@@ -32,6 +32,25 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: src/transaction-gtk.vala src/tray.vala
+msgid "Package Manager"
+msgstr "Správce balíčků"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/cli.vala
+#: src/manager_window.vala src/tray.vala
+msgid "Your system is up to date"
+msgstr "Váš systém je aktuální"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/tray.vala
+msgid "Updates Available"
+msgstr "Aktualizace k dispozici"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
+msgid "Details"
+msgstr "Detaily"
+
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
 msgstr "Instalovat, aktualizovat nebo odstranit balíčky"
@@ -40,7 +59,350 @@ msgstr "Instalovat, aktualizovat nebo odstranit balíčky"
 msgid "Authentication is required to install, update, or remove packages"
 msgstr "K instalování, aktualizaci nebo odstranění balíčků je potřeba autentizace"
 
-#: src/alpm_utils.vala src/database.vala
+#: resources/choose_pkgs_dialog.ui resources/manager_window.ui
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: src/transaction-gtk.vala
+msgid "_Cancel"
+msgstr "_Zrušit"
+
+#: resources/choose_pkgs_dialog.ui resources/choose_provider_dialog.ui
+msgid "Choose"
+msgstr "Vybrat"
+
+#: resources/choose_provider_dialog.ui
+msgid "Choose a Provider"
+msgstr "Vybrat poskytovatele"
+
+#: resources/history_dialog.ui
+msgid "Pamac History"
+msgstr "Pamac historie"
+
+#: resources/manager_window.ui
+msgid "Software Mode"
+msgstr "Režim software"
+
+#: resources/manager_window.ui
+msgid "Refresh databases"
+msgstr "Aktualizovat databáze"
+
+#: resources/manager_window.ui
+msgid "View History"
+msgstr "Zobrazit historii"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Install Local Packages"
+msgstr "Instalovat místní balíčky"
+
+#: resources/manager_window.ui
+msgid "Preferences"
+msgstr "Nastavení"
+
+#: resources/manager_window.ui
+msgid "About"
+msgstr "O programu"
+
+#: resources/manager_window.ui
+msgid "Relevance"
+msgstr "Relevance"
+
+#: resources/manager_window.ui src/cli.vala
+msgid "Name"
+msgstr "Název"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Repository"
+msgstr "Repozitář"
+
+#: resources/manager_window.ui
+msgid "Size"
+msgstr "Velikost"
+
+#: resources/manager_window.ui
+msgid "Date"
+msgstr "Datum"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Search"
+msgstr "Vyhledat"
+
+#: resources/manager_window.ui
+msgid "Browse"
+msgstr "Procházet"
+
+#: resources/manager_window.ui
+msgid "Categories"
+msgstr "Kategorie"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Groups"
+msgstr "Skupiny"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Repositories"
+msgstr "Repozitáře"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Installed"
+msgstr "Nainstalováno"
+
+#: resources/manager_window.ui resources/preferences_dialog.ui
+#: src/manager_window.vala
+msgid "Updates"
+msgstr "Aktualizace"
+
+#: resources/manager_window.ui
+msgid "Remove all"
+msgstr "Odstranit vše"
+
+#: resources/manager_window.ui
+msgid "Install all"
+msgstr "Nainstalovat vše"
+
+#: resources/manager_window.ui
+msgid "Ignore all"
+msgstr "Ignorovat vše"
+
+#: resources/manager_window.ui
+msgid "Refresh"
+msgstr "Obnovit"
+
+#: resources/manager_window.ui
+msgid "Launch"
+msgstr "Spustit"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Install"
+msgstr "Instalovat"
+
+#: resources/manager_window.ui
+msgid "Remove"
+msgstr "Odstranit"
+
+#: resources/manager_window.ui
+msgid "Reinstall"
+msgstr "Přeinstalovat"
+
+#: resources/manager_window.ui
+msgid "Build"
+msgstr "Sestavit"
+
+#: resources/manager_window.ui
+msgid "Dependencies"
+msgstr "Závislosti"
+
+#: resources/manager_window.ui
+msgid "Files"
+msgstr "Soubory"
+
+#: resources/manager_window.ui
+msgid "Build files"
+msgstr "Sestavovací soubory"
+
+#: resources/manager_window.ui
+msgid "Reset build files"
+msgstr "Obnovit sestavovací soubory"
+
+#: resources/manager_window.ui resources/transaction_sum_dialog.ui
+msgid "_Apply"
+msgstr "_Použít"
+
+#: resources/preferences_dialog.ui
+msgid "General"
+msgstr "Obecné"
+
+#: resources/preferences_dialog.ui
+msgid "Check for updates"
+msgstr "Kontrolovat aktualizace"
+
+#: resources/preferences_dialog.ui
+msgid "Updates check frequency"
+msgstr "Frekvence kontroly aktualizací"
+
+#: resources/preferences_dialog.ui
+msgid "Automatically download updates"
+msgstr "Automaticky stahovat aktualizace"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Upgradujte systém během vypínání"
+
+#: resources/preferences_dialog.ui
+msgid "Hide tray icon when no update"
+msgstr "Schovat ikonu v liště, pokud není dostupná žádná aktualizace"
+
+#: resources/preferences_dialog.ui
+msgid "Downloads"
+msgstr "Stažené"
+
+#: resources/preferences_dialog.ui
+msgid "Parallel downloads"
+msgstr "Paralelní stahování"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Official Repositories"
+msgstr "Oficiální repozitáře"
+
+#: resources/preferences_dialog.ui
+msgid "Use mirrors from"
+msgstr "Použít zrcadla z"
+
+#: resources/preferences_dialog.ui
+msgid "Refresh Mirrors"
+msgstr "Obnovit zrcadla"
+
+#: resources/preferences_dialog.ui
+msgid "Cache"
+msgstr "Mezipaměť"
+
+#: resources/preferences_dialog.ui
+msgid "Number of versions of each package to keep"
+msgstr "Počet zachovaných verzí každého balíčku"
+
+#: resources/preferences_dialog.ui
+msgid "Remove only the uninstalled packages"
+msgstr "Odstranit pouze odinstalované balíčky"
+
+#: resources/preferences_dialog.ui
+msgid "Clean"
+msgstr "Vyčistit"
+
+#: resources/preferences_dialog.ui
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"Misconfiguration of these options can lead to system breakage.\n"
+"Modify them only if you know what you are doing."
+msgstr "Špatná konfigurace těchto voleb může vést k selhání systému.\nUpravujte je pouze pokud víte co děláte."
+
+#: resources/preferences_dialog.ui
+msgid "Check available disk space"
+msgstr "Kontrolovat volné místo na disku"
+
+#: resources/preferences_dialog.ui
+msgid "Remove unrequired dependencies"
+msgstr "Odstranit nepotřebné závislosti"
+
+#: resources/preferences_dialog.ui
+msgid "Do not check for updates when installing"
+msgstr "Při instalaci nekontrolovat aktualizace"
+
+#: resources/preferences_dialog.ui
+msgid "Enable downgrade"
+msgstr "Umožnit návrat ke starším verzím balíčků"
+
+#: resources/preferences_dialog.ui
+msgid "Ignored upgrades"
+msgstr "Přeskočené aktualizace"
+
+#: resources/preferences_dialog.ui
+msgid "Third Party"
+msgstr "Třetí strana"
+
+#: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
+#: src/cli.vala src/database.vala src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "AUR"
+msgstr "AUR"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"AUR is a community maintained repository so it presents potential risks and problems.\n"
+"All AUR users should be familiar with the build process."
+msgstr "AUR je komunitně udržovaný repozitář. To s sebou nese potencionální rizika a problémy.\nVšichni uživatelé AUR by měli znát postup vytváření balíčku neboli buildu."
+
+#: resources/preferences_dialog.ui
+msgid "Enable AUR support"
+msgstr "Povolit podporu AUR"
+
+#: resources/preferences_dialog.ui
+msgid "Keep built packages"
+msgstr "Ponechat sestavené balíčky"
+
+#: resources/preferences_dialog.ui
+msgid "Check for development packages updates"
+msgstr "Kontrolovat aktualizace vývojových verzí balíčků"
+
+#: resources/preferences_dialog.ui
+msgid "Build directory"
+msgstr "Adresář sestavených souborů"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Flatpak"
+msgstr "Flatpak"
+
+#: resources/preferences_dialog.ui
+msgid "Flatpak packages are maintained by their publisher."
+msgstr "Flatpak balíčky udržují jejich vydavatelé."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Flatpak support"
+msgstr "Povolit podporu Flatpak balíčků"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/snap_plugin.vala
+msgid "Snap"
+msgstr "Snap"
+
+#: resources/preferences_dialog.ui
+msgid "Snap packages are maintained by their publisher."
+msgstr "Snap balíčky udržují jejich vydavatelé."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Snap support"
+msgstr "Povolit podporu Snap balíčků"
+
+#: resources/progress_dialog.ui
+msgid "Progress"
+msgstr "Postup"
+
+#: resources/progress_dialog.ui src/database-gtk.vala src/transaction-gtk.vala
+msgid "_Close"
+msgstr "_Zavřít"
+
+#: resources/transaction_sum_dialog.ui
+msgid "Transaction Summary"
+msgstr "Shrnutí transakce"
+
+#: resources/updates_dialog.ui src/manager_window.vala
+msgid "OS Updates"
+msgstr "Aktualizace operačního systému"
+
+#: src/alpm_package.vala src/aur_plugin.vala src/cli.vala
+#: src/manager_window.vala src/pgp_key.vala
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Explicitly installed"
+msgstr "Nainstalované balíčky"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Installed as a dependency for another package"
+msgstr "Instalováno jako závislost pro další balíček"
+
+#: src/alpm_package.vala src/cli.vala src/manager_window.vala
+msgid "None"
+msgstr "Žádný"
+
+#: src/alpm_package.vala
+msgid "MD5 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "SHA-256 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "Signature"
+msgstr ""
+
+#: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
 msgstr "Selhalo načtení knihovny alpm"
 
@@ -56,15 +418,19 @@ msgstr "Selhala synchronizace databází"
 msgid "Failed to init transaction"
 msgstr "Selhalo spuštění transakce"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/installer.vala
+#: src/alpm_utils.vala src/installer.vala src/transaction-gtk.vala
+#: src/transaction.vala
 msgid "Failed to prepare transaction"
 msgstr "Selhala příprava transakce"
 
-#: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/installer.vala src/transaction.vala
 #, c-format
 msgid "target not found: %s"
 msgstr "cíl nenalezen: %s"
+
+#: src/alpm_utils.vala
+msgid "failed to retrieve some files"
+msgstr "Načtení některých souborů selhalo"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -76,8 +442,8 @@ msgstr "balíček %s nemá platnou architekturu"
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "nesplněná závislost '%1$s' požadovaná %2$s"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala src/transaction.vala
 msgid "Warning"
 msgstr "Varování"
 
@@ -124,10 +490,6 @@ msgstr "odstraňování %s z cílového seznamu"
 msgid "A restart is required for the changes to take effect"
 msgstr "Změny se projeví až po restartu"
 
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-msgid "Transaction cancelled"
-msgstr "Transakce zrušena"
-
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
@@ -166,10 +528,6 @@ msgid "you can remove this file and retry"
 msgstr "můžete odstranit tento soubor a opakovat"
 
 #: src/alpm_utils.vala
-msgid "failed to retrieve some files"
-msgstr "Načtení některých souborů selhalo"
-
-#: src/alpm_utils.vala
 msgid "Failed to commit transaction"
 msgstr "Selhalo dokončení transakce"
 
@@ -189,12 +547,12 @@ msgstr "Řešení závislostí"
 msgid "Checking inter-conflicts"
 msgstr "Kontroluji konflikty"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
 msgstr "Instalace %s"
 
-#: src/alpm_utils.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala
 #, c-format
 msgid "Upgrading %s"
 msgstr "Aktualizace %s"
@@ -209,7 +567,7 @@ msgstr "Přeinstalování %s"
 msgid "Downgrading %s"
 msgstr "Downgrade %s"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
 msgstr "Odstraňování %s"
@@ -240,11 +598,6 @@ msgstr "Kontrola dostupného místa na disku"
 #, c-format
 msgid "%1$s optionally requires %2$s"
 msgstr "%1$s volitelně vyžaduje %2$s"
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "Database file for %s does not exist"
-msgstr "Databázový soubor pro %s neexistuje"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
@@ -294,19 +647,15 @@ msgstr[1] "Zbývá asi %lu minuty"
 msgstr[2] "Zbývá asi %lu minut"
 msgstr[3] "Zbývá asi %lu minut"
 
-#: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
 msgstr "Chyba"
 
-#: src/alpm_utils.vala
-#, c-format
-msgid "Refreshing %s"
-msgstr "Obnovování %s"
-
-#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
-#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
+#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
+#: src/transaction_interface_root.vala
+msgid "Transaction cancelled"
+msgstr "Transakce zrušena"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -315,650 +664,13 @@ msgstr "Stahování %s zahájeno"
 
 #: src/alpm_utils.vala
 #, c-format
-msgid "Downloading %s"
-msgstr "Stahování %s"
+msgid "Refreshing %s"
+msgstr "Obnovování %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
 msgstr "Stahování %s dokončeno"
-
-#: src/daemon.vala
-msgid "Authentication failed"
-msgstr "Ověření oprávnění selhalo"
-
-#: src/daemon.vala
-msgid "Waiting for another package manager to quit"
-msgstr "Čekání na ukončení jiného správce balíčků"
-
-#: src/daemon.vala
-msgid "Timeout expired"
-msgstr "Vypršel časový limit"
-
-#: src/transaction.vala
-msgid "Refreshing mirrors list"
-msgstr "Obnova seznamu zrcadel"
-
-#: src/transaction.vala src/cli.vala
-#, c-format
-msgid "Cloning %s build files"
-msgstr "Klonování %s sestavovacích souborů"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to clone %s build files"
-msgstr "Chyba klonování %s sestavovacích souborů"
-
-#: src/transaction.vala
-#, c-format
-msgid "Generating %s information"
-msgstr "Generování %s informace"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to generate %s information"
-msgstr "Selhalo generování %s informace"
-
-#: src/transaction.vala
-#, c-format
-msgid "Checking %s dependencies"
-msgstr "Kontrola %s závislostí"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to check %s dependencies"
-msgstr "Selhání při kontrole %s závislostí"
-
-#: src/transaction.vala
-#, c-format
-msgid "key %s could not be imported"
-msgstr "klíč %s nemohl být importován"
-
-#: src/transaction.vala src/manager_window.vala
-msgid "Transaction successfully finished"
-msgstr "Transakce úspěšně dokončena"
-
-#: src/transaction.vala
-msgid "Preparing"
-msgstr "Připravuji"
-
-#: src/transaction.vala src/snap_plugin.vala
-msgid "Yes"
-msgstr "Ano"
-
-#: src/transaction.vala src/installer.vala src/cli.vala
-msgid "Nothing to do"
-msgstr "Není co dělat"
-
-#: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr "%1$s: ignoruje aktualizaci balíčku (%2$s => %3$s)"
-
-#: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Selhala synchronizace databáze AUR"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to build %s"
-msgstr "Selhání sestavení %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Sestavuji %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose optional dependencies for %s"
-msgstr "Můžete si vybrat volitelné závislosti pro %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose a provider for %s"
-msgstr "Vyberte poskytovatele pro %s"
-
-#: src/transaction-gtk.vala
-msgid "Import PGP key"
-msgstr "Importovat PGP klíč"
-
-#: src/transaction-gtk.vala
-msgid "Trust and Import"
-msgstr "Důvěřovat a importovat"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
-msgid "_Cancel"
-msgstr "_Zrušit"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "PGP klíč %1$s je třeba k ověření %2$s zdrojových souborů"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Trust %s and import the PGP key"
-msgstr "Důvěřovat %s a importovat PGP klíč"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Official Repositories"
-msgstr "Oficiální repozitáře"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Repositories"
-msgstr "Repozitáře"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Flatpak"
-msgstr "Flatpak"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Depends On"
-msgstr "Závisí na"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Orphan Of"
-msgstr "Nepotřebný balíček od"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Conflicts With"
-msgstr "Konflikty s"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Required By"
-msgstr "Vyžadováno"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Replaces"
-msgstr "Nahrazuje"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Edit build files"
-msgstr "Upravit konfigurační soubory"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-msgid "Total download size"
-msgstr "Celková velikost ke stažení"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Edit %s build files"
-msgstr "Upravit %s konfigurační soubory"
-
-#: src/transaction-gtk.vala
-msgid "Save"
-msgstr "Uložit"
-
-#: src/transaction-gtk.vala resources/progress_dialog.ui
-#: resources/history_dialog.ui
-msgid "_Close"
-msgstr "_Zavřít"
-
-#: src/transaction-gtk.vala
-msgid "Restart"
-msgstr "Restart"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Install"
-msgstr "Instalovat"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "The snap %s was published using classic confinement"
-msgstr "Snap balíček %s může využívat zdroje systému \"classic confinement\""
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
-msgstr "I přesto instalovat %s"
-
-#: src/transaction-gtk.vala src/tray.vala
-msgid "Package Manager"
-msgstr "Správce balíčků"
-
-#: src/installer.vala src/cli.vala
-msgid "Install packages from repositories, path or url"
-msgstr "Nainstalovat balíčky z repozitáře, odkazu nebo url"
-
-#: src/installer.vala src/cli.vala
-msgid "Remove packages"
-msgstr "Odstranit balíčky"
-
-#: src/installer.vala src/cli.vala
-msgid "Build packages from AUR and install them with their dependencies"
-msgstr "Sestavit balíčky z AUR a nainstalovat je s jejich závislostmi"
-
-#: src/installer.vala src/cli.vala
-msgid "package(s)"
-msgstr "balík(ů)"
-
-#: src/tray.vala
-msgid "Updates Available"
-msgstr "Aktualizace k dispozici"
-
-#: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up to date"
-msgstr "Váš systém je aktuální"
-
-#: src/tray.vala
-msgid "_Quit"
-msgstr "_Ukončit"
-
-#: src/tray.vala src/cli.vala
-#, c-format
-msgid "%u available update"
-msgid_plural "%u available updates"
-msgstr[0] "%u dostupná aktualizace"
-msgstr[1] "%u dostupných aktualizací"
-msgstr[2] "%u dostupných aktualizací"
-msgstr[3] "%u dostupných aktualizací"
-
-#: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
-msgid "Details"
-msgstr "Detaily"
-
-#: src/manager_window.vala
-msgid "No package found"
-msgstr "Nenalezen žádný balíček"
-
-#: src/manager_window.vala
-msgid "Checking for Updates"
-msgstr "Kontrola aktualizací"
-
-#: src/manager_window.vala resources/manager_window.ui
-msgid "Install Local Packages"
-msgstr "Instalovat místní balíčky"
-
-#: src/manager_window.vala
-msgid "_Open"
-msgstr "_Otevřít"
-
-#: src/manager_window.vala
-msgid "Alpm Package"
-msgstr "Alpm balíček"
-
-#: src/manager_window.vala
-msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "Správce balíčků s podporou Alpm, AUR, Flatpak a Snap"
-
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
-msgid "Snap"
-msgstr "Snap"
-
-#: src/manager_window.vala
-#, c-format
-msgid "%u pending operation"
-msgid_plural "%u pending operations"
-msgstr[0] "%u nevyřízená operace"
-msgstr[1] "%u nevyřízené operace"
-msgstr[2] "%u nevyřízených operací"
-msgstr[3] "%u nevyřízených operací"
-
-#: src/manager_window.vala
-msgid "Pending"
-msgstr "Nevyřízené"
-
-#: src/manager_window.vala
-msgid "All"
-msgstr "Vše"
-
-#: src/manager_window.vala
-msgid "Explicitly installed"
-msgstr "Nainstalované balíčky"
-
-#: src/manager_window.vala
-msgid "Orphans"
-msgstr "Nepotřebné balíčky"
-
-#: src/manager_window.vala
-msgid "Foreign"
-msgstr "Cizí balíčky"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Installed"
-msgstr "Nainstalováno"
-
-#: src/manager_window.vala
-msgid "Ignored"
-msgstr "Ignorováno"
-
-#: src/manager_window.vala src/cli.vala
-msgid "None"
-msgstr "Žádný"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Reason"
-msgstr "Důvod instalace"
-
-#: src/manager_window.vala
-msgid "Installed as a dependency for another package"
-msgstr "Instalováno jako závislost pro další balíček"
-
-#: src/manager_window.vala
-msgid "Mark as explicitly installed"
-msgstr "Označit jako nainstalované"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Licenses"
-msgstr "Licence"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Unknown"
-msgstr "Neznámý"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Repository"
-msgstr "Repozitář"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Package Base"
-msgstr "Základ balíčku"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Maintainer"
-msgstr "Správce údržby"
-
-#: src/manager_window.vala src/cli.vala
-msgid "First Submitted"
-msgstr "Poprvé zasláno"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Last Modified"
-msgstr "Naposledy upraveno"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Votes"
-msgstr "Hlasy"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Out of Date"
-msgstr "Zastaralý"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Groups"
-msgstr "Skupiny"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Packager"
-msgstr "Autor balíčku"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Build Date"
-msgstr "Datum sestavení"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Date"
-msgstr "Datum instalace"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Validated By"
-msgstr "Ověřil"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Backup files"
-msgstr "Záložní soubory"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional Dependencies"
-msgstr "Volitelné závislosti"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional For"
-msgstr "Doplňky pro"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Provides"
-msgstr "Obsahuje"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Závislosti pro sestavení"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Zkontrolovat závislosti"
-
-#: src/manager_window.vala
-msgid "Publisher"
-msgstr "Vydavatel"
-
-#: src/manager_window.vala
-msgid "Confined in a Sandbox"
-msgstr "Drženo v Sandboxu"
-
-#: src/manager_window.vala
-msgid "Channels"
-msgstr "Kanály"
-
-#: src/manager_window.vala
-msgid "OS Updates"
-msgstr "Aktualizace operačního systému"
-
-#: src/manager_window.vala
-msgid "Includes performance, stability and security improvements"
-msgstr "Zahrnuje vylepšení výkonu, stability a zabezpečení"
-
-#: src/manager_window.vala
-msgid "Featured"
-msgstr "Doporučené"
-
-#: src/manager_window.vala
-msgid "Photo & Video"
-msgstr "Obrázky & Video"
-
-#: src/manager_window.vala
-msgid "Music & Audio"
-msgstr "Hudba & Zvuky"
-
-#: src/manager_window.vala
-msgid "Productivity"
-msgstr "Produktivita"
-
-#: src/manager_window.vala
-msgid "Communication & News"
-msgstr "Komunikace & Zprávy"
-
-#: src/manager_window.vala
-msgid "Education & Science"
-msgstr "Věda & Vzdělání"
-
-#: src/manager_window.vala
-msgid "Games"
-msgstr "Hry"
-
-#: src/manager_window.vala
-msgid "Utilities"
-msgstr "Služby"
-
-#: src/manager_window.vala
-msgid "Development"
-msgstr "Programování"
-
-#: src/manager_window.vala resources/manager_window.ui
-#: resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Aktualizace"
-
-#: src/manager_window.vala
-msgid "Last refresh"
-msgstr "Poslední obnovení"
-
-#: src/preferences_dialog.vala
-msgid "every 3 hours"
-msgstr "každé 3 hodiny"
-
-#: src/preferences_dialog.vala
-msgid "every 6 hours"
-msgstr "každých 6 hodin"
-
-#: src/preferences_dialog.vala
-msgid "every 12 hours"
-msgstr "každých 12 hodin"
-
-#: src/preferences_dialog.vala
-msgid "every day"
-msgstr "každý den"
-
-#: src/preferences_dialog.vala
-msgid "every week"
-msgstr "každý týden"
-
-#: src/preferences_dialog.vala
-msgid "1"
-msgstr "1"
-
-#: src/preferences_dialog.vala
-msgid "2"
-msgstr "2"
-
-#: src/preferences_dialog.vala
-msgid "4"
-msgstr "4"
-
-#: src/preferences_dialog.vala
-msgid "6"
-msgstr "6"
-
-#: src/preferences_dialog.vala
-msgid "8"
-msgstr "8"
-
-#: src/preferences_dialog.vala
-msgid "10"
-msgstr "10"
-
-#: src/preferences_dialog.vala
-msgid "Worldwide"
-msgstr "Celosvětový"
-
-#: src/preferences_dialog.vala
-msgid "0"
-msgstr "0"
-
-#: src/preferences_dialog.vala
-msgid "3"
-msgstr "3"
-
-#: src/preferences_dialog.vala
-msgid "5"
-msgstr "5"
-
-#: src/preferences_dialog.vala src/cli.vala
-msgid "To delete"
-msgstr "Ke smazání"
-
-#: src/preferences_dialog.vala src/cli.vala
-#, c-format
-msgid "%u file"
-msgid_plural "%u files"
-msgstr[0] "%u soubor"
-msgstr[1] "%u soubory"
-msgstr[2] "%u souborů"
-msgstr[3] "%u souborů"
-
-#: src/preferences_dialog.vala
-msgid "Select Build Directory"
-msgstr "Vybrat adresář k sestavení souborů"
-
-#: src/preferences_dialog.vala
-msgid "_Choose"
-msgstr "_Vybrat"
-
-#: src/preferences_dialog.vala
-msgid "Choose Ignored Upgrades"
-msgstr "Vybrat ignorované aktualizace"
-
-#: src/transaction-cli.vala src/cli.vala
-#, c-format
-msgid "Enter a selection (default=%s)"
-msgstr "Zadání výběru (default=%s)"
-
-#: src/transaction-cli.vala
-msgid "none"
-msgstr "žádné"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "Enter a number (default=%d)"
-msgstr "Zadejte číslo (výchozí=%d)"
-
-#: src/transaction-cli.vala
-msgid "[y/N]"
-msgstr "[a/N]"
-
-#: src/transaction-cli.vala
-msgid "y"
-msgstr "a"
-
-#: src/transaction-cli.vala
-msgid "yes"
-msgstr "ano"
-
-#: src/transaction-cli.vala
-msgid "[e]"
-msgstr "[e]"
-
-#: src/transaction-cli.vala
-msgid "Apply transaction"
-msgstr "Aplikovat změny"
-
-#: src/transaction-cli.vala
-msgid "[e/y/N]"
-msgstr "[e/a/N]"
-
-#: src/transaction-cli.vala
-msgid "e"
-msgstr "e"
-
-#: src/transaction-cli.vala
-msgid "To upgrade"
-msgstr "K aktualizaci"
-
-#: src/transaction-cli.vala
-msgid "To reinstall"
-msgstr "K přeinstalaci"
-
-#: src/transaction-cli.vala
-msgid "To install"
-msgstr "K instalaci"
-
-#: src/transaction-cli.vala
-msgid "To build"
-msgstr "K sestavení"
-
-#: src/transaction-cli.vala
-msgid "To downgrade"
-msgstr "K downgrade \"nižší verzi\""
-
-#: src/transaction-cli.vala
-msgid "To remove"
-msgstr "K odstranění"
-
-#: src/transaction-cli.vala
-msgid "Total installed size"
-msgstr "Celková velikost instalace"
-
-#: src/transaction-cli.vala
-msgid "Total removed size"
-msgstr "Celková velikost odstraněných souborů"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "View %s build files diff"
-msgstr "Zobrazit %s konfigurační soubory diff"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -988,6 +700,10 @@ msgstr "akce"
 #: src/cli.vala
 msgid "options"
 msgstr "možnosti"
+
+#: src/cli.vala src/installer.vala
+msgid "package(s)"
+msgstr "balík(ů)"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1098,6 +814,10 @@ msgstr "nezobrazovat jakýkoliv výstup"
 msgid "overwrite existing files"
 msgstr "přepsat existující soubory"
 
+#: src/cli.vala src/installer.vala
+msgid "Build packages from AUR and install them with their dependencies"
+msgstr "Sestavit balíčky z AUR a nainstalovat je s jejich závislostmi"
+
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
@@ -1132,6 +852,10 @@ msgstr "neklonovat sestavovací soubory z AUR, požívat lokální soubory"
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
 msgstr "přeskočit potvrzovací zprávy"
+
+#: src/cli.vala src/installer.vala
+msgid "Install packages from repositories, path or url"
+msgstr "Nainstalovat balíčky z repozitáře, odkazu nebo url"
 
 #: src/cli.vala
 msgid "glob"
@@ -1172,6 +896,10 @@ msgstr "nekontrolovat aktualizace"
 #: src/cli.vala
 msgid "Reinstall packages"
 msgstr "Přeinstalovat balíčky"
+
+#: src/cli.vala src/installer.vala
+msgid "Remove packages"
+msgstr "Odstranit balíčky"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
@@ -1304,10 +1032,6 @@ msgstr "neodstraňovat soubory, pouze nalézt požadované balíčky"
 msgid "also display all files names"
 msgstr "zobrazit také jména všech souborů"
 
-#: src/cli.vala resources/manager_window.ui
-msgid "Name"
-msgstr "Název"
-
 #: src/cli.vala
 msgid "Version"
 msgstr "Verze"
@@ -1320,9 +1044,101 @@ msgstr "Popis"
 msgid "URL"
 msgstr "URL"
 
+#: src/cli.vala src/manager_window.vala
+msgid "Licenses"
+msgstr "Licence"
+
 #: src/cli.vala
 msgid "Installed Size"
 msgstr "Instalovaná velikost"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Depends On"
+msgstr "Závisí na"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional Dependencies"
+msgstr "Volitelné závislosti"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Make Dependencies"
+msgstr "Závislosti pro sestavení"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Check Dependencies"
+msgstr "Zkontrolovat závislosti"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Required By"
+msgstr "Vyžadováno"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional For"
+msgstr "Doplňky pro"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Provides"
+msgstr "Obsahuje"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Replaces"
+msgstr "Nahrazuje"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Conflicts With"
+msgstr "Konflikty s"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Packager"
+msgstr "Autor balíčku"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Build Date"
+msgstr "Datum sestavení"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Date"
+msgstr "Datum instalace"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Reason"
+msgstr "Důvod instalace"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Validated By"
+msgstr "Ověřil"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Backup files"
+msgstr "Záložní soubory"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Package Base"
+msgstr "Základ balíčku"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Maintainer"
+msgstr "Správce údržby"
+
+#: src/cli.vala src/manager_window.vala
+msgid "First Submitted"
+msgstr "Poprvé zasláno"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Last Modified"
+msgstr "Naposledy upraveno"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Votes"
+msgstr "Hlasy"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Out of Date"
+msgstr "Zastaralý"
 
 #: src/cli.vala
 #, c-format
@@ -1343,6 +1159,15 @@ msgstr[1] "%u přeskočených aktualizací"
 msgstr[2] "%u přeskočených aktualizací"
 msgstr[3] "%u přeskočené aktualizace"
 
+#: src/cli.vala src/tray.vala
+#, c-format
+msgid "%u available update"
+msgid_plural "%u available updates"
+msgstr[0] "%u dostupná aktualizace"
+msgstr[1] "%u dostupných aktualizací"
+msgstr[2] "%u dostupných aktualizací"
+msgstr[3] "%u dostupných aktualizací"
+
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
 msgstr "Odstranit pouze verze odinstalovaných balíčků"
@@ -1350,6 +1175,19 @@ msgstr "Odstranit pouze verze odinstalovaných balíčků"
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
 msgstr "Počet verzí každého balíčku udržovaného v mezipaměti."
+
+#: src/cli.vala src/preferences_dialog.vala
+msgid "To delete"
+msgstr "Ke smazání"
+
+#: src/cli.vala src/preferences_dialog.vala
+#, c-format
+msgid "%u file"
+msgid_plural "%u files"
+msgstr[0] "%u soubor"
+msgstr[1] "%u soubory"
+msgstr[2] "%u souborů"
+msgstr[3] "%u souborů"
 
 #: src/cli.vala
 msgid "Clean cache"
@@ -1369,6 +1207,10 @@ msgstr "Přidat %s k instalaci"
 msgid "%s is only available from AUR"
 msgstr "%s je dostupný pouze v AUR"
 
+#: src/cli.vala src/installer.vala src/transaction.vala
+msgid "Nothing to do"
+msgstr "Není co dělat"
+
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
@@ -1377,6 +1219,11 @@ msgstr[0] "%1$u člen je ve skupině %2$s"
 msgstr[1] "%1$u členů je ve skupině %2$s"
 msgstr[2] "%1$u členů je ve skupině %2$s"
 msgstr[3] "%1$u členy jsou ve skupině %2$s"
+
+#: src/cli.vala src/transaction-cli.vala
+#, c-format
+msgid "Enter a selection (default=%s)"
+msgstr "Zadání výběru (default=%s)"
 
 #: src/cli.vala
 msgid "all"
@@ -1387,259 +1234,509 @@ msgstr "vše"
 msgid "Add %s to reinstall"
 msgstr "Přidat %s k přeinstalaci"
 
+#: src/cli.vala src/transaction.vala
+#, c-format
+msgid "Cloning %s build files"
+msgstr "Klonování %s sestavovacích souborů"
+
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
 msgstr "Instalovat %1$s z %2$s"
 
+#: src/daemon.vala
+msgid "Authentication failed"
+msgstr "Ověření oprávnění selhalo"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Waiting for another package manager to quit"
+msgstr "Čekání na ukončení jiného správce balíčků"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Timeout expired"
+msgstr "Vypršel časový limit"
+
+#: src/flatpak_plugin.vala
+msgid "Flatpak transaction failed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "No package found"
+msgstr "Nenalezen žádný balíček"
+
+#: src/manager_window.vala
+msgid "Checking for Updates"
+msgstr "Kontrola aktualizací"
+
+#: src/manager_window.vala
+msgid "Alpm Package"
+msgstr "Alpm balíček"
+
+#: src/manager_window.vala
+msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr "Správce balíčků s podporou Alpm, AUR, Flatpak a Snap"
+
+#: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Total download size"
+msgstr "Celková velikost ke stažení"
+
+#: src/manager_window.vala
+#, c-format
+msgid "%u pending operation"
+msgid_plural "%u pending operations"
+msgstr[0] "%u nevyřízená operace"
+msgstr[1] "%u nevyřízené operace"
+msgstr[2] "%u nevyřízených operací"
+msgstr[3] "%u nevyřízených operací"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Nevyřízené"
+
+#: src/manager_window.vala
+msgid "All"
+msgstr "Vše"
+
+#: src/manager_window.vala
+msgid "Orphans"
+msgstr "Nepotřebné balíčky"
+
+#: src/manager_window.vala
+msgid "Foreign"
+msgstr "Cizí balíčky"
+
+#: src/manager_window.vala
+msgid "Ignored"
+msgstr "Ignorováno"
+
+#: src/manager_window.vala
+msgid "Mark as explicitly installed"
+msgstr "Označit jako nainstalované"
+
+#: src/manager_window.vala
+msgid "Publisher"
+msgstr "Vydavatel"
+
+#: src/manager_window.vala
+msgid "Confined in a Sandbox"
+msgstr "Drženo v Sandboxu"
+
+#: src/manager_window.vala
+msgid "Channels"
+msgstr "Kanály"
+
+#: src/manager_window.vala
+msgid "Includes performance, stability and security improvements"
+msgstr "Zahrnuje vylepšení výkonu, stability a zabezpečení"
+
+#: src/manager_window.vala
+msgid "Featured"
+msgstr "Doporučené"
+
+#: src/manager_window.vala
+msgid "Photo & Video"
+msgstr "Obrázky & Video"
+
+#: src/manager_window.vala
+msgid "Music & Audio"
+msgstr "Hudba & Zvuky"
+
+#: src/manager_window.vala
+msgid "Productivity"
+msgstr "Produktivita"
+
+#: src/manager_window.vala
+msgid "Communication & News"
+msgstr "Komunikace & Zprávy"
+
+#: src/manager_window.vala
+msgid "Education & Science"
+msgstr "Věda & Vzdělání"
+
+#: src/manager_window.vala
+msgid "Games"
+msgstr "Hry"
+
+#: src/manager_window.vala
+msgid "Utilities"
+msgstr "Služby"
+
+#: src/manager_window.vala
+msgid "Development"
+msgstr "Programování"
+
+#: src/manager_window.vala
+msgid "Last refresh"
+msgstr "Poslední obnovení"
+
+#: src/manager_window.vala src/transaction.vala
+msgid "Transaction successfully finished"
+msgstr "Transakce úspěšně dokončena"
+
+#: src/pgp_key.vala
+msgid "Fingerprint"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Algorithm"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Creation date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Expiration date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Never"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Unknown keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Source"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Required by"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%s build files (validpgpkeys)"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has been revoked by its owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has expired"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key is disabled on the keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%u keys match %s on the keyserver, only the first one is shown"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "The key found on the keyserver does not match the requested key %s"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid ""
+"Keyservers do not verify key owners: compare the fingerprint with the one "
+"published by the upstream project before trusting this key"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 3 hours"
+msgstr "každé 3 hodiny"
+
+#: src/preferences_dialog.vala
+msgid "every 6 hours"
+msgstr "každých 6 hodin"
+
+#: src/preferences_dialog.vala
+msgid "every 12 hours"
+msgstr "každých 12 hodin"
+
+#: src/preferences_dialog.vala
+msgid "every day"
+msgstr "každý den"
+
+#: src/preferences_dialog.vala
+msgid "every week"
+msgstr "každý týden"
+
+#: src/preferences_dialog.vala
+msgid "1"
+msgstr "1"
+
+#: src/preferences_dialog.vala
+msgid "2"
+msgstr "2"
+
+#: src/preferences_dialog.vala
+msgid "4"
+msgstr "4"
+
+#: src/preferences_dialog.vala
+msgid "6"
+msgstr "6"
+
+#: src/preferences_dialog.vala
+msgid "8"
+msgstr "8"
+
+#: src/preferences_dialog.vala
+msgid "10"
+msgstr "10"
+
+#: src/preferences_dialog.vala
+msgid "Worldwide"
+msgstr "Celosvětový"
+
+#: src/preferences_dialog.vala
+msgid "0"
+msgstr "0"
+
+#: src/preferences_dialog.vala
+msgid "3"
+msgstr "3"
+
+#: src/preferences_dialog.vala
+msgid "5"
+msgstr "5"
+
+#: src/preferences_dialog.vala
+msgid "Select Build Directory"
+msgstr "Vybrat adresář k sestavení souborů"
+
+#: src/preferences_dialog.vala
+msgid "Choose Ignored Upgrades"
+msgstr "Vybrat ignorované aktualizace"
+
+#: src/snap_plugin.vala src/transaction.vala
+msgid "Yes"
+msgstr "Ano"
+
 #: src/snap_plugin.vala
 msgid "No"
 msgstr "Ne"
 
-#: resources/choose_provider_dialog.ui
-msgid "Choose a Provider"
-msgstr "Vybrat poskytovatele"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose optional dependencies for %s"
+msgstr "Můžete si vybrat volitelné závislosti pro %s"
 
-#: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
-msgid "Choose"
-msgstr "Vybrat"
+#: src/transaction-cli.vala
+msgid "none"
+msgstr "žádné"
 
-#: resources/progress_dialog.ui
-msgid "Progress"
-msgstr "Postup"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose a provider for %s"
+msgstr "Vyberte poskytovatele pro %s"
 
-#: resources/history_dialog.ui
-msgid "Pamac History"
-msgstr "Pamac historie"
+#: src/transaction-cli.vala
+#, c-format
+msgid "Enter a number (default=%d)"
+msgstr "Zadejte číslo (výchozí=%d)"
 
-#: resources/transaction_sum_dialog.ui
-msgid "Transaction Summary"
-msgstr "Shrnutí transakce"
+#: src/transaction-cli.vala
+msgid "[y/N]"
+msgstr "[a/N]"
 
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-msgid "_Apply"
-msgstr "_Použít"
+#: src/transaction-cli.vala
+msgid "y"
+msgstr "a"
 
-#: resources/manager_window.ui
-msgid "Software Mode"
-msgstr "Režim software"
+#: src/transaction-cli.vala
+msgid "yes"
+msgstr "ano"
 
-#: resources/manager_window.ui
-msgid "Refresh databases"
-msgstr "Aktualizovat databáze"
+#: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
+msgstr "PGP klíč %1$s je třeba k ověření %2$s zdrojových souborů"
 
-#: resources/manager_window.ui
-msgid "View History"
-msgstr "Zobrazit historii"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Import the PGP key"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Preferences"
-msgstr "Nastavení"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Trust %s and import the PGP key"
+msgstr "Důvěřovat %s a importovat PGP klíč"
 
-#: resources/manager_window.ui
-msgid "About"
-msgstr "O programu"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Edit build files"
+msgstr "Upravit konfigurační soubory"
 
-#: resources/manager_window.ui
-msgid "Search"
-msgstr "Vyhledat"
+#: src/transaction-cli.vala
+msgid "[e]"
+msgstr "[e]"
 
-#: resources/manager_window.ui
-msgid "Remove all"
-msgstr "Odstranit vše"
+#: src/transaction-cli.vala
+msgid "Apply transaction"
+msgstr "Aplikovat změny"
 
-#: resources/manager_window.ui
-msgid "Install all"
-msgstr "Nainstalovat vše"
+#: src/transaction-cli.vala
+msgid "[e/y/N]"
+msgstr "[e/a/N]"
 
-#: resources/manager_window.ui
-msgid "Ignore all"
-msgstr "Ignorovat vše"
+#: src/transaction-cli.vala
+msgid "e"
+msgstr "e"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Orphan Of"
+msgstr "Nepotřebný balíček od"
+
+#: src/transaction-cli.vala
+msgid "To upgrade"
+msgstr "K aktualizaci"
+
+#: src/transaction-cli.vala
+msgid "To reinstall"
+msgstr "K přeinstalaci"
+
+#: src/transaction-cli.vala
+msgid "To install"
+msgstr "K instalaci"
+
+#: src/transaction-cli.vala
+msgid "To build"
+msgstr "K sestavení"
+
+#: src/transaction-cli.vala
+msgid "To downgrade"
+msgstr "K downgrade \"nižší verzi\""
+
+#: src/transaction-cli.vala
+msgid "To remove"
+msgstr "K odstranění"
+
+#: src/transaction-cli.vala
+msgid "Total installed size"
+msgstr "Celková velikost instalace"
+
+#: src/transaction-cli.vala
+msgid "Total removed size"
+msgstr "Celková velikost odstraněných souborů"
+
+#: src/transaction-cli.vala
+#, c-format
+msgid "View %s build files diff"
+msgstr "Zobrazit %s konfigurační soubory diff"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Edit %s build files"
+msgstr "Upravit %s konfigurační soubory"
+
+#: src/transaction-gtk.vala
+msgid "Import PGP key"
+msgstr "Importovat PGP klíč"
+
+#: src/transaction-gtk.vala
+msgid "Trust and Import"
+msgstr "Důvěřovat a importovat"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "PGP klíč %s je třeba k ověření %s zdrojových souborů"
+
+#: src/transaction-gtk.vala
+msgid "Save"
+msgstr "Uložit"
+
+#: src/transaction-gtk.vala
+msgid "Restart"
+msgstr "Restart"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The snap %s was published using classic confinement"
+msgstr "Snap balíček %s může využívat zdroje systému \"classic confinement\""
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "Install %s anyway"
+msgstr "I přesto instalovat %s"
+
+#: src/transaction.vala
+msgid "Refreshing mirrors list"
+msgstr "Obnova seznamu zrcadel"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to clone %s build files"
+msgstr "Chyba klonování %s sestavovacích souborů"
+
+#: src/transaction.vala
+#, c-format
+msgid "Generating %s information"
+msgstr "Generování %s informace"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to generate %s information"
+msgstr "Selhalo generování %s informace"
+
+#: src/transaction.vala
+#, c-format
+msgid "Checking %s dependencies"
+msgstr "Kontrola %s závislostí"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to check %s dependencies"
+msgstr "Selhání při kontrole %s závislostí"
+
+#: src/transaction.vala
+#, c-format
+msgid "key %s could not be imported"
+msgstr "klíč %s nemohl být importován"
+
+#: src/transaction.vala
+msgid "Preparing"
+msgstr "Připravuji"
+
+#: src/transaction.vala
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr "%1$s: ignoruje aktualizaci balíčku (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Selhala synchronizace databáze AUR"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Sestavuji %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to build %s"
+msgstr "Selhání sestavení %s"
+
+#: src/transaction_interface_daemon.vala
+msgid "The transaction may still be running in the background"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "Connection to the daemon was lost"
+msgstr ""
+
+#: src/tray.vala
+msgid "_Quit"
+msgstr "_Ukončit"
 
 #: resources/manager_window.ui
 msgid "Sort by"
 msgstr "Seřadit podle"
 
-#: resources/manager_window.ui
-msgid "Relevance"
-msgstr "Relevance"
+#: src/manager_window.vala
+msgid "_Open"
+msgstr "_Otevřít"
 
-#: resources/manager_window.ui
-msgid "Size"
-msgstr "Velikost"
-
-#: resources/manager_window.ui
-msgid "Date"
-msgstr "Datum"
-
-#: resources/manager_window.ui
-msgid "Refresh"
-msgstr "Obnovit"
-
-#: resources/manager_window.ui
-msgid "Categories"
-msgstr "Kategorie"
-
-#: resources/manager_window.ui
-msgid "Browse"
-msgstr "Procházet"
-
-#: resources/manager_window.ui
-msgid "Launch"
-msgstr "Spustit"
-
-#: resources/manager_window.ui
-msgid "Remove"
-msgstr "Odstranit"
-
-#: resources/manager_window.ui
-msgid "Reinstall"
-msgstr "Přeinstalovat"
-
-#: resources/manager_window.ui
-msgid "Build"
-msgstr "Sestavit"
-
-#: resources/manager_window.ui
-msgid "Dependencies"
-msgstr "Závislosti"
-
-#: resources/manager_window.ui
-msgid "Files"
-msgstr "Soubory"
-
-#: resources/manager_window.ui
-msgid "Reset build files"
-msgstr "Obnovit sestavovací soubory"
-
-#: resources/manager_window.ui
-msgid "Build files"
-msgstr "Sestavovací soubory"
-
-#: resources/preferences_dialog.ui
-msgid "General"
-msgstr "Obecné"
-
-#: resources/preferences_dialog.ui
-msgid "Check for updates"
-msgstr "Kontrolovat aktualizace"
-
-#: resources/preferences_dialog.ui
-msgid "Updates check frequency"
-msgstr "Frekvence kontroly aktualizací"
-
-#: resources/preferences_dialog.ui
-msgid "Automatically download updates"
-msgstr "Automaticky stahovat aktualizace"
-
-#: resources/preferences_dialog.ui
-msgid "Upgrade the system at shutdown"
-msgstr "Upgradujte systém během vypínání"
-
-#: resources/preferences_dialog.ui
-msgid "Hide tray icon when no update"
-msgstr "Schovat ikonu v liště, pokud není dostupná žádná aktualizace"
-
-#: resources/preferences_dialog.ui
-msgid "Downloads"
-msgstr "Stažené"
-
-#: resources/preferences_dialog.ui
-msgid "Parallel downloads"
-msgstr "Paralelní stahování"
-
-#: resources/preferences_dialog.ui
-msgid "Use mirrors from"
-msgstr "Použít zrcadla z"
-
-#: resources/preferences_dialog.ui
-msgid "Refresh Mirrors"
-msgstr "Obnovit zrcadla"
-
-#: resources/preferences_dialog.ui
-msgid "Cache"
-msgstr "Mezipaměť"
-
-#: resources/preferences_dialog.ui
-msgid "Number of versions of each package to keep"
-msgstr "Počet zachovaných verzí každého balíčku"
-
-#: resources/preferences_dialog.ui
-msgid "Remove only the uninstalled packages"
-msgstr "Odstranit pouze odinstalované balíčky"
-
-#: resources/preferences_dialog.ui
-msgid "Clean"
-msgstr "Vyčistit"
-
-#: resources/preferences_dialog.ui
-msgid "Advanced"
-msgstr "Pokročilé"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"Misconfiguration of these options can lead to system breakage.\n"
-"Modify them only if you know what you are doing."
-msgstr "Špatná konfigurace těchto voleb může vést k selhání systému.\nUpravujte je pouze pokud víte co děláte."
-
-#: resources/preferences_dialog.ui
-msgid "Check available disk space"
-msgstr "Kontrolovat volné místo na disku"
-
-#: resources/preferences_dialog.ui
-msgid "Remove unrequired dependencies"
-msgstr "Odstranit nepotřebné závislosti"
-
-#: resources/preferences_dialog.ui
-msgid "Do not check for updates when installing"
-msgstr "Při instalaci nekontrolovat aktualizace"
-
-#: resources/preferences_dialog.ui
-msgid "Enable downgrade"
-msgstr "Umožnit návrat ke starším verzím balíčků"
-
-#: resources/preferences_dialog.ui
-msgid "Ignored upgrades"
-msgstr "Přeskočené aktualizace"
-
-#: resources/preferences_dialog.ui
-msgid "Third Party"
-msgstr "Třetí strana"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"AUR is a community maintained repository so it presents potential risks and problems.\n"
-"All AUR users should be familiar with the build process."
-msgstr "AUR je komunitně udržovaný repozitář. To s sebou nese potencionální rizika a problémy.\nVšichni uživatelé AUR by měli znát postup vytváření balíčku neboli buildu."
-
-#: resources/preferences_dialog.ui
-msgid "Enable AUR support"
-msgstr "Povolit podporu AUR"
-
-#: resources/preferences_dialog.ui
-msgid "Keep built packages"
-msgstr "Ponechat sestavené balíčky"
-
-#: resources/preferences_dialog.ui
-msgid "Check for development packages updates"
-msgstr "Kontrolovat aktualizace vývojových verzí balíčků"
-
-#: resources/preferences_dialog.ui
-msgid "Build directory"
-msgstr "Adresář sestavených souborů"
-
-#: resources/preferences_dialog.ui
-msgid "Flatpak packages are maintained by their publisher."
-msgstr "Flatpak balíčky udržují jejich vydavatelé."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Flatpak support"
-msgstr "Povolit podporu Flatpak balíčků"
-
-#: resources/preferences_dialog.ui
-msgid "Snap packages are maintained by their publisher."
-msgstr "Snap balíčky udržují jejich vydavatelé."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Snap support"
-msgstr "Povolit podporu Snap balíčků"
+#: src/preferences_dialog.vala
+msgid "_Choose"
+msgstr "_Vybrat"

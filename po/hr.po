@@ -23,6 +23,25 @@ msgstr ""
 "Language: hr\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: src/transaction-gtk.vala src/tray.vala
+msgid "Package Manager"
+msgstr "Upravitelj paketa"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/cli.vala
+#: src/manager_window.vala src/tray.vala
+msgid "Your system is up to date"
+msgstr "Vaš sustav je ažuriran"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/tray.vala
+msgid "Updates Available"
+msgstr "Dostupna ažuriranja"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
+msgid "Details"
+msgstr "Detalji"
+
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
 msgstr "Instalirajte, ažurirajte ili uklonite pakete"
@@ -31,7 +50,350 @@ msgstr "Instalirajte, ažurirajte ili uklonite pakete"
 msgid "Authentication is required to install, update, or remove packages"
 msgstr "Za instaliranje, ažuriranje ili uklanjanje paketa potrebna je provjera autentičnosti"
 
-#: src/alpm_utils.vala src/database.vala
+#: resources/choose_pkgs_dialog.ui resources/manager_window.ui
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: src/transaction-gtk.vala
+msgid "_Cancel"
+msgstr "_Odustani"
+
+#: resources/choose_pkgs_dialog.ui resources/choose_provider_dialog.ui
+msgid "Choose"
+msgstr "Odaberi"
+
+#: resources/choose_provider_dialog.ui
+msgid "Choose a Provider"
+msgstr "Odaberi davatelja"
+
+#: resources/history_dialog.ui
+msgid "Pamac History"
+msgstr "Pamac povijest"
+
+#: resources/manager_window.ui
+msgid "Software Mode"
+msgstr "Softverski način rada"
+
+#: resources/manager_window.ui
+msgid "Refresh databases"
+msgstr "Osvježi bazu podataka"
+
+#: resources/manager_window.ui
+msgid "View History"
+msgstr "Pregledaj povijest"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Install Local Packages"
+msgstr "Instaliraj lokalne pakete"
+
+#: resources/manager_window.ui
+msgid "Preferences"
+msgstr "Postavke"
+
+#: resources/manager_window.ui
+msgid "About"
+msgstr "O programu"
+
+#: resources/manager_window.ui
+msgid "Relevance"
+msgstr "Relevantnost"
+
+#: resources/manager_window.ui src/cli.vala
+msgid "Name"
+msgstr "Ime"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Repository"
+msgstr "Repozitorij"
+
+#: resources/manager_window.ui
+msgid "Size"
+msgstr "Veličina"
+
+#: resources/manager_window.ui
+msgid "Date"
+msgstr "Datum"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Search"
+msgstr "Traži"
+
+#: resources/manager_window.ui
+msgid "Browse"
+msgstr "Traži"
+
+#: resources/manager_window.ui
+msgid "Categories"
+msgstr "Kategorije"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Groups"
+msgstr "Grupe"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Repositories"
+msgstr "Repozitoriji"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Installed"
+msgstr "Instalirano"
+
+#: resources/manager_window.ui resources/preferences_dialog.ui
+#: src/manager_window.vala
+msgid "Updates"
+msgstr "Ažuriranja"
+
+#: resources/manager_window.ui
+msgid "Remove all"
+msgstr "Ukloni sve"
+
+#: resources/manager_window.ui
+msgid "Install all"
+msgstr "Instaliraj sve"
+
+#: resources/manager_window.ui
+msgid "Ignore all"
+msgstr "Ignoriraj sve"
+
+#: resources/manager_window.ui
+msgid "Refresh"
+msgstr "Osvježi"
+
+#: resources/manager_window.ui
+msgid "Launch"
+msgstr "Lansiraj"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Install"
+msgstr "Instaliraj"
+
+#: resources/manager_window.ui
+msgid "Remove"
+msgstr "Ukloni"
+
+#: resources/manager_window.ui
+msgid "Reinstall"
+msgstr "Ponovno instaliraj"
+
+#: resources/manager_window.ui
+msgid "Build"
+msgstr "Stvori paket"
+
+#: resources/manager_window.ui
+msgid "Dependencies"
+msgstr "Ovisnosti"
+
+#: resources/manager_window.ui
+msgid "Files"
+msgstr "Datoteke"
+
+#: resources/manager_window.ui
+msgid "Build files"
+msgstr "Datoteke za stvaranje paketa"
+
+#: resources/manager_window.ui
+msgid "Reset build files"
+msgstr "Ponovno postavi datoteke za stvaranje paketa"
+
+#: resources/manager_window.ui resources/transaction_sum_dialog.ui
+msgid "_Apply"
+msgstr "_Primijeni"
+
+#: resources/preferences_dialog.ui
+msgid "General"
+msgstr "Općenito"
+
+#: resources/preferences_dialog.ui
+msgid "Check for updates"
+msgstr "Provjeri ažuriranja"
+
+#: resources/preferences_dialog.ui
+msgid "Updates check frequency"
+msgstr "Učestalost provjere ažuriranja"
+
+#: resources/preferences_dialog.ui
+msgid "Automatically download updates"
+msgstr "Automatsko preuzimanje ažuriranja"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Nadogradite sustav pri gašenju"
+
+#: resources/preferences_dialog.ui
+msgid "Hide tray icon when no update"
+msgstr "Sakrij ikonu na programskoj traci kada nema dostupnih ažuriranja"
+
+#: resources/preferences_dialog.ui
+msgid "Downloads"
+msgstr "Preuzimanja"
+
+#: resources/preferences_dialog.ui
+msgid "Parallel downloads"
+msgstr "Paralelna preuzimanja"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Official Repositories"
+msgstr "Službeni repozitoriji"
+
+#: resources/preferences_dialog.ui
+msgid "Use mirrors from"
+msgstr "Koristi zrcalne poslužitelje iz"
+
+#: resources/preferences_dialog.ui
+msgid "Refresh Mirrors"
+msgstr "Osvježi zrcalne poslužitelje"
+
+#: resources/preferences_dialog.ui
+msgid "Cache"
+msgstr "Predmemorija"
+
+#: resources/preferences_dialog.ui
+msgid "Number of versions of each package to keep"
+msgstr "Broj različitih verzija paketa za zadržavanje"
+
+#: resources/preferences_dialog.ui
+msgid "Remove only the uninstalled packages"
+msgstr "Ukloni samo deinstalirane pakete"
+
+#: resources/preferences_dialog.ui
+msgid "Clean"
+msgstr "Očisti"
+
+#: resources/preferences_dialog.ui
+msgid "Advanced"
+msgstr "Napredno"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"Misconfiguration of these options can lead to system breakage.\n"
+"Modify them only if you know what you are doing."
+msgstr "Loša konfiguracija tih opcija može dovesti do kvara sustava.\nIzmijenite ih samo ako znate što radite."
+
+#: resources/preferences_dialog.ui
+msgid "Check available disk space"
+msgstr "Provjera dostupnog prostora na disku"
+
+#: resources/preferences_dialog.ui
+msgid "Remove unrequired dependencies"
+msgstr "Ukloni nepotrebne ovisnosti"
+
+#: resources/preferences_dialog.ui
+msgid "Do not check for updates when installing"
+msgstr "Nemoj provjeravati nadogradnje tijekom instaliranja"
+
+#: resources/preferences_dialog.ui
+msgid "Enable downgrade"
+msgstr "Dopusti povratak na staru verziju paketa"
+
+#: resources/preferences_dialog.ui
+msgid "Ignored upgrades"
+msgstr "Ignorirane nadogradnje"
+
+#: resources/preferences_dialog.ui
+msgid "Third Party"
+msgstr "Treće strane"
+
+#: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
+#: src/cli.vala src/database.vala src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "AUR"
+msgstr "AUR"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"AUR is a community maintained repository so it presents potential risks and problems.\n"
+"All AUR users should be familiar with the build process."
+msgstr "AUR je repozitorij održavan od strane zajednice te tako predstavlja potencijalne rizike i probleme.\nSvi AUR korisnici bi trebali biti upoznati s procesom stvaranja paketa."
+
+#: resources/preferences_dialog.ui
+msgid "Enable AUR support"
+msgstr "Omogući AUR podršku"
+
+#: resources/preferences_dialog.ui
+msgid "Keep built packages"
+msgstr "Zadrži stvorene pakete"
+
+#: resources/preferences_dialog.ui
+msgid "Check for development packages updates"
+msgstr "Provjeri ažuriranja razvojnih paketa"
+
+#: resources/preferences_dialog.ui
+msgid "Build directory"
+msgstr "Direktorij za stvaranje paketa"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Flatpak"
+msgstr "Flatpak"
+
+#: resources/preferences_dialog.ui
+msgid "Flatpak packages are maintained by their publisher."
+msgstr "Flatpak pakete održava njihov izdavač."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Flatpak support"
+msgstr "Omogući Flatpak podršku"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/snap_plugin.vala
+msgid "Snap"
+msgstr "Snap"
+
+#: resources/preferences_dialog.ui
+msgid "Snap packages are maintained by their publisher."
+msgstr "Snap pakete održava njihov izdavač."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Snap support"
+msgstr "Omogući Snap podršku"
+
+#: resources/progress_dialog.ui
+msgid "Progress"
+msgstr "Napredak"
+
+#: resources/progress_dialog.ui src/database-gtk.vala src/transaction-gtk.vala
+msgid "_Close"
+msgstr "_Zatvori"
+
+#: resources/transaction_sum_dialog.ui
+msgid "Transaction Summary"
+msgstr "Sažetak transakcija"
+
+#: resources/updates_dialog.ui src/manager_window.vala
+msgid "OS Updates"
+msgstr "Ažuriranja operacijskog sustava"
+
+#: src/alpm_package.vala src/aur_plugin.vala src/cli.vala
+#: src/manager_window.vala src/pgp_key.vala
+msgid "Unknown"
+msgstr "Nepoznato"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Explicitly installed"
+msgstr "Eksplicitno instalirano"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Installed as a dependency for another package"
+msgstr "Instalirano kao ovisnost za drugi paket"
+
+#: src/alpm_package.vala src/cli.vala src/manager_window.vala
+msgid "None"
+msgstr "Nijedan"
+
+#: src/alpm_package.vala
+msgid "MD5 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "SHA-256 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "Signature"
+msgstr ""
+
+#: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
 msgstr "Nije uspjela inicijalizacija alpm biblioteke"
 
@@ -47,15 +409,19 @@ msgstr "Sinkronizacija baze podataka nije uspjela"
 msgid "Failed to init transaction"
 msgstr "Nije uspjela inicijalizacija transakcije"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/installer.vala
+#: src/alpm_utils.vala src/installer.vala src/transaction-gtk.vala
+#: src/transaction.vala
 msgid "Failed to prepare transaction"
 msgstr "Nije uspjela priprema transakcije"
 
-#: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/installer.vala src/transaction.vala
 #, c-format
 msgid "target not found: %s"
 msgstr "meta nije nađena: %s"
+
+#: src/alpm_utils.vala
+msgid "failed to retrieve some files"
+msgstr "nije uspjelo dohvaćanje nekih datoteka"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -67,8 +433,8 @@ msgstr "paket %s nema valjanu arhitekturu"
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "ne mogu ispuniti ovisnost '%1$s' koju zahtijeva %2$s"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala src/transaction.vala
 msgid "Warning"
 msgstr "Upozorenje"
 
@@ -115,10 +481,6 @@ msgstr "uklanjam %s s ciljanog popisa"
 msgid "A restart is required for the changes to take effect"
 msgstr "Potrebno je ponovno pokretanje sustava da bi promjene stupile na snagu"
 
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-msgid "Transaction cancelled"
-msgstr "Transakcija prekinuta"
-
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
@@ -157,10 +519,6 @@ msgid "you can remove this file and retry"
 msgstr "možete ukloniti ovu datoteku i pokušati ponovo"
 
 #: src/alpm_utils.vala
-msgid "failed to retrieve some files"
-msgstr "nije uspjelo dohvaćanje nekih datoteka"
-
-#: src/alpm_utils.vala
 msgid "Failed to commit transaction"
 msgstr "Izvršavanje transakcije nije uspjelo"
 
@@ -180,12 +538,12 @@ msgstr "Rješavam ovisnosti"
 msgid "Checking inter-conflicts"
 msgstr "Provjeravam međusobne sukobe"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
 msgstr "Instaliram %s"
 
-#: src/alpm_utils.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala
 #, c-format
 msgid "Upgrading %s"
 msgstr "Nadograđujem %s"
@@ -200,7 +558,7 @@ msgstr "Ponovno instaliram %s"
 msgid "Downgrading %s"
 msgstr "Vračam na staru verziju %s"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
 msgstr "Uklanjam %s"
@@ -231,11 +589,6 @@ msgstr "Provjeravam dostupni prostor na disku"
 #, c-format
 msgid "%1$s optionally requires %2$s"
 msgstr "%1$s neobavezno zahtijeva %2$s"
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "Database file for %s does not exist"
-msgstr "Baza podataka za %s ne postoji"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
@@ -283,19 +636,15 @@ msgstr[0] "Oko %lu minute preostalo"
 msgstr[1] "Oko %lu minute preostalo"
 msgstr[2] "Oko %lu minuta preostalo"
 
-#: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
 msgstr "Greška"
 
-#: src/alpm_utils.vala
-#, c-format
-msgid "Refreshing %s"
-msgstr "Osvježavam %s"
-
-#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
-#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
+#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
+#: src/transaction_interface_root.vala
+msgid "Transaction cancelled"
+msgstr "Transakcija prekinuta"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -304,647 +653,13 @@ msgstr "Preuzimanje %s je počelo"
 
 #: src/alpm_utils.vala
 #, c-format
-msgid "Downloading %s"
-msgstr "Preuzimam %s"
+msgid "Refreshing %s"
+msgstr "Osvježavam %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
 msgstr "Preuzimanje %s je završilo"
-
-#: src/daemon.vala
-msgid "Authentication failed"
-msgstr "Autorizacija nije uspjela"
-
-#: src/daemon.vala
-msgid "Waiting for another package manager to quit"
-msgstr "Čekam na završetak drugog upravitelja paketa"
-
-#: src/daemon.vala
-msgid "Timeout expired"
-msgstr "Timeout je istekao"
-
-#: src/transaction.vala
-msgid "Refreshing mirrors list"
-msgstr "Osvježavam listu zrcalnih poslužitelja"
-
-#: src/transaction.vala src/cli.vala
-#, c-format
-msgid "Cloning %s build files"
-msgstr "Kloniram %s datoteke za stvaranje paketa"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to clone %s build files"
-msgstr "Nije uspjelo kloniranje %s datoteka za stvaranje paketa"
-
-#: src/transaction.vala
-#, c-format
-msgid "Generating %s information"
-msgstr "Generiram %s informaciju"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to generate %s information"
-msgstr "Nije uspjelo generiranje %s informacije"
-
-#: src/transaction.vala
-#, c-format
-msgid "Checking %s dependencies"
-msgstr "Provjeravam %s ovisnosti"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to check %s dependencies"
-msgstr "Provjera ovisnosti %s nije uspjela"
-
-#: src/transaction.vala
-#, c-format
-msgid "key %s could not be imported"
-msgstr "ključ %s se ne može uvesti"
-
-#: src/transaction.vala src/manager_window.vala
-msgid "Transaction successfully finished"
-msgstr "Transakcija uspješno završena"
-
-#: src/transaction.vala
-msgid "Preparing"
-msgstr "Pripremam"
-
-#: src/transaction.vala src/snap_plugin.vala
-msgid "Yes"
-msgstr "Da"
-
-#: src/transaction.vala src/installer.vala src/cli.vala
-msgid "Nothing to do"
-msgstr "Ništa za učiniti"
-
-#: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr "%1$s: ignoriram nadogradnju paketa (%2$s=>%3$s)"
-
-#: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Nije uspjela sinkronizacija AUR baze podataka"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to build %s"
-msgstr "Nije uspjelo stvaranje %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Stvaram %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose optional dependencies for %s"
-msgstr "Odaberi neobavezne ovisnosti za %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose a provider for %s"
-msgstr "Odaberi davatelja za %s"
-
-#: src/transaction-gtk.vala
-msgid "Import PGP key"
-msgstr "Uvezi PGP ključ"
-
-#: src/transaction-gtk.vala
-msgid "Trust and Import"
-msgstr "Povjerenje i uvoz"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
-msgid "_Cancel"
-msgstr "_Odustani"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "PGP ključ %1$s je potreban za provjeru %2$s izvornih datoteka."
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Trust %s and import the PGP key"
-msgstr "Povjeri %s i uvezi PGP ključ"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Official Repositories"
-msgstr "Službeni repozitoriji"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Repositories"
-msgstr "Repozitoriji"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Flatpak"
-msgstr "Flatpak"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Depends On"
-msgstr "Ovisi o"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Orphan Of"
-msgstr "Nepotreban od"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Conflicts With"
-msgstr "U sukobu sa"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Required By"
-msgstr "Zahtijevan od"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Replaces"
-msgstr "Zamjenjuje"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Edit build files"
-msgstr "Uredi datoteke za stvaranje paketa"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-msgid "Total download size"
-msgstr "Ukupna veličina za preuzimanje"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Edit %s build files"
-msgstr "Uredi %s datoteke za stvaranje paketa"
-
-#: src/transaction-gtk.vala
-msgid "Save"
-msgstr "Spremi"
-
-#: src/transaction-gtk.vala resources/progress_dialog.ui
-#: resources/history_dialog.ui
-msgid "_Close"
-msgstr "_Zatvori"
-
-#: src/transaction-gtk.vala
-msgid "Restart"
-msgstr "Ponovno pokreni sustav"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Install"
-msgstr "Instaliraj"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "The snap %s was published using classic confinement"
-msgstr "Snap %s je objavljen korištenjem klasičnog zatvaranja"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
-msgstr "Svejedno instalirajte %s"
-
-#: src/transaction-gtk.vala src/tray.vala
-msgid "Package Manager"
-msgstr "Upravitelj paketa"
-
-#: src/installer.vala src/cli.vala
-msgid "Install packages from repositories, path or url"
-msgstr "Instaliraj pakete iz repozitorija, putanje ili url-a"
-
-#: src/installer.vala src/cli.vala
-msgid "Remove packages"
-msgstr "Ukloni pakete"
-
-#: src/installer.vala src/cli.vala
-msgid "Build packages from AUR and install them with their dependencies"
-msgstr "Stvorite pakete iz AUR-a i instalirajte ih s njihovim ovisnostima"
-
-#: src/installer.vala src/cli.vala
-msgid "package(s)"
-msgstr "paket(i)"
-
-#: src/tray.vala
-msgid "Updates Available"
-msgstr "Dostupna ažuriranja"
-
-#: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up to date"
-msgstr "Vaš sustav je ažuriran"
-
-#: src/tray.vala
-msgid "_Quit"
-msgstr "_Izađi"
-
-#: src/tray.vala src/cli.vala
-#, c-format
-msgid "%u available update"
-msgid_plural "%u available updates"
-msgstr[0] "%u dostupna nadogradnja"
-msgstr[1] "%u dostupne nadogradnje"
-msgstr[2] "%u dostupnih ažuriranja"
-
-#: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
-msgid "Details"
-msgstr "Detalji"
-
-#: src/manager_window.vala
-msgid "No package found"
-msgstr "Paket nije pronađen"
-
-#: src/manager_window.vala
-msgid "Checking for Updates"
-msgstr "Provjeravam ažuriranja"
-
-#: src/manager_window.vala resources/manager_window.ui
-msgid "Install Local Packages"
-msgstr "Instaliraj lokalne pakete"
-
-#: src/manager_window.vala
-msgid "_Open"
-msgstr "_Otvori"
-
-#: src/manager_window.vala
-msgid "Alpm Package"
-msgstr "Alpm paket"
-
-#: src/manager_window.vala
-msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "Upravitelj paketa s podrškom za Alpm, AUR, Flatpak i Snap"
-
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
-msgid "Snap"
-msgstr "Snap"
-
-#: src/manager_window.vala
-#, c-format
-msgid "%u pending operation"
-msgid_plural "%u pending operations"
-msgstr[0] "%u operacija na čekanju"
-msgstr[1] "%u operacije na čekanju"
-msgstr[2] "%u operacija na čekanju"
-
-#: src/manager_window.vala
-msgid "Pending"
-msgstr "Na čekanju"
-
-#: src/manager_window.vala
-msgid "All"
-msgstr "Sve"
-
-#: src/manager_window.vala
-msgid "Explicitly installed"
-msgstr "Eksplicitno instalirano"
-
-#: src/manager_window.vala
-msgid "Orphans"
-msgstr "Nepotrebni paketi"
-
-#: src/manager_window.vala
-msgid "Foreign"
-msgstr "Vanjski paketi"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Installed"
-msgstr "Instalirano"
-
-#: src/manager_window.vala
-msgid "Ignored"
-msgstr "Ignorirano"
-
-#: src/manager_window.vala src/cli.vala
-msgid "None"
-msgstr "Nijedan"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Reason"
-msgstr "Razlog za instalaciju"
-
-#: src/manager_window.vala
-msgid "Installed as a dependency for another package"
-msgstr "Instalirano kao ovisnost za drugi paket"
-
-#: src/manager_window.vala
-msgid "Mark as explicitly installed"
-msgstr "Označi kao eksplicitno instalirano"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Licenses"
-msgstr "Licence"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Unknown"
-msgstr "Nepoznato"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Repository"
-msgstr "Repozitorij"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Package Base"
-msgstr "Paketna baza"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Maintainer"
-msgstr "Održavatelj"
-
-#: src/manager_window.vala src/cli.vala
-msgid "First Submitted"
-msgstr "Prvi postavio"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Last Modified"
-msgstr "Zadnja promjena"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Votes"
-msgstr "Glasovi"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Out of Date"
-msgstr "Zastario"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Groups"
-msgstr "Grupe"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Packager"
-msgstr "Pakiratelj"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Build Date"
-msgstr "Datum stvaranja paketa"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Date"
-msgstr "Datum instalacije"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Validated By"
-msgstr "Potvrđeno od strane"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Backup files"
-msgstr "Pričuvne datoteke"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional Dependencies"
-msgstr "Neobavezne ovisnosti"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional For"
-msgstr "Neobavezno za"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Provides"
-msgstr "Pruža"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Ovisnosti za stvaranje paketa"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Provjera ovisnosti"
-
-#: src/manager_window.vala
-msgid "Publisher"
-msgstr "Izdavač"
-
-#: src/manager_window.vala
-msgid "Confined in a Sandbox"
-msgstr "Zatvoren u sandbox-u"
-
-#: src/manager_window.vala
-msgid "Channels"
-msgstr "Kanali"
-
-#: src/manager_window.vala
-msgid "OS Updates"
-msgstr "Ažuriranja operacijskog sustava"
-
-#: src/manager_window.vala
-msgid "Includes performance, stability and security improvements"
-msgstr "Uključuje poboljšanja performansi, stabilnosti i sigurnosti"
-
-#: src/manager_window.vala
-msgid "Featured"
-msgstr "Istaknuto"
-
-#: src/manager_window.vala
-msgid "Photo & Video"
-msgstr "Foto i video"
-
-#: src/manager_window.vala
-msgid "Music & Audio"
-msgstr "Glazba i zvuk"
-
-#: src/manager_window.vala
-msgid "Productivity"
-msgstr "Produktivnost"
-
-#: src/manager_window.vala
-msgid "Communication & News"
-msgstr "Komunikacija i vijesti"
-
-#: src/manager_window.vala
-msgid "Education & Science"
-msgstr "Obrazovanje i znanost"
-
-#: src/manager_window.vala
-msgid "Games"
-msgstr "Igre"
-
-#: src/manager_window.vala
-msgid "Utilities"
-msgstr "Alati"
-
-#: src/manager_window.vala
-msgid "Development"
-msgstr "Razvoj"
-
-#: src/manager_window.vala resources/manager_window.ui
-#: resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Ažuriranja"
-
-#: src/manager_window.vala
-msgid "Last refresh"
-msgstr "Posljednja provjera"
-
-#: src/preferences_dialog.vala
-msgid "every 3 hours"
-msgstr "svaka 3 sata"
-
-#: src/preferences_dialog.vala
-msgid "every 6 hours"
-msgstr "svakih 6 sati"
-
-#: src/preferences_dialog.vala
-msgid "every 12 hours"
-msgstr "svakih 12 sati"
-
-#: src/preferences_dialog.vala
-msgid "every day"
-msgstr "svaki dan"
-
-#: src/preferences_dialog.vala
-msgid "every week"
-msgstr "svaki tjedan"
-
-#: src/preferences_dialog.vala
-msgid "1"
-msgstr "1"
-
-#: src/preferences_dialog.vala
-msgid "2"
-msgstr "2"
-
-#: src/preferences_dialog.vala
-msgid "4"
-msgstr "4"
-
-#: src/preferences_dialog.vala
-msgid "6"
-msgstr "6"
-
-#: src/preferences_dialog.vala
-msgid "8"
-msgstr "8"
-
-#: src/preferences_dialog.vala
-msgid "10"
-msgstr "10"
-
-#: src/preferences_dialog.vala
-msgid "Worldwide"
-msgstr "Globalno"
-
-#: src/preferences_dialog.vala
-msgid "0"
-msgstr "0"
-
-#: src/preferences_dialog.vala
-msgid "3"
-msgstr "3"
-
-#: src/preferences_dialog.vala
-msgid "5"
-msgstr "5"
-
-#: src/preferences_dialog.vala src/cli.vala
-msgid "To delete"
-msgstr "Izbrisati"
-
-#: src/preferences_dialog.vala src/cli.vala
-#, c-format
-msgid "%u file"
-msgid_plural "%u files"
-msgstr[0] "%u datoteka"
-msgstr[1] "%u datoteke"
-msgstr[2] "%u datoteka"
-
-#: src/preferences_dialog.vala
-msgid "Select Build Directory"
-msgstr "Odaberi direktorij za stvaranje paketa"
-
-#: src/preferences_dialog.vala
-msgid "_Choose"
-msgstr "_Odaberi"
-
-#: src/preferences_dialog.vala
-msgid "Choose Ignored Upgrades"
-msgstr "Odaberi ignorirane nadogradnje"
-
-#: src/transaction-cli.vala src/cli.vala
-#, c-format
-msgid "Enter a selection (default=%s)"
-msgstr "Unesite odabir (zadano = %s)"
-
-#: src/transaction-cli.vala
-msgid "none"
-msgstr "nijedan"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "Enter a number (default=%d)"
-msgstr "Unesite broj (zadano = %d)"
-
-#: src/transaction-cli.vala
-msgid "[y/N]"
-msgstr "[da/NE]"
-
-#: src/transaction-cli.vala
-msgid "y"
-msgstr "da"
-
-#: src/transaction-cli.vala
-msgid "yes"
-msgstr "da"
-
-#: src/transaction-cli.vala
-msgid "[e]"
-msgstr "[e]"
-
-#: src/transaction-cli.vala
-msgid "Apply transaction"
-msgstr "Primijeni transakciju"
-
-#: src/transaction-cli.vala
-msgid "[e/y/N]"
-msgstr "[e/da/NE]"
-
-#: src/transaction-cli.vala
-msgid "e"
-msgstr "e"
-
-#: src/transaction-cli.vala
-msgid "To upgrade"
-msgstr "Za nadograditi"
-
-#: src/transaction-cli.vala
-msgid "To reinstall"
-msgstr "Za ponovnu instalaciju"
-
-#: src/transaction-cli.vala
-msgid "To install"
-msgstr "Za instalirati"
-
-#: src/transaction-cli.vala
-msgid "To build"
-msgstr "Za stvaranje paketa"
-
-#: src/transaction-cli.vala
-msgid "To downgrade"
-msgstr "Vratiti paket na staru verziju"
-
-#: src/transaction-cli.vala
-msgid "To remove"
-msgstr "Za ukloniti"
-
-#: src/transaction-cli.vala
-msgid "Total installed size"
-msgstr "Ukupna instalirana veličina"
-
-#: src/transaction-cli.vala
-msgid "Total removed size"
-msgstr "Ukupna uklonjena veličina"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "View %s build files diff"
-msgstr "Pogledaj %s razlike datoteka za stvaranje paketa"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -974,6 +689,10 @@ msgstr "radnja"
 #: src/cli.vala
 msgid "options"
 msgstr "opcije"
+
+#: src/cli.vala src/installer.vala
+msgid "package(s)"
+msgstr "paket(i)"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1084,6 +803,10 @@ msgstr "ne ispisuj nijedan izlaz"
 msgid "overwrite existing files"
 msgstr "prepiši postojeće datoteke"
 
+#: src/cli.vala src/installer.vala
+msgid "Build packages from AUR and install them with their dependencies"
+msgstr "Stvorite pakete iz AUR-a i instalirajte ih s njihovim ovisnostima"
+
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
@@ -1118,6 +841,10 @@ msgstr "nemoj klonirati datoteke za stvaranje paketa iz AUR-a; koristi samo loka
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
 msgstr "zaobići bilo koju i sve poruke potvrde"
+
+#: src/cli.vala src/installer.vala
+msgid "Install packages from repositories, path or url"
+msgstr "Instaliraj pakete iz repozitorija, putanje ili url-a"
 
 #: src/cli.vala
 msgid "glob"
@@ -1158,6 +885,10 @@ msgstr "nemoj provjeravati nadogradnje"
 #: src/cli.vala
 msgid "Reinstall packages"
 msgstr "Ponovno instaliraj pakete"
+
+#: src/cli.vala src/installer.vala
+msgid "Remove packages"
+msgstr "Ukloni pakete"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
@@ -1290,10 +1021,6 @@ msgstr "ne uklanjajte datoteke, samo pronađite pakete kandidata"
 msgid "also display all files names"
 msgstr "također prikaži imena svih datoteka"
 
-#: src/cli.vala resources/manager_window.ui
-msgid "Name"
-msgstr "Ime"
-
 #: src/cli.vala
 msgid "Version"
 msgstr "Verzija"
@@ -1306,9 +1033,101 @@ msgstr "Opis"
 msgid "URL"
 msgstr "URL"
 
+#: src/cli.vala src/manager_window.vala
+msgid "Licenses"
+msgstr "Licence"
+
 #: src/cli.vala
 msgid "Installed Size"
 msgstr "Instalirana veličina"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Depends On"
+msgstr "Ovisi o"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional Dependencies"
+msgstr "Neobavezne ovisnosti"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Make Dependencies"
+msgstr "Ovisnosti za stvaranje paketa"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Check Dependencies"
+msgstr "Provjera ovisnosti"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Required By"
+msgstr "Zahtijevan od"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional For"
+msgstr "Neobavezno za"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Provides"
+msgstr "Pruža"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Replaces"
+msgstr "Zamjenjuje"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Conflicts With"
+msgstr "U sukobu sa"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Packager"
+msgstr "Pakiratelj"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Build Date"
+msgstr "Datum stvaranja paketa"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Date"
+msgstr "Datum instalacije"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Reason"
+msgstr "Razlog za instalaciju"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Validated By"
+msgstr "Potvrđeno od strane"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Backup files"
+msgstr "Pričuvne datoteke"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Package Base"
+msgstr "Paketna baza"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Maintainer"
+msgstr "Održavatelj"
+
+#: src/cli.vala src/manager_window.vala
+msgid "First Submitted"
+msgstr "Prvi postavio"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Last Modified"
+msgstr "Zadnja promjena"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Votes"
+msgstr "Glasovi"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Out of Date"
+msgstr "Zastario"
 
 #: src/cli.vala
 #, c-format
@@ -1328,6 +1147,14 @@ msgstr[0] "%uignorirano ažuriranje"
 msgstr[1] "%u ignoriranih ažuriranja"
 msgstr[2] "%u ignorirana ažuriranja"
 
+#: src/cli.vala src/tray.vala
+#, c-format
+msgid "%u available update"
+msgid_plural "%u available updates"
+msgstr[0] "%u dostupna nadogradnja"
+msgstr[1] "%u dostupne nadogradnje"
+msgstr[2] "%u dostupnih ažuriranja"
+
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
 msgstr "Ukloni samo verzije deinstaliranih paketa"
@@ -1335,6 +1162,18 @@ msgstr "Ukloni samo verzije deinstaliranih paketa"
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
 msgstr "Broj različitih verzija paketa za zadržavanje u predmemoriji"
+
+#: src/cli.vala src/preferences_dialog.vala
+msgid "To delete"
+msgstr "Izbrisati"
+
+#: src/cli.vala src/preferences_dialog.vala
+#, c-format
+msgid "%u file"
+msgid_plural "%u files"
+msgstr[0] "%u datoteka"
+msgstr[1] "%u datoteke"
+msgstr[2] "%u datoteka"
 
 #: src/cli.vala
 msgid "Clean cache"
@@ -1354,6 +1193,10 @@ msgstr "Dodaj %s za instalaciju"
 msgid "%s is only available from AUR"
 msgstr "%s je dostupan samo iz AUR-a"
 
+#: src/cli.vala src/installer.vala src/transaction.vala
+msgid "Nothing to do"
+msgstr "Ništa za učiniti"
+
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
@@ -1361,6 +1204,11 @@ msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Postoji %1$u član u grupi %2$s"
 msgstr[1] "Postoji %1$u članova u grupi %2$s"
 msgstr[2] "Postoji %1$u članova u grupi %2$s"
+
+#: src/cli.vala src/transaction-cli.vala
+#, c-format
+msgid "Enter a selection (default=%s)"
+msgstr "Unesite odabir (zadano = %s)"
 
 #: src/cli.vala
 msgid "all"
@@ -1371,259 +1219,508 @@ msgstr "sve"
 msgid "Add %s to reinstall"
 msgstr "Dodaj %s za ponovnu instalaciju"
 
+#: src/cli.vala src/transaction.vala
+#, c-format
+msgid "Cloning %s build files"
+msgstr "Kloniram %s datoteke za stvaranje paketa"
+
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
 msgstr "Instaliraj %1$s iz %2$s"
 
+#: src/daemon.vala
+msgid "Authentication failed"
+msgstr "Autorizacija nije uspjela"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Waiting for another package manager to quit"
+msgstr "Čekam na završetak drugog upravitelja paketa"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Timeout expired"
+msgstr "Timeout je istekao"
+
+#: src/flatpak_plugin.vala
+msgid "Flatpak transaction failed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "No package found"
+msgstr "Paket nije pronađen"
+
+#: src/manager_window.vala
+msgid "Checking for Updates"
+msgstr "Provjeravam ažuriranja"
+
+#: src/manager_window.vala
+msgid "Alpm Package"
+msgstr "Alpm paket"
+
+#: src/manager_window.vala
+msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr "Upravitelj paketa s podrškom za Alpm, AUR, Flatpak i Snap"
+
+#: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Total download size"
+msgstr "Ukupna veličina za preuzimanje"
+
+#: src/manager_window.vala
+#, c-format
+msgid "%u pending operation"
+msgid_plural "%u pending operations"
+msgstr[0] "%u operacija na čekanju"
+msgstr[1] "%u operacije na čekanju"
+msgstr[2] "%u operacija na čekanju"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Na čekanju"
+
+#: src/manager_window.vala
+msgid "All"
+msgstr "Sve"
+
+#: src/manager_window.vala
+msgid "Orphans"
+msgstr "Nepotrebni paketi"
+
+#: src/manager_window.vala
+msgid "Foreign"
+msgstr "Vanjski paketi"
+
+#: src/manager_window.vala
+msgid "Ignored"
+msgstr "Ignorirano"
+
+#: src/manager_window.vala
+msgid "Mark as explicitly installed"
+msgstr "Označi kao eksplicitno instalirano"
+
+#: src/manager_window.vala
+msgid "Publisher"
+msgstr "Izdavač"
+
+#: src/manager_window.vala
+msgid "Confined in a Sandbox"
+msgstr "Zatvoren u sandbox-u"
+
+#: src/manager_window.vala
+msgid "Channels"
+msgstr "Kanali"
+
+#: src/manager_window.vala
+msgid "Includes performance, stability and security improvements"
+msgstr "Uključuje poboljšanja performansi, stabilnosti i sigurnosti"
+
+#: src/manager_window.vala
+msgid "Featured"
+msgstr "Istaknuto"
+
+#: src/manager_window.vala
+msgid "Photo & Video"
+msgstr "Foto i video"
+
+#: src/manager_window.vala
+msgid "Music & Audio"
+msgstr "Glazba i zvuk"
+
+#: src/manager_window.vala
+msgid "Productivity"
+msgstr "Produktivnost"
+
+#: src/manager_window.vala
+msgid "Communication & News"
+msgstr "Komunikacija i vijesti"
+
+#: src/manager_window.vala
+msgid "Education & Science"
+msgstr "Obrazovanje i znanost"
+
+#: src/manager_window.vala
+msgid "Games"
+msgstr "Igre"
+
+#: src/manager_window.vala
+msgid "Utilities"
+msgstr "Alati"
+
+#: src/manager_window.vala
+msgid "Development"
+msgstr "Razvoj"
+
+#: src/manager_window.vala
+msgid "Last refresh"
+msgstr "Posljednja provjera"
+
+#: src/manager_window.vala src/transaction.vala
+msgid "Transaction successfully finished"
+msgstr "Transakcija uspješno završena"
+
+#: src/pgp_key.vala
+msgid "Fingerprint"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Algorithm"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Creation date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Expiration date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Never"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Unknown keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Source"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Required by"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%s build files (validpgpkeys)"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has been revoked by its owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has expired"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key is disabled on the keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%u keys match %s on the keyserver, only the first one is shown"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "The key found on the keyserver does not match the requested key %s"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid ""
+"Keyservers do not verify key owners: compare the fingerprint with the one "
+"published by the upstream project before trusting this key"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 3 hours"
+msgstr "svaka 3 sata"
+
+#: src/preferences_dialog.vala
+msgid "every 6 hours"
+msgstr "svakih 6 sati"
+
+#: src/preferences_dialog.vala
+msgid "every 12 hours"
+msgstr "svakih 12 sati"
+
+#: src/preferences_dialog.vala
+msgid "every day"
+msgstr "svaki dan"
+
+#: src/preferences_dialog.vala
+msgid "every week"
+msgstr "svaki tjedan"
+
+#: src/preferences_dialog.vala
+msgid "1"
+msgstr "1"
+
+#: src/preferences_dialog.vala
+msgid "2"
+msgstr "2"
+
+#: src/preferences_dialog.vala
+msgid "4"
+msgstr "4"
+
+#: src/preferences_dialog.vala
+msgid "6"
+msgstr "6"
+
+#: src/preferences_dialog.vala
+msgid "8"
+msgstr "8"
+
+#: src/preferences_dialog.vala
+msgid "10"
+msgstr "10"
+
+#: src/preferences_dialog.vala
+msgid "Worldwide"
+msgstr "Globalno"
+
+#: src/preferences_dialog.vala
+msgid "0"
+msgstr "0"
+
+#: src/preferences_dialog.vala
+msgid "3"
+msgstr "3"
+
+#: src/preferences_dialog.vala
+msgid "5"
+msgstr "5"
+
+#: src/preferences_dialog.vala
+msgid "Select Build Directory"
+msgstr "Odaberi direktorij za stvaranje paketa"
+
+#: src/preferences_dialog.vala
+msgid "Choose Ignored Upgrades"
+msgstr "Odaberi ignorirane nadogradnje"
+
+#: src/snap_plugin.vala src/transaction.vala
+msgid "Yes"
+msgstr "Da"
+
 #: src/snap_plugin.vala
 msgid "No"
 msgstr "Ne"
 
-#: resources/choose_provider_dialog.ui
-msgid "Choose a Provider"
-msgstr "Odaberi davatelja"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose optional dependencies for %s"
+msgstr "Odaberi neobavezne ovisnosti za %s"
 
-#: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
-msgid "Choose"
-msgstr "Odaberi"
+#: src/transaction-cli.vala
+msgid "none"
+msgstr "nijedan"
 
-#: resources/progress_dialog.ui
-msgid "Progress"
-msgstr "Napredak"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose a provider for %s"
+msgstr "Odaberi davatelja za %s"
 
-#: resources/history_dialog.ui
-msgid "Pamac History"
-msgstr "Pamac povijest"
+#: src/transaction-cli.vala
+#, c-format
+msgid "Enter a number (default=%d)"
+msgstr "Unesite broj (zadano = %d)"
 
-#: resources/transaction_sum_dialog.ui
-msgid "Transaction Summary"
-msgstr "Sažetak transakcija"
+#: src/transaction-cli.vala
+msgid "[y/N]"
+msgstr "[da/NE]"
 
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-msgid "_Apply"
-msgstr "_Primijeni"
+#: src/transaction-cli.vala
+msgid "y"
+msgstr "da"
 
-#: resources/manager_window.ui
-msgid "Software Mode"
-msgstr "Softverski način rada"
+#: src/transaction-cli.vala
+msgid "yes"
+msgstr "da"
 
-#: resources/manager_window.ui
-msgid "Refresh databases"
-msgstr "Osvježi bazu podataka"
+#: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
+msgstr "PGP ključ %1$s je potreban za provjeru %2$s izvornih datoteka."
 
-#: resources/manager_window.ui
-msgid "View History"
-msgstr "Pregledaj povijest"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Import the PGP key"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Preferences"
-msgstr "Postavke"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Trust %s and import the PGP key"
+msgstr "Povjeri %s i uvezi PGP ključ"
 
-#: resources/manager_window.ui
-msgid "About"
-msgstr "O programu"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Edit build files"
+msgstr "Uredi datoteke za stvaranje paketa"
 
-#: resources/manager_window.ui
-msgid "Search"
-msgstr "Traži"
+#: src/transaction-cli.vala
+msgid "[e]"
+msgstr "[e]"
 
-#: resources/manager_window.ui
-msgid "Remove all"
-msgstr "Ukloni sve"
+#: src/transaction-cli.vala
+msgid "Apply transaction"
+msgstr "Primijeni transakciju"
 
-#: resources/manager_window.ui
-msgid "Install all"
-msgstr "Instaliraj sve"
+#: src/transaction-cli.vala
+msgid "[e/y/N]"
+msgstr "[e/da/NE]"
 
-#: resources/manager_window.ui
-msgid "Ignore all"
-msgstr "Ignoriraj sve"
+#: src/transaction-cli.vala
+msgid "e"
+msgstr "e"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Orphan Of"
+msgstr "Nepotreban od"
+
+#: src/transaction-cli.vala
+msgid "To upgrade"
+msgstr "Za nadograditi"
+
+#: src/transaction-cli.vala
+msgid "To reinstall"
+msgstr "Za ponovnu instalaciju"
+
+#: src/transaction-cli.vala
+msgid "To install"
+msgstr "Za instalirati"
+
+#: src/transaction-cli.vala
+msgid "To build"
+msgstr "Za stvaranje paketa"
+
+#: src/transaction-cli.vala
+msgid "To downgrade"
+msgstr "Vratiti paket na staru verziju"
+
+#: src/transaction-cli.vala
+msgid "To remove"
+msgstr "Za ukloniti"
+
+#: src/transaction-cli.vala
+msgid "Total installed size"
+msgstr "Ukupna instalirana veličina"
+
+#: src/transaction-cli.vala
+msgid "Total removed size"
+msgstr "Ukupna uklonjena veličina"
+
+#: src/transaction-cli.vala
+#, c-format
+msgid "View %s build files diff"
+msgstr "Pogledaj %s razlike datoteka za stvaranje paketa"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Edit %s build files"
+msgstr "Uredi %s datoteke za stvaranje paketa"
+
+#: src/transaction-gtk.vala
+msgid "Import PGP key"
+msgstr "Uvezi PGP ključ"
+
+#: src/transaction-gtk.vala
+msgid "Trust and Import"
+msgstr "Povjerenje i uvoz"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "PGP ključ %s je potreban za provjeru %s izvornih datoteka."
+
+#: src/transaction-gtk.vala
+msgid "Save"
+msgstr "Spremi"
+
+#: src/transaction-gtk.vala
+msgid "Restart"
+msgstr "Ponovno pokreni sustav"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The snap %s was published using classic confinement"
+msgstr "Snap %s je objavljen korištenjem klasičnog zatvaranja"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "Install %s anyway"
+msgstr "Svejedno instalirajte %s"
+
+#: src/transaction.vala
+msgid "Refreshing mirrors list"
+msgstr "Osvježavam listu zrcalnih poslužitelja"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to clone %s build files"
+msgstr "Nije uspjelo kloniranje %s datoteka za stvaranje paketa"
+
+#: src/transaction.vala
+#, c-format
+msgid "Generating %s information"
+msgstr "Generiram %s informaciju"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to generate %s information"
+msgstr "Nije uspjelo generiranje %s informacije"
+
+#: src/transaction.vala
+#, c-format
+msgid "Checking %s dependencies"
+msgstr "Provjeravam %s ovisnosti"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to check %s dependencies"
+msgstr "Provjera ovisnosti %s nije uspjela"
+
+#: src/transaction.vala
+#, c-format
+msgid "key %s could not be imported"
+msgstr "ključ %s se ne može uvesti"
+
+#: src/transaction.vala
+msgid "Preparing"
+msgstr "Pripremam"
+
+#: src/transaction.vala
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr "%1$s: ignoriram nadogradnju paketa (%2$s=>%3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Nije uspjela sinkronizacija AUR baze podataka"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Stvaram %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to build %s"
+msgstr "Nije uspjelo stvaranje %s"
+
+#: src/transaction_interface_daemon.vala
+msgid "The transaction may still be running in the background"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "Connection to the daemon was lost"
+msgstr ""
+
+#: src/tray.vala
+msgid "_Quit"
+msgstr "_Izađi"
 
 #: resources/manager_window.ui
 msgid "Sort by"
 msgstr "Sortiraj prema"
 
-#: resources/manager_window.ui
-msgid "Relevance"
-msgstr "Relevantnost"
+#: src/manager_window.vala
+msgid "_Open"
+msgstr "_Otvori"
 
-#: resources/manager_window.ui
-msgid "Size"
-msgstr "Veličina"
-
-#: resources/manager_window.ui
-msgid "Date"
-msgstr "Datum"
-
-#: resources/manager_window.ui
-msgid "Refresh"
-msgstr "Osvježi"
-
-#: resources/manager_window.ui
-msgid "Categories"
-msgstr "Kategorije"
-
-#: resources/manager_window.ui
-msgid "Browse"
-msgstr "Traži"
-
-#: resources/manager_window.ui
-msgid "Launch"
-msgstr "Lansiraj"
-
-#: resources/manager_window.ui
-msgid "Remove"
-msgstr "Ukloni"
-
-#: resources/manager_window.ui
-msgid "Reinstall"
-msgstr "Ponovno instaliraj"
-
-#: resources/manager_window.ui
-msgid "Build"
-msgstr "Stvori paket"
-
-#: resources/manager_window.ui
-msgid "Dependencies"
-msgstr "Ovisnosti"
-
-#: resources/manager_window.ui
-msgid "Files"
-msgstr "Datoteke"
-
-#: resources/manager_window.ui
-msgid "Reset build files"
-msgstr "Ponovno postavi datoteke za stvaranje paketa"
-
-#: resources/manager_window.ui
-msgid "Build files"
-msgstr "Datoteke za stvaranje paketa"
-
-#: resources/preferences_dialog.ui
-msgid "General"
-msgstr "Općenito"
-
-#: resources/preferences_dialog.ui
-msgid "Check for updates"
-msgstr "Provjeri ažuriranja"
-
-#: resources/preferences_dialog.ui
-msgid "Updates check frequency"
-msgstr "Učestalost provjere ažuriranja"
-
-#: resources/preferences_dialog.ui
-msgid "Automatically download updates"
-msgstr "Automatsko preuzimanje ažuriranja"
-
-#: resources/preferences_dialog.ui
-msgid "Upgrade the system at shutdown"
-msgstr "Nadogradite sustav pri gašenju"
-
-#: resources/preferences_dialog.ui
-msgid "Hide tray icon when no update"
-msgstr "Sakrij ikonu na programskoj traci kada nema dostupnih ažuriranja"
-
-#: resources/preferences_dialog.ui
-msgid "Downloads"
-msgstr "Preuzimanja"
-
-#: resources/preferences_dialog.ui
-msgid "Parallel downloads"
-msgstr "Paralelna preuzimanja"
-
-#: resources/preferences_dialog.ui
-msgid "Use mirrors from"
-msgstr "Koristi zrcalne poslužitelje iz"
-
-#: resources/preferences_dialog.ui
-msgid "Refresh Mirrors"
-msgstr "Osvježi zrcalne poslužitelje"
-
-#: resources/preferences_dialog.ui
-msgid "Cache"
-msgstr "Predmemorija"
-
-#: resources/preferences_dialog.ui
-msgid "Number of versions of each package to keep"
-msgstr "Broj različitih verzija paketa za zadržavanje"
-
-#: resources/preferences_dialog.ui
-msgid "Remove only the uninstalled packages"
-msgstr "Ukloni samo deinstalirane pakete"
-
-#: resources/preferences_dialog.ui
-msgid "Clean"
-msgstr "Očisti"
-
-#: resources/preferences_dialog.ui
-msgid "Advanced"
-msgstr "Napredno"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"Misconfiguration of these options can lead to system breakage.\n"
-"Modify them only if you know what you are doing."
-msgstr "Loša konfiguracija tih opcija može dovesti do kvara sustava.\nIzmijenite ih samo ako znate što radite."
-
-#: resources/preferences_dialog.ui
-msgid "Check available disk space"
-msgstr "Provjera dostupnog prostora na disku"
-
-#: resources/preferences_dialog.ui
-msgid "Remove unrequired dependencies"
-msgstr "Ukloni nepotrebne ovisnosti"
-
-#: resources/preferences_dialog.ui
-msgid "Do not check for updates when installing"
-msgstr "Nemoj provjeravati nadogradnje tijekom instaliranja"
-
-#: resources/preferences_dialog.ui
-msgid "Enable downgrade"
-msgstr "Dopusti povratak na staru verziju paketa"
-
-#: resources/preferences_dialog.ui
-msgid "Ignored upgrades"
-msgstr "Ignorirane nadogradnje"
-
-#: resources/preferences_dialog.ui
-msgid "Third Party"
-msgstr "Treće strane"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"AUR is a community maintained repository so it presents potential risks and problems.\n"
-"All AUR users should be familiar with the build process."
-msgstr "AUR je repozitorij održavan od strane zajednice te tako predstavlja potencijalne rizike i probleme.\nSvi AUR korisnici bi trebali biti upoznati s procesom stvaranja paketa."
-
-#: resources/preferences_dialog.ui
-msgid "Enable AUR support"
-msgstr "Omogući AUR podršku"
-
-#: resources/preferences_dialog.ui
-msgid "Keep built packages"
-msgstr "Zadrži stvorene pakete"
-
-#: resources/preferences_dialog.ui
-msgid "Check for development packages updates"
-msgstr "Provjeri ažuriranja razvojnih paketa"
-
-#: resources/preferences_dialog.ui
-msgid "Build directory"
-msgstr "Direktorij za stvaranje paketa"
-
-#: resources/preferences_dialog.ui
-msgid "Flatpak packages are maintained by their publisher."
-msgstr "Flatpak pakete održava njihov izdavač."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Flatpak support"
-msgstr "Omogući Flatpak podršku"
-
-#: resources/preferences_dialog.ui
-msgid "Snap packages are maintained by their publisher."
-msgstr "Snap pakete održava njihov izdavač."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Snap support"
-msgstr "Omogući Snap podršku"
+#: src/preferences_dialog.vala
+msgid "_Choose"
+msgstr "_Odaberi"

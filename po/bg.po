@@ -26,6 +26,25 @@ msgstr ""
 "Language: bg\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: src/transaction-gtk.vala src/tray.vala
+msgid "Package Manager"
+msgstr "Диспечер на пакети"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/cli.vala
+#: src/manager_window.vala src/tray.vala
+msgid "Your system is up to date"
+msgstr "Вашата система е актуална"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/tray.vala
+msgid "Updates Available"
+msgstr "Налични са обновявания"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
+msgid "Details"
+msgstr "Детайли"
+
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
 msgstr "Инсталиране, обновяване или премахване на пакети"
@@ -34,7 +53,350 @@ msgstr "Инсталиране, обновяване или премахване
 msgid "Authentication is required to install, update, or remove packages"
 msgstr "Изисква се удостоверяване, за инсталиране, обновяване или премахване на пакетите"
 
-#: src/alpm_utils.vala src/database.vala
+#: resources/choose_pkgs_dialog.ui resources/manager_window.ui
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: src/transaction-gtk.vala
+msgid "_Cancel"
+msgstr "_Отказ"
+
+#: resources/choose_pkgs_dialog.ui resources/choose_provider_dialog.ui
+msgid "Choose"
+msgstr "Избери"
+
+#: resources/choose_provider_dialog.ui
+msgid "Choose a Provider"
+msgstr "Изберете доставчик"
+
+#: resources/history_dialog.ui
+msgid "Pamac History"
+msgstr "История на Pamac"
+
+#: resources/manager_window.ui
+msgid "Software Mode"
+msgstr "Софтуерен режим"
+
+#: resources/manager_window.ui
+msgid "Refresh databases"
+msgstr "Обновяване на базата данни"
+
+#: resources/manager_window.ui
+msgid "View History"
+msgstr "Преглед на историята"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Install Local Packages"
+msgstr "Инсталиране на локални пакети"
+
+#: resources/manager_window.ui
+msgid "Preferences"
+msgstr "Предпочитания"
+
+#: resources/manager_window.ui
+msgid "About"
+msgstr "Относно"
+
+#: resources/manager_window.ui
+msgid "Relevance"
+msgstr "Уместност"
+
+#: resources/manager_window.ui src/cli.vala
+msgid "Name"
+msgstr "Име"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Repository"
+msgstr "Хранилище"
+
+#: resources/manager_window.ui
+msgid "Size"
+msgstr "Размер"
+
+#: resources/manager_window.ui
+msgid "Date"
+msgstr "Дата"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Search"
+msgstr "Търсене"
+
+#: resources/manager_window.ui
+msgid "Browse"
+msgstr "Търси"
+
+#: resources/manager_window.ui
+msgid "Categories"
+msgstr "Категории"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Groups"
+msgstr "Групи"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Repositories"
+msgstr "Хранилища"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Installed"
+msgstr "Инсталиран"
+
+#: resources/manager_window.ui resources/preferences_dialog.ui
+#: src/manager_window.vala
+msgid "Updates"
+msgstr "Обновявания"
+
+#: resources/manager_window.ui
+msgid "Remove all"
+msgstr "Премахни всички"
+
+#: resources/manager_window.ui
+msgid "Install all"
+msgstr "Инсталирай всички"
+
+#: resources/manager_window.ui
+msgid "Ignore all"
+msgstr "Игнорирай всичко"
+
+#: resources/manager_window.ui
+msgid "Refresh"
+msgstr "Обнови"
+
+#: resources/manager_window.ui
+msgid "Launch"
+msgstr "Пускане"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Install"
+msgstr "Инсталиране"
+
+#: resources/manager_window.ui
+msgid "Remove"
+msgstr "Премахване"
+
+#: resources/manager_window.ui
+msgid "Reinstall"
+msgstr "Преинсталиране"
+
+#: resources/manager_window.ui
+msgid "Build"
+msgstr "Изграждане"
+
+#: resources/manager_window.ui
+msgid "Dependencies"
+msgstr "Зависимости"
+
+#: resources/manager_window.ui
+msgid "Files"
+msgstr "Файлове"
+
+#: resources/manager_window.ui
+msgid "Build files"
+msgstr "Изграждане на файлове"
+
+#: resources/manager_window.ui
+msgid "Reset build files"
+msgstr "Нулиране на изграждащи файлове"
+
+#: resources/manager_window.ui resources/transaction_sum_dialog.ui
+msgid "_Apply"
+msgstr "_Приложи"
+
+#: resources/preferences_dialog.ui
+msgid "General"
+msgstr "Главен"
+
+#: resources/preferences_dialog.ui
+msgid "Check for updates"
+msgstr "Проверяване за обновявания"
+
+#: resources/preferences_dialog.ui
+msgid "Updates check frequency"
+msgstr "Честота на проверката за обновявания"
+
+#: resources/preferences_dialog.ui
+msgid "Automatically download updates"
+msgstr "Автоматично изтегляне на обновяванията"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Надстрой системата при изключване"
+
+#: resources/preferences_dialog.ui
+msgid "Hide tray icon when no update"
+msgstr "Скриване на иконата, когато няма обновявания"
+
+#: resources/preferences_dialog.ui
+msgid "Downloads"
+msgstr "Изтегляния"
+
+#: resources/preferences_dialog.ui
+msgid "Parallel downloads"
+msgstr "Паралелни изтегляния"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Official Repositories"
+msgstr "Официални хранилища"
+
+#: resources/preferences_dialog.ui
+msgid "Use mirrors from"
+msgstr "Използвай огледала от"
+
+#: resources/preferences_dialog.ui
+msgid "Refresh Mirrors"
+msgstr "Обновяване на огледалата"
+
+#: resources/preferences_dialog.ui
+msgid "Cache"
+msgstr "Кеш"
+
+#: resources/preferences_dialog.ui
+msgid "Number of versions of each package to keep"
+msgstr "Брой запазени версии на всеки пакет"
+
+#: resources/preferences_dialog.ui
+msgid "Remove only the uninstalled packages"
+msgstr "Премахване само на деинсталираните пакети"
+
+#: resources/preferences_dialog.ui
+msgid "Clean"
+msgstr "Почистване"
+
+#: resources/preferences_dialog.ui
+msgid "Advanced"
+msgstr "За напреднали"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"Misconfiguration of these options can lead to system breakage.\n"
+"Modify them only if you know what you are doing."
+msgstr "Неправилното конфигуриране на тези настройки може да доведе до нарушение в системата.\nПроменяйте ги само ако знаете какво правите."
+
+#: resources/preferences_dialog.ui
+msgid "Check available disk space"
+msgstr "Проверка за свободно място"
+
+#: resources/preferences_dialog.ui
+msgid "Remove unrequired dependencies"
+msgstr "Премахването на ненужните зависимости"
+
+#: resources/preferences_dialog.ui
+msgid "Do not check for updates when installing"
+msgstr "Да не се проверява за обновявания при инсталиране"
+
+#: resources/preferences_dialog.ui
+msgid "Enable downgrade"
+msgstr "Позволи към по-ниска версия"
+
+#: resources/preferences_dialog.ui
+msgid "Ignored upgrades"
+msgstr "Пренебрегнати надграждания"
+
+#: resources/preferences_dialog.ui
+msgid "Third Party"
+msgstr "Трета страна"
+
+#: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
+#: src/cli.vala src/database.vala src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "AUR"
+msgstr "AUR"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"AUR is a community maintained repository so it presents potential risks and problems.\n"
+"All AUR users should be familiar with the build process."
+msgstr "AUR е хранилище на общността с потенциални рискове и проблеми.\nВсички AUR потребители трябва да са запознати с процеса за изграждане."
+
+#: resources/preferences_dialog.ui
+msgid "Enable AUR support"
+msgstr "Позволи AUR поддръжка"
+
+#: resources/preferences_dialog.ui
+msgid "Keep built packages"
+msgstr "Запази построените пакети"
+
+#: resources/preferences_dialog.ui
+msgid "Check for development packages updates"
+msgstr "Проверяване за обновявания на пакетите за разработчици"
+
+#: resources/preferences_dialog.ui
+msgid "Build directory"
+msgstr "Папка за изграждане"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Flatpak"
+msgstr "Flatpak"
+
+#: resources/preferences_dialog.ui
+msgid "Flatpak packages are maintained by their publisher."
+msgstr "Flatpak пакетиte се поддържат от своя издател."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Flatpak support"
+msgstr "Активиране на Flatpak поддръжка"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/snap_plugin.vala
+msgid "Snap"
+msgstr "Snap"
+
+#: resources/preferences_dialog.ui
+msgid "Snap packages are maintained by their publisher."
+msgstr "Snap пакетите се поддържат от своя издател."
+
+#: resources/preferences_dialog.ui
+msgid "Enable Snap support"
+msgstr "Активиране на поддръжката Snap"
+
+#: resources/progress_dialog.ui
+msgid "Progress"
+msgstr "Прогрес"
+
+#: resources/progress_dialog.ui src/database-gtk.vala src/transaction-gtk.vala
+msgid "_Close"
+msgstr "_Затвори"
+
+#: resources/transaction_sum_dialog.ui
+msgid "Transaction Summary"
+msgstr "Резюме на транзакцията"
+
+#: resources/updates_dialog.ui src/manager_window.vala
+msgid "OS Updates"
+msgstr "Обновявания на операционната система"
+
+#: src/alpm_package.vala src/aur_plugin.vala src/cli.vala
+#: src/manager_window.vala src/pgp_key.vala
+msgid "Unknown"
+msgstr "Непознат"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Explicitly installed"
+msgstr "Изрично инсталиран"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Installed as a dependency for another package"
+msgstr "Инсталиран като зависимост за друг пакет"
+
+#: src/alpm_package.vala src/cli.vala src/manager_window.vala
+msgid "None"
+msgstr "Нищо"
+
+#: src/alpm_package.vala
+msgid "MD5 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "SHA-256 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "Signature"
+msgstr ""
+
+#: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
 msgstr "Неуспешна стартиране на библиотечния файл „alpm“"
 
@@ -50,15 +412,19 @@ msgstr "Неуспешно синхронизиране на базата от �
 msgid "Failed to init transaction"
 msgstr "Неуспешен начало на транзакцията"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/installer.vala
+#: src/alpm_utils.vala src/installer.vala src/transaction-gtk.vala
+#: src/transaction.vala
 msgid "Failed to prepare transaction"
 msgstr "Неуспешно подготвяне на транзакцията"
 
-#: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/installer.vala src/transaction.vala
 #, c-format
 msgid "target not found: %s"
 msgstr "целта не е намерена: %s"
+
+#: src/alpm_utils.vala
+msgid "failed to retrieve some files"
+msgstr "неуспешно изтегляне на някои файлове"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -70,8 +436,8 @@ msgstr "пакетът %s е с неправилна архитектура"
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "не може да се изпълни зависимостта '%1$s' нужна на %2$s"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala src/transaction.vala
 msgid "Warning"
 msgstr "Внимание"
 
@@ -118,10 +484,6 @@ msgstr "премахване на %s от списъка"
 msgid "A restart is required for the changes to take effect"
 msgstr "Тези промени изискват рестартиране на приложението за да влязат в сила"
 
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-msgid "Transaction cancelled"
-msgstr "Транзакцията e отменена"
-
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
@@ -160,10 +522,6 @@ msgid "you can remove this file and retry"
 msgstr "може да премахнете този файл и да опитате отново"
 
 #: src/alpm_utils.vala
-msgid "failed to retrieve some files"
-msgstr "неуспешно изтегляне на някои файлове"
-
-#: src/alpm_utils.vala
 msgid "Failed to commit transaction"
 msgstr "Транзакцията е неуспешна"
 
@@ -183,12 +541,12 @@ msgstr "Разрешаване на зависимостите"
 msgid "Checking inter-conflicts"
 msgstr "Проверка за вътрешни конфликти"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
 msgstr "Инсталиране на %s"
 
-#: src/alpm_utils.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala
 #, c-format
 msgid "Upgrading %s"
 msgstr "Надграждане на %s"
@@ -203,7 +561,7 @@ msgstr "Преинсталиране на %s"
 msgid "Downgrading %s"
 msgstr "Изтегляне на %s"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
 msgstr "Премахване на %s"
@@ -234,11 +592,6 @@ msgstr "Проверяване за наличното пространство 
 #, c-format
 msgid "%1$s optionally requires %2$s"
 msgstr "%1$s изисква допълнително %2$s"
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "Database file for %s does not exist"
-msgstr "Файлът с базата от данни на %s не съществува"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
@@ -284,19 +637,15 @@ msgid_plural "About %lu minutes remaining"
 msgstr[0] "Остава още %lu минута"
 msgstr[1] "Остават още %lu минути"
 
-#: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
 msgstr "Грешка"
 
-#: src/alpm_utils.vala
-#, c-format
-msgid "Refreshing %s"
-msgstr "Обновяване на %s"
-
-#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
-#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
+#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
+#: src/transaction_interface_root.vala
+msgid "Transaction cancelled"
+msgstr "Транзакцията e отменена"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -305,644 +654,13 @@ msgstr "Изтеглянето на %s започна"
 
 #: src/alpm_utils.vala
 #, c-format
-msgid "Downloading %s"
-msgstr "Изтегляне на %s"
+msgid "Refreshing %s"
+msgstr "Обновяване на %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
 msgstr "Изтеглянето на %s приключи"
-
-#: src/daemon.vala
-msgid "Authentication failed"
-msgstr "Неуспешно удостоверяване"
-
-#: src/daemon.vala
-msgid "Waiting for another package manager to quit"
-msgstr "Изчакване да завърши друг пакетен диспечер"
-
-#: src/daemon.vala
-msgid "Timeout expired"
-msgstr "Времето изтече"
-
-#: src/transaction.vala
-msgid "Refreshing mirrors list"
-msgstr "Обновяване на списъка с огледала"
-
-#: src/transaction.vala src/cli.vala
-#, c-format
-msgid "Cloning %s build files"
-msgstr "Клониране %s изграждащи файлове"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to clone %s build files"
-msgstr "Неуспешно клониране на %s изграждащи файлове"
-
-#: src/transaction.vala
-#, c-format
-msgid "Generating %s information"
-msgstr "Генерация %s информация"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to generate %s information"
-msgstr "Грешка при генерацията на %s информация"
-
-#: src/transaction.vala
-#, c-format
-msgid "Checking %s dependencies"
-msgstr "Проверка%s зависимости"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to check %s dependencies"
-msgstr "Неуспешна проверка на %s зависимости"
-
-#: src/transaction.vala
-#, c-format
-msgid "key %s could not be imported"
-msgstr "ключът %s не може да се внесе"
-
-#: src/transaction.vala src/manager_window.vala
-msgid "Transaction successfully finished"
-msgstr "Успешно завършена транзакция"
-
-#: src/transaction.vala
-msgid "Preparing"
-msgstr "Подготвяне"
-
-#: src/transaction.vala src/snap_plugin.vala
-msgid "Yes"
-msgstr "Да"
-
-#: src/transaction.vala src/installer.vala src/cli.vala
-msgid "Nothing to do"
-msgstr "Нищо за правене"
-
-#: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr "%1$s: игнориране надграждането на пакета (%2$s => %3$s)"
-
-#: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Неуспешна синхронизация на базата от данни на AUR"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to build %s"
-msgstr "Неуспешно изграждане на %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "изграждане %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose optional dependencies for %s"
-msgstr "Изберете опционални зависимости за %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose a provider for %s"
-msgstr "Изберете доставчик на %s"
-
-#: src/transaction-gtk.vala
-msgid "Import PGP key"
-msgstr "Внасяне на PGP ключ"
-
-#: src/transaction-gtk.vala
-msgid "Trust and Import"
-msgstr "Доверяване и внасяне"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
-msgid "_Cancel"
-msgstr "_Отказ"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "PGP ключ %1$s е нужен за потвърждаване на сорсовия файл %2$s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Trust %s and import the PGP key"
-msgstr "Доверяване на %s и внасяне на PGP ключ"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Official Repositories"
-msgstr "Официални хранилища"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Repositories"
-msgstr "Хранилища"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Flatpak"
-msgstr "Flatpak"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Depends On"
-msgstr "Зависи от"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Orphan Of"
-msgstr "Излишен от"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Conflicts With"
-msgstr "Конфликт със"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Required By"
-msgstr "Изискван от"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Replaces"
-msgstr "Заменя"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Edit build files"
-msgstr "Редакция на изграждащи файлове"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-msgid "Total download size"
-msgstr "Общ размер за изтегляне"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Edit %s build files"
-msgstr "Редакция %s изграждащ файл"
-
-#: src/transaction-gtk.vala
-msgid "Save"
-msgstr "Запази"
-
-#: src/transaction-gtk.vala resources/progress_dialog.ui
-#: resources/history_dialog.ui
-msgid "_Close"
-msgstr "_Затвори"
-
-#: src/transaction-gtk.vala
-msgid "Restart"
-msgstr "Рестарт"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Install"
-msgstr "Инсталиране"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "The snap %s was published using classic confinement"
-msgstr "Снапът %s е публикуван използвайки класически ограничения"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
-msgstr "Инсталиране на %s въпреки това"
-
-#: src/transaction-gtk.vala src/tray.vala
-msgid "Package Manager"
-msgstr "Диспечер на пакети"
-
-#: src/installer.vala src/cli.vala
-msgid "Install packages from repositories, path or url"
-msgstr "Инсталирайте пакети от хранилища, директория или URL адрес"
-
-#: src/installer.vala src/cli.vala
-msgid "Remove packages"
-msgstr "Премахване на пакети"
-
-#: src/installer.vala src/cli.vala
-msgid "Build packages from AUR and install them with their dependencies"
-msgstr "Създавайте пакети от AUR и ги инсталирайте с техните зависимости"
-
-#: src/installer.vala src/cli.vala
-msgid "package(s)"
-msgstr "пакет(и)"
-
-#: src/tray.vala
-msgid "Updates Available"
-msgstr "Налични са обновявания"
-
-#: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up to date"
-msgstr "Вашата система е актуална"
-
-#: src/tray.vala
-msgid "_Quit"
-msgstr "_Изход"
-
-#: src/tray.vala src/cli.vala
-#, c-format
-msgid "%u available update"
-msgid_plural "%u available updates"
-msgstr[0] "%u достъпно обновяване"
-msgstr[1] "Налични са %u обновявания"
-
-#: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
-msgid "Details"
-msgstr "Детайли"
-
-#: src/manager_window.vala
-msgid "No package found"
-msgstr "Няма открит пакет"
-
-#: src/manager_window.vala
-msgid "Checking for Updates"
-msgstr "Проверяване за обновявания"
-
-#: src/manager_window.vala resources/manager_window.ui
-msgid "Install Local Packages"
-msgstr "Инсталиране на локални пакети"
-
-#: src/manager_window.vala
-msgid "_Open"
-msgstr "_Отвори"
-
-#: src/manager_window.vala
-msgid "Alpm Package"
-msgstr "Alpm Пакет"
-
-#: src/manager_window.vala
-msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "Диспечер на пакети с Alpm, AUR, Flatpak и Snap поддръжка"
-
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
-msgid "Snap"
-msgstr "Snap"
-
-#: src/manager_window.vala
-#, c-format
-msgid "%u pending operation"
-msgid_plural "%u pending operations"
-msgstr[0] "%u висяща операция"
-msgstr[1] "%u висящи операции"
-
-#: src/manager_window.vala
-msgid "Pending"
-msgstr " В очакване"
-
-#: src/manager_window.vala
-msgid "All"
-msgstr "Всичко"
-
-#: src/manager_window.vala
-msgid "Explicitly installed"
-msgstr "Изрично инсталиран"
-
-#: src/manager_window.vala
-msgid "Orphans"
-msgstr "Излишни"
-
-#: src/manager_window.vala
-msgid "Foreign"
-msgstr "Чужди"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Installed"
-msgstr "Инсталиран"
-
-#: src/manager_window.vala
-msgid "Ignored"
-msgstr "Пренебрегнат"
-
-#: src/manager_window.vala src/cli.vala
-msgid "None"
-msgstr "Нищо"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Reason"
-msgstr "Причина за инсталиране"
-
-#: src/manager_window.vala
-msgid "Installed as a dependency for another package"
-msgstr "Инсталиран като зависимост за друг пакет"
-
-#: src/manager_window.vala
-msgid "Mark as explicitly installed"
-msgstr "Отбелязване като изрично инсталиран"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Licenses"
-msgstr "Лицензи"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Unknown"
-msgstr "Непознат"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Repository"
-msgstr "Хранилище"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Package Base"
-msgstr "Пакетна база"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Maintainer"
-msgstr "Собственик"
-
-#: src/manager_window.vala src/cli.vala
-msgid "First Submitted"
-msgstr "Създаден"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Last Modified"
-msgstr "Последна промяна"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Votes"
-msgstr "Гласове"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Out of Date"
-msgstr "Остарял"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Groups"
-msgstr "Групи"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Packager"
-msgstr "Опаковчик"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Build Date"
-msgstr "Дата на създаване"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Date"
-msgstr "Дата на инсталиране"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Validated By"
-msgstr "Валидирано от"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Backup files"
-msgstr "Архивни файлове"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional Dependencies"
-msgstr "Допълнителни зависимости"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional For"
-msgstr "Допълнително за"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Provides"
-msgstr "Осигурява"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Направи зависимости"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Провери зависимости"
-
-#: src/manager_window.vala
-msgid "Publisher"
-msgstr "Издател"
-
-#: src/manager_window.vala
-msgid "Confined in a Sandbox"
-msgstr "Ограничен в пясъчника"
-
-#: src/manager_window.vala
-msgid "Channels"
-msgstr "Канали"
-
-#: src/manager_window.vala
-msgid "OS Updates"
-msgstr "Обновявания на операционната система"
-
-#: src/manager_window.vala
-msgid "Includes performance, stability and security improvements"
-msgstr "Включва ефективност, стабилност и подобрения в сигурността"
-
-#: src/manager_window.vala
-msgid "Featured"
-msgstr "Препоръчано"
-
-#: src/manager_window.vala
-msgid "Photo & Video"
-msgstr "Фото и видео"
-
-#: src/manager_window.vala
-msgid "Music & Audio"
-msgstr "Музика и Аудио"
-
-#: src/manager_window.vala
-msgid "Productivity"
-msgstr "Продуктивност"
-
-#: src/manager_window.vala
-msgid "Communication & News"
-msgstr "Комуникация и новини"
-
-#: src/manager_window.vala
-msgid "Education & Science"
-msgstr "Образованието и науката"
-
-#: src/manager_window.vala
-msgid "Games"
-msgstr "Игри"
-
-#: src/manager_window.vala
-msgid "Utilities"
-msgstr "Инструменти"
-
-#: src/manager_window.vala
-msgid "Development"
-msgstr "Разработка"
-
-#: src/manager_window.vala resources/manager_window.ui
-#: resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Обновявания"
-
-#: src/manager_window.vala
-msgid "Last refresh"
-msgstr "Последно обновяване"
-
-#: src/preferences_dialog.vala
-msgid "every 3 hours"
-msgstr "На всеки 3 часа"
-
-#: src/preferences_dialog.vala
-msgid "every 6 hours"
-msgstr "На всеки 6 часа"
-
-#: src/preferences_dialog.vala
-msgid "every 12 hours"
-msgstr "На всеки 12 часа"
-
-#: src/preferences_dialog.vala
-msgid "every day"
-msgstr "Всеки ден"
-
-#: src/preferences_dialog.vala
-msgid "every week"
-msgstr "Всяка седмица"
-
-#: src/preferences_dialog.vala
-msgid "1"
-msgstr "1"
-
-#: src/preferences_dialog.vala
-msgid "2"
-msgstr "2"
-
-#: src/preferences_dialog.vala
-msgid "4"
-msgstr "4"
-
-#: src/preferences_dialog.vala
-msgid "6"
-msgstr "6"
-
-#: src/preferences_dialog.vala
-msgid "8"
-msgstr "8"
-
-#: src/preferences_dialog.vala
-msgid "10"
-msgstr "10"
-
-#: src/preferences_dialog.vala
-msgid "Worldwide"
-msgstr "По света"
-
-#: src/preferences_dialog.vala
-msgid "0"
-msgstr "0"
-
-#: src/preferences_dialog.vala
-msgid "3"
-msgstr "3"
-
-#: src/preferences_dialog.vala
-msgid "5"
-msgstr "5"
-
-#: src/preferences_dialog.vala src/cli.vala
-msgid "To delete"
-msgstr "За изтриване"
-
-#: src/preferences_dialog.vala src/cli.vala
-#, c-format
-msgid "%u file"
-msgid_plural "%u files"
-msgstr[0] "%u файл"
-msgstr[1] "%u файлове"
-
-#: src/preferences_dialog.vala
-msgid "Select Build Directory"
-msgstr "Изберете папка за изграждане"
-
-#: src/preferences_dialog.vala
-msgid "_Choose"
-msgstr "_Choose"
-
-#: src/preferences_dialog.vala
-msgid "Choose Ignored Upgrades"
-msgstr "Choose Ignored Upgrades"
-
-#: src/transaction-cli.vala src/cli.vala
-#, c-format
-msgid "Enter a selection (default=%s)"
-msgstr "Въведете избор (по подразбиране=%s)"
-
-#: src/transaction-cli.vala
-msgid "none"
-msgstr "нищо"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "Enter a number (default=%d)"
-msgstr "Въведете номер (по подразбиране=%d)"
-
-#: src/transaction-cli.vala
-msgid "[y/N]"
-msgstr "[y/N]"
-
-#: src/transaction-cli.vala
-msgid "y"
-msgstr "y"
-
-#: src/transaction-cli.vala
-msgid "yes"
-msgstr "yes"
-
-#: src/transaction-cli.vala
-msgid "[e]"
-msgstr "[e]"
-
-#: src/transaction-cli.vala
-msgid "Apply transaction"
-msgstr "Приложи транзакцията"
-
-#: src/transaction-cli.vala
-msgid "[e/y/N]"
-msgstr "[e/y/N]"
-
-#: src/transaction-cli.vala
-msgid "e"
-msgstr "e"
-
-#: src/transaction-cli.vala
-msgid "To upgrade"
-msgstr "За надграждане"
-
-#: src/transaction-cli.vala
-msgid "To reinstall"
-msgstr "За преинсталиране"
-
-#: src/transaction-cli.vala
-msgid "To install"
-msgstr "За инсталиране"
-
-#: src/transaction-cli.vala
-msgid "To build"
-msgstr "За изграждане"
-
-#: src/transaction-cli.vala
-msgid "To downgrade"
-msgstr "За понижаване"
-
-#: src/transaction-cli.vala
-msgid "To remove"
-msgstr "За премахване"
-
-#: src/transaction-cli.vala
-msgid "Total installed size"
-msgstr "Общ инсталиран размер"
-
-#: src/transaction-cli.vala
-msgid "Total removed size"
-msgstr "Общ размер за премахване"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "View %s build files diff"
-msgstr "Преглед %s разлики в изграждащи файлове"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -972,6 +690,10 @@ msgstr "действие"
 #: src/cli.vala
 msgid "options"
 msgstr "опции"
+
+#: src/cli.vala src/installer.vala
+msgid "package(s)"
+msgstr "пакет(и)"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1082,6 +804,10 @@ msgstr "не отпечатвай нищо"
 msgid "overwrite existing files"
 msgstr "презаписване на съществуващи файлове"
 
+#: src/cli.vala src/installer.vala
+msgid "Build packages from AUR and install them with their dependencies"
+msgstr "Създавайте пакети от AUR и ги инсталирайте с техните зависимости"
+
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
@@ -1116,6 +842,10 @@ msgstr "не клонирай изграждащи файлове от AUR, из
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
 msgstr "заобикаляй някои и всички съобщения за потвърждение"
+
+#: src/cli.vala src/installer.vala
+msgid "Install packages from repositories, path or url"
+msgstr "Инсталирайте пакети от хранилища, директория или URL адрес"
 
 #: src/cli.vala
 msgid "glob"
@@ -1156,6 +886,10 @@ msgstr "да не се проверява за обновявания"
 #: src/cli.vala
 msgid "Reinstall packages"
 msgstr "Преинсталиране на пакети"
+
+#: src/cli.vala src/installer.vala
+msgid "Remove packages"
+msgstr "Премахване на пакети"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
@@ -1288,10 +1022,6 @@ msgstr "без премахване на файлове, намиране сам
 msgid "also display all files names"
 msgstr "показва и всички имена на файлове"
 
-#: src/cli.vala resources/manager_window.ui
-msgid "Name"
-msgstr "Име"
-
 #: src/cli.vala
 msgid "Version"
 msgstr "Версия"
@@ -1304,9 +1034,101 @@ msgstr "Описание"
 msgid "URL"
 msgstr "URL"
 
+#: src/cli.vala src/manager_window.vala
+msgid "Licenses"
+msgstr "Лицензи"
+
 #: src/cli.vala
 msgid "Installed Size"
 msgstr "Инсталиран размер"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Depends On"
+msgstr "Зависи от"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional Dependencies"
+msgstr "Допълнителни зависимости"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Make Dependencies"
+msgstr "Направи зависимости"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Check Dependencies"
+msgstr "Провери зависимости"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Required By"
+msgstr "Изискван от"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional For"
+msgstr "Допълнително за"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Provides"
+msgstr "Осигурява"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Replaces"
+msgstr "Заменя"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Conflicts With"
+msgstr "Конфликт със"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Packager"
+msgstr "Опаковчик"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Build Date"
+msgstr "Дата на създаване"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Date"
+msgstr "Дата на инсталиране"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Reason"
+msgstr "Причина за инсталиране"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Validated By"
+msgstr "Валидирано от"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Backup files"
+msgstr "Архивни файлове"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Package Base"
+msgstr "Пакетна база"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Maintainer"
+msgstr "Собственик"
+
+#: src/cli.vala src/manager_window.vala
+msgid "First Submitted"
+msgstr "Създаден"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Last Modified"
+msgstr "Последна промяна"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Votes"
+msgstr "Гласове"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Out of Date"
+msgstr "Остарял"
 
 #: src/cli.vala
 #, c-format
@@ -1325,6 +1147,13 @@ msgid_plural "%u ignored updates"
 msgstr[0] " %u игнорирана актуализация"
 msgstr[1] "%u игнорирани обновявания"
 
+#: src/cli.vala src/tray.vala
+#, c-format
+msgid "%u available update"
+msgid_plural "%u available updates"
+msgstr[0] "%u достъпно обновяване"
+msgstr[1] "Налични са %u обновявания"
+
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
 msgstr "Премахване само версиите на деинсталираните пакети"
@@ -1332,6 +1161,17 @@ msgstr "Премахване само версиите на деинсталир
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
 msgstr "Брой версии от всеки пакет запазени в кеша"
+
+#: src/cli.vala src/preferences_dialog.vala
+msgid "To delete"
+msgstr "За изтриване"
+
+#: src/cli.vala src/preferences_dialog.vala
+#, c-format
+msgid "%u file"
+msgid_plural "%u files"
+msgstr[0] "%u файл"
+msgstr[1] "%u файлове"
 
 #: src/cli.vala
 msgid "Clean cache"
@@ -1351,12 +1191,21 @@ msgstr "Добави %s за инсталиране"
 msgid "%s is only available from AUR"
 msgstr "%s е достъпен само от AUR"
 
+#: src/cli.vala src/installer.vala src/transaction.vala
+msgid "Nothing to do"
+msgstr "Нищо за правене"
+
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Има %1$u члена в група %2$s"
 msgstr[1] "Има %1$u члена в група %2$s"
+
+#: src/cli.vala src/transaction-cli.vala
+#, c-format
+msgid "Enter a selection (default=%s)"
+msgstr "Въведете избор (по подразбиране=%s)"
 
 #: src/cli.vala
 msgid "all"
@@ -1367,259 +1216,507 @@ msgstr "всичко"
 msgid "Add %s to reinstall"
 msgstr "Добави %s за преинсталиране"
 
+#: src/cli.vala src/transaction.vala
+#, c-format
+msgid "Cloning %s build files"
+msgstr "Клониране %s изграждащи файлове"
+
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
 msgstr "Инсталирай %1$s от %2$s"
 
+#: src/daemon.vala
+msgid "Authentication failed"
+msgstr "Неуспешно удостоверяване"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Waiting for another package manager to quit"
+msgstr "Изчакване да завърши друг пакетен диспечер"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Timeout expired"
+msgstr "Времето изтече"
+
+#: src/flatpak_plugin.vala
+msgid "Flatpak transaction failed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "No package found"
+msgstr "Няма открит пакет"
+
+#: src/manager_window.vala
+msgid "Checking for Updates"
+msgstr "Проверяване за обновявания"
+
+#: src/manager_window.vala
+msgid "Alpm Package"
+msgstr "Alpm Пакет"
+
+#: src/manager_window.vala
+msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr "Диспечер на пакети с Alpm, AUR, Flatpak и Snap поддръжка"
+
+#: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Total download size"
+msgstr "Общ размер за изтегляне"
+
+#: src/manager_window.vala
+#, c-format
+msgid "%u pending operation"
+msgid_plural "%u pending operations"
+msgstr[0] "%u висяща операция"
+msgstr[1] "%u висящи операции"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr " В очакване"
+
+#: src/manager_window.vala
+msgid "All"
+msgstr "Всичко"
+
+#: src/manager_window.vala
+msgid "Orphans"
+msgstr "Излишни"
+
+#: src/manager_window.vala
+msgid "Foreign"
+msgstr "Чужди"
+
+#: src/manager_window.vala
+msgid "Ignored"
+msgstr "Пренебрегнат"
+
+#: src/manager_window.vala
+msgid "Mark as explicitly installed"
+msgstr "Отбелязване като изрично инсталиран"
+
+#: src/manager_window.vala
+msgid "Publisher"
+msgstr "Издател"
+
+#: src/manager_window.vala
+msgid "Confined in a Sandbox"
+msgstr "Ограничен в пясъчника"
+
+#: src/manager_window.vala
+msgid "Channels"
+msgstr "Канали"
+
+#: src/manager_window.vala
+msgid "Includes performance, stability and security improvements"
+msgstr "Включва ефективност, стабилност и подобрения в сигурността"
+
+#: src/manager_window.vala
+msgid "Featured"
+msgstr "Препоръчано"
+
+#: src/manager_window.vala
+msgid "Photo & Video"
+msgstr "Фото и видео"
+
+#: src/manager_window.vala
+msgid "Music & Audio"
+msgstr "Музика и Аудио"
+
+#: src/manager_window.vala
+msgid "Productivity"
+msgstr "Продуктивност"
+
+#: src/manager_window.vala
+msgid "Communication & News"
+msgstr "Комуникация и новини"
+
+#: src/manager_window.vala
+msgid "Education & Science"
+msgstr "Образованието и науката"
+
+#: src/manager_window.vala
+msgid "Games"
+msgstr "Игри"
+
+#: src/manager_window.vala
+msgid "Utilities"
+msgstr "Инструменти"
+
+#: src/manager_window.vala
+msgid "Development"
+msgstr "Разработка"
+
+#: src/manager_window.vala
+msgid "Last refresh"
+msgstr "Последно обновяване"
+
+#: src/manager_window.vala src/transaction.vala
+msgid "Transaction successfully finished"
+msgstr "Успешно завършена транзакция"
+
+#: src/pgp_key.vala
+msgid "Fingerprint"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Algorithm"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Creation date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Expiration date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Never"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Unknown keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Source"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Required by"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%s build files (validpgpkeys)"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has been revoked by its owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has expired"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key is disabled on the keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%u keys match %s on the keyserver, only the first one is shown"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "The key found on the keyserver does not match the requested key %s"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid ""
+"Keyservers do not verify key owners: compare the fingerprint with the one "
+"published by the upstream project before trusting this key"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 3 hours"
+msgstr "На всеки 3 часа"
+
+#: src/preferences_dialog.vala
+msgid "every 6 hours"
+msgstr "На всеки 6 часа"
+
+#: src/preferences_dialog.vala
+msgid "every 12 hours"
+msgstr "На всеки 12 часа"
+
+#: src/preferences_dialog.vala
+msgid "every day"
+msgstr "Всеки ден"
+
+#: src/preferences_dialog.vala
+msgid "every week"
+msgstr "Всяка седмица"
+
+#: src/preferences_dialog.vala
+msgid "1"
+msgstr "1"
+
+#: src/preferences_dialog.vala
+msgid "2"
+msgstr "2"
+
+#: src/preferences_dialog.vala
+msgid "4"
+msgstr "4"
+
+#: src/preferences_dialog.vala
+msgid "6"
+msgstr "6"
+
+#: src/preferences_dialog.vala
+msgid "8"
+msgstr "8"
+
+#: src/preferences_dialog.vala
+msgid "10"
+msgstr "10"
+
+#: src/preferences_dialog.vala
+msgid "Worldwide"
+msgstr "По света"
+
+#: src/preferences_dialog.vala
+msgid "0"
+msgstr "0"
+
+#: src/preferences_dialog.vala
+msgid "3"
+msgstr "3"
+
+#: src/preferences_dialog.vala
+msgid "5"
+msgstr "5"
+
+#: src/preferences_dialog.vala
+msgid "Select Build Directory"
+msgstr "Изберете папка за изграждане"
+
+#: src/preferences_dialog.vala
+msgid "Choose Ignored Upgrades"
+msgstr "Choose Ignored Upgrades"
+
+#: src/snap_plugin.vala src/transaction.vala
+msgid "Yes"
+msgstr "Да"
+
 #: src/snap_plugin.vala
 msgid "No"
 msgstr "Не"
 
-#: resources/choose_provider_dialog.ui
-msgid "Choose a Provider"
-msgstr "Изберете доставчик"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose optional dependencies for %s"
+msgstr "Изберете опционални зависимости за %s"
 
-#: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
-msgid "Choose"
-msgstr "Избери"
+#: src/transaction-cli.vala
+msgid "none"
+msgstr "нищо"
 
-#: resources/progress_dialog.ui
-msgid "Progress"
-msgstr "Прогрес"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose a provider for %s"
+msgstr "Изберете доставчик на %s"
 
-#: resources/history_dialog.ui
-msgid "Pamac History"
-msgstr "История на Pamac"
+#: src/transaction-cli.vala
+#, c-format
+msgid "Enter a number (default=%d)"
+msgstr "Въведете номер (по подразбиране=%d)"
 
-#: resources/transaction_sum_dialog.ui
-msgid "Transaction Summary"
-msgstr "Резюме на транзакцията"
+#: src/transaction-cli.vala
+msgid "[y/N]"
+msgstr "[y/N]"
 
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-msgid "_Apply"
-msgstr "_Приложи"
+#: src/transaction-cli.vala
+msgid "y"
+msgstr "y"
 
-#: resources/manager_window.ui
-msgid "Software Mode"
-msgstr "Софтуерен режим"
+#: src/transaction-cli.vala
+msgid "yes"
+msgstr "yes"
 
-#: resources/manager_window.ui
-msgid "Refresh databases"
-msgstr "Обновяване на базата данни"
+#: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
+msgstr "PGP ключ %1$s е нужен за потвърждаване на сорсовия файл %2$s"
 
-#: resources/manager_window.ui
-msgid "View History"
-msgstr "Преглед на историята"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Import the PGP key"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Preferences"
-msgstr "Предпочитания"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Trust %s and import the PGP key"
+msgstr "Доверяване на %s и внасяне на PGP ключ"
 
-#: resources/manager_window.ui
-msgid "About"
-msgstr "Относно"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Edit build files"
+msgstr "Редакция на изграждащи файлове"
 
-#: resources/manager_window.ui
-msgid "Search"
-msgstr "Търсене"
+#: src/transaction-cli.vala
+msgid "[e]"
+msgstr "[e]"
 
-#: resources/manager_window.ui
-msgid "Remove all"
-msgstr "Премахни всички"
+#: src/transaction-cli.vala
+msgid "Apply transaction"
+msgstr "Приложи транзакцията"
 
-#: resources/manager_window.ui
-msgid "Install all"
-msgstr "Инсталирай всички"
+#: src/transaction-cli.vala
+msgid "[e/y/N]"
+msgstr "[e/y/N]"
 
-#: resources/manager_window.ui
-msgid "Ignore all"
-msgstr "Игнорирай всичко"
+#: src/transaction-cli.vala
+msgid "e"
+msgstr "e"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Orphan Of"
+msgstr "Излишен от"
+
+#: src/transaction-cli.vala
+msgid "To upgrade"
+msgstr "За надграждане"
+
+#: src/transaction-cli.vala
+msgid "To reinstall"
+msgstr "За преинсталиране"
+
+#: src/transaction-cli.vala
+msgid "To install"
+msgstr "За инсталиране"
+
+#: src/transaction-cli.vala
+msgid "To build"
+msgstr "За изграждане"
+
+#: src/transaction-cli.vala
+msgid "To downgrade"
+msgstr "За понижаване"
+
+#: src/transaction-cli.vala
+msgid "To remove"
+msgstr "За премахване"
+
+#: src/transaction-cli.vala
+msgid "Total installed size"
+msgstr "Общ инсталиран размер"
+
+#: src/transaction-cli.vala
+msgid "Total removed size"
+msgstr "Общ размер за премахване"
+
+#: src/transaction-cli.vala
+#, c-format
+msgid "View %s build files diff"
+msgstr "Преглед %s разлики в изграждащи файлове"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Edit %s build files"
+msgstr "Редакция %s изграждащ файл"
+
+#: src/transaction-gtk.vala
+msgid "Import PGP key"
+msgstr "Внасяне на PGP ключ"
+
+#: src/transaction-gtk.vala
+msgid "Trust and Import"
+msgstr "Доверяване и внасяне"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "PGP ключ %s е нужен за потвърждаване на сорсовия файл %s "
+
+#: src/transaction-gtk.vala
+msgid "Save"
+msgstr "Запази"
+
+#: src/transaction-gtk.vala
+msgid "Restart"
+msgstr "Рестарт"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The snap %s was published using classic confinement"
+msgstr "Снапът %s е публикуван използвайки класически ограничения"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "Install %s anyway"
+msgstr "Инсталиране на %s въпреки това"
+
+#: src/transaction.vala
+msgid "Refreshing mirrors list"
+msgstr "Обновяване на списъка с огледала"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to clone %s build files"
+msgstr "Неуспешно клониране на %s изграждащи файлове"
+
+#: src/transaction.vala
+#, c-format
+msgid "Generating %s information"
+msgstr "Генерация %s информация"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to generate %s information"
+msgstr "Грешка при генерацията на %s информация"
+
+#: src/transaction.vala
+#, c-format
+msgid "Checking %s dependencies"
+msgstr "Проверка%s зависимости"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to check %s dependencies"
+msgstr "Неуспешна проверка на %s зависимости"
+
+#: src/transaction.vala
+#, c-format
+msgid "key %s could not be imported"
+msgstr "ключът %s не може да се внесе"
+
+#: src/transaction.vala
+msgid "Preparing"
+msgstr "Подготвяне"
+
+#: src/transaction.vala
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr "%1$s: игнориране надграждането на пакета (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Неуспешна синхронизация на базата от данни на AUR"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "изграждане %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to build %s"
+msgstr "Неуспешно изграждане на %s"
+
+#: src/transaction_interface_daemon.vala
+msgid "The transaction may still be running in the background"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "Connection to the daemon was lost"
+msgstr ""
+
+#: src/tray.vala
+msgid "_Quit"
+msgstr "_Изход"
 
 #: resources/manager_window.ui
 msgid "Sort by"
 msgstr "Подреди по"
 
-#: resources/manager_window.ui
-msgid "Relevance"
-msgstr "Уместност"
+#: src/manager_window.vala
+msgid "_Open"
+msgstr "_Отвори"
 
-#: resources/manager_window.ui
-msgid "Size"
-msgstr "Размер"
-
-#: resources/manager_window.ui
-msgid "Date"
-msgstr "Дата"
-
-#: resources/manager_window.ui
-msgid "Refresh"
-msgstr "Обнови"
-
-#: resources/manager_window.ui
-msgid "Categories"
-msgstr "Категории"
-
-#: resources/manager_window.ui
-msgid "Browse"
-msgstr "Търси"
-
-#: resources/manager_window.ui
-msgid "Launch"
-msgstr "Пускане"
-
-#: resources/manager_window.ui
-msgid "Remove"
-msgstr "Премахване"
-
-#: resources/manager_window.ui
-msgid "Reinstall"
-msgstr "Преинсталиране"
-
-#: resources/manager_window.ui
-msgid "Build"
-msgstr "Изграждане"
-
-#: resources/manager_window.ui
-msgid "Dependencies"
-msgstr "Зависимости"
-
-#: resources/manager_window.ui
-msgid "Files"
-msgstr "Файлове"
-
-#: resources/manager_window.ui
-msgid "Reset build files"
-msgstr "Нулиране на изграждащи файлове"
-
-#: resources/manager_window.ui
-msgid "Build files"
-msgstr "Изграждане на файлове"
-
-#: resources/preferences_dialog.ui
-msgid "General"
-msgstr "Главен"
-
-#: resources/preferences_dialog.ui
-msgid "Check for updates"
-msgstr "Проверяване за обновявания"
-
-#: resources/preferences_dialog.ui
-msgid "Updates check frequency"
-msgstr "Честота на проверката за обновявания"
-
-#: resources/preferences_dialog.ui
-msgid "Automatically download updates"
-msgstr "Автоматично изтегляне на обновяванията"
-
-#: resources/preferences_dialog.ui
-msgid "Upgrade the system at shutdown"
-msgstr "Надстрой системата при изключване"
-
-#: resources/preferences_dialog.ui
-msgid "Hide tray icon when no update"
-msgstr "Скриване на иконата, когато няма обновявания"
-
-#: resources/preferences_dialog.ui
-msgid "Downloads"
-msgstr "Изтегляния"
-
-#: resources/preferences_dialog.ui
-msgid "Parallel downloads"
-msgstr "Паралелни изтегляния"
-
-#: resources/preferences_dialog.ui
-msgid "Use mirrors from"
-msgstr "Използвай огледала от"
-
-#: resources/preferences_dialog.ui
-msgid "Refresh Mirrors"
-msgstr "Обновяване на огледалата"
-
-#: resources/preferences_dialog.ui
-msgid "Cache"
-msgstr "Кеш"
-
-#: resources/preferences_dialog.ui
-msgid "Number of versions of each package to keep"
-msgstr "Брой запазени версии на всеки пакет"
-
-#: resources/preferences_dialog.ui
-msgid "Remove only the uninstalled packages"
-msgstr "Премахване само на деинсталираните пакети"
-
-#: resources/preferences_dialog.ui
-msgid "Clean"
-msgstr "Почистване"
-
-#: resources/preferences_dialog.ui
-msgid "Advanced"
-msgstr "За напреднали"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"Misconfiguration of these options can lead to system breakage.\n"
-"Modify them only if you know what you are doing."
-msgstr "Неправилното конфигуриране на тези настройки може да доведе до нарушение в системата.\nПроменяйте ги само ако знаете какво правите."
-
-#: resources/preferences_dialog.ui
-msgid "Check available disk space"
-msgstr "Проверка за свободно място"
-
-#: resources/preferences_dialog.ui
-msgid "Remove unrequired dependencies"
-msgstr "Премахването на ненужните зависимости"
-
-#: resources/preferences_dialog.ui
-msgid "Do not check for updates when installing"
-msgstr "Да не се проверява за обновявания при инсталиране"
-
-#: resources/preferences_dialog.ui
-msgid "Enable downgrade"
-msgstr "Позволи към по-ниска версия"
-
-#: resources/preferences_dialog.ui
-msgid "Ignored upgrades"
-msgstr "Пренебрегнати надграждания"
-
-#: resources/preferences_dialog.ui
-msgid "Third Party"
-msgstr "Трета страна"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"AUR is a community maintained repository so it presents potential risks and problems.\n"
-"All AUR users should be familiar with the build process."
-msgstr "AUR е хранилище на общността с потенциални рискове и проблеми.\nВсички AUR потребители трябва да са запознати с процеса за изграждане."
-
-#: resources/preferences_dialog.ui
-msgid "Enable AUR support"
-msgstr "Позволи AUR поддръжка"
-
-#: resources/preferences_dialog.ui
-msgid "Keep built packages"
-msgstr "Запази построените пакети"
-
-#: resources/preferences_dialog.ui
-msgid "Check for development packages updates"
-msgstr "Проверяване за обновявания на пакетите за разработчици"
-
-#: resources/preferences_dialog.ui
-msgid "Build directory"
-msgstr "Папка за изграждане"
-
-#: resources/preferences_dialog.ui
-msgid "Flatpak packages are maintained by their publisher."
-msgstr "Flatpak пакетиte се поддържат от своя издател."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Flatpak support"
-msgstr "Активиране на Flatpak поддръжка"
-
-#: resources/preferences_dialog.ui
-msgid "Snap packages are maintained by their publisher."
-msgstr "Snap пакетите се поддържат от своя издател."
-
-#: resources/preferences_dialog.ui
-msgid "Enable Snap support"
-msgstr "Активиране на поддръжката Snap"
+#: src/preferences_dialog.vala
+msgid "_Choose"
+msgstr "_Choose"

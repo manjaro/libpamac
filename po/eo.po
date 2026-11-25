@@ -26,6 +26,25 @@ msgstr ""
 "Language: eo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: src/transaction-gtk.vala src/tray.vala
+msgid "Package Manager"
+msgstr "Pakaĵo Administranto"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/cli.vala
+#: src/manager_window.vala src/tray.vala
+msgid "Your system is up to date"
+msgstr ""
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/tray.vala
+msgid "Updates Available"
+msgstr ""
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
+msgid "Details"
+msgstr "Detaloj"
+
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
 msgstr "Instali, ĝisdatigi aŭ forigi pakaĵojn"
@@ -34,7 +53,350 @@ msgstr "Instali, ĝisdatigi aŭ forigi pakaĵojn"
 msgid "Authentication is required to install, update, or remove packages"
 msgstr ""
 
-#: src/alpm_utils.vala src/database.vala
+#: resources/choose_pkgs_dialog.ui resources/manager_window.ui
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: src/transaction-gtk.vala
+msgid "_Cancel"
+msgstr "_Nulig"
+
+#: resources/choose_pkgs_dialog.ui resources/choose_provider_dialog.ui
+msgid "Choose"
+msgstr "Elektu"
+
+#: resources/choose_provider_dialog.ui
+msgid "Choose a Provider"
+msgstr ""
+
+#: resources/history_dialog.ui
+msgid "Pamac History"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "Software Mode"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "Refresh databases"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "View History"
+msgstr ""
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Install Local Packages"
+msgstr "Instali Lokajn Pakaĵojn"
+
+#: resources/manager_window.ui
+msgid "Preferences"
+msgstr "Preferoj"
+
+#: resources/manager_window.ui
+msgid "About"
+msgstr "Pri"
+
+#: resources/manager_window.ui
+msgid "Relevance"
+msgstr "Rilateco"
+
+#: resources/manager_window.ui src/cli.vala
+msgid "Name"
+msgstr "Nomo"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Repository"
+msgstr "Deponejo"
+
+#: resources/manager_window.ui
+msgid "Size"
+msgstr "Grando"
+
+#: resources/manager_window.ui
+msgid "Date"
+msgstr ""
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Search"
+msgstr "Ŝerĉi"
+
+#: resources/manager_window.ui
+msgid "Browse"
+msgstr "Esplori"
+
+#: resources/manager_window.ui
+msgid "Categories"
+msgstr ""
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Groups"
+msgstr "Grupoj"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Repositories"
+msgstr "Rezervejo"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Installed"
+msgstr "Instalita"
+
+#: resources/manager_window.ui resources/preferences_dialog.ui
+#: src/manager_window.vala
+msgid "Updates"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "Remove all"
+msgstr "Foriĝi ĉio"
+
+#: resources/manager_window.ui
+msgid "Install all"
+msgstr "Instali ĉio"
+
+#: resources/manager_window.ui
+msgid "Ignore all"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "Refresh"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "Launch"
+msgstr "Lanĉi"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Install"
+msgstr "Instali"
+
+#: resources/manager_window.ui
+msgid "Remove"
+msgstr "Forigi"
+
+#: resources/manager_window.ui
+msgid "Reinstall"
+msgstr "Reinstali"
+
+#: resources/manager_window.ui
+msgid "Build"
+msgstr "Kunmeti"
+
+#: resources/manager_window.ui
+msgid "Dependencies"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "Files"
+msgstr "Dosieroj"
+
+#: resources/manager_window.ui
+msgid "Build files"
+msgstr ""
+
+#: resources/manager_window.ui
+msgid "Reset build files"
+msgstr ""
+
+#: resources/manager_window.ui resources/transaction_sum_dialog.ui
+msgid "_Apply"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "General"
+msgstr "Ĝenerala"
+
+#: resources/preferences_dialog.ui
+msgid "Check for updates"
+msgstr "Kontroli ĝisdatigojn"
+
+#: resources/preferences_dialog.ui
+msgid "Updates check frequency"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Automatically download updates"
+msgstr "Aŭtomate elŝuti ĝisdatigojn"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Hide tray icon when no update"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Downloads"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Parallel downloads"
+msgstr ""
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Official Repositories"
+msgstr "Oficialaj Deponejoj"
+
+#: resources/preferences_dialog.ui
+msgid "Use mirrors from"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Refresh Mirrors"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Cache"
+msgstr "Kaŝmemoro"
+
+#: resources/preferences_dialog.ui
+msgid "Number of versions of each package to keep"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Remove only the uninstalled packages"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Clean"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Advanced"
+msgstr "Altnivele"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"Misconfiguration of these options can lead to system breakage.\n"
+"Modify them only if you know what you are doing."
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Check available disk space"
+msgstr "Kontroli disponeblan diskospacon"
+
+#: resources/preferences_dialog.ui
+msgid "Remove unrequired dependencies"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Do not check for updates when installing"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Enable downgrade"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Ignored upgrades"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Third Party"
+msgstr ""
+
+#: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
+#: src/cli.vala src/database.vala src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "AUR"
+msgstr "Arĉlinuksa Uzantrezervejo"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"AUR is a community maintained repository so it presents potential risks and problems.\n"
+"All AUR users should be familiar with the build process."
+msgstr "AUR estas deponejo prizorgata de komunumo, tial ĝi eble formas riskojn kaj problemojn.\nĈiuj uzantoj de AUR devas esti jam alkutimiĝintaj al la kunmeta procezo."
+
+#: resources/preferences_dialog.ui
+msgid "Enable AUR support"
+msgstr "Ŝalti AUR-aliĝon"
+
+#: resources/preferences_dialog.ui
+msgid "Keep built packages"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Check for development packages updates"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Build directory"
+msgstr ""
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Flatpak"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Flatpak packages are maintained by their publisher."
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Enable Flatpak support"
+msgstr ""
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/snap_plugin.vala
+msgid "Snap"
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Snap packages are maintained by their publisher."
+msgstr ""
+
+#: resources/preferences_dialog.ui
+msgid "Enable Snap support"
+msgstr "Ŝalti Snap-aliĝon"
+
+#: resources/progress_dialog.ui
+msgid "Progress"
+msgstr "Progreso"
+
+#: resources/progress_dialog.ui src/database-gtk.vala src/transaction-gtk.vala
+msgid "_Close"
+msgstr "_Ferm"
+
+#: resources/transaction_sum_dialog.ui
+msgid "Transaction Summary"
+msgstr ""
+
+#: resources/updates_dialog.ui src/manager_window.vala
+msgid "OS Updates"
+msgstr ""
+
+#: src/alpm_package.vala src/aur_plugin.vala src/cli.vala
+#: src/manager_window.vala src/pgp_key.vala
+msgid "Unknown"
+msgstr "Nekonata"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Explicitly installed"
+msgstr "Eksplicite instalita"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Installed as a dependency for another package"
+msgstr "Instalita kiel dependeco por alia pakaĵo"
+
+#: src/alpm_package.vala src/cli.vala src/manager_window.vala
+msgid "None"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "MD5 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "SHA-256 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "Signature"
+msgstr ""
+
+#: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
 msgstr "Malsukcesis inici alpm bibliotekon"
 
@@ -50,14 +412,18 @@ msgstr "Malsukcesa sinkronigo de datumbazoj"
 msgid "Failed to init transaction"
 msgstr "Malsukcesis komenco de transakcio"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/installer.vala
+#: src/alpm_utils.vala src/installer.vala src/transaction-gtk.vala
+#: src/transaction.vala
 msgid "Failed to prepare transaction"
 msgstr ""
 
-#: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/installer.vala src/transaction.vala
 #, c-format
 msgid "target not found: %s"
+msgstr ""
+
+#: src/alpm_utils.vala
+msgid "failed to retrieve some files"
 msgstr ""
 
 #: src/alpm_utils.vala
@@ -70,8 +436,8 @@ msgstr "pakaĵo %s ne havas validan arkitekturon"
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr ""
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala src/transaction.vala
 msgid "Warning"
 msgstr ""
 
@@ -118,10 +484,6 @@ msgstr ""
 msgid "A restart is required for the changes to take effect"
 msgstr ""
 
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-msgid "Transaction cancelled"
-msgstr ""
-
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
@@ -160,10 +522,6 @@ msgid "you can remove this file and retry"
 msgstr ""
 
 #: src/alpm_utils.vala
-msgid "failed to retrieve some files"
-msgstr ""
-
-#: src/alpm_utils.vala
 msgid "Failed to commit transaction"
 msgstr ""
 
@@ -183,12 +541,12 @@ msgstr "Solvanta Dependecojn"
 msgid "Checking inter-conflicts"
 msgstr ""
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
 msgstr "Instalanta %s"
 
-#: src/alpm_utils.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala
 #, c-format
 msgid "Upgrading %s"
 msgstr "Ĝisdatiganta %s"
@@ -203,7 +561,7 @@ msgstr "Reinstalanta %s"
 msgid "Downgrading %s"
 msgstr ""
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
 msgstr "Foriĝanta %s"
@@ -233,11 +591,6 @@ msgstr ""
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s optionally requires %2$s"
-msgstr ""
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "Database file for %s does not exist"
 msgstr ""
 
 #: src/alpm_utils.vala
@@ -284,19 +637,15 @@ msgid_plural "About %lu minutes remaining"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
 msgstr "Eraro"
 
-#: src/alpm_utils.vala
-#, c-format
-msgid "Refreshing %s"
+#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
+#: src/transaction_interface_root.vala
+msgid "Transaction cancelled"
 msgstr ""
-
-#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
-#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "Arĉlinuksa Uzantrezervejo"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -305,643 +654,12 @@ msgstr ""
 
 #: src/alpm_utils.vala
 #, c-format
-msgid "Downloading %s"
-msgstr "Deŝut %s"
+msgid "Refreshing %s"
+msgstr ""
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
-msgstr ""
-
-#: src/daemon.vala
-msgid "Authentication failed"
-msgstr "Aŭtentikigo malsukcesis"
-
-#: src/daemon.vala
-msgid "Waiting for another package manager to quit"
-msgstr ""
-
-#: src/daemon.vala
-msgid "Timeout expired"
-msgstr ""
-
-#: src/transaction.vala
-msgid "Refreshing mirrors list"
-msgstr ""
-
-#: src/transaction.vala src/cli.vala
-#, c-format
-msgid "Cloning %s build files"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to clone %s build files"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "Generating %s information"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to generate %s information"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "Checking %s dependencies"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to check %s dependencies"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "key %s could not be imported"
-msgstr ""
-
-#: src/transaction.vala src/manager_window.vala
-msgid "Transaction successfully finished"
-msgstr "Finita sukcese transakcio"
-
-#: src/transaction.vala
-msgid "Preparing"
-msgstr "Preparanta"
-
-#: src/transaction.vala src/snap_plugin.vala
-msgid "Yes"
-msgstr "Jes"
-
-#: src/transaction.vala src/installer.vala src/cli.vala
-msgid "Nothing to do"
-msgstr "Nenio por fari"
-
-#: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr ""
-
-#: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to build %s"
-msgstr ""
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Kunmetanta %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose optional dependencies for %s"
-msgstr ""
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose a provider for %s"
-msgstr ""
-
-#: src/transaction-gtk.vala
-msgid "Import PGP key"
-msgstr ""
-
-#: src/transaction-gtk.vala
-msgid "Trust and Import"
-msgstr ""
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
-msgid "_Cancel"
-msgstr "_Nulig"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr ""
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Trust %s and import the PGP key"
-msgstr ""
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Official Repositories"
-msgstr "Oficialaj Deponejoj"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Repositories"
-msgstr "Rezervejo"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Flatpak"
-msgstr ""
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Depends On"
-msgstr "Dependas De"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Orphan Of"
-msgstr ""
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Conflicts With"
-msgstr "Konfliktas Kun"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Required By"
-msgstr "Postulata De"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Replaces"
-msgstr "Anstataŭigas"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Edit build files"
-msgstr "Modifi kunmet-dosierojn"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-msgid "Total download size"
-msgstr ""
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Edit %s build files"
-msgstr ""
-
-#: src/transaction-gtk.vala
-msgid "Save"
-msgstr "Enregistri"
-
-#: src/transaction-gtk.vala resources/progress_dialog.ui
-#: resources/history_dialog.ui
-msgid "_Close"
-msgstr "_Ferm"
-
-#: src/transaction-gtk.vala
-msgid "Restart"
-msgstr ""
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Install"
-msgstr "Instali"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "The snap %s was published using classic confinement"
-msgstr ""
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
-msgstr ""
-
-#: src/transaction-gtk.vala src/tray.vala
-msgid "Package Manager"
-msgstr "Pakaĵo Administranto"
-
-#: src/installer.vala src/cli.vala
-msgid "Install packages from repositories, path or url"
-msgstr ""
-
-#: src/installer.vala src/cli.vala
-msgid "Remove packages"
-msgstr ""
-
-#: src/installer.vala src/cli.vala
-msgid "Build packages from AUR and install them with their dependencies"
-msgstr ""
-
-#: src/installer.vala src/cli.vala
-msgid "package(s)"
-msgstr ""
-
-#: src/tray.vala
-msgid "Updates Available"
-msgstr ""
-
-#: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up to date"
-msgstr ""
-
-#: src/tray.vala
-msgid "_Quit"
-msgstr ""
-
-#: src/tray.vala src/cli.vala
-#, c-format
-msgid "%u available update"
-msgid_plural "%u available updates"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
-msgid "Details"
-msgstr "Detaloj"
-
-#: src/manager_window.vala
-msgid "No package found"
-msgstr "Neniu pakaĵo trovita"
-
-#: src/manager_window.vala
-msgid "Checking for Updates"
-msgstr ""
-
-#: src/manager_window.vala resources/manager_window.ui
-msgid "Install Local Packages"
-msgstr "Instali Lokajn Pakaĵojn"
-
-#: src/manager_window.vala
-msgid "_Open"
-msgstr "_Open"
-
-#: src/manager_window.vala
-msgid "Alpm Package"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr ""
-
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
-msgid "Snap"
-msgstr ""
-
-#: src/manager_window.vala
-#, c-format
-msgid "%u pending operation"
-msgid_plural "%u pending operations"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/manager_window.vala
-msgid "Pending"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "All"
-msgstr "Ĉio"
-
-#: src/manager_window.vala
-msgid "Explicitly installed"
-msgstr "Eksplicite instalita"
-
-#: src/manager_window.vala
-msgid "Orphans"
-msgstr "Orfoj"
-
-#: src/manager_window.vala
-msgid "Foreign"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Installed"
-msgstr "Instalita"
-
-#: src/manager_window.vala
-msgid "Ignored"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "None"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Reason"
-msgstr "Instalo Kialo"
-
-#: src/manager_window.vala
-msgid "Installed as a dependency for another package"
-msgstr "Instalita kiel dependeco por alia pakaĵo"
-
-#: src/manager_window.vala
-msgid "Mark as explicitly installed"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Licenses"
-msgstr "Permesiloj"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Unknown"
-msgstr "Nekonata"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Repository"
-msgstr "Deponejo"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Package Base"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Maintainer"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "First Submitted"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Last Modified"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Votes"
-msgstr "Voĉdonoj"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Out of Date"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Groups"
-msgstr "Grupoj"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Packager"
-msgstr "Pakaĵkreanto"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Build Date"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Date"
-msgstr "Instalo Dato"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Validated By"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Backup files"
-msgstr "Kopisekurecaj Dosieroj"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional Dependencies"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional For"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Provides"
-msgstr "Provizas"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr ""
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "Publisher"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "Confined in a Sandbox"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "Channels"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "OS Updates"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "Includes performance, stability and security improvements"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "Featured"
-msgstr "Elstarigi"
-
-#: src/manager_window.vala
-msgid "Photo & Video"
-msgstr "Fotaĵoj kaj Videaĵoj"
-
-#: src/manager_window.vala
-msgid "Music & Audio"
-msgstr "Muzikaĵoj kaj Audaĵoj"
-
-#: src/manager_window.vala
-msgid "Productivity"
-msgstr "Produktiveco"
-
-#: src/manager_window.vala
-msgid "Communication & News"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "Education & Science"
-msgstr "Edukado kaj Scienco"
-
-#: src/manager_window.vala
-msgid "Games"
-msgstr "Ludoj"
-
-#: src/manager_window.vala
-msgid "Utilities"
-msgstr "Utilaĵoj"
-
-#: src/manager_window.vala
-msgid "Development"
-msgstr "Programado"
-
-#: src/manager_window.vala resources/manager_window.ui
-#: resources/preferences_dialog.ui
-msgid "Updates"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "Last refresh"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "every 3 hours"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "every 6 hours"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "every 12 hours"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "every day"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "every week"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "1"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "2"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "4"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "6"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "8"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "10"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "Worldwide"
-msgstr "Tuttere"
-
-#: src/preferences_dialog.vala
-msgid "0"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "3"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "5"
-msgstr ""
-
-#: src/preferences_dialog.vala src/cli.vala
-msgid "To delete"
-msgstr "Markitaj por forigo"
-
-#: src/preferences_dialog.vala src/cli.vala
-#, c-format
-msgid "%u file"
-msgid_plural "%u files"
-msgstr[0] "%udosieroj"
-msgstr[1] "%u dosieroj"
-
-#: src/preferences_dialog.vala
-msgid "Select Build Directory"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "_Choose"
-msgstr ""
-
-#: src/preferences_dialog.vala
-msgid "Choose Ignored Upgrades"
-msgstr ""
-
-#: src/transaction-cli.vala src/cli.vala
-#, c-format
-msgid "Enter a selection (default=%s)"
-msgstr "Enigu elekton (defaŭlto =%s)"
-
-#: src/transaction-cli.vala
-msgid "none"
-msgstr "nenia"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "Enter a number (default=%d)"
-msgstr "Enigu numeron (defaŭlto = %d)"
-
-#: src/transaction-cli.vala
-msgid "[y/N]"
-msgstr "[j/N]"
-
-#: src/transaction-cli.vala
-msgid "y"
-msgstr ""
-
-#: src/transaction-cli.vala
-msgid "yes"
-msgstr ""
-
-#: src/transaction-cli.vala
-msgid "[e]"
-msgstr ""
-
-#: src/transaction-cli.vala
-msgid "Apply transaction"
-msgstr "Validigi transakcion"
-
-#: src/transaction-cli.vala
-msgid "[e/y/N]"
-msgstr ""
-
-#: src/transaction-cli.vala
-msgid "e"
-msgstr ""
-
-#: src/transaction-cli.vala
-msgid "To upgrade"
-msgstr "Ĝisdatigi"
-
-#: src/transaction-cli.vala
-msgid "To reinstall"
-msgstr "Reinstali"
-
-#: src/transaction-cli.vala
-msgid "To install"
-msgstr "Instali"
-
-#: src/transaction-cli.vala
-msgid "To build"
-msgstr "Kunmeti"
-
-#: src/transaction-cli.vala
-msgid "To downgrade"
-msgstr "Reveni"
-
-#: src/transaction-cli.vala
-msgid "To remove"
-msgstr "Forigi"
-
-#: src/transaction-cli.vala
-msgid "Total installed size"
-msgstr ""
-
-#: src/transaction-cli.vala
-msgid "Total removed size"
-msgstr ""
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "View %s build files diff"
 msgstr ""
 
 #: src/cli.vala
@@ -972,6 +690,10 @@ msgstr "ago"
 #: src/cli.vala
 msgid "options"
 msgstr "opcio"
+
+#: src/cli.vala src/installer.vala
+msgid "package(s)"
+msgstr ""
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1082,6 +804,10 @@ msgstr ""
 msgid "overwrite existing files"
 msgstr ""
 
+#: src/cli.vala src/installer.vala
+msgid "Build packages from AUR and install them with their dependencies"
+msgstr ""
+
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
@@ -1115,6 +841,10 @@ msgstr ""
 
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
+msgstr ""
+
+#: src/cli.vala src/installer.vala
+msgid "Install packages from repositories, path or url"
 msgstr ""
 
 #: src/cli.vala
@@ -1155,6 +885,10 @@ msgstr ""
 
 #: src/cli.vala
 msgid "Reinstall packages"
+msgstr ""
+
+#: src/cli.vala src/installer.vala
+msgid "Remove packages"
 msgstr ""
 
 #: src/cli.vala
@@ -1288,10 +1022,6 @@ msgstr ""
 msgid "also display all files names"
 msgstr ""
 
-#: src/cli.vala resources/manager_window.ui
-msgid "Name"
-msgstr "Nomo"
-
 #: src/cli.vala
 msgid "Version"
 msgstr "Versio"
@@ -1304,9 +1034,101 @@ msgstr "Priskribo"
 msgid "URL"
 msgstr "URL"
 
+#: src/cli.vala src/manager_window.vala
+msgid "Licenses"
+msgstr "Permesiloj"
+
 #: src/cli.vala
 msgid "Installed Size"
 msgstr "Instalo-grando"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Depends On"
+msgstr "Dependas De"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional Dependencies"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Make Dependencies"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Check Dependencies"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Required By"
+msgstr "Postulata De"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional For"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Provides"
+msgstr "Provizas"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Replaces"
+msgstr "Anstataŭigas"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Conflicts With"
+msgstr "Konfliktas Kun"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Packager"
+msgstr "Pakaĵkreanto"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Build Date"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Date"
+msgstr "Instalo Dato"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Reason"
+msgstr "Instalo Kialo"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Validated By"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Backup files"
+msgstr "Kopisekurecaj Dosieroj"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Package Base"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Maintainer"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "First Submitted"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Last Modified"
+msgstr ""
+
+#: src/cli.vala src/manager_window.vala
+msgid "Votes"
+msgstr "Voĉdonoj"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Out of Date"
+msgstr ""
 
 #: src/cli.vala
 #, c-format
@@ -1325,6 +1147,13 @@ msgid_plural "%u ignored updates"
 msgstr[0] ""
 msgstr[1] ""
 
+#: src/cli.vala src/tray.vala
+#, c-format
+msgid "%u available update"
+msgid_plural "%u available updates"
+msgstr[0] ""
+msgstr[1] ""
+
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
 msgstr ""
@@ -1332,6 +1161,17 @@ msgstr ""
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
 msgstr ""
+
+#: src/cli.vala src/preferences_dialog.vala
+msgid "To delete"
+msgstr "Markitaj por forigo"
+
+#: src/cli.vala src/preferences_dialog.vala
+#, c-format
+msgid "%u file"
+msgid_plural "%u files"
+msgstr[0] "%udosieroj"
+msgstr[1] "%u dosieroj"
 
 #: src/cli.vala
 msgid "Clean cache"
@@ -1351,12 +1191,21 @@ msgstr ""
 msgid "%s is only available from AUR"
 msgstr ""
 
+#: src/cli.vala src/installer.vala src/transaction.vala
+msgid "Nothing to do"
+msgstr "Nenio por fari"
+
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] ""
 msgstr[1] ""
+
+#: src/cli.vala src/transaction-cli.vala
+#, c-format
+msgid "Enter a selection (default=%s)"
+msgstr "Enigu elekton (defaŭlto =%s)"
 
 #: src/cli.vala
 msgid "all"
@@ -1367,259 +1216,507 @@ msgstr "ĉio"
 msgid "Add %s to reinstall"
 msgstr ""
 
+#: src/cli.vala src/transaction.vala
+#, c-format
+msgid "Cloning %s build files"
+msgstr ""
+
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
 msgstr ""
 
+#: src/daemon.vala
+msgid "Authentication failed"
+msgstr "Aŭtentikigo malsukcesis"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Waiting for another package manager to quit"
+msgstr ""
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Timeout expired"
+msgstr ""
+
+#: src/flatpak_plugin.vala
+msgid "Flatpak transaction failed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "No package found"
+msgstr "Neniu pakaĵo trovita"
+
+#: src/manager_window.vala
+msgid "Checking for Updates"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Alpm Package"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr ""
+
+#: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Total download size"
+msgstr ""
+
+#: src/manager_window.vala
+#, c-format
+msgid "%u pending operation"
+msgid_plural "%u pending operations"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "All"
+msgstr "Ĉio"
+
+#: src/manager_window.vala
+msgid "Orphans"
+msgstr "Orfoj"
+
+#: src/manager_window.vala
+msgid "Foreign"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Ignored"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Mark as explicitly installed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Publisher"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Confined in a Sandbox"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Channels"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Includes performance, stability and security improvements"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Featured"
+msgstr "Elstarigi"
+
+#: src/manager_window.vala
+msgid "Photo & Video"
+msgstr "Fotaĵoj kaj Videaĵoj"
+
+#: src/manager_window.vala
+msgid "Music & Audio"
+msgstr "Muzikaĵoj kaj Audaĵoj"
+
+#: src/manager_window.vala
+msgid "Productivity"
+msgstr "Produktiveco"
+
+#: src/manager_window.vala
+msgid "Communication & News"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "Education & Science"
+msgstr "Edukado kaj Scienco"
+
+#: src/manager_window.vala
+msgid "Games"
+msgstr "Ludoj"
+
+#: src/manager_window.vala
+msgid "Utilities"
+msgstr "Utilaĵoj"
+
+#: src/manager_window.vala
+msgid "Development"
+msgstr "Programado"
+
+#: src/manager_window.vala
+msgid "Last refresh"
+msgstr ""
+
+#: src/manager_window.vala src/transaction.vala
+msgid "Transaction successfully finished"
+msgstr "Finita sukcese transakcio"
+
+#: src/pgp_key.vala
+msgid "Fingerprint"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Algorithm"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Creation date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Expiration date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Never"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Unknown keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Source"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Required by"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%s build files (validpgpkeys)"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has been revoked by its owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has expired"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key is disabled on the keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%u keys match %s on the keyserver, only the first one is shown"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "The key found on the keyserver does not match the requested key %s"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid ""
+"Keyservers do not verify key owners: compare the fingerprint with the one "
+"published by the upstream project before trusting this key"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 3 hours"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 6 hours"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 12 hours"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every day"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every week"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "1"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "2"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "4"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "6"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "8"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "10"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "Worldwide"
+msgstr "Tuttere"
+
+#: src/preferences_dialog.vala
+msgid "0"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "3"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "5"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "Select Build Directory"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "Choose Ignored Upgrades"
+msgstr ""
+
+#: src/snap_plugin.vala src/transaction.vala
+msgid "Yes"
+msgstr "Jes"
+
 #: src/snap_plugin.vala
 msgid "No"
 msgstr "Ne"
 
-#: resources/choose_provider_dialog.ui
-msgid "Choose a Provider"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose optional dependencies for %s"
 msgstr ""
 
-#: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
-msgid "Choose"
-msgstr "Elektu"
+#: src/transaction-cli.vala
+msgid "none"
+msgstr "nenia"
 
-#: resources/progress_dialog.ui
-msgid "Progress"
-msgstr "Progreso"
-
-#: resources/history_dialog.ui
-msgid "Pamac History"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose a provider for %s"
 msgstr ""
 
-#: resources/transaction_sum_dialog.ui
-msgid "Transaction Summary"
+#: src/transaction-cli.vala
+#, c-format
+msgid "Enter a number (default=%d)"
+msgstr "Enigu numeron (defaŭlto = %d)"
+
+#: src/transaction-cli.vala
+msgid "[y/N]"
+msgstr "[j/N]"
+
+#: src/transaction-cli.vala
+msgid "y"
 msgstr ""
 
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-msgid "_Apply"
+#: src/transaction-cli.vala
+msgid "yes"
 msgstr ""
 
-#: resources/manager_window.ui
-msgid "Software Mode"
+#: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
 msgstr ""
 
-#: resources/manager_window.ui
-msgid "Refresh databases"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Import the PGP key"
 msgstr ""
 
-#: resources/manager_window.ui
-msgid "View History"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Trust %s and import the PGP key"
 msgstr ""
 
-#: resources/manager_window.ui
-msgid "Preferences"
-msgstr "Preferoj"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Edit build files"
+msgstr "Modifi kunmet-dosierojn"
 
-#: resources/manager_window.ui
-msgid "About"
-msgstr "Pri"
+#: src/transaction-cli.vala
+msgid "[e]"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Search"
-msgstr "Ŝerĉi"
+#: src/transaction-cli.vala
+msgid "Apply transaction"
+msgstr "Validigi transakcion"
 
-#: resources/manager_window.ui
-msgid "Remove all"
-msgstr "Foriĝi ĉio"
+#: src/transaction-cli.vala
+msgid "[e/y/N]"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Install all"
-msgstr "Instali ĉio"
+#: src/transaction-cli.vala
+msgid "e"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Ignore all"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Orphan Of"
+msgstr ""
+
+#: src/transaction-cli.vala
+msgid "To upgrade"
+msgstr "Ĝisdatigi"
+
+#: src/transaction-cli.vala
+msgid "To reinstall"
+msgstr "Reinstali"
+
+#: src/transaction-cli.vala
+msgid "To install"
+msgstr "Instali"
+
+#: src/transaction-cli.vala
+msgid "To build"
+msgstr "Kunmeti"
+
+#: src/transaction-cli.vala
+msgid "To downgrade"
+msgstr "Reveni"
+
+#: src/transaction-cli.vala
+msgid "To remove"
+msgstr "Forigi"
+
+#: src/transaction-cli.vala
+msgid "Total installed size"
+msgstr ""
+
+#: src/transaction-cli.vala
+msgid "Total removed size"
+msgstr ""
+
+#: src/transaction-cli.vala
+#, c-format
+msgid "View %s build files diff"
+msgstr ""
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Edit %s build files"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Import PGP key"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Trust and Import"
+msgstr ""
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Save"
+msgstr "Enregistri"
+
+#: src/transaction-gtk.vala
+msgid "Restart"
+msgstr ""
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The snap %s was published using classic confinement"
+msgstr ""
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "Install %s anyway"
+msgstr ""
+
+#: src/transaction.vala
+msgid "Refreshing mirrors list"
+msgstr ""
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to clone %s build files"
+msgstr ""
+
+#: src/transaction.vala
+#, c-format
+msgid "Generating %s information"
+msgstr ""
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to generate %s information"
+msgstr ""
+
+#: src/transaction.vala
+#, c-format
+msgid "Checking %s dependencies"
+msgstr ""
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to check %s dependencies"
+msgstr ""
+
+#: src/transaction.vala
+#, c-format
+msgid "key %s could not be imported"
+msgstr ""
+
+#: src/transaction.vala
+msgid "Preparing"
+msgstr "Preparanta"
+
+#: src/transaction.vala
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr ""
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr ""
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Kunmetanta %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to build %s"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "The transaction may still be running in the background"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "Connection to the daemon was lost"
+msgstr ""
+
+#: src/tray.vala
+msgid "_Quit"
 msgstr ""
 
 #: resources/manager_window.ui
 msgid "Sort by"
 msgstr "Ordigi laŭ"
 
-#: resources/manager_window.ui
-msgid "Relevance"
-msgstr "Rilateco"
+#: src/manager_window.vala
+msgid "_Open"
+msgstr "_Open"
 
-#: resources/manager_window.ui
-msgid "Size"
-msgstr "Grando"
-
-#: resources/manager_window.ui
-msgid "Date"
+#: src/preferences_dialog.vala
+msgid "_Choose"
 msgstr ""
-
-#: resources/manager_window.ui
-msgid "Refresh"
-msgstr ""
-
-#: resources/manager_window.ui
-msgid "Categories"
-msgstr ""
-
-#: resources/manager_window.ui
-msgid "Browse"
-msgstr "Esplori"
-
-#: resources/manager_window.ui
-msgid "Launch"
-msgstr "Lanĉi"
-
-#: resources/manager_window.ui
-msgid "Remove"
-msgstr "Forigi"
-
-#: resources/manager_window.ui
-msgid "Reinstall"
-msgstr "Reinstali"
-
-#: resources/manager_window.ui
-msgid "Build"
-msgstr "Kunmeti"
-
-#: resources/manager_window.ui
-msgid "Dependencies"
-msgstr ""
-
-#: resources/manager_window.ui
-msgid "Files"
-msgstr "Dosieroj"
-
-#: resources/manager_window.ui
-msgid "Reset build files"
-msgstr ""
-
-#: resources/manager_window.ui
-msgid "Build files"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "General"
-msgstr "Ĝenerala"
-
-#: resources/preferences_dialog.ui
-msgid "Check for updates"
-msgstr "Kontroli ĝisdatigojn"
-
-#: resources/preferences_dialog.ui
-msgid "Updates check frequency"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Automatically download updates"
-msgstr "Aŭtomate elŝuti ĝisdatigojn"
-
-#: resources/preferences_dialog.ui
-msgid "Upgrade the system at shutdown"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Hide tray icon when no update"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Downloads"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Parallel downloads"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Use mirrors from"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Refresh Mirrors"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Cache"
-msgstr "Kaŝmemoro"
-
-#: resources/preferences_dialog.ui
-msgid "Number of versions of each package to keep"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Remove only the uninstalled packages"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Clean"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Advanced"
-msgstr "Altnivele"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"Misconfiguration of these options can lead to system breakage.\n"
-"Modify them only if you know what you are doing."
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Check available disk space"
-msgstr "Kontroli disponeblan diskospacon"
-
-#: resources/preferences_dialog.ui
-msgid "Remove unrequired dependencies"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Do not check for updates when installing"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Enable downgrade"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Ignored upgrades"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Third Party"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid ""
-"AUR is a community maintained repository so it presents potential risks and problems.\n"
-"All AUR users should be familiar with the build process."
-msgstr "AUR estas deponejo prizorgata de komunumo, tial ĝi eble formas riskojn kaj problemojn.\nĈiuj uzantoj de AUR devas esti jam alkutimiĝintaj al la kunmeta procezo."
-
-#: resources/preferences_dialog.ui
-msgid "Enable AUR support"
-msgstr "Ŝalti AUR-aliĝon"
-
-#: resources/preferences_dialog.ui
-msgid "Keep built packages"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Check for development packages updates"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Build directory"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Flatpak packages are maintained by their publisher."
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Enable Flatpak support"
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Snap packages are maintained by their publisher."
-msgstr ""
-
-#: resources/preferences_dialog.ui
-msgid "Enable Snap support"
-msgstr "Ŝalti Snap-aliĝon"

@@ -34,6 +34,25 @@ msgstr ""
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: src/transaction-gtk.vala src/tray.vala
+msgid "Package Manager"
+msgstr "Pakethanterare"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/cli.vala
+#: src/manager_window.vala src/tray.vala
+msgid "Your system is up to date"
+msgstr "Ditt system är uppdaterat"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js src/tray.vala
+msgid "Updates Available"
+msgstr "Uppdateringar tillgängliga"
+
+#: data/gnome-shell/pamac-updates@manjaro.org/extension.js
+#: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
+msgid "Details"
+msgstr "Detaljer"
+
 #: data/polkit/org.manjaro.pamac.policy.in
 msgid "Install, update, or remove packages"
 msgstr "Installera, uppdatera eller ta bort paket"
@@ -42,7 +61,350 @@ msgstr "Installera, uppdatera eller ta bort paket"
 msgid "Authentication is required to install, update, or remove packages"
 msgstr "Autentisering krävs för att installera, uppdatera eller ta bort paket"
 
-#: src/alpm_utils.vala src/database.vala
+#: resources/choose_pkgs_dialog.ui resources/manager_window.ui
+#: resources/progress_dialog.ui resources/transaction_sum_dialog.ui
+#: src/transaction-gtk.vala
+msgid "_Cancel"
+msgstr "_Avbryt"
+
+#: resources/choose_pkgs_dialog.ui resources/choose_provider_dialog.ui
+msgid "Choose"
+msgstr "Välj"
+
+#: resources/choose_provider_dialog.ui
+msgid "Choose a Provider"
+msgstr "Välj en leverantör"
+
+#: resources/history_dialog.ui
+msgid "Pamac History"
+msgstr "Pamachistorik"
+
+#: resources/manager_window.ui
+msgid "Software Mode"
+msgstr "Programvaruläge "
+
+#: resources/manager_window.ui
+msgid "Refresh databases"
+msgstr "Uppdatera databas"
+
+#: resources/manager_window.ui
+msgid "View History"
+msgstr "Visa historik"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Install Local Packages"
+msgstr "Installera lokala paket"
+
+#: resources/manager_window.ui
+msgid "Preferences"
+msgstr "Inställningar"
+
+#: resources/manager_window.ui
+msgid "About"
+msgstr "Om"
+
+#: resources/manager_window.ui
+msgid "Relevance"
+msgstr "Relevans"
+
+#: resources/manager_window.ui src/cli.vala
+msgid "Name"
+msgstr "Namn"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Repository"
+msgstr "Förråd (repo)"
+
+#: resources/manager_window.ui
+msgid "Size"
+msgstr "Storlek"
+
+#: resources/manager_window.ui
+msgid "Date"
+msgstr "Datum"
+
+#: resources/manager_window.ui src/manager_window.vala
+msgid "Search"
+msgstr "Sök"
+
+#: resources/manager_window.ui
+msgid "Browse"
+msgstr "Surfa"
+
+#: resources/manager_window.ui
+msgid "Categories"
+msgstr "Kategorier"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Groups"
+msgstr "Grupper"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Repositories"
+msgstr "Förråd (repo)"
+
+#: resources/manager_window.ui src/cli.vala src/manager_window.vala
+msgid "Installed"
+msgstr "Installerade"
+
+#: resources/manager_window.ui resources/preferences_dialog.ui
+#: src/manager_window.vala
+msgid "Updates"
+msgstr "Uppdateringar"
+
+#: resources/manager_window.ui
+msgid "Remove all"
+msgstr "Ta bort alla"
+
+#: resources/manager_window.ui
+msgid "Install all"
+msgstr "Installera alla"
+
+#: resources/manager_window.ui
+msgid "Ignore all"
+msgstr "Ignorera alla"
+
+#: resources/manager_window.ui
+msgid "Refresh"
+msgstr "Uppdatera"
+
+#: resources/manager_window.ui
+msgid "Launch"
+msgstr "Starta"
+
+#: resources/manager_window.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Install"
+msgstr "Installera"
+
+#: resources/manager_window.ui
+msgid "Remove"
+msgstr "Ta bort"
+
+#: resources/manager_window.ui
+msgid "Reinstall"
+msgstr "Återinstallera"
+
+#: resources/manager_window.ui
+msgid "Build"
+msgstr "Bygga"
+
+#: resources/manager_window.ui
+msgid "Dependencies"
+msgstr "Beroenden"
+
+#: resources/manager_window.ui
+msgid "Files"
+msgstr "Filer"
+
+#: resources/manager_window.ui
+msgid "Build files"
+msgstr "Build-filer"
+
+#: resources/manager_window.ui
+msgid "Reset build files"
+msgstr "Återställ byggfiler"
+
+#: resources/manager_window.ui resources/transaction_sum_dialog.ui
+msgid "_Apply"
+msgstr "_Tillämpa"
+
+#: resources/preferences_dialog.ui
+msgid "General"
+msgstr "Allmänt"
+
+#: resources/preferences_dialog.ui
+msgid "Check for updates"
+msgstr "Leta efter uppdateringar"
+
+#: resources/preferences_dialog.ui
+msgid "Updates check frequency"
+msgstr "Frekvens att kolla efter uppdateringar"
+
+#: resources/preferences_dialog.ui
+msgid "Automatically download updates"
+msgstr "Ladda automatiskt ned uppdateringar"
+
+#: resources/preferences_dialog.ui
+msgid "Upgrade the system at shutdown"
+msgstr "Uppgradera systemet vid avstängning"
+
+#: resources/preferences_dialog.ui
+msgid "Hide tray icon when no update"
+msgstr "Göm fältikonen när inga uppdateringar finns"
+
+#: resources/preferences_dialog.ui
+msgid "Downloads"
+msgstr "Nedladdningar"
+
+#: resources/preferences_dialog.ui
+msgid "Parallel downloads"
+msgstr "Parallella nedladdningar"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Official Repositories"
+msgstr "Officiella förråd"
+
+#: resources/preferences_dialog.ui
+msgid "Use mirrors from"
+msgstr "Använd speglar från"
+
+#: resources/preferences_dialog.ui
+msgid "Refresh Mirrors"
+msgstr "Uppdatera speglar"
+
+#: resources/preferences_dialog.ui
+msgid "Cache"
+msgstr "Cache"
+
+#: resources/preferences_dialog.ui
+msgid "Number of versions of each package to keep"
+msgstr "Antal versioner av varje paket att behålla"
+
+#: resources/preferences_dialog.ui
+msgid "Remove only the uninstalled packages"
+msgstr "Ta bara bort de avinstallerade paketen"
+
+#: resources/preferences_dialog.ui
+msgid "Clean"
+msgstr "Rensa"
+
+#: resources/preferences_dialog.ui
+msgid "Advanced"
+msgstr "Avancerat"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"Misconfiguration of these options can lead to system breakage.\n"
+"Modify them only if you know what you are doing."
+msgstr "Felkonfiguration av dessa alternativ kan leda till systembrott.\nÄndra dem bara om du vet vad du gör."
+
+#: resources/preferences_dialog.ui
+msgid "Check available disk space"
+msgstr "Kontrollera tillgängligt diskutrymme"
+
+#: resources/preferences_dialog.ui
+msgid "Remove unrequired dependencies"
+msgstr "Ta bort icke-nödvändiga beroenden"
+
+#: resources/preferences_dialog.ui
+msgid "Do not check for updates when installing"
+msgstr "Kolla inte efter uppdateringar vid installation"
+
+#: resources/preferences_dialog.ui
+msgid "Enable downgrade"
+msgstr "Aktivera nedgradering"
+
+#: resources/preferences_dialog.ui
+msgid "Ignored upgrades"
+msgstr "Ignorerade uppgraderingar"
+
+#: resources/preferences_dialog.ui
+msgid "Third Party"
+msgstr "Tredje part "
+
+#: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
+#: src/cli.vala src/database.vala src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "AUR"
+msgstr "AUR"
+
+#: resources/preferences_dialog.ui
+msgid ""
+"AUR is a community maintained repository so it presents potential risks and problems.\n"
+"All AUR users should be familiar with the build process."
+msgstr "AUR är ett gemensamt under- och tillhandahållet förråd som kan medföra risker och problem.\nAlla AUR-användare bör vara bekanta med byggprocessen."
+
+#: resources/preferences_dialog.ui
+msgid "Enable AUR support"
+msgstr "Aktivera AUR-stöd"
+
+#: resources/preferences_dialog.ui
+msgid "Keep built packages"
+msgstr "Behåll byggda paket"
+
+#: resources/preferences_dialog.ui
+msgid "Check for development packages updates"
+msgstr "Leta efter uppdateringar för utvecklarpaket"
+
+#: resources/preferences_dialog.ui
+msgid "Build directory"
+msgstr "Byggmapp"
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/transaction-gtk.vala
+msgid "Flatpak"
+msgstr "Flatpak"
+
+#: resources/preferences_dialog.ui
+msgid "Flatpak packages are maintained by their publisher."
+msgstr "Flatpak paket underhålls av dess utgivare"
+
+#: resources/preferences_dialog.ui
+msgid "Enable Flatpak support"
+msgstr "Aktivera Flatpak-stöd "
+
+#: resources/preferences_dialog.ui src/manager_window.vala
+#: src/snap_plugin.vala
+msgid "Snap"
+msgstr "Snap"
+
+#: resources/preferences_dialog.ui
+msgid "Snap packages are maintained by their publisher."
+msgstr "Snap paket underhålls av dess utgivare"
+
+#: resources/preferences_dialog.ui
+msgid "Enable Snap support"
+msgstr "Aktivera Snap-stöd "
+
+#: resources/progress_dialog.ui
+msgid "Progress"
+msgstr "Status"
+
+#: resources/progress_dialog.ui src/database-gtk.vala src/transaction-gtk.vala
+msgid "_Close"
+msgstr "_Stäng"
+
+#: resources/transaction_sum_dialog.ui
+msgid "Transaction Summary"
+msgstr "Summering av överföring"
+
+#: resources/updates_dialog.ui src/manager_window.vala
+msgid "OS Updates"
+msgstr "OS Uppdateringar"
+
+#: src/alpm_package.vala src/aur_plugin.vala src/cli.vala
+#: src/manager_window.vala src/pgp_key.vala
+msgid "Unknown"
+msgstr "Okänd"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Explicitly installed"
+msgstr "Särskillt installerad"
+
+#: src/alpm_package.vala src/manager_window.vala
+msgid "Installed as a dependency for another package"
+msgstr "Installerad som ett beroende för ett annat paket"
+
+#: src/alpm_package.vala src/cli.vala src/manager_window.vala
+msgid "None"
+msgstr "Inga"
+
+#: src/alpm_package.vala
+msgid "MD5 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "SHA-256 Sum"
+msgstr ""
+
+#: src/alpm_package.vala
+msgid "Signature"
+msgstr ""
+
+#: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
 msgstr "Misslyckades med att läsa in alpm-bibliotek"
 
@@ -58,15 +420,19 @@ msgstr "Misslyckades med att synkronisera databas"
 msgid "Failed to init transaction"
 msgstr "Misslyckades med att påbörja överföring"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/installer.vala
+#: src/alpm_utils.vala src/installer.vala src/transaction-gtk.vala
+#: src/transaction.vala
 msgid "Failed to prepare transaction"
 msgstr "Misslyckades med att förbereda överföring"
 
-#: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/installer.vala src/transaction.vala
 #, c-format
 msgid "target not found: %s"
 msgstr "mål ej funnet: %s"
+
+#: src/alpm_utils.vala
+msgid "failed to retrieve some files"
+msgstr "misslyckades med att hämta vissa filer"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -78,8 +444,8 @@ msgstr "paketet %s har inte en giltig arkitektur"
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
 msgstr "kan ej möta beroende '%1$s' som krävs av %2$s"
 
-#: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
-#: src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala src/transaction.vala
 msgid "Warning"
 msgstr "Varning"
 
@@ -126,10 +492,6 @@ msgstr "ta bort %s från mållista"
 msgid "A restart is required for the changes to take effect"
 msgstr "En omstart krävs för att ändringarna ska träda i kraft"
 
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-msgid "Transaction cancelled"
-msgstr "Överföring avbruten"
-
 #: src/alpm_utils.vala
 #, c-format
 msgid "%1$s exists in both %2$s and %3$s"
@@ -168,10 +530,6 @@ msgid "you can remove this file and retry"
 msgstr "du kan ta bort denna fil och försöka igen"
 
 #: src/alpm_utils.vala
-msgid "failed to retrieve some files"
-msgstr "misslyckades med att hämta vissa filer"
-
-#: src/alpm_utils.vala
 msgid "Failed to commit transaction"
 msgstr "Misslyckades med att genomföra överföring"
 
@@ -191,12 +549,12 @@ msgstr "Löser beroenden"
 msgid "Checking inter-conflicts"
 msgstr "Letar efter tvärskonflikter"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Installing %s"
 msgstr "Installerar %s"
 
-#: src/alpm_utils.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala
 #, c-format
 msgid "Upgrading %s"
 msgstr "Uppgraderar %s"
@@ -211,7 +569,7 @@ msgstr "Ominstallerar %s"
 msgid "Downgrading %s"
 msgstr "Nedgraderar %s"
 
-#: src/alpm_utils.vala src/snap_plugin.vala
+#: src/alpm_utils.vala src/flatpak_plugin.vala src/snap_plugin.vala
 #, c-format
 msgid "Removing %s"
 msgstr "Tar bort %s"
@@ -242,11 +600,6 @@ msgstr "Kontrollerar tillgängligt diskutrymme"
 #, c-format
 msgid "%1$s optionally requires %2$s"
 msgstr "%1$skräver frivilligt %2$s"
-
-#: src/alpm_utils.vala
-#, c-format
-msgid "Database file for %s does not exist"
-msgstr "Databasfilen för %s existerar inte"
 
 #: src/alpm_utils.vala
 msgid "Checking keyring"
@@ -292,19 +645,15 @@ msgid_plural "About %lu minutes remaining"
 msgstr[0] "Cirka %lu minut återstår"
 msgstr[1] "Cirka %lu minuter återstår"
 
-#: src/alpm_utils.vala src/transaction-cli.vala src/cli.vala
+#: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
 msgstr "Fel"
 
-#: src/alpm_utils.vala
-#, c-format
-msgid "Refreshing %s"
-msgstr "Uppdaterar %s"
-
-#: src/alpm_utils.vala src/database.vala src/transaction-gtk.vala
-#: src/manager_window.vala src/cli.vala resources/preferences_dialog.ui
-msgid "AUR"
-msgstr "AUR"
+#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
+#: src/transaction_interface_root.vala
+msgid "Transaction cancelled"
+msgstr "Överföring avbruten"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -313,644 +662,13 @@ msgstr "Nedladdning av %s startad"
 
 #: src/alpm_utils.vala
 #, c-format
-msgid "Downloading %s"
-msgstr "Laddar ner %s"
+msgid "Refreshing %s"
+msgstr "Uppdaterar %s"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "Download of %s finished"
 msgstr "Nedladdning av %s färdig"
-
-#: src/daemon.vala
-msgid "Authentication failed"
-msgstr "Autentisering misslyckades"
-
-#: src/daemon.vala
-msgid "Waiting for another package manager to quit"
-msgstr "Väntar på att annan instans av pakethanteraren ska avslutas"
-
-#: src/daemon.vala
-msgid "Timeout expired"
-msgstr "Timeout har gått ut"
-
-#: src/transaction.vala
-msgid "Refreshing mirrors list"
-msgstr "Uppdaterar spegellistor"
-
-#: src/transaction.vala src/cli.vala
-#, c-format
-msgid "Cloning %s build files"
-msgstr "Klonar %s byggfiler"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to clone %s build files"
-msgstr "Misslyckades att klona %s byggfiler"
-
-#: src/transaction.vala
-#, c-format
-msgid "Generating %s information"
-msgstr "Genererar %s information"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to generate %s information"
-msgstr "Misslyckades med att generera %s information"
-
-#: src/transaction.vala
-#, c-format
-msgid "Checking %s dependencies"
-msgstr "Kontrollerar %s besittningar"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to check %s dependencies"
-msgstr "Misslyckades med att kontrollera %s beroenden"
-
-#: src/transaction.vala
-#, c-format
-msgid "key %s could not be imported"
-msgstr "nyckel %s kunde ej importeras"
-
-#: src/transaction.vala src/manager_window.vala
-msgid "Transaction successfully finished"
-msgstr "Överföring lyckades"
-
-#: src/transaction.vala
-msgid "Preparing"
-msgstr "Förbereder"
-
-#: src/transaction.vala src/snap_plugin.vala
-msgid "Yes"
-msgstr "Ja"
-
-#: src/transaction.vala src/installer.vala src/cli.vala
-msgid "Nothing to do"
-msgstr "Inget att göra"
-
-#: src/transaction.vala
-#, c-format
-msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
-msgstr "%1$s: ignorerar paketuppgradering (%2$s => %3$s)"
-
-#: src/transaction.vala
-msgid "Failed to synchronize AUR database"
-msgstr "Misslyckades med att synkronisera AUR databas"
-
-#: src/transaction.vala
-#, c-format
-msgid "Failed to build %s"
-msgstr "Misslyckades med att bygga %s"
-
-#: src/transaction.vala
-#, c-format
-msgid "Building %s"
-msgstr "Bygger %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose optional dependencies for %s"
-msgstr "Välj valfria besittningar för %s"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Choose a provider for %s"
-msgstr "Välj en leverantör för %s"
-
-#: src/transaction-gtk.vala
-msgid "Import PGP key"
-msgstr "Importera PGP-nyckel"
-
-#: src/transaction-gtk.vala
-msgid "Trust and Import"
-msgstr "Tilltro och Importera"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: src/preferences_dialog.vala resources/progress_dialog.ui
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-#: resources/choose_pkgs_dialog.ui
-msgid "_Cancel"
-msgstr "_Avbryt"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "PGP-nyckeln %1$s krävs för att verifiera %2$s källfiler"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Trust %s and import the PGP key"
-msgstr "Tilltro %s och importera PGP-nyckel"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Official Repositories"
-msgstr "Officiella förråd"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Repositories"
-msgstr "Förråd (repo)"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/preferences_dialog.ui
-msgid "Flatpak"
-msgstr "Flatpak"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Depends On"
-msgstr "Beroende av"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Orphan Of"
-msgstr "Föräldralösa av"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Conflicts With"
-msgstr "Konflikt med"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Required By"
-msgstr "Krävs av"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-#: src/cli.vala
-msgid "Replaces"
-msgstr "Ersätter"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-msgid "Edit build files"
-msgstr "Redigera byggfiler"
-
-#: src/transaction-gtk.vala src/manager_window.vala src/transaction-cli.vala
-msgid "Total download size"
-msgstr "Total nedladdningsstorlek"
-
-#: src/transaction-gtk.vala src/transaction-cli.vala
-#, c-format
-msgid "Edit %s build files"
-msgstr "Redigera %s byggfiler"
-
-#: src/transaction-gtk.vala
-msgid "Save"
-msgstr "Spara"
-
-#: src/transaction-gtk.vala resources/progress_dialog.ui
-#: resources/history_dialog.ui
-msgid "_Close"
-msgstr "_Stäng"
-
-#: src/transaction-gtk.vala
-msgid "Restart"
-msgstr "Starta om"
-
-#: src/transaction-gtk.vala src/manager_window.vala
-#: resources/manager_window.ui
-msgid "Install"
-msgstr "Installera"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "The snap %s was published using classic confinement"
-msgstr "Snap %s publicerades med klassisk inneslutning"
-
-#: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
-msgstr "Installera %s i alla fall"
-
-#: src/transaction-gtk.vala src/tray.vala
-msgid "Package Manager"
-msgstr "Pakethanterare"
-
-#: src/installer.vala src/cli.vala
-msgid "Install packages from repositories, path or url"
-msgstr "Installera paket från besittningar, sökväg eller länk"
-
-#: src/installer.vala src/cli.vala
-msgid "Remove packages"
-msgstr "Ta bort paket"
-
-#: src/installer.vala src/cli.vala
-msgid "Build packages from AUR and install them with their dependencies"
-msgstr "bygg paket från AUR och installera dem med deras besittningar"
-
-#: src/installer.vala src/cli.vala
-msgid "package(s)"
-msgstr "Paket"
-
-#: src/tray.vala
-msgid "Updates Available"
-msgstr "Uppdateringar tillgängliga"
-
-#: src/tray.vala src/manager_window.vala src/cli.vala
-msgid "Your system is up to date"
-msgstr "Ditt system är uppdaterat"
-
-#: src/tray.vala
-msgid "_Quit"
-msgstr "_Avsluta"
-
-#: src/tray.vala src/cli.vala
-#, c-format
-msgid "%u available update"
-msgid_plural "%u available updates"
-msgstr[0] "%u tillgänglig uppdatering"
-msgstr[1] "%u tillgängliga uppdateringar"
-
-#: src/tray.vala resources/progress_dialog.ui resources/manager_window.ui
-msgid "Details"
-msgstr "Detaljer"
-
-#: src/manager_window.vala
-msgid "No package found"
-msgstr "Inget paket hittades"
-
-#: src/manager_window.vala
-msgid "Checking for Updates"
-msgstr "Letar efter uppdateringar"
-
-#: src/manager_window.vala resources/manager_window.ui
-msgid "Install Local Packages"
-msgstr "Installera lokala paket"
-
-#: src/manager_window.vala
-msgid "_Open"
-msgstr "_Öppna"
-
-#: src/manager_window.vala
-msgid "Alpm Package"
-msgstr "Alpm-paket"
-
-#: src/manager_window.vala
-msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
-msgstr "En pakethanterare med Alpm, AUR, Flatpak och Snap stöd"
-
-#: src/manager_window.vala src/snap_plugin.vala
-#: resources/preferences_dialog.ui
-msgid "Snap"
-msgstr "Snap"
-
-#: src/manager_window.vala
-#, c-format
-msgid "%u pending operation"
-msgid_plural "%u pending operations"
-msgstr[0] "%u pågående åtgärd"
-msgstr[1] "%u pågående åtgärder"
-
-#: src/manager_window.vala
-msgid "Pending"
-msgstr "Pågående"
-
-#: src/manager_window.vala
-msgid "All"
-msgstr "Alla"
-
-#: src/manager_window.vala
-msgid "Explicitly installed"
-msgstr "Särskillt installerad"
-
-#: src/manager_window.vala
-msgid "Orphans"
-msgstr "Föräldralösa"
-
-#: src/manager_window.vala
-msgid "Foreign"
-msgstr "Främmande"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Installed"
-msgstr "Installerade"
-
-#: src/manager_window.vala
-msgid "Ignored"
-msgstr "Ignoreras"
-
-#: src/manager_window.vala src/cli.vala
-msgid "None"
-msgstr "Inga"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Reason"
-msgstr "Installeringsorsak"
-
-#: src/manager_window.vala
-msgid "Installed as a dependency for another package"
-msgstr "Installerad som ett beroende för ett annat paket"
-
-#: src/manager_window.vala
-msgid "Mark as explicitly installed"
-msgstr "Markera som särskilt installerad"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Licenses"
-msgstr "LIcenser"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Unknown"
-msgstr "Okänd"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Repository"
-msgstr "Förråd (repo)"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Package Base"
-msgstr "Paketbas"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Maintainer"
-msgstr "Underhållare"
-
-#: src/manager_window.vala src/cli.vala
-msgid "First Submitted"
-msgstr "Först inskickad"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Last Modified"
-msgstr "Senast ändrad"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Votes"
-msgstr "Röster"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Out of Date"
-msgstr "Föråldrat"
-
-#: src/manager_window.vala src/cli.vala resources/manager_window.ui
-msgid "Groups"
-msgstr "Grupper"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Packager"
-msgstr "Pakethanterare"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Build Date"
-msgstr "Byggdatum"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Install Date"
-msgstr "Installationsdatum"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Validated By"
-msgstr "Validerad av"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Backup files"
-msgstr "Backupfiler"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional Dependencies"
-msgstr "Valfria beroenden"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Optional For"
-msgstr "Frivilliga för"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Provides"
-msgstr "Erbjuder"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Make Dependencies"
-msgstr "Make-beroenden"
-
-#: src/manager_window.vala src/cli.vala
-msgid "Check Dependencies"
-msgstr "Kontrollera beroenden"
-
-#: src/manager_window.vala
-msgid "Publisher"
-msgstr "Utgivare"
-
-#: src/manager_window.vala
-msgid "Confined in a Sandbox"
-msgstr "Instängd i en Sandlåda"
-
-#: src/manager_window.vala
-msgid "Channels"
-msgstr "Kanaler"
-
-#: src/manager_window.vala
-msgid "OS Updates"
-msgstr "OS Uppdateringar"
-
-#: src/manager_window.vala
-msgid "Includes performance, stability and security improvements"
-msgstr "Inkluderar prestanda, stabilitet och säkerhetsförbättringar"
-
-#: src/manager_window.vala
-msgid "Featured"
-msgstr " Rekommenderade "
-
-#: src/manager_window.vala
-msgid "Photo & Video"
-msgstr "Foto & Video"
-
-#: src/manager_window.vala
-msgid "Music & Audio"
-msgstr "Musik & Ljud"
-
-#: src/manager_window.vala
-msgid "Productivity"
-msgstr "Produktivitet"
-
-#: src/manager_window.vala
-msgid "Communication & News"
-msgstr "Kommunikation & Nyheter"
-
-#: src/manager_window.vala
-msgid "Education & Science"
-msgstr "Utbildning & Vetenskap"
-
-#: src/manager_window.vala
-msgid "Games"
-msgstr "Spel"
-
-#: src/manager_window.vala
-msgid "Utilities"
-msgstr "Verktyg"
-
-#: src/manager_window.vala
-msgid "Development"
-msgstr "Utveckling"
-
-#: src/manager_window.vala resources/manager_window.ui
-#: resources/preferences_dialog.ui
-msgid "Updates"
-msgstr "Uppdateringar"
-
-#: src/manager_window.vala
-msgid "Last refresh"
-msgstr "Senaste uppdatering"
-
-#: src/preferences_dialog.vala
-msgid "every 3 hours"
-msgstr "var 3:e timme"
-
-#: src/preferences_dialog.vala
-msgid "every 6 hours"
-msgstr "var 6:e timme"
-
-#: src/preferences_dialog.vala
-msgid "every 12 hours"
-msgstr "var 12:e timme"
-
-#: src/preferences_dialog.vala
-msgid "every day"
-msgstr "varje dag"
-
-#: src/preferences_dialog.vala
-msgid "every week"
-msgstr "varje vecka"
-
-#: src/preferences_dialog.vala
-msgid "1"
-msgstr "1"
-
-#: src/preferences_dialog.vala
-msgid "2"
-msgstr "2"
-
-#: src/preferences_dialog.vala
-msgid "4"
-msgstr "4"
-
-#: src/preferences_dialog.vala
-msgid "6"
-msgstr "6"
-
-#: src/preferences_dialog.vala
-msgid "8"
-msgstr "8"
-
-#: src/preferences_dialog.vala
-msgid "10"
-msgstr "10"
-
-#: src/preferences_dialog.vala
-msgid "Worldwide"
-msgstr "Världsomspännande"
-
-#: src/preferences_dialog.vala
-msgid "0"
-msgstr "0"
-
-#: src/preferences_dialog.vala
-msgid "3"
-msgstr "3"
-
-#: src/preferences_dialog.vala
-msgid "5"
-msgstr "5"
-
-#: src/preferences_dialog.vala src/cli.vala
-msgid "To delete"
-msgstr "Att ta bort"
-
-#: src/preferences_dialog.vala src/cli.vala
-#, c-format
-msgid "%u file"
-msgid_plural "%u files"
-msgstr[0] "%u fil"
-msgstr[1] "%u filer"
-
-#: src/preferences_dialog.vala
-msgid "Select Build Directory"
-msgstr "Välj byggmapp"
-
-#: src/preferences_dialog.vala
-msgid "_Choose"
-msgstr "_Välj"
-
-#: src/preferences_dialog.vala
-msgid "Choose Ignored Upgrades"
-msgstr "Välj ignorerade uppgraderingar"
-
-#: src/transaction-cli.vala src/cli.vala
-#, c-format
-msgid "Enter a selection (default=%s)"
-msgstr "Gör ett val (standard=%s)"
-
-#: src/transaction-cli.vala
-msgid "none"
-msgstr "inga"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "Enter a number (default=%d)"
-msgstr "Välj ett nummer (standard=%d)"
-
-#: src/transaction-cli.vala
-msgid "[y/N]"
-msgstr "[y/N]"
-
-#: src/transaction-cli.vala
-msgid "y"
-msgstr "y"
-
-#: src/transaction-cli.vala
-msgid "yes"
-msgstr "ja"
-
-#: src/transaction-cli.vala
-msgid "[e]"
-msgstr "[e]"
-
-#: src/transaction-cli.vala
-msgid "Apply transaction"
-msgstr "Verkställ överföring"
-
-#: src/transaction-cli.vala
-msgid "[e/y/N]"
-msgstr "[e/y/N]"
-
-#: src/transaction-cli.vala
-msgid "e"
-msgstr "e"
-
-#: src/transaction-cli.vala
-msgid "To upgrade"
-msgstr "Att uppgradera"
-
-#: src/transaction-cli.vala
-msgid "To reinstall"
-msgstr "Att ominstallera"
-
-#: src/transaction-cli.vala
-msgid "To install"
-msgstr "Att installera"
-
-#: src/transaction-cli.vala
-msgid "To build"
-msgstr "Att bygga"
-
-#: src/transaction-cli.vala
-msgid "To downgrade"
-msgstr "Att nedgradera"
-
-#: src/transaction-cli.vala
-msgid "To remove"
-msgstr "Ta bort"
-
-#: src/transaction-cli.vala
-msgid "Total installed size"
-msgstr "Total installationsstorlek"
-
-#: src/transaction-cli.vala
-msgid "Total removed size"
-msgstr "Total borttagen storlek"
-
-#: src/transaction-cli.vala
-#, c-format
-msgid "View %s build files diff"
-msgstr "Se %s byggfilers skillnad"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
@@ -980,6 +698,10 @@ msgstr "åtgärd"
 #: src/cli.vala
 msgid "options"
 msgstr "val"
+
+#: src/cli.vala src/installer.vala
+msgid "package(s)"
+msgstr "Paket"
 
 #: src/cli.vala
 msgid "Search for packages or files, multiple search terms can be specified"
@@ -1090,6 +812,10 @@ msgstr "skriv inte ut någon output"
 msgid "overwrite existing files"
 msgstr "skriv över befintliga filer"
 
+#: src/cli.vala src/installer.vala
+msgid "Build packages from AUR and install them with their dependencies"
+msgstr "bygg paket från AUR och installera dem med deras besittningar"
+
 #: src/cli.vala
 msgid ""
 "If no package name is given, use the PKGBUILD file in the current directory"
@@ -1124,6 +850,10 @@ msgstr "klona ej byggfiler från AUR, använd enbart lokala filer"
 #: src/cli.vala
 msgid "bypass any and all confirmation messages"
 msgstr "kringgå alla bekräftelsemeddelanden"
+
+#: src/cli.vala src/installer.vala
+msgid "Install packages from repositories, path or url"
+msgstr "Installera paket från besittningar, sökväg eller länk"
 
 #: src/cli.vala
 msgid "glob"
@@ -1164,6 +894,10 @@ msgstr "kolla inte efter uppdateringar "
 #: src/cli.vala
 msgid "Reinstall packages"
 msgstr "Ominstallera paket"
+
+#: src/cli.vala src/installer.vala
+msgid "Remove packages"
+msgstr "Ta bort paket"
 
 #: src/cli.vala
 msgid "remove packages only if they are not required by any other packages"
@@ -1296,10 +1030,6 @@ msgstr "ta inte bort filer, bara hitta kandidatpaket"
 msgid "also display all files names"
 msgstr "visar också alla filnamn"
 
-#: src/cli.vala resources/manager_window.ui
-msgid "Name"
-msgstr "Namn"
-
 #: src/cli.vala
 msgid "Version"
 msgstr "Version"
@@ -1312,9 +1042,101 @@ msgstr "Beskrivning"
 msgid "URL"
 msgstr "URL"
 
+#: src/cli.vala src/manager_window.vala
+msgid "Licenses"
+msgstr "LIcenser"
+
 #: src/cli.vala
 msgid "Installed Size"
 msgstr "Installerad storlek"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Depends On"
+msgstr "Beroende av"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional Dependencies"
+msgstr "Valfria beroenden"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Make Dependencies"
+msgstr "Make-beroenden"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Check Dependencies"
+msgstr "Kontrollera beroenden"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Required By"
+msgstr "Krävs av"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Optional For"
+msgstr "Frivilliga för"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Provides"
+msgstr "Erbjuder"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Replaces"
+msgstr "Ersätter"
+
+#: src/cli.vala src/manager_window.vala src/transaction-cli.vala
+#: src/transaction-gtk.vala
+msgid "Conflicts With"
+msgstr "Konflikt med"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Packager"
+msgstr "Pakethanterare"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Build Date"
+msgstr "Byggdatum"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Date"
+msgstr "Installationsdatum"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Install Reason"
+msgstr "Installeringsorsak"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Validated By"
+msgstr "Validerad av"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Backup files"
+msgstr "Backupfiler"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Package Base"
+msgstr "Paketbas"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Maintainer"
+msgstr "Underhållare"
+
+#: src/cli.vala src/manager_window.vala
+msgid "First Submitted"
+msgstr "Först inskickad"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Last Modified"
+msgstr "Senast ändrad"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Votes"
+msgstr "Röster"
+
+#: src/cli.vala src/manager_window.vala
+msgid "Out of Date"
+msgstr "Föråldrat"
 
 #: src/cli.vala
 #, c-format
@@ -1333,6 +1155,13 @@ msgid_plural "%u ignored updates"
 msgstr[0] "%u ignorerad uppdatering"
 msgstr[1] "%u ignorerade uppdateringar"
 
+#: src/cli.vala src/tray.vala
+#, c-format
+msgid "%u available update"
+msgid_plural "%u available updates"
+msgstr[0] "%u tillgänglig uppdatering"
+msgstr[1] "%u tillgängliga uppdateringar"
+
 #: src/cli.vala
 msgid "Remove only the versions of uninstalled packages"
 msgstr "Ta endast bort gamla versioner av borttagna paket"
@@ -1340,6 +1169,17 @@ msgstr "Ta endast bort gamla versioner av borttagna paket"
 #: src/cli.vala
 msgid "Number of versions of each package to keep in the cache"
 msgstr "Antal versioner av varje paket att behålla i cachen"
+
+#: src/cli.vala src/preferences_dialog.vala
+msgid "To delete"
+msgstr "Att ta bort"
+
+#: src/cli.vala src/preferences_dialog.vala
+#, c-format
+msgid "%u file"
+msgid_plural "%u files"
+msgstr[0] "%u fil"
+msgstr[1] "%u filer"
 
 #: src/cli.vala
 msgid "Clean cache"
@@ -1359,12 +1199,21 @@ msgstr "Lägg till %s till att installera"
 msgid "%s is only available from AUR"
 msgstr "%s är endast tillgängligt från AUR"
 
+#: src/cli.vala src/installer.vala src/transaction.vala
+msgid "Nothing to do"
+msgstr "Inget att göra"
+
 #: src/cli.vala
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
 msgstr[0] "Det är %1$u medlem i grupp %2$s"
 msgstr[1] "Det är %1$u medlemmar i grupp %2$s"
+
+#: src/cli.vala src/transaction-cli.vala
+#, c-format
+msgid "Enter a selection (default=%s)"
+msgstr "Gör ett val (standard=%s)"
 
 #: src/cli.vala
 msgid "all"
@@ -1375,259 +1224,507 @@ msgstr "alla"
 msgid "Add %s to reinstall"
 msgstr "Lägg till %s till att ominstallera"
 
+#: src/cli.vala src/transaction.vala
+#, c-format
+msgid "Cloning %s build files"
+msgstr "Klonar %s byggfiler"
+
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
 msgstr "Installera %1$s från %2$s"
 
+#: src/daemon.vala
+msgid "Authentication failed"
+msgstr "Autentisering misslyckades"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Waiting for another package manager to quit"
+msgstr "Väntar på att annan instans av pakethanteraren ska avslutas"
+
+#: src/daemon.vala src/transaction_interface_root.vala
+msgid "Timeout expired"
+msgstr "Timeout har gått ut"
+
+#: src/flatpak_plugin.vala
+msgid "Flatpak transaction failed"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "No package found"
+msgstr "Inget paket hittades"
+
+#: src/manager_window.vala
+msgid "Checking for Updates"
+msgstr "Letar efter uppdateringar"
+
+#: src/manager_window.vala
+msgid "Alpm Package"
+msgstr "Alpm-paket"
+
+#: src/manager_window.vala
+msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr "En pakethanterare med Alpm, AUR, Flatpak och Snap stöd"
+
+#: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Total download size"
+msgstr "Total nedladdningsstorlek"
+
+#: src/manager_window.vala
+#, c-format
+msgid "%u pending operation"
+msgid_plural "%u pending operations"
+msgstr[0] "%u pågående åtgärd"
+msgstr[1] "%u pågående åtgärder"
+
+#: src/manager_window.vala
+msgid "Pending"
+msgstr "Pågående"
+
+#: src/manager_window.vala
+msgid "All"
+msgstr "Alla"
+
+#: src/manager_window.vala
+msgid "Orphans"
+msgstr "Föräldralösa"
+
+#: src/manager_window.vala
+msgid "Foreign"
+msgstr "Främmande"
+
+#: src/manager_window.vala
+msgid "Ignored"
+msgstr "Ignoreras"
+
+#: src/manager_window.vala
+msgid "Mark as explicitly installed"
+msgstr "Markera som särskilt installerad"
+
+#: src/manager_window.vala
+msgid "Publisher"
+msgstr "Utgivare"
+
+#: src/manager_window.vala
+msgid "Confined in a Sandbox"
+msgstr "Instängd i en Sandlåda"
+
+#: src/manager_window.vala
+msgid "Channels"
+msgstr "Kanaler"
+
+#: src/manager_window.vala
+msgid "Includes performance, stability and security improvements"
+msgstr "Inkluderar prestanda, stabilitet och säkerhetsförbättringar"
+
+#: src/manager_window.vala
+msgid "Featured"
+msgstr " Rekommenderade "
+
+#: src/manager_window.vala
+msgid "Photo & Video"
+msgstr "Foto & Video"
+
+#: src/manager_window.vala
+msgid "Music & Audio"
+msgstr "Musik & Ljud"
+
+#: src/manager_window.vala
+msgid "Productivity"
+msgstr "Produktivitet"
+
+#: src/manager_window.vala
+msgid "Communication & News"
+msgstr "Kommunikation & Nyheter"
+
+#: src/manager_window.vala
+msgid "Education & Science"
+msgstr "Utbildning & Vetenskap"
+
+#: src/manager_window.vala
+msgid "Games"
+msgstr "Spel"
+
+#: src/manager_window.vala
+msgid "Utilities"
+msgstr "Verktyg"
+
+#: src/manager_window.vala
+msgid "Development"
+msgstr "Utveckling"
+
+#: src/manager_window.vala
+msgid "Last refresh"
+msgstr "Senaste uppdatering"
+
+#: src/manager_window.vala src/transaction.vala
+msgid "Transaction successfully finished"
+msgstr "Överföring lyckades"
+
+#: src/pgp_key.vala
+msgid "Fingerprint"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Algorithm"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Creation date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Expiration date"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Never"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Unknown keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Source"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "Required by"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%s build files (validpgpkeys)"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has been revoked by its owner"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key has expired"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid "This key is disabled on the keyserver"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "%u keys match %s on the keyserver, only the first one is shown"
+msgstr ""
+
+#: src/pgp_key.vala
+#, c-format
+msgid "The key found on the keyserver does not match the requested key %s"
+msgstr ""
+
+#: src/pgp_key.vala
+msgid ""
+"Keyservers do not verify key owners: compare the fingerprint with the one "
+"published by the upstream project before trusting this key"
+msgstr ""
+
+#: src/preferences_dialog.vala
+msgid "every 3 hours"
+msgstr "var 3:e timme"
+
+#: src/preferences_dialog.vala
+msgid "every 6 hours"
+msgstr "var 6:e timme"
+
+#: src/preferences_dialog.vala
+msgid "every 12 hours"
+msgstr "var 12:e timme"
+
+#: src/preferences_dialog.vala
+msgid "every day"
+msgstr "varje dag"
+
+#: src/preferences_dialog.vala
+msgid "every week"
+msgstr "varje vecka"
+
+#: src/preferences_dialog.vala
+msgid "1"
+msgstr "1"
+
+#: src/preferences_dialog.vala
+msgid "2"
+msgstr "2"
+
+#: src/preferences_dialog.vala
+msgid "4"
+msgstr "4"
+
+#: src/preferences_dialog.vala
+msgid "6"
+msgstr "6"
+
+#: src/preferences_dialog.vala
+msgid "8"
+msgstr "8"
+
+#: src/preferences_dialog.vala
+msgid "10"
+msgstr "10"
+
+#: src/preferences_dialog.vala
+msgid "Worldwide"
+msgstr "Världsomspännande"
+
+#: src/preferences_dialog.vala
+msgid "0"
+msgstr "0"
+
+#: src/preferences_dialog.vala
+msgid "3"
+msgstr "3"
+
+#: src/preferences_dialog.vala
+msgid "5"
+msgstr "5"
+
+#: src/preferences_dialog.vala
+msgid "Select Build Directory"
+msgstr "Välj byggmapp"
+
+#: src/preferences_dialog.vala
+msgid "Choose Ignored Upgrades"
+msgstr "Välj ignorerade uppgraderingar"
+
+#: src/snap_plugin.vala src/transaction.vala
+msgid "Yes"
+msgstr "Ja"
+
 #: src/snap_plugin.vala
 msgid "No"
 msgstr "Nej"
 
-#: resources/choose_provider_dialog.ui
-msgid "Choose a Provider"
-msgstr "Välj en leverantör"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose optional dependencies for %s"
+msgstr "Välj valfria besittningar för %s"
 
-#: resources/choose_provider_dialog.ui resources/choose_pkgs_dialog.ui
-msgid "Choose"
-msgstr "Välj"
+#: src/transaction-cli.vala
+msgid "none"
+msgstr "inga"
 
-#: resources/progress_dialog.ui
-msgid "Progress"
-msgstr "Status"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Choose a provider for %s"
+msgstr "Välj en leverantör för %s"
 
-#: resources/history_dialog.ui
-msgid "Pamac History"
-msgstr "Pamachistorik"
+#: src/transaction-cli.vala
+#, c-format
+msgid "Enter a number (default=%d)"
+msgstr "Välj ett nummer (standard=%d)"
 
-#: resources/transaction_sum_dialog.ui
-msgid "Transaction Summary"
-msgstr "Summering av överföring"
+#: src/transaction-cli.vala
+msgid "[y/N]"
+msgstr "[y/N]"
 
-#: resources/transaction_sum_dialog.ui resources/manager_window.ui
-msgid "_Apply"
-msgstr "_Tillämpa"
+#: src/transaction-cli.vala
+msgid "y"
+msgstr "y"
 
-#: resources/manager_window.ui
-msgid "Software Mode"
-msgstr "Programvaruläge "
+#: src/transaction-cli.vala
+msgid "yes"
+msgstr "ja"
 
-#: resources/manager_window.ui
-msgid "Refresh databases"
-msgstr "Uppdatera databas"
+#: src/transaction-cli.vala
+#, c-format
+msgid "The PGP key %1$s is needed to verify %2$s source files"
+msgstr "PGP-nyckeln %1$s krävs för att verifiera %2$s källfiler"
 
-#: resources/manager_window.ui
-msgid "View History"
-msgstr "Visa historik"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Import the PGP key"
+msgstr ""
 
-#: resources/manager_window.ui
-msgid "Preferences"
-msgstr "Inställningar"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Trust %s and import the PGP key"
+msgstr "Tilltro %s och importera PGP-nyckel"
 
-#: resources/manager_window.ui
-msgid "About"
-msgstr "Om"
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Edit build files"
+msgstr "Redigera byggfiler"
 
-#: resources/manager_window.ui
-msgid "Search"
-msgstr "Sök"
+#: src/transaction-cli.vala
+msgid "[e]"
+msgstr "[e]"
 
-#: resources/manager_window.ui
-msgid "Remove all"
-msgstr "Ta bort alla"
+#: src/transaction-cli.vala
+msgid "Apply transaction"
+msgstr "Verkställ överföring"
 
-#: resources/manager_window.ui
-msgid "Install all"
-msgstr "Installera alla"
+#: src/transaction-cli.vala
+msgid "[e/y/N]"
+msgstr "[e/y/N]"
 
-#: resources/manager_window.ui
-msgid "Ignore all"
-msgstr "Ignorera alla"
+#: src/transaction-cli.vala
+msgid "e"
+msgstr "e"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+msgid "Orphan Of"
+msgstr "Föräldralösa av"
+
+#: src/transaction-cli.vala
+msgid "To upgrade"
+msgstr "Att uppgradera"
+
+#: src/transaction-cli.vala
+msgid "To reinstall"
+msgstr "Att ominstallera"
+
+#: src/transaction-cli.vala
+msgid "To install"
+msgstr "Att installera"
+
+#: src/transaction-cli.vala
+msgid "To build"
+msgstr "Att bygga"
+
+#: src/transaction-cli.vala
+msgid "To downgrade"
+msgstr "Att nedgradera"
+
+#: src/transaction-cli.vala
+msgid "To remove"
+msgstr "Ta bort"
+
+#: src/transaction-cli.vala
+msgid "Total installed size"
+msgstr "Total installationsstorlek"
+
+#: src/transaction-cli.vala
+msgid "Total removed size"
+msgstr "Total borttagen storlek"
+
+#: src/transaction-cli.vala
+#, c-format
+msgid "View %s build files diff"
+msgstr "Se %s byggfilers skillnad"
+
+#: src/transaction-cli.vala src/transaction-gtk.vala
+#, c-format
+msgid "Edit %s build files"
+msgstr "Redigera %s byggfiler"
+
+#: src/transaction-gtk.vala
+msgid "Import PGP key"
+msgstr "Importera PGP-nyckel"
+
+#: src/transaction-gtk.vala
+msgid "Trust and Import"
+msgstr "Tilltro och Importera"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The PGP key %s is needed to verify %s source files"
+msgstr "PGP-nyckeln %s krävs för att verifiera %s källfiler"
+
+#: src/transaction-gtk.vala
+msgid "Save"
+msgstr "Spara"
+
+#: src/transaction-gtk.vala
+msgid "Restart"
+msgstr "Starta om"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "The snap %s was published using classic confinement"
+msgstr "Snap %s publicerades med klassisk inneslutning"
+
+#: src/transaction-gtk.vala
+#, c-format
+msgid "Install %s anyway"
+msgstr "Installera %s i alla fall"
+
+#: src/transaction.vala
+msgid "Refreshing mirrors list"
+msgstr "Uppdaterar spegellistor"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to clone %s build files"
+msgstr "Misslyckades att klona %s byggfiler"
+
+#: src/transaction.vala
+#, c-format
+msgid "Generating %s information"
+msgstr "Genererar %s information"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to generate %s information"
+msgstr "Misslyckades med att generera %s information"
+
+#: src/transaction.vala
+#, c-format
+msgid "Checking %s dependencies"
+msgstr "Kontrollerar %s besittningar"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to check %s dependencies"
+msgstr "Misslyckades med att kontrollera %s beroenden"
+
+#: src/transaction.vala
+#, c-format
+msgid "key %s could not be imported"
+msgstr "nyckel %s kunde ej importeras"
+
+#: src/transaction.vala
+msgid "Preparing"
+msgstr "Förbereder"
+
+#: src/transaction.vala
+#, c-format
+msgid "%1$s: ignoring package upgrade (%2$s => %3$s)"
+msgstr "%1$s: ignorerar paketuppgradering (%2$s => %3$s)"
+
+#: src/transaction.vala
+msgid "Failed to synchronize AUR database"
+msgstr "Misslyckades med att synkronisera AUR databas"
+
+#: src/transaction.vala
+#, c-format
+msgid "Building %s"
+msgstr "Bygger %s"
+
+#: src/transaction.vala
+#, c-format
+msgid "Failed to build %s"
+msgstr "Misslyckades med att bygga %s"
+
+#: src/transaction_interface_daemon.vala
+msgid "The transaction may still be running in the background"
+msgstr ""
+
+#: src/transaction_interface_daemon.vala
+msgid "Connection to the daemon was lost"
+msgstr ""
+
+#: src/tray.vala
+msgid "_Quit"
+msgstr "_Avsluta"
 
 #: resources/manager_window.ui
 msgid "Sort by"
 msgstr "Sortera efter"
 
-#: resources/manager_window.ui
-msgid "Relevance"
-msgstr "Relevans"
+#: src/manager_window.vala
+msgid "_Open"
+msgstr "_Öppna"
 
-#: resources/manager_window.ui
-msgid "Size"
-msgstr "Storlek"
-
-#: resources/manager_window.ui
-msgid "Date"
-msgstr "Datum"
-
-#: resources/manager_window.ui
-msgid "Refresh"
-msgstr "Uppdatera"
-
-#: resources/manager_window.ui
-msgid "Categories"
-msgstr "Kategorier"
-
-#: resources/manager_window.ui
-msgid "Browse"
-msgstr "Surfa"
-
-#: resources/manager_window.ui
-msgid "Launch"
-msgstr "Starta"
-
-#: resources/manager_window.ui
-msgid "Remove"
-msgstr "Ta bort"
-
-#: resources/manager_window.ui
-msgid "Reinstall"
-msgstr "Återinstallera"
-
-#: resources/manager_window.ui
-msgid "Build"
-msgstr "Bygga"
-
-#: resources/manager_window.ui
-msgid "Dependencies"
-msgstr "Beroenden"
-
-#: resources/manager_window.ui
-msgid "Files"
-msgstr "Filer"
-
-#: resources/manager_window.ui
-msgid "Reset build files"
-msgstr "Återställ byggfiler"
-
-#: resources/manager_window.ui
-msgid "Build files"
-msgstr "Build-filer"
-
-#: resources/preferences_dialog.ui
-msgid "General"
-msgstr "Allmänt"
-
-#: resources/preferences_dialog.ui
-msgid "Check for updates"
-msgstr "Leta efter uppdateringar"
-
-#: resources/preferences_dialog.ui
-msgid "Updates check frequency"
-msgstr "Frekvens att kolla efter uppdateringar"
-
-#: resources/preferences_dialog.ui
-msgid "Automatically download updates"
-msgstr "Ladda automatiskt ned uppdateringar"
-
-#: resources/preferences_dialog.ui
-msgid "Upgrade the system at shutdown"
-msgstr "Uppgradera systemet vid avstängning"
-
-#: resources/preferences_dialog.ui
-msgid "Hide tray icon when no update"
-msgstr "Göm fältikonen när inga uppdateringar finns"
-
-#: resources/preferences_dialog.ui
-msgid "Downloads"
-msgstr "Nedladdningar"
-
-#: resources/preferences_dialog.ui
-msgid "Parallel downloads"
-msgstr "Parallella nedladdningar"
-
-#: resources/preferences_dialog.ui
-msgid "Use mirrors from"
-msgstr "Använd speglar från"
-
-#: resources/preferences_dialog.ui
-msgid "Refresh Mirrors"
-msgstr "Uppdatera speglar"
-
-#: resources/preferences_dialog.ui
-msgid "Cache"
-msgstr "Cache"
-
-#: resources/preferences_dialog.ui
-msgid "Number of versions of each package to keep"
-msgstr "Antal versioner av varje paket att behålla"
-
-#: resources/preferences_dialog.ui
-msgid "Remove only the uninstalled packages"
-msgstr "Ta bara bort de avinstallerade paketen"
-
-#: resources/preferences_dialog.ui
-msgid "Clean"
-msgstr "Rensa"
-
-#: resources/preferences_dialog.ui
-msgid "Advanced"
-msgstr "Avancerat"
-
-#: resources/preferences_dialog.ui
-msgid ""
-"Misconfiguration of these options can lead to system breakage.\n"
-"Modify them only if you know what you are doing."
-msgstr "Felkonfiguration av dessa alternativ kan leda till systembrott.\nÄndra dem bara om du vet vad du gör."
-
-#: resources/preferences_dialog.ui
-msgid "Check available disk space"
-msgstr "Kontrollera tillgängligt diskutrymme"
-
-#: resources/preferences_dialog.ui
-msgid "Remove unrequired dependencies"
-msgstr "Ta bort icke-nödvändiga beroenden"
-
-#: resources/preferences_dialog.ui
-msgid "Do not check for updates when installing"
-msgstr "Kolla inte efter uppdateringar vid installation"
-
-#: resources/preferences_dialog.ui
-msgid "Enable downgrade"
-msgstr "Aktivera nedgradering"
-
-#: resources/preferences_dialog.ui
-msgid "Ignored upgrades"
-msgstr "Ignorerade uppgraderingar"
-
-#: resources/preferences_dialog.ui
-msgid "Third Party"
-msgstr "Tredje part "
-
-#: resources/preferences_dialog.ui
-msgid ""
-"AUR is a community maintained repository so it presents potential risks and problems.\n"
-"All AUR users should be familiar with the build process."
-msgstr "AUR är ett gemensamt under- och tillhandahållet förråd som kan medföra risker och problem.\nAlla AUR-användare bör vara bekanta med byggprocessen."
-
-#: resources/preferences_dialog.ui
-msgid "Enable AUR support"
-msgstr "Aktivera AUR-stöd"
-
-#: resources/preferences_dialog.ui
-msgid "Keep built packages"
-msgstr "Behåll byggda paket"
-
-#: resources/preferences_dialog.ui
-msgid "Check for development packages updates"
-msgstr "Leta efter uppdateringar för utvecklarpaket"
-
-#: resources/preferences_dialog.ui
-msgid "Build directory"
-msgstr "Byggmapp"
-
-#: resources/preferences_dialog.ui
-msgid "Flatpak packages are maintained by their publisher."
-msgstr "Flatpak paket underhålls av dess utgivare"
-
-#: resources/preferences_dialog.ui
-msgid "Enable Flatpak support"
-msgstr "Aktivera Flatpak-stöd "
-
-#: resources/preferences_dialog.ui
-msgid "Snap packages are maintained by their publisher."
-msgstr "Snap paket underhålls av dess utgivare"
-
-#: resources/preferences_dialog.ui
-msgid "Enable Snap support"
-msgstr "Aktivera Snap-stöd "
+#: src/preferences_dialog.vala
+msgid "_Choose"
+msgstr "_Välj"
