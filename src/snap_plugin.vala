@@ -394,17 +394,19 @@ namespace Pamac {
 		}
 
 		public string get_installed_snap_icon (string name) throws Error {
-			var cached_icon = File.new_for_path ("/tmp/pamac-app-icons/%s".printf (name));
+			if (name == "" || "/" in name || name.has_prefix (".")) {
+				throw new IOError.INVALID_ARGUMENT ("invalid snap name: %s", name);
+			}
+			// keep icons in a private per-user cache: in a shared /tmp directory,
+			// another user could plant fake icons or symlinks to make us write elsewhere
+			string icons_dir = Path.build_filename (Environment.get_user_cache_dir (), "pamac", "snap-icons");
+			DirUtils.create_with_parents (icons_dir, 0700);
+			var cached_icon = File.new_for_path (Path.build_filename (icons_dir, name));
 			if (!cached_icon.query_exists ()) {
-				try {
-					Snapd.Icon icon = client.get_icon_sync (name, null);
-					var input_stream = new MemoryInputStream.from_bytes (icon.data);
-					// save image in tmp
-					FileOutputStream output_stream = cached_icon.append_to (FileCreateFlags.NONE);
-					output_stream.splice (input_stream, OutputStreamSpliceFlags.NONE);
-				} catch (Error e) {
-					throw e;
-				}
+				Snapd.Icon icon = client.get_icon_sync (name, null);
+				// written to a temporary file then renamed: no partial icon is left on error
+				string? new_etag;
+				cached_icon.replace_contents (icon.data.get_data (), null, false, FileCreateFlags.PRIVATE, out new_etag);
 			}
 			return cached_icon.get_path ();
 		}
