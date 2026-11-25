@@ -74,6 +74,11 @@ namespace Pamac {
 		public signal void snap_trans_run_finished (string sender, bool success);
 		public signal void snap_switch_channel_finished (string sender, bool success);
 		public signal void flatpak_trans_run_finished (string sender, bool success);
+		// broadcast to every client, unlike the signals above which are sent
+		// only to the client they are meant for (see direct_signals_filter):
+		// it carries no information about who ran the transaction, so other
+		// processes like the gnome-shell extension can refresh their state
+		public signal void transaction_finished ();
 
 		public Daemon () {
 			config = new Config ("/etc/pamac.conf");
@@ -105,6 +110,15 @@ namespace Pamac {
 			pending_environments = new HashTable<string, HashTable<string, string>> (str_hash, str_equal);
 			download_updates_uid = -1;
 			cancellables_table = new HashTable<string, Cancellable> (str_hash, str_equal);
+			trans_run_finished.connect (() => {
+				transaction_finished ();
+			});
+			snap_trans_run_finished.connect (() => {
+				transaction_finished ();
+			});
+			flatpak_trans_run_finished.connect (() => {
+				transaction_finished ();
+			});
 			// forget the clients which left the bus
 			try {
 				Bus.get_sync (BusType.SYSTEM).signal_subscribe ("org.freedesktop.DBus",
@@ -994,7 +1008,8 @@ namespace Pamac {
 
 // every signal of the daemon interface starts with the bus name of the client
 // it is meant for: send it only to this client instead of broadcasting it,
-// so other users can not follow the transactions of others
+// so other users can not follow the transactions of others.
+// Signals without arguments (TransactionFinished) stay broadcast.
 DBusMessage? direct_signals_filter (DBusConnection connection, owned DBusMessage message, bool incoming) {
 	if (incoming
 		|| message.get_message_type () != DBusMessageType.SIGNAL
