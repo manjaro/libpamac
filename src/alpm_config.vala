@@ -323,7 +323,42 @@ internal class AlpmConfig {
 		}
 	}
 
-	void parse_file (string path, string? section = null) {
+	// same limit as pacman
+	const int MAX_INCLUDE_DEPTH = 10;
+
+	// split a list value on whitespace, skipping empty entries
+	static GenericArray<string> split_values (string val) {
+		var values = new GenericArray<string> ();
+		foreach (unowned string item in val.split_set (" \t")) {
+			if (item.length > 0) {
+				values.add (item);
+			}
+		}
+		return values;
+	}
+
+	// Include values may be glob patterns, like in pacman
+	void parse_include (string pattern, string? section, int depth) {
+		var matches = Posix.Glob ();
+		int ret = matches.glob (pattern);
+		if (ret == Posix.GLOB_NOMATCH) {
+			warning ("No file matches Include '%s'", pattern);
+			return;
+		}
+		if (ret != 0) {
+			warning ("Failed to expand Include '%s'", pattern);
+			return;
+		}
+		foreach (unowned string path in matches.pathv) {
+			parse_file (path, section, depth);
+		}
+	}
+
+	void parse_file (string path, string? section = null, int depth = 0) {
+		if (depth > MAX_INCLUDE_DEPTH) {
+			warning ("Too many levels of Include, ignoring '%s'", path);
+			return;
+		}
 		string? current_section = section;
 		var file = GLib.File.new_for_path (path);
 		if (file.query_exists ()) {
@@ -344,9 +379,10 @@ internal class AlpmConfig {
 						continue;
 					}
 					if (line[0] == '[' && line[line.length-1] == ']') {
-						current_section = line[1:-1];
-						if (current_section == null) {
-							// error
+						current_section = line[1:-1].strip ();
+						if (current_section.length == 0) {
+							warning ("Empty section name in '%s'", path);
+							current_section = null;
 							continue;
 						}
 						if (current_section != "options") {
@@ -363,8 +399,26 @@ internal class AlpmConfig {
 					if (splitted.length == 2) {
 						val = splitted[1]._strip ();
 					}
+					// options without value
+					if (current_section == "options") {
+						if (key == "UseSysLog") {
+							usesyslog = 1;
+							continue;
+						} else if (key == "CheckSpace") {
+							checkspace = true;
+							continue;
+						}
+					}
+					if (val == null || val.length == 0) {
+						warning ("Missing value for '%s' in '%s'", key, path);
+						continue;
+					}
 					if (key == "Include") {
-						parse_file (val, current_section);
+						parse_include (val, current_section, depth + 1);
+						continue;
+					}
+					if (current_section == null) {
+						continue;
 					}
 					if (current_section == "options") {
 						if (key == "RootDir") {
@@ -372,31 +426,25 @@ internal class AlpmConfig {
 						} else if (key == "DBPath") {
 							dbpath = val;
 						} else if (key == "CacheDir") {
-							foreach (unowned string dir in val.split (" ")) {
+							foreach (unowned string dir in split_values (val)) {
 								cachedirs.add (dir);
 							}
 						} else if (key == "HookDir") {
-							foreach (unowned string dir in val.split (" ")) {
+							foreach (unowned string dir in split_values (val)) {
 								hookdirs.add (dir);
 							}
 						} else if (key == "LogFile") {
 							logfile = val;
 						} else if (key == "GPGDir") {
 							gpgdir = val;
-						} else if (key == "LogFile") {
-							logfile = val;
 						} else if (key == "Architecture") {
-							foreach (unowned string arch in val.split (" ")) {
+							foreach (unowned string arch in split_values (val)) {
 								if (arch == "auto") {
 									architectures.add (Posix.utsname ().machine);
 								} else {
 									architectures.add (arch);
 								}
 							}
-						} else if (key == "UseSysLog") {
-							usesyslog = 1;
-						} else if (key == "CheckSpace") {
-							checkspace = true;
 						} else if (key == "SigLevel") {
 							process_siglevel (val, ref siglevel, ref siglevel_mask);
 						} else if (key == "LocalFileSigLevel") {
@@ -404,27 +452,27 @@ internal class AlpmConfig {
 						} else if (key == "RemoteFileSigLevel") {
 							process_siglevel (val, ref remotefilesiglevel, ref remotefilesiglevel_mask);
 						} else if (key == "HoldPkg") {
-							foreach (unowned string name in val.split (" ")) {
+							foreach (unowned string name in split_values (val)) {
 								holdpkgs.add (name);
 							}
 						} else if (key == "SyncFirst") {
-							foreach (unowned string name in val.split (" ")) {
+							foreach (unowned string name in split_values (val)) {
 								syncfirsts.add (name);
 							}
 						} else if (key == "IgnoreGroup") {
-							foreach (unowned string name in val.split (" ")) {
+							foreach (unowned string name in split_values (val)) {
 								ignoregroups.add (name);
 							}
 						} else if (key == "IgnorePkg") {
-							foreach (unowned string name in val.split (" ")) {
+							foreach (unowned string name in split_values (val)) {
 								ignorepkgs.add (name);
 							}
 						} else if (key == "NoExtract") {
-							foreach (unowned string name in val.split (" ")) {
+							foreach (unowned string name in split_values (val)) {
 								noextracts.add (name);
 							}
 						} else if (key == "NoUpgrade") {
-							foreach (unowned string name in val.split (" ")) {
+							foreach (unowned string name in split_values (val)) {
 								noupgrades.add (name);
 							}
 						} else if (key == "DownloadUser") {
