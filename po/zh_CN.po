@@ -14,7 +14,7 @@
 # de tiam, 2023
 # Dingzhong Chen <wsxy162@gmail.com>, 2015
 # Dingzhong Chen <wsxy162@gmail.com>, 2015-2017
-# f h <hffqyd@sina.com>, 2018
+# Huancheng F <hffqyd@sina.com>, 2018
 # Tramsifex <sunnycode@protonmail.com>, 2019
 # gee Lar <hola0_o@qq.com>, 2021
 # philm <philm@manjaro.org>, 2015

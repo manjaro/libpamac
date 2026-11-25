@@ -1360,9 +1360,9 @@ msgstr "%s sólo está disponible en AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Hay %1$u miembro en el grupo %2$s"
+msgstr[1] "Hay %1$u miembros en el grupo %2$s"
+msgstr[2] "Hay %1$u miembros en el grupo %2$s"
 
 #: src/cli.vala
 msgid "all"

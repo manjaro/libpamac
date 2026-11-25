@@ -5,13 +5,14 @@
 # 
 # Translators:
 # de tiam, 2023
+# Huancheng F <hffqyd@sina.com>, 2026
 msgid ""
 msgstr ""
 "Project-Id-Version: manjaro-pamac\n"
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: de tiam, 2023\n"
+"Last-Translator: Huancheng F <hffqyd@sina.com>, 2026\n"
 "Language-Team: Chinese (http://app.transifex.com/manjarolinux/manjaro-pamac/language/zh/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr "安装、更新或移除软件包需要身份验证"
 
 #: src/alpm_utils.vala src/database.vala
 msgid "Failed to initialize alpm library"
-msgstr "alpm 函式庫初始化失敗"
+msgstr "alpm 库初始化失败"
 
 #: src/alpm_utils.vala
 msgid "Synchronizing package databases"
@@ -37,16 +38,16 @@ msgstr "正在同步软件包数据库"
 
 #: src/alpm_utils.vala
 msgid "Failed to synchronize databases"
-msgstr "同步套件庫失敗"
+msgstr "同步数据库失败"
 
 #: src/alpm_utils.vala
 msgid "Failed to init transaction"
-msgstr "無法初始化異動"
+msgstr "初始化事务失败"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/installer.vala
 msgid "Failed to prepare transaction"
-msgstr "無法準備異動"
+msgstr "准备事务失败"
 
 #: src/alpm_utils.vala src/transaction.vala src/installer.vala src/cli.vala
 #, c-format
@@ -96,7 +97,7 @@ msgstr "%1$s 与 %2$s 冲突"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s needs to be removed but it is a locked package"
-msgstr "%s 軟體包已被鎖定並需要移除"
+msgstr "%s 需要移除但被锁定"
 
 #: src/alpm_utils.vala src/transaction.vala
 msgid "Failed to initialize AUR database"
@@ -113,7 +114,7 @@ msgstr "需要重新启动才能使更改生效"
 
 #: src/alpm_utils.vala src/daemon.vala src/transaction.vala
 msgid "Transaction cancelled"
-msgstr "異動取消"
+msgstr "事务已取消"
 
 #: src/alpm_utils.vala
 #, c-format
@@ -146,7 +147,7 @@ msgstr "正在移除无效文件并重试"
 #: src/alpm_utils.vala
 #, c-format
 msgid "%s is invalid or corrupted"
-msgstr "%s 無效或已毀壞"
+msgstr "%s 无效或已损坏"
 
 #: src/alpm_utils.vala
 msgid "you can remove this file and retry"
@@ -154,11 +155,11 @@ msgstr "您可以移除此文件或重试"
 
 #: src/alpm_utils.vala
 msgid "failed to retrieve some files"
-msgstr "檢索某些檔案失敗"
+msgstr "无法检索某些文件"
 
 #: src/alpm_utils.vala
 msgid "Failed to commit transaction"
-msgstr "無法提交異動"
+msgstr "提交事务失败"
 
 #: src/alpm_utils.vala
 msgid "Checking dependencies"

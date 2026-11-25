@@ -8,6 +8,7 @@
 # Arley Perez <arley3013@gmail.com>, 2020
 # Ayhon Iron <fils2806@gmail.com>, 2019
 # Benjamin Perez Carrillo <benperezc@gmail.com>, 2020
+# Casper, 2026
 # Chazy Chaz <ChazyTheBest@hotmail.es>, 2017
 # danpergal84 <danpergal84@gmail.com>, 2013-2016
 # Sergi <elsenorsinnombre@gmail.com>, 2019
@@ -17,7 +18,7 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013
 # Joaquín Marcher <joaquin.marcher@gmail.com>, 2020
 # Julián Federico Hipólito <julianhipolito@gmail.com>, 2016
-# Leandro <nargaroth_reg@hotmail.com>, 2014
+# 6e478fbf750dd4302276da870ff6bae4_91115d6 <a7d417a9f6d5f38bcce8d2cd445eea65_227851>, 2014
 # ManjaroArchMint yotros, 2022
 # Marchin, 2015
 # Miguel Hernández <mhdez@protonmail.com>, 2015,2017
@@ -32,7 +33,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: ManjaroArchMint yotros, 2022\n"
+"Last-Translator: Casper, 2026\n"
 "Language-Team: Spanish (http://app.transifex.com/manjarolinux/manjaro-pamac/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1375,9 +1376,9 @@ msgstr "%s esta solo disponible desde AUR"
 #, c-format
 msgid "There is %1$u member in group %2$s"
 msgid_plural "There are %1$u members in group %2$s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Hay %1$u miembro en el grupo %2$s"
+msgstr[1] "Hay %1$u miembros en el grupo %2$s"
+msgstr[2] "Hay %1$u miembros en el grupo %2$s"
 
 #: src/cli.vala
 msgid "all"

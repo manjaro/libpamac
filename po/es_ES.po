@@ -4,13 +4,18 @@
 # Guillaume Benoit <guillaume@manjaro.org>, 2013-2022.
 # 
 # Translators:
+# Casper, 2026
+# Christian Finnberg, 2021
 # Christian Finnberg, 2021
 # Francisco Sánchez López de Lerma <fslopezlerma@gmail.com>, 2018
 # Francisco Torres <franute@gmail.com>, 2018
 # Kiibakun, 2020-2021
 # ManjaroArchMint yotros, 2022
+# ManjaroArchMint yotros, 2022
+# manueljlin <manueljlin@gmail.com>, 2019
 # manueljlin <manueljlin@gmail.com>, 2019
 # Ricardo Pérez <ricpelo@gmail.com>, 2021
+# Xema Fuentes, 2020
 # Xema Fuentes, 2020
 msgid ""
 msgstr ""
@@ -18,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: ManjaroArchMint yotros, 2022\n"
+"Last-Translator: Xema Fuentes, 2020\n"
 "Language-Team: Spanish (Spain) (http://app.transifex.com/manjarolinux/manjaro-pamac/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -68,7 +73,7 @@ msgstr "el paquete %s no posee una arquitectura válida"
 #: src/alpm_utils.vala
 #, c-format
 msgid "unable to satisfy dependency '%1$s' required by %2$s"
-msgstr " \nincapaz de satisfacer la dependencia ' %1$s ' Requerido por %2$s "
+msgstr "No se puede satisfacer la dependencia '%1$s' requerida por %2$s"
 
 #: src/alpm_utils.vala src/transaction.vala src/transaction-gtk.vala
 #: src/cli.vala
@@ -181,7 +186,7 @@ msgstr "Resolviendo dependencias"
 
 #: src/alpm_utils.vala
 msgid "Checking inter-conflicts"
-msgstr "comprobando conflictos internos"
+msgstr "Comprobando conflictos internos"
 
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
@@ -321,7 +326,7 @@ msgstr "Autentificación fallida"
 
 #: src/daemon.vala
 msgid "Waiting for another package manager to quit"
-msgstr "Esperando a que otro gestor de paquetes salga..."
+msgstr "Esperando a que otro gestor de paquetes deje de funcionar"
 
 #: src/daemon.vala
 msgid "Timeout expired"
@@ -334,7 +339,7 @@ msgstr "Actualizando la lista de espejos"
 #: src/transaction.vala src/cli.vala
 #, c-format
 msgid "Cloning %s build files"
-msgstr "Clonando %s archivos de compilación"
+msgstr "Clonando archivos de compilación de %s"
 
 #: src/transaction.vala
 #, c-format
@@ -344,7 +349,7 @@ msgstr "Error al clonar %s archivos de compilación"
 #: src/transaction.vala
 #, c-format
 msgid "Generating %s information"
-msgstr "Generando %s información"
+msgstr "Generando información de %s"
 
 #: src/transaction.vala
 #, c-format
@@ -354,7 +359,7 @@ msgstr "Error al generar %s información"
 #: src/transaction.vala
 #, c-format
 msgid "Checking %s dependencies"
-msgstr "Comprobando %s dependencias"
+msgstr "Comprobando las dependencias de %s"
 
 #: src/transaction.vala
 #, c-format
@@ -429,7 +434,7 @@ msgstr "_Cancelar"
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
 msgid "The PGP key %1$s is needed to verify %2$s source files"
-msgstr "La clave PGP %1$s es necesaria para verificar los archivos de código fuente de  %2$s "
+msgstr "La clave PGP %1$s es necesaria para verificar los archivos de código fuente de %2$s"
 
 #: src/transaction-gtk.vala src/transaction-cli.vala
 #, c-format
@@ -627,7 +632,7 @@ msgstr "Ignorados"
 
 #: src/manager_window.vala src/cli.vala
 msgid "None"
-msgstr "ninguno"
+msgstr "Ninguno"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Install Reason"
@@ -695,7 +700,7 @@ msgstr "Fecha de instalación"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Validated By"
-msgstr "Validado por "
+msgstr "Validado por"
 
 #: src/manager_window.vala src/cli.vala
 msgid "Backup files"
@@ -951,7 +956,7 @@ msgstr "Ver las diferencias de los ficheros de compilación de %s"
 
 #: src/cli.vala
 msgid "Building packages as dynamic user"
-msgstr "Creación de paquetes como usuario dinámico "
+msgstr "Creación de paquetes como usuario dinámico"
 
 #: src/cli.vala
 #, c-format
@@ -1049,13 +1054,13 @@ msgstr "listar paquetes que no se encontraron en los repositorios"
 msgid ""
 "list all packages that are members of the given groups, if no group is given"
 " list all groups"
-msgstr "Listar todos los paquetes que forman parte de los grupos proporcionados. Si no se proporciona ningún grupo, listar todos los grupos."
+msgstr "Listar todos los paquetes que forman parte de los grupos proporcionados. Si no se proporciona ningún grupo, listar todos los grupos"
 
 #: src/cli.vala
 msgid ""
 "list all packages available in the given repos, if no repo is given list all"
 " repos"
-msgstr "Listar todos los paquetes disponibles en los repositorios proporcionados. Si no se proporciona ningún repositorio, listar todos los repositorios."
+msgstr "Listar todos los paquetes disponibles en los repositorios proporcionados. Si no se proporciona ningún repositorio, listar todos los repositorios"
 
 #: src/cli.vala
 msgid "list files owned by the given packages"
@@ -1100,7 +1105,7 @@ msgstr "El directorio de compilación será el directorio padre, se ignorará la
 
 #: src/cli.vala
 msgid "and --no-clone option will be enforced"
-msgstr "y se forzará la opción --no-clone "
+msgstr "y se forzará la opción --no-clone"
 
 #: src/cli.vala
 msgid "keep built packages in cache after installation"
@@ -1230,7 +1235,7 @@ msgstr "forzar el refresco de la base de datos"
 
 #: src/cli.vala
 msgid "do not refresh the databases"
-msgstr "No refrescar bases de datos"
+msgstr "No actualizar las bases de datos"
 
 #: src/cli.vala
 msgid "enable package downgrades"
@@ -1377,7 +1382,7 @@ msgstr "Añadir %s a la reinstalación"
 #: src/cli.vala
 #, c-format
 msgid "Install %1$s from %2$s"
-msgstr "instalar %1$s desde %2$s"
+msgstr "Instalar %1$s desde %2$s"
 
 #: src/snap_plugin.vala
 msgid "No"
@@ -1409,11 +1414,11 @@ msgstr "_Aplicar"
 
 #: resources/manager_window.ui
 msgid "Software Mode"
-msgstr "Modo software"
+msgstr "Modo Software"
 
 #: resources/manager_window.ui
 msgid "Refresh databases"
-msgstr "Refrescar base de datos"
+msgstr "Actualizar bases de datos"
 
 #: resources/manager_window.ui
 msgid "View History"
@@ -1597,7 +1602,7 @@ msgstr "Terceros"
 msgid ""
 "AUR is a community maintained repository so it presents potential risks and problems.\n"
 "All AUR users should be familiar with the build process."
-msgstr "El AUR es un repositorio mantenido por la comunidad, así que al activarlo puede exponerse a problemas. Todos los usuarios del AUR deberían familiarizarse con el proceso de compilación."
+msgstr "AUR es un repositorio mantenido por la comunidad, por lo que presenta riesgos y problemas potenciales.\nTodos los usuarios de AUR deben estar familiarizados con el proceso de compilación."
 
 #: resources/preferences_dialog.ui
 msgid "Enable AUR support"

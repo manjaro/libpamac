@@ -7,7 +7,7 @@
 # Dušan Kazik, 2014
 # Dušan Kazik <prescott66@gmail.com>, 2014-2022
 # Inoki Sakaeru, 2013
-# Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023,2025
+# Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023,2025-2026
 # Miroslav Ďurian, 2018
 # Miroslav Ďurian, 2025
 # Patrik Bubák, 2014
@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: guillaume@manjaro.org\n"
 "POT-Creation-Date: 2023-02-23 12:28+0100\n"
 "PO-Revision-Date: 2013-04-16 23:37+0000\n"
-"Last-Translator: Miroslav Ďurian, 2025\n"
+"Last-Translator: Jozef Gaal <preklady@mayday.sk>, 2020,2022-2023,2025-2026\n"
 "Language-Team: Slovak (http://app.transifex.com/manjarolinux/manjaro-pamac/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -512,7 +512,7 @@ msgstr "Inštalovať"
 #: src/transaction-gtk.vala
 #, c-format
 msgid "The snap %s was published using classic confinement"
-msgstr ""
+msgstr "Snap balík %sbol vydaný s použitím klasického obmedzenia"
 
 #: src/transaction-gtk.vala
 #, c-format
@@ -912,7 +912,7 @@ msgstr "Vykonať transakciu"
 
 #: src/transaction-cli.vala
 msgid "[e/y/N]"
-msgstr ""
+msgstr "[u/a/N]"
 
 #: src/transaction-cli.vala
 msgid "e"
@@ -1198,7 +1198,7 @@ msgstr "Bezpečne skontrolovať aktualizácie bez úprav databáz"
 
 #: src/cli.vala
 msgid "Exit code is 100 if updates are available"
-msgstr "Ak sú dostupné aktualizácie, vystupný kód je 100"
+msgstr "Ak sú dostupné aktualizácie, výstupný kód je 100"
 
 #: src/cli.vala
 msgid ""
@@ -1293,7 +1293,7 @@ msgstr "odstrániť všetky súbory na zostavovanie; priečinok na zostavovanie 
 
 #: src/cli.vala
 msgid "do not remove files, only find candidate packages"
-msgstr ""
+msgstr "neodstraňovať súbory, len vyhľadať vhodné balíky"
 
 #: src/cli.vala
 msgid "also display all files names"

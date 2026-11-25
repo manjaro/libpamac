@@ -502,7 +502,7 @@ msgstr "התקנה"
 #: src/transaction-gtk.vala
 #, c-format
 msgid "The snap %s was published using classic confinement"
-msgstr ""
+msgstr "ה־‏snap %s יצא לאור ברמת בידוד קלסית"
 
 #: src/transaction-gtk.vala
 #, c-format
