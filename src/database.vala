@@ -2371,7 +2371,19 @@ namespace Pamac {
 						// get local pkgs
 						var local_pkgs = new GenericArray<string> ();
 						var vcs_local_pkgs = new GenericArray<string> ();
-						// add ignorepkgs
+						// use only the given ignorepkgs: the handle also contains
+						// the config ignorepkgs added when it was created, and
+						// a package removed from them since (e.g. an ignored update
+						// explicitly selected) must not be ignored
+						var handle_ignorepkgs = new GenericArray<string> ();
+						unowned Alpm.List<unowned string> handle_ignorepkgs_list = alpm_handle.ignorepkgs;
+						while (handle_ignorepkgs_list != null) {
+							handle_ignorepkgs.add (handle_ignorepkgs_list.data);
+							handle_ignorepkgs_list.next ();
+						}
+						foreach (unowned string name in handle_ignorepkgs) {
+							alpm_handle.remove_ignorepkg (name);
+						}
 						foreach (unowned string name in ignorepkgs) {
 							alpm_handle.add_ignorepkg (name);
 						}
@@ -2399,9 +2411,12 @@ namespace Pamac {
 							pkgcache.next ();
 						}
 						get_aur_updates_real (aur_plugin.get_multi_infos (local_pkgs), vcs_local_pkgs, ref updates);
-						// remove ignorepkgs
+						// restore the handle ignorepkgs
 						foreach (unowned string name in ignorepkgs) {
 							alpm_handle.remove_ignorepkg (name);
+						}
+						foreach (unowned string name in handle_ignorepkgs) {
+							alpm_handle.add_ignorepkg (name);
 						}
 					}
 					context.invoke (get_aur_updates_async.callback);
