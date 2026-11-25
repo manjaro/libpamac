@@ -37,6 +37,8 @@ namespace Pamac {
 		Mutex authorization_mutex;
 		GenericSet<string> authorized_senders;
 		HashTable<string, HashTable<string, string>> pending_environments;
+		// uid of the user who started the current download of updates
+		int64 download_updates_uid;
 		HashTable<string, Cancellable> cancellables_table;
 		SnapPlugin snap_plugin;
 		FlatpakPlugin flatpak_plugin;
@@ -98,6 +100,7 @@ namespace Pamac {
 			authorization_mutex = Mutex ();
 			authorized_senders = new GenericSet<string> (str_hash, str_equal);
 			pending_environments = new HashTable<string, HashTable<string, string>> (str_hash, str_equal);
+			download_updates_uid = -1;
 			cancellables_table = new HashTable<string, Cancellable> (str_hash, str_equal);
 			alpm_utils.emit_action.connect ((sender, action) => {
 				emit_action (sender, action);
@@ -216,6 +219,37 @@ namespace Pamac {
 			return alpm_utils.lockfile.get_path ();
 		}
 
+		// unix user id of a bus name, -1 if unknown
+		int64 get_sender_uid (string sender) {
+			try {
+				var connection = Bus.get_sync (BusType.SYSTEM);
+				Variant reply = connection.call_sync ("org.freedesktop.DBus",
+													"/org/freedesktop/DBus",
+													"org.freedesktop.DBus",
+													"GetConnectionUnixUser",
+													new Variant ("(s)", sender),
+													new VariantType ("(u)"),
+													DBusCallFlags.NONE,
+													-1);
+				uint32 uid;
+				reply.get ("(u)", out uid);
+				return uid;
+			} catch (Error e) {
+				warning (e.message);
+			}
+			return -1;
+		}
+
+		// an unauthenticated refresh may only interrupt a download of updates
+		// started by the same user, otherwise it waits for the lock
+		bool may_cancel_download_updates (string sender) {
+			if (!alpm_utils.downloading_updates) {
+				return false;
+			}
+			int64 uid = get_sender_uid (sender);
+			return uid != -1 && uid == download_updates_uid;
+		}
+
 		int set_extern_lock () {
 			if (lockfile_mutex.trylock ()) {
 				try {
@@ -251,6 +285,9 @@ namespace Pamac {
 		}
 
 		async bool check_authorization (BusName sender) {
+			// a pending authorization counts as running work: quit must not
+			// stop the daemon while waiting for polkit
+			AtomicInt.inc (ref running_threads);
 			bool authorized = false;
 			try {
 				Polkit.Authority authority = yield Polkit.Authority.get_async ();
@@ -269,6 +306,11 @@ namespace Pamac {
 			} catch (Error e) {
 				emit_error (sender, _("Authentication failed"), {e.message});
 			}
+			// released after the caller callback has started its worker thread
+			Idle.add (() => {
+				AtomicInt.dec_and_test (ref running_threads);
+				return false;
+			});
 			return authorized;
 		}
 
@@ -305,8 +347,9 @@ namespace Pamac {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
 					try {
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("write_alpm_config", () => {
-							AtomicInt.inc (ref running_threads);
 							lockfile_mutex.lock ();
 							alpm_utils.alpm_config.write (new_alpm_conf);
 							alpm_utils.alpm_config.reload ();
@@ -317,6 +360,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						write_alpm_config_finished (sender);
 					}
 				} else {
@@ -361,8 +405,9 @@ namespace Pamac {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
 					try {
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("generate_mirrors_list", () => {
-							AtomicInt.inc (ref running_threads);
 							try {
 								var process = new Subprocess.newv (
 									{"pacman-mirrors", "--no-color", "-c", country},
@@ -384,6 +429,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						generate_mirrors_list_finished (sender);
 					}
 				} else {
@@ -418,8 +464,9 @@ namespace Pamac {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
 					try {
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("set_pkgreason", () => {
-							AtomicInt.inc (ref running_threads);
 							lockfile_mutex.lock ();
 							bool success = alpm_utils.set_pkgreason (sender, pkgname, reason);
 							lockfile_mutex.unlock ();
@@ -429,6 +476,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						set_pkgreason_finished (sender, false);
 					}
 				} else {
@@ -452,8 +500,10 @@ namespace Pamac {
 					cancellables_table.insert (sender, new Cancellable ());
 				}
 				var cancellable = cancellables_table.lookup (sender);
+				download_updates_uid = get_sender_uid (sender);
+				// counted from the main thread, before the thread starts
+				AtomicInt.inc (ref running_threads);
 				new Thread<int>.try ("download_updates", () => {
-					AtomicInt.inc (ref running_threads);
 					bool success = wait_for_lock (sender, cancellable, true);
 					if (success) {
 						// nested thread to exit when cancelled
@@ -475,6 +525,7 @@ namespace Pamac {
 				});
 			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
+				AtomicInt.dec_and_test (ref running_threads);
 				download_updates_finished (sender, false);
 			}
 		}
@@ -489,8 +540,9 @@ namespace Pamac {
 							cancellables_table.insert (sender, new Cancellable ());
 						}
 						var cancellable = cancellables_table.lookup (sender);
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("download_pkgs", () => {
-							AtomicInt.inc (ref running_threads);
 							var dload_paths = new GenericArray<string> ();
 							bool success = wait_for_lock (sender, cancellable, true);
 							if (success) {
@@ -513,6 +565,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						download_pkgs_finished (sender, {});
 					}
 				} else {
@@ -567,9 +620,11 @@ namespace Pamac {
 					cancellables_table.insert (sender, new Cancellable ());
 				}
 				var cancellable = cancellables_table.lookup (sender);
+				bool cancel_download = may_cancel_download_updates (sender);
+				// counted from the main thread, before the thread starts
+				AtomicInt.inc (ref running_threads);
 				new Thread<int>.try ("trans_refresh", () => {
-					AtomicInt.inc (ref running_threads);
-					if (alpm_utils.downloading_updates) {
+					if (cancel_download && alpm_utils.downloading_updates) {
 						// cancel download updates
 						alpm_utils.cancellable.cancel ();
 					}
@@ -597,6 +652,7 @@ namespace Pamac {
 				});
 			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
+				AtomicInt.dec_and_test (ref running_threads);
 				trans_refresh_finished (sender, false);
 			}
 		}
@@ -608,9 +664,11 @@ namespace Pamac {
 					cancellables_table.insert (sender, new Cancellable ());
 				}
 				var cancellable = cancellables_table.lookup (sender);
+				bool cancel_download = may_cancel_download_updates (sender);
+				// counted from the main thread, before the thread starts
+				AtomicInt.inc (ref running_threads);
 				new Thread<int>.try ("trans_refresh_files", () => {
-					AtomicInt.inc (ref running_threads);
-					if (alpm_utils.downloading_updates) {
+					if (cancel_download && alpm_utils.downloading_updates) {
 						// cancel download updates
 						alpm_utils.cancellable.cancel ();
 					}
@@ -638,6 +696,7 @@ namespace Pamac {
 				});
 			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
+				AtomicInt.dec_and_test (ref running_threads);
 				trans_refresh_files_finished (sender, false);
 			}
 		}
@@ -649,9 +708,11 @@ namespace Pamac {
 					cancellables_table.insert (sender, new Cancellable ());
 				}
 				var cancellable = cancellables_table.lookup (sender);
+				bool cancel_download = may_cancel_download_updates (sender);
+				// counted from the main thread, before the thread starts
+				AtomicInt.inc (ref running_threads);
 				new Thread<int>.try ("trans_refresh_aur", () => {
-					AtomicInt.inc (ref running_threads);
-					if (alpm_utils.downloading_updates) {
+					if (cancel_download && alpm_utils.downloading_updates) {
 						// cancel download updates
 						alpm_utils.cancellable.cancel ();
 					}
@@ -679,6 +740,7 @@ namespace Pamac {
 				});
 			} catch (Error e) {
 				emit_error (sender, "Daemon Error", {e.message});
+				AtomicInt.dec_and_test (ref running_threads);
 				trans_refresh_aur_finished (sender, false);
 			}
 		}
@@ -711,8 +773,9 @@ namespace Pamac {
 							cancellables_table.insert (sender, new Cancellable ());
 						}
 						var cancellable = cancellables_table.lookup (sender);
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("trans_run", () => {
-							AtomicInt.inc (ref running_threads);
 							if (alpm_utils.downloading_updates) {
 								// cancel download updates
 								alpm_utils.cancellable.cancel ();
@@ -750,6 +813,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						trans_run_finished (sender, false);
 					}
 				} else {
@@ -772,8 +836,9 @@ namespace Pamac {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
 					try {
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("snap_trans_run", () => {
-							AtomicInt.inc (ref running_threads);
 							bool success = snap_plugin.trans_run (sender, to_install_copy, to_remove_copy);
 							snap_trans_run_finished (sender, success);
 							AtomicInt.dec_and_test (ref running_threads);
@@ -781,6 +846,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						snap_trans_run_finished (sender, false);
 					}
 				} else {
@@ -801,8 +867,9 @@ namespace Pamac {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
 					try {
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("snap_switch_channel", () => {
-							AtomicInt.inc (ref running_threads);
 							bool success = snap_plugin.switch_channel (sender, snap_name, snap_channel);
 							snap_switch_channel_finished (sender, success);
 							AtomicInt.dec_and_test (ref running_threads);
@@ -810,6 +877,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						snap_switch_channel_finished (sender, false);
 					}
 				} else {
@@ -833,8 +901,9 @@ namespace Pamac {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
 					try {
+						// counted from the main thread, before the thread starts
+						AtomicInt.inc (ref running_threads);
 						new Thread<int>.try ("flatpak_trans_run", () => {
-							AtomicInt.inc (ref running_threads);
 							bool success = flatpak_plugin.trans_run (sender, to_install_copy, to_remove_copy, to_upgrade_copy);
 							flatpak_trans_run_finished (sender, success);
 							AtomicInt.dec_and_test (ref running_threads);
@@ -842,6 +911,7 @@ namespace Pamac {
 						});
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
+						AtomicInt.dec_and_test (ref running_threads);
 						flatpak_trans_run_finished (sender, false);
 					}
 				} else {
@@ -880,7 +950,40 @@ namespace Pamac {
 	}
 }
 
+// every signal of the daemon interface starts with the bus name of the client
+// it is meant for: send it only to this client instead of broadcasting it,
+// so other users can not follow the transactions of others
+DBusMessage? direct_signals_filter (DBusConnection connection, owned DBusMessage message, bool incoming) {
+	if (incoming
+		|| message.get_message_type () != DBusMessageType.SIGNAL
+		|| message.get_destination () != null
+		|| message.get_interface () != "org.manjaro.pamac.daemon") {
+		return message;
+	}
+	Variant? body = message.get_body ();
+	if (body == null || body.n_children () == 0) {
+		return message;
+	}
+	Variant first = body.get_child_value (0);
+	if (!first.is_of_type (VariantType.STRING)) {
+		return message;
+	}
+	unowned string recipient = first.get_string ();
+	if (!GLib.DBus.is_unique_name (recipient)) {
+		return message;
+	}
+	try {
+		DBusMessage directed = message.copy ();
+		directed.set_destination (recipient);
+		return directed;
+	} catch (Error e) {
+		warning (e.message);
+	}
+	return message;
+}
+
 void on_bus_acquired (DBusConnection conn) {
+	conn.add_filter (direct_signals_filter);
 	system_daemon = new Pamac.Daemon ();
 	try {
 		conn.register_object ("/org/manjaro/pamac/daemon", system_daemon);
