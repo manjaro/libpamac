@@ -1709,6 +1709,7 @@ namespace Pamac {
 					cmdline = dynamic_user_cmdline.copy (strdup);
 					cmdline.add ("rm");
 					cmdline.add ("-rf");
+					cmdline.add ("--");
 					cmdline.add (pkgdir.get_path ());
 					launch_subprocess (launcher, cmdline);
 					cmdline = dynamic_user_cmdline;
@@ -1743,12 +1744,14 @@ namespace Pamac {
 							cmdline.add ("diff");
 							cmdline.add ("--exit-code");
 							cmdline.add ("origin/master");
+							// file names from the AUR repository must not be read as options
+							cmdline.add ("--");
 							FileEnumerator enumerator = pkgdir.enumerate_children ("standard::*", FileQueryInfoFlags.NONE);
 							FileInfo info;
 							// don't show .SRCINFO diff
 							while ((info = enumerator.next_file (null)) != null) {
 								unowned string filename = info.get_name ();
-								if (filename != ".SRCINFO") {
+								if (filename != ".SRCINFO" && filename != ".git") {
 									cmdline.add (filename);
 								}
 							}
@@ -1788,6 +1791,7 @@ namespace Pamac {
 						cmdline = dynamic_user_cmdline.copy (strdup);
 						cmdline.add ("rm");
 						cmdline.add ("-rf");
+						cmdline.add ("--");
 						cmdline.add (pkgdir.get_path ());
 						launch_subprocess (launcher, cmdline);
 						cmdline = dynamic_user_cmdline;

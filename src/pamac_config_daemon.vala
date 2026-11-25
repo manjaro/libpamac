@@ -54,7 +54,7 @@ namespace Pamac {
 			//get environment variables
 			alpm_config = new AlpmConfig ("/etc/pacman.conf");
 			// load aur plugin
-			support_aur = true;
+			support_aur = false;
 			aur_plugin_loader = new PluginLoader<AURPlugin> ("pamac-aur");
 			if (aur_plugin_loader.load ()) {
 				support_aur = true;

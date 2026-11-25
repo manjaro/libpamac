@@ -484,6 +484,10 @@ namespace Pamac {
 
 		public bool is_installed_flatpak (string id) {
 			string[] splitted = id.split ("/", 5);
+			// expected id: remote/kind/name/arch/branch
+			if (splitted.length != 5) {
+				return false;
+			}
 			//unowned string remote = splitted[0];
 			//unowned string kind = splitted[1];
 			unowned string name = splitted[2];
@@ -539,6 +543,10 @@ namespace Pamac {
 				if (pkg == null) {
 					// try installed
 					string[] splitted = bundle_id.split ("/", 4);
+					// expected bundle id: kind/name/arch/branch
+					if (splitted.length != 4) {
+						return null;
+					}
 					//unowned string kind = splitted[0];
 					unowned string name = splitted[1];
 					unowned string arch = splitted[2];
@@ -583,6 +591,10 @@ namespace Pamac {
 					return pkg;
 				}
 				string[] splitted = id.split ("/", 5);
+				// expected id: remote/kind/name/arch/branch
+				if (splitted.length != 5) {
+					return null;
+				}
 				unowned string remote = splitted[0];
 				//unowned string kind = splitted[1];
 				unowned string name = splitted[2];
@@ -803,9 +815,24 @@ namespace Pamac {
 			emit_error (sender, message, details);
 		}
 
+		static bool valid_ids (string[] ids) {
+			foreach (unowned string id in ids) {
+				string[] splitted = id.split ("/", 2);
+				if (splitted.length != 2 || splitted[0].length == 0 || splitted[1].length == 0) {
+					return false;
+				}
+			}
+			return true;
+		}
+
 		public bool trans_run (string sender, string[] to_install, string[] to_remove, string[] to_upgrade) {
 			this.sender = sender;
 			cancellable.reset ();
+			// ids received from the client must be remote/ref
+			if (!valid_ids (to_install) || !valid_ids (to_remove) || !valid_ids (to_upgrade)) {
+				do_emit_error (dgettext (null, "Flatpak transaction failed"), {"invalid flatpak id"});
+				return false;
+			}
 			try {
 				var transaction = new Flatpak.Transaction.for_installation (installation, cancellable);
 				foreach (unowned string id in to_install) {
