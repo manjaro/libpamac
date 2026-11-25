@@ -364,6 +364,9 @@ namespace Pamac {
 			authorization_mutex.unlock ();
 			if (fast_authorized) {
 				Idle.add (() => {
+					// the client may have sent new proxy settings since
+					// it was authorized, apply them as check_authorization does
+					apply_pending_environment (sender);
 					get_authorization_finished (sender, true);
 					return false;
 				});
