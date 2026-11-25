@@ -231,6 +231,20 @@ namespace Pamac {
 			return false;
 		}
 
+		// return the real path of a file listed in .SRCINFO,
+		// or null if it does not exist or is outside the package build dir
+		string? get_build_file_path (string pkgdir, string filename) {
+			string? real_pkgdir = Posix.realpath (pkgdir);
+			string? real_path = Posix.realpath (Path.build_filename (pkgdir, filename));
+			if (real_pkgdir == null || real_path == null) {
+				return null;
+			}
+			if (!real_path.has_prefix (real_pkgdir + "/")) {
+				return null;
+			}
+			return real_path;
+		}
+
 		protected async GenericArray<string> get_build_files_async (string pkgname) {
 			if (!config.support_aur) {
 				return new GenericArray<string> ();
@@ -249,17 +263,15 @@ namespace Pamac {
 					if ("source = " in line) {
 						string source = line.split (" = ", 2)[1];
 						if (!("://" in source)) {
-							string source_path = Path.build_filename (pkgdir_name, source);
-							var source_file = File.new_for_path (source_path);
-							if (source_file.query_exists ()) {
+							string? source_path = get_build_file_path (pkgdir_name, source);
+							if (source_path != null) {
 								files.add ((owned) source_path);
 							}
 						}
 					} else if ("install = " in line) {
 						string install = line.split (" = ", 2)[1];
-						string install_path = Path.build_filename (pkgdir_name, install);
-						var install_file = File.new_for_path (install_path);
-						if (install_file.query_exists ()) {
+						string? install_path = get_build_file_path (pkgdir_name, install);
+						if (install_path != null) {
 							files.add ((owned) install_path);
 						}
 					}
@@ -1028,20 +1040,20 @@ namespace Pamac {
 							bool success = false;
 							launcher.set_flags (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
 							process = launcher.spawnv ({"gpg", "--with-colons", "--batch", "--search-keys", "--", key});
+							// read the whole output before waiting,
+							// gpg could block on a full pipe
+							var dis = new DataInputStream (process.get_stdout_pipe ());
+							string? owner = null;
+							string? line;
+							while ((line = yield dis.read_line_async ()) != null) {
+								// check if an owner is set in the first uid line
+								if (owner == null && line.has_prefix ("uid:")) {
+									owner = line.split (":", 3)[1];
+								}
+							}
 							yield process.wait_async ();
 							if (process.get_if_exited ()) {
 								if (process.get_exit_status () == 0) {
-									var dis = new DataInputStream (process.get_stdout_pipe ());
-									string? owner = null;
-									// check if an owner is set
-									string? line;
-									while ((line = yield dis.read_line_async ()) != null) {
-										// get first uid line
-										if ("uid:" in line) {
-											owner = line.split (":", 3)[1];
-											break;
-										}
-									}
 									if (yield ask_import_key (pkgname, key, owner)) {
 										var cmdline = new GenericArray<string> (5);
 										cmdline.add ("gpg");
@@ -1470,19 +1482,33 @@ namespace Pamac {
 								alpm_utils.unresolvables.add (name);
 							}
 						}
-						foreach (unowned string pkgname in alpm_utils.unresolvables) {
-							unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
-							string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
-							success = yield clone_build_files_if_needed (pkgdir, pkgname);
+						// build files are stored by pkgbase, which differs
+						// from the package name for split packages
+						var pkgbases = new GenericArray<string> ();
+						var aur_pkgs = yield database.get_aur_pkgs_async (alpm_utils.unresolvables);
+						foreach (unowned string name in alpm_utils.unresolvables) {
+							unowned AURPackage? aur_pkg = aur_pkgs.lookup (name);
+							string pkgbase = aur_pkg == null ? name : aur_pkg.packagebase;
+							if (aur_pkg != null && name in clone_files) {
+								clone_files.add (pkgbase);
+							}
+							if (!pkgbases.find_with_equal_func (pkgbase, str_equal, null)) {
+								pkgbases.add (pkgbase);
+							}
+						}
+						unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
+						foreach (unowned string pkgbase in pkgbases) {
+							string pkgdir = Path.build_filename (real_aur_build_dir, pkgbase);
+							success = yield clone_build_files_if_needed (pkgdir, pkgbase);
 							if (!success) {
 								var details = new GenericArray<string> (1);
-								details.add (dgettext (null, "Failed to clone %s build files").printf (pkgname));
+								details.add (dgettext (null, "Failed to clone %s build files").printf (pkgbase));
 								emit_error (dgettext (null, "Failed to prepare transaction"), details);
 								alpm_utils.unresolvables = new GenericArray<string> ();
 								return false;
 							}
 						}
-						yield edit_build_files (alpm_utils.unresolvables);
+						yield edit_build_files (pkgbases);
 						alpm_utils.unresolvables = new GenericArray<string> ();
 						emit_script_output ("");
 						success = yield compute_aur_build_list ();
@@ -1943,6 +1969,20 @@ namespace Pamac {
 			return status;
 		}
 
+		// get name from a package file name like name-version-release-arch.pkg.tar*
+		string? get_pkgname_from_filename (string filename) {
+			string name = filename;
+			// strip arch, release and version
+			for (int i = 0; i < 3; i++) {
+				int index = name.last_index_of_char ('-');
+				if (index <= 0) {
+					return null;
+				}
+				name = name.substring (0, index);
+			}
+			return name;
+		}
+
 		async bool build_aur_packages () {
 			bool success = true;
 			// get a fake aur db to check deps
@@ -1997,7 +2037,7 @@ namespace Pamac {
 				int status = yield run_cmd_line_async (cmdline, pkgdir, build_cancellable);
 				if (build_cancellable.is_cancelled ()) {
 					status = 1;
-				} else if (status == 1) {
+				} else if (status != 0) {
 					emit_error (dgettext (null, "Failed to build %s").printf (pkgname), new GenericArray<string> ());
 				}
 				if (status == 0) {
@@ -2025,31 +2065,28 @@ namespace Pamac {
 						// spawnv needs a null terminated array
 						cmdline.length = cmdline.length + 1;
 						Subprocess process = launcher.spawnv (cmdline.data);
+						// read the whole output before waiting,
+						// makepkg could block on a full pipe
+						var packagelist = new GenericArray<string> ();
+						var dis = new DataInputStream (process.get_stdout_pipe ());
+						string? line = null;
+						while ((line = yield dis.read_line_async ()) != null) {
+							packagelist.add (line);
+						}
 						yield process.wait_async ();
+						status = 1;
 						if (process.get_if_exited ()) {
 							status = process.get_exit_status ();
 						}
 						if (status == 0) {
-							var dis = new DataInputStream (process.get_stdout_pipe ());
-							string? line = null;
-							while ((line = yield dis.read_line_async ()) != null) {
-								var file = GLib.File.new_for_path (line);
-								string filename = file.get_basename ();
-								string? name_version_release = filename.slice (0, filename.last_index_of_char ('-'));
-								if (name_version_release == null) {
-									break;
-								}
-								string? name_version = name_version_release.slice (0, name_version_release.last_index_of_char ('-'));
-								if (name_version == null) {
-									break;
-								}
-								string? name = name_version.slice (0, name_version.last_index_of_char ('-'));
+							foreach (unowned string path in packagelist) {
+								string? name = get_pkgname_from_filename (Path.get_basename (path));
 								if (name == null) {
-									break;
+									continue;
 								}
 								if (name in aur_pkgs_to_install) {
-									built_pkgs_path.add (line);
-									built_pkgs.insert (name, line);
+									built_pkgs_path.add (path);
+									built_pkgs.insert (name, path);
 									if (!(name in to_build)) {
 										to_install_as_dep_array.add (name);
 									}
@@ -2129,7 +2166,11 @@ namespace Pamac {
 				}
 			}
 			try {
-				new Subprocess.newv ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path), "%ssync/pamac_aur.db".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
+				if (tmp_handle != null) {
+					new Subprocess.newv ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path), "%ssync/pamac_aur.db".printf (tmp_handle.dbpath)}, SubprocessFlags.NONE);
+				} else {
+					new Subprocess.newv ({"rm", "-f", "%s/pamac_aur.db".printf (tmp_path)}, SubprocessFlags.NONE);
+				}
 			} catch (Error e) {
 				warning (e.message);
 			}
