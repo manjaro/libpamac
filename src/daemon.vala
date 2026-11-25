@@ -105,6 +105,18 @@ namespace Pamac {
 			pending_environments = new HashTable<string, HashTable<string, string>> (str_hash, str_equal);
 			download_updates_uid = -1;
 			cancellables_table = new HashTable<string, Cancellable> (str_hash, str_equal);
+			// forget the clients which left the bus
+			try {
+				Bus.get_sync (BusType.SYSTEM).signal_subscribe ("org.freedesktop.DBus",
+															"org.freedesktop.DBus",
+															"NameOwnerChanged",
+															"/org/freedesktop/DBus",
+															null,
+															DBusSignalFlags.NONE,
+															on_name_owner_changed);
+			} catch (Error e) {
+				warning (e.message);
+			}
 			alpm_utils.emit_action.connect ((sender, action) => {
 				emit_action (sender, action);
 			});
@@ -212,6 +224,23 @@ namespace Pamac {
 					Environment.set_variable (key, val, true);
 				}
 			}
+		}
+
+		void on_name_owner_changed (DBusConnection connection, string? sender_name, string object_path, string interface_name, string signal_name, Variant parameters) {
+			unowned string name;
+			unowned string old_owner;
+			unowned string new_owner;
+			parameters.get ("(&s&s&s)", out name, out old_owner, out new_owner);
+			// a unique name is never reused once it has vanished
+			if (new_owner != "" || !GLib.DBus.is_unique_name (name)) {
+				return;
+			}
+			authorization_mutex.lock ();
+			authorized_senders.remove (name);
+			pending_environments.remove (name);
+			authorization_mutex.unlock ();
+			// running operations keep their own reference on the cancellable
+			cancellables_table.remove (name);
 		}
 
 		public string get_sender (BusName sender) throws Error {
@@ -463,7 +492,7 @@ namespace Pamac {
 			check_authorization.begin (sender, (obj, res) => {
 				bool authorized = check_authorization.end (res);
 				if (authorized) {
-					alpm_utils.clean_build_files (aur_build_dir);
+					alpm_utils.clean_build_files (aur_build_dir, get_sender_uid (sender));
 				}
 				clean_build_files_finished (sender, authorized);
 			});
@@ -523,6 +552,9 @@ namespace Pamac {
 								return 0;
 							});
 							thread.join ();
+							// the download thread is exited when cancelled
+							// or may return early: always reset the flag here
+							alpm_utils.downloading_updates = false;
 						} catch (Error e) {
 							emit_error (sender, "Daemon Error", {e.message});
 							success = false;

@@ -45,7 +45,7 @@ namespace Pamac {
 		public async void generate_mirrors_list (string country) {
 			try {
 				var process = new Subprocess.newv (
-					{"pacman-mirrors", "-c", country},
+					{"pacman-mirrors", "--country=" + country},
 					SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
 				var dis = new DataInputStream (process.get_stdout_pipe ());
 				string? line;
@@ -63,7 +63,7 @@ namespace Pamac {
 		}
 
 		public async bool clean_build_files (string aur_build_dir) {
-			return alpm_utils.clean_build_files (aur_build_dir);
+			return alpm_utils.clean_build_files (aur_build_dir, Posix.geteuid ());
 		}
 
 		public async bool set_pkgreason (string pkgname, uint reason) {

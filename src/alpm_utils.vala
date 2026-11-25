@@ -256,7 +256,13 @@ namespace Pamac {
 			return success;
 		}
 
-		internal bool clean_build_files (string aur_build_dir) {
+		// caller_uid: owner expected for the build directory, the root build
+		// directory /var/cache/pamac is always accepted
+		internal bool clean_build_files (string aur_build_dir, int64 caller_uid) {
+			if (!Path.is_absolute (aur_build_dir)) {
+				warning ("%s is not an absolute path", aur_build_dir);
+				return false;
+			}
 			var build_directory = File.new_for_path (aur_build_dir);
 			if (!build_directory.query_exists ()) {
 				return true;
@@ -264,9 +270,17 @@ namespace Pamac {
 			try {
 				// the build directory is writable by an unprivileged user:
 				// refuse to follow a symlink and never pass its entries through a shell
-				FileInfo dir_info = build_directory.query_info ("standard::type", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+				FileInfo dir_info = build_directory.query_info ("standard::type,unix::uid", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
 				if (dir_info.get_file_type () != FileType.DIRECTORY) {
 					warning ("%s is not a directory", aur_build_dir);
+					return false;
+				}
+				// only empty a build directory of the caller, not any directory
+				// a client could send
+				if (build_directory.get_path () != "/var/cache/pamac"
+					&& (caller_uid < 0 || dir_info.get_attribute_uint32 (FileAttribute.UNIX_UID) != caller_uid
+						|| build_directory.get_parent () == null)) {
+					warning ("refusing to clean %s: not a build directory of the caller", aur_build_dir);
 					return false;
 				}
 				var cmdline = new GenericArray<string> ();
@@ -1969,23 +1983,45 @@ namespace Pamac {
 		}
 
 		void move_built_pkg_to_cache (string path, string cachedir) {
-			var src = File.new_for_path (path);
+			// the build directory belongs to an unprivileged user who could replace
+			// the file at any time: open it without following a symlink, check the
+			// opened file and copy from it, so what is checked is what is copied
+			int fd = Posix.open (path, Posix.O_RDONLY | Posix.O_NOFOLLOW | Posix.O_CLOEXEC);
+			if (fd == -1) {
+				warning ("failed to open %s: %s", path, strerror (errno));
+				return;
+			}
+			Posix.Stat st;
+			if (Posix.fstat (fd, out st) != 0 || !Posix.S_ISREG (st.st_mode)) {
+				warning ("%s is not a regular file", path);
+				Posix.close (fd);
+				return;
+			}
 			var dest = File.new_for_path (Path.build_filename (cachedir, Path.get_basename (path)));
+			bool success = false;
 			try {
-				// the build directory belongs to an unprivileged user: only move a regular file
-				FileInfo info = src.query_info ("standard::type", FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-				if (info.get_file_type () != FileType.REGULAR) {
-					warning ("%s is not a regular file", path);
-					return;
+				// written to a new file then renamed: a new inode owned by root,
+				// which replaces any existing file or symlink without following it
+				FileOutputStream output = dest.replace (null, false, FileCreateFlags.REPLACE_DESTINATION);
+				var buffer = new uint8[65536];
+				ssize_t len;
+				while ((len = Posix.read (fd, buffer, buffer.length)) > 0) {
+					output.write_all (buffer[0:len], null);
 				}
-				// copy to a new inode instead of moving: the user could keep a file descriptor
-				// or a hard link on the original file and modify the cached package later
-				FileUtils.unlink (dest.get_path ());
-				src.copy (dest, FileCopyFlags.NOFOLLOW_SYMLINKS | FileCopyFlags.TARGET_DEFAULT_PERMS);
-				Posix.chmod (dest.get_path (), 0644);
-				FileUtils.unlink (path);
+				if (len < 0) {
+					output.close ();
+					throw new IOError.FAILED ("failed to read %s", path);
+				}
+				output.close ();
+				// the cache directory belongs to root, the new file can not be swapped
+				dest.set_attribute_uint32 (FileAttribute.UNIX_MODE, 0644, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+				success = true;
 			} catch (Error e) {
 				warning (e.message);
+			}
+			Posix.close (fd);
+			if (success) {
+				FileUtils.unlink (path);
 			}
 		}
 
