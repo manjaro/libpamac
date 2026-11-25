@@ -357,7 +357,7 @@ namespace Pamac {
 			return aur_plugin.get_real_build_dir ();
 		}
 
-		internal GenericArray<unowned AURInfos> get_aur_providers (string pkgname) {
+		internal GenericArray<AURInfos> get_aur_providers (string pkgname) {
 			return aur_plugin.get_providers (pkgname);
 		}
 
@@ -2312,7 +2312,7 @@ namespace Pamac {
 			return pkgnames_table;
 		}
 
-		void get_aur_updates_real (GenericArray<unowned AURInfos> aur_infos_list, GenericArray<string> vcs_local_pkgs, ref Updates updates) {
+		void get_aur_updates_real (GenericArray<AURInfos> aur_infos_list, GenericArray<string> vcs_local_pkgs, ref Updates updates) {
 			unowned GenericArray<AURPackage> aur_updates = updates.aur_updates;
 			unowned GenericArray<AURPackage> outofdate = updates.outofdate;
 			unowned GenericArray<AURPackage> ignored_aur_updates = updates.ignored_aur_updates;

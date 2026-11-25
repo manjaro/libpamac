@@ -22,12 +22,10 @@ namespace Pamac {
 		public abstract void set_real_build_dir (string config_aur_build_dir);
 		public abstract unowned string get_real_build_dir ();
 		public abstract AURInfos? get_infos (string pkgname);
-		public abstract GenericArray<unowned AURInfos> get_multi_infos (GenericArray<string> pkgnames);
-		public abstract GenericArray<unowned AURInfos> get_providers (string depend);
+		// returned infos are owned: the database can be reloaded meanwhile
+		public abstract GenericArray<AURInfos> get_multi_infos (GenericArray<string> pkgnames);
+		public abstract GenericArray<AURInfos> get_providers (string depend);
 		public abstract GenericArray<AURInfos> search (string search_string);
-
-		public signal void emit_download_progress (string status, double progress);
-		public signal void emit_download_error (string message);
 	}
 
 	internal abstract class AURInfos : Object {

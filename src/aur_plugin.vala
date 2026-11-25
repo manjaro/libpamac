@@ -18,281 +18,231 @@
  */
 
 namespace Pamac {
+	// shares the strings repeated between packages (dependencies, licenses, maintainers…),
+	// kept alive by the infos using it
+	internal class AURStringPool {
+		HashTable<unowned string, string> strings;
+
+		internal AURStringPool () {
+			strings = new HashTable<unowned string, string> (str_hash, str_equal);
+		}
+
+		internal unowned string intern (string str) {
+			unowned string? found = strings.lookup (str);
+			if (found != null) {
+				return found;
+			}
+			string copy = str;
+			unowned string interned = copy;
+			strings.insert (interned, (owned) copy);
+			return interned;
+		}
+	}
+
+	// only the needed data is kept, not the whole json tree which would use a lot of memory
 	internal class AURInfosLinked : AURInfos {
-		Json.Object? json_object;
-		bool license_set;
-		unowned string _name;
-		unowned string _version;
-		unowned string? _desc;
-		string? _license;
-		unowned string? _url;
-		GenericArray<string> _groups;
-		GenericArray<string> _depends;
-		GenericArray<string> _optdepends;
-		GenericArray<string> _makedepends;
-		GenericArray<string> _checkdepends;
-		GenericArray<string> _provides;
-		GenericArray<string> _replaces;
-		GenericArray<string> _conflicts;
+		// returned for empty lists, never modified
+		static GenericArray<unowned string> empty_array = new GenericArray<unowned string> ();
+		// protects the lazily created dates, shared by all instances since creating them is fast
+		static Mutex dates_mutex;
+
+		AURStringPool pool;
+		string _name;
+		string _version;
+		string? _desc;
+		unowned string? _license;
+		string? _url;
+		// points to name when they are equal, else to a pool string
 		unowned string? _packagebase;
 		unowned string? _maintainer;
+		GenericArray<unowned string>? _groups;
+		GenericArray<unowned string>? _depends;
+		GenericArray<unowned string>? _optdepends;
+		GenericArray<unowned string>? _makedepends;
+		GenericArray<unowned string>? _checkdepends;
+		GenericArray<unowned string>? _provides;
+		GenericArray<unowned string>? _replaces;
+		GenericArray<unowned string>? _conflicts;
 		double _popularity;
-		DateTime _lastmodified;
-		DateTime? _outofdate;
-		DateTime _firstsubmitted;
 		uint64 _numvotes;
+		int64 lastmodified_time;
+		int64 firstsubmitted_time;
+		// -1 if not out of date
+		int64 outofdate_time;
+		DateTime? _lastmodified;
+		DateTime? _outofdate;
+		DateTime? _firstsubmitted;
 
-		public override string name {
-			get {
-				if (_name == null && json_object != null) {
-					_name = json_object.get_string_member ("Name");
-				}
-				return _name;
-			}
-		}
-		public override string version {
-			get {
-				if (_version == null && json_object != null) {
-					_version = json_object.get_string_member ("Version");
-				}
-				return _version;
-			}
-		}
-		public override string? desc {
-			get {
-				if (_desc == null && json_object != null) {
-					unowned Json.Node? node = json_object.get_member ("Description");
-					if (node != null) {
-						_desc = node.get_string ();
-					}
-				}
-				return _desc;
-			}
-		}
-		public override string? license {
-			get {
-				if (_license == null && !license_set) {
-					license_set = true;
-					if (json_object != null) {
-						unowned Json.Node? node = json_object.get_member ("License");
-						if (node != null) {
-							unowned Json.Array json_array = node.get_array ();
-							var license_str = new StringBuilder (json_array.get_string_element (0));
-							uint json_array_length = json_array.get_length ();
-							for (uint i = 1; i < json_array_length; i++) {
-								license_str.append (" ");
-								license_str.append (json_array.get_string_element (i));
-							}
-							_license = (owned) license_str.str;
-						} else {
-							_license = dgettext (null, "Unknown");
-						}
-					}
-				}
-				return _license;
-			}
-		}
-		public override string? url {
-			get {
-				if (_url == null && json_object != null) {
-					unowned Json.Node? node = json_object.get_member ("URL");
-					if (node != null) {
-						_url = node.get_string ();
-					}
-				}
-				return _url;
-			}
-		}
-		public override GenericArray<string> groups {
-			get {
-				if (_groups == null) {
-					_groups = new GenericArray<string> ();
-					get_property_array ("Groups", ref _groups);
-				}
-				return _groups;
-			}
-		}
-		public override GenericArray<string> depends {
-			get {
-				if (_depends == null) {
-					_depends = new GenericArray<string> ();
-					get_property_array ("Depends", ref _depends);
-				}
-				return _depends;
-			}
-		}
-		public override GenericArray<string> optdepends {
-			get {
-				if (_optdepends == null) {
-					_optdepends = new GenericArray<string> ();
-					get_property_array ("OptDepends", ref _optdepends);
-				}
-				return _optdepends;
-			}
-		}
-		public override GenericArray<string> makedepends {
-			get {
-				if (_makedepends == null) {
-					_makedepends = new GenericArray<string> ();
-					get_property_array ("MakeDepends", ref _makedepends);
-				}
-				return _makedepends;
-			}
-		}
-		public override GenericArray<string> checkdepends {
-			get {
-				if (_checkdepends == null) {
-					_checkdepends = new GenericArray<string> ();
-					get_property_array ("CheckDepends", ref _checkdepends);
-				}
-				return _checkdepends;
-			}
-		}
-		public override GenericArray<string> provides {
-			get {
-				if (_provides == null) {
-					_provides = new GenericArray<string> ();
-					get_property_array ("Provides", ref _provides);
-				}
-				return _provides;
-			}
-		}
-		public override GenericArray<string> replaces {
-			get {
-				if (_replaces == null) {
-					_replaces = new GenericArray<string> ();
-					get_property_array ("Replaces", ref _replaces);
-				}
-				return _replaces;
-			}
-		}
-		public override GenericArray<string> conflicts {
-			get {
-				if (_conflicts == null) {
-					_conflicts = new GenericArray<string> ();
-					get_property_array ("Conflicts", ref _conflicts);
-				}
-				return _conflicts;
-			}
-		}
-		public override string? packagebase {
-			get {
-				if (_packagebase == null && json_object != null) {
-					_packagebase = json_object.get_string_member ("PackageBase");
-				}
-				return _packagebase;
-			}
-		}
-		public override string? maintainer {
-			get {
-				if (_maintainer == null && json_object != null) {
-					_maintainer = json_object.get_string_member ("Maintainer");
-				}
-				return _maintainer;
-			}
-		}
-		public override double popularity {
-			get {
-				if (_popularity == 0 && json_object != null) {
-					_popularity = json_object.get_double_member ("Popularity");
-				}
-				return _popularity;
-			}
-		}
+		public override string name { get { return _name; } }
+		public override string version { get { return _version; } }
+		public override string? desc { get { return _desc; } }
+		public override string? license { get { return _license ?? dgettext (null, "Unknown"); } }
+		public override string? url { get { return _url; } }
+		public override GenericArray<string> groups { get { return get_array (_groups); } }
+		public override GenericArray<string> depends { get { return get_array (_depends); } }
+		public override GenericArray<string> optdepends { get { return get_array (_optdepends); } }
+		public override GenericArray<string> makedepends { get { return get_array (_makedepends); } }
+		public override GenericArray<string> checkdepends { get { return get_array (_checkdepends); } }
+		public override GenericArray<string> provides { get { return get_array (_provides); } }
+		public override GenericArray<string> replaces { get { return get_array (_replaces); } }
+		public override GenericArray<string> conflicts { get { return get_array (_conflicts); } }
+		public override string? packagebase { get { return _packagebase; } }
+		public override string? maintainer { get { return _maintainer; } }
+		public override double popularity { get { return _popularity; } }
 		public override DateTime? lastmodified {
 			get {
-				if (_lastmodified == null && json_object != null) {
-					_lastmodified = new DateTime.from_unix_local (json_object.get_int_member ("LastModified"));
+				dates_mutex.lock ();
+				if (_lastmodified == null) {
+					_lastmodified = new DateTime.from_unix_local (lastmodified_time);
 				}
+				dates_mutex.unlock ();
 				return _lastmodified;
 			}
 		}
 		public override DateTime? outofdate {
 			get {
-				if (_outofdate == null && json_object != null) {
-					unowned Json.Node? node = json_object.get_member ("OutOfDate");
-					if (!node.is_null ()) {
-						_outofdate = new DateTime.from_unix_local (node.get_int ());
-					}
+				if (outofdate_time < 0) {
+					return null;
 				}
+				dates_mutex.lock ();
+				if (_outofdate == null) {
+					_outofdate = new DateTime.from_unix_local (outofdate_time);
+				}
+				dates_mutex.unlock ();
 				return _outofdate;
 			}
 		}
 		public override DateTime? firstsubmitted {
 			get {
-				if (_firstsubmitted == null && json_object != null) {
-					_firstsubmitted = new DateTime.from_unix_local (json_object.get_int_member ("FirstSubmitted"));
+				dates_mutex.lock ();
+				if (_firstsubmitted == null) {
+					_firstsubmitted = new DateTime.from_unix_local (firstsubmitted_time);
 				}
+				dates_mutex.unlock ();
 				return _firstsubmitted;
 			}
 		}
-		public override uint64 numvotes {
-			get {
-				if (_numvotes == 0) {
-					_numvotes = (uint64) json_object.get_int_member ("NumVotes");
-				}
-				return _numvotes;
+		public override uint64 numvotes { get { return _numvotes; } }
+
+		AURInfosLinked (string name, Json.Object json_object, AURStringPool pool) {
+			this.pool = pool;
+			_name = name;
+			_version = get_string_member (json_object, "Version") ?? "";
+			_desc = get_string_member (json_object, "Description");
+			_url = get_string_member (json_object, "URL");
+			unowned string? packagebase = get_string_member (json_object, "PackageBase");
+			if (packagebase == null || packagebase == _name) {
+				// in most cases
+				_packagebase = _name;
+			} else {
+				_packagebase = pool.intern (packagebase);
 			}
+			unowned string? maintainer = get_string_member (json_object, "Maintainer");
+			if (maintainer != null) {
+				_maintainer = pool.intern (maintainer);
+			}
+			GenericArray<unowned string>? licenses = get_array_member (json_object, "License");
+			if (licenses != null) {
+				var license_str = new StringBuilder (licenses[0]);
+				for (uint i = 1; i < licenses.length; i++) {
+					license_str.append_c (' ');
+					license_str.append (licenses[i]);
+				}
+				_license = pool.intern (license_str.str);
+			}
+			_groups = get_array_member (json_object, "Groups");
+			_depends = get_array_member (json_object, "Depends");
+			_optdepends = get_array_member (json_object, "OptDepends");
+			_makedepends = get_array_member (json_object, "MakeDepends");
+			_checkdepends = get_array_member (json_object, "CheckDepends");
+			_provides = get_array_member (json_object, "Provides");
+			_replaces = get_array_member (json_object, "Replaces");
+			_conflicts = get_array_member (json_object, "Conflicts");
+			unowned Json.Node? node = get_value_member (json_object, "Popularity");
+			_popularity = node != null ? node.get_double () : 0;
+			node = get_value_member (json_object, "NumVotes");
+			_numvotes = node != null ? (uint64) node.get_int () : 0;
+			node = get_value_member (json_object, "LastModified");
+			lastmodified_time = node != null ? node.get_int () : 0;
+			node = get_value_member (json_object, "FirstSubmitted");
+			firstsubmitted_time = node != null ? node.get_int () : 0;
+			node = get_value_member (json_object, "OutOfDate");
+			outofdate_time = node != null ? node.get_int () : -1;
 		}
 
-		internal AURInfosLinked (Json.Object? json_object) {
-			this.json_object = json_object;
+		// null if the object has no name
+		internal static AURInfosLinked? from_json (Json.Object json_object, AURStringPool pool) {
+			unowned string? name = get_string_member (json_object, "Name");
+			if (name == null) {
+				return null;
+			}
+			return new AURInfosLinked (name, json_object, pool);
 		}
 
-		void get_property_array (string property, ref GenericArray<string> array) {
-			if (json_object != null) {
-				unowned Json.Node? node = json_object.get_member (property);
-				if (node != null) {
-					unowned Json.Array? json_array = node.get_array ();
-					if (json_array != null) {
-						uint json_array_length = json_array.get_length ();
-						for (uint i = 0; i < json_array_length; i++) {
-							array.add (json_array.get_string_element (i));
-						}
-					}
+		// null if the member is missing or has a null value
+		static unowned Json.Node? get_value_member (Json.Object json_object, string member) {
+			unowned Json.Node? node = json_object.get_member (member);
+			if (node == null || node.get_node_type () != Json.NodeType.VALUE) {
+				return null;
+			}
+			return node;
+		}
+
+		static unowned string? get_string_member (Json.Object json_object, string member) {
+			unowned Json.Node? node = get_value_member (json_object, member);
+			if (node == null || node.get_value_type () != typeof (string)) {
+				return null;
+			}
+			return node.get_string ();
+		}
+
+		// null if empty, to not allocate an array for each package
+		GenericArray<unowned string>? get_array_member (Json.Object json_object, string member) {
+			unowned Json.Node? node = json_object.get_member (member);
+			if (node == null || node.get_node_type () != Json.NodeType.ARRAY) {
+				return null;
+			}
+			unowned Json.Array json_array = node.get_array ();
+			uint length = json_array.get_length ();
+			if (length == 0) {
+				return null;
+			}
+			var array = new GenericArray<unowned string> (length);
+			for (uint i = 0; i < length; i++) {
+				unowned Json.Node element = json_array.get_element (i);
+				if (element.get_value_type () == typeof (string)) {
+					array.add (pool.intern (element.get_string ()));
 				}
 			}
+			return array.length > 0 ? array : null;
+		}
+
+		// the strings are owned by the pool, the array has no free function
+		static unowned GenericArray<string> get_array (GenericArray<unowned string>? array) {
+			return (GenericArray<string>) (array ?? empty_array);
 		}
 	}
 
 	internal class AUR : Object, AURPlugin {
-		// AUR urls
-		const string aur_url = "https://aur.archlinux.org";
-		const string manjaro_url = "https://aur.manjaro.org";
-		const string db_name = "packages-meta-ext-v1";
-		const string db_ext = ".json.gz";
-		AlpmConfig alpm_config;
-		public Alpm.Handle? alpm_handle;
-		HashTable<string, AURInfosLinked> cached_infos;
-		HashTable<string, GenericArray<AURInfosLinked>> search_results;
+		const string DB_FILENAME = "packages-meta-ext-v1.json.gz";
+		string db_path;
+		// replaced when the database file changes, protected by lock (cached_infos)
+		HashTable<unowned string, AURInfosLinked> cached_infos;
+		// serialises the database (re)loading
+		Mutex load_mutex;
+		// modification time and size of the loaded file, null if never checked
+		string? loaded_file_stamp;
 		string real_build_dir;
-		bool db_loaded;
 
 		public AUR () {
 			Object ();
 		}
 
 		construct {
-			cached_infos = new HashTable<string, AURInfosLinked> (str_hash, str_equal);
-			search_results = new HashTable<string, GenericArray<Pamac.AURInfosLinked>> (str_hash, str_equal);
-			string user_agent = get_user_agent ();
-			// set HTTP_USER_AGENT needed when downloading using libalpm
-			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
-			alpm_config = new AlpmConfig ("/etc/pacman.conf");
-			alpm_handle = alpm_config.get_handle (false, false, false);
-			if (alpm_handle != null) {
-				alpm_handle.dbext = db_ext;
-				unowned Alpm.DB db = alpm_handle.register_syncdb (db_name, Alpm.Signature.Level.USE_DEFAULT);
-				unowned string server;
-				string? id = get_os_id ();
-				if (id == null || id != "manjaro") {
-					server = aur_url;
-				} else {
-					server = manjaro_url;
-				}
-				db.add_server (server);
-				db.usage = Alpm.DB.Usage.ALL;
-			}
+			cached_infos = new HashTable<unowned string, AURInfosLinked> (str_hash, str_equal);
+			// the database is downloaded by alpm_utils in the sync dbs directory
+			var alpm_config = new AlpmConfig ("/etc/pacman.conf");
+			db_path = Path.build_filename (alpm_config.dbpath, "sync", DB_FILENAME);
 		}
 
 		public unowned string get_real_build_dir () {
@@ -324,62 +274,126 @@ namespace Pamac {
 			}
 		}
 
-		void parse_db (bool force = false) {
-			if (alpm_handle == null || (!force && db_loaded)) {
-				return;
-			}
-			string absolute_path = Path.build_filename (alpm_handle.dbpath, "sync", db_name + db_ext);
-			var zipfile = File.new_for_path (absolute_path);
+		string get_file_stamp (File file) {
 			try {
-				// decompress gzip
-				var src_stream = zipfile.read ();
-				var dst_stream = new MemoryOutputStream (null, GLib.realloc, GLib.free);
-				var conv_stream = new ConverterOutputStream (dst_stream, new ZlibDecompressor (ZlibCompressorFormat.GZIP));
-				// pumps all data from an InputStream to an OutputStream
-				conv_stream.splice (src_stream, 0);
-				// parse data
+				FileInfo info = file.query_info (FileAttribute.TIME_MODIFIED + "," + FileAttribute.TIME_MODIFIED_USEC + "," + FileAttribute.STANDARD_SIZE, FileQueryInfoFlags.NONE);
+				return "%s.%u:%s".printf (info.get_attribute_uint64 (FileAttribute.TIME_MODIFIED).to_string (),
+											info.get_attribute_uint32 (FileAttribute.TIME_MODIFIED_USEC),
+											info.get_size ().to_string ());
+			} catch (Error e) {
+				if (!(e is IOError.NOT_FOUND)) {
+					warning ("Failed to read AUR data from %s: %s", db_path, e.message);
+				}
+				return "";
+			}
+		}
+
+		// (re)load the database if the file changed since the last load,
+		// e.g. after a refresh, the check is a simple stat
+		void ensure_loaded () {
+			load_mutex.lock ();
+			var file = File.new_for_path (db_path);
+			string stamp = get_file_stamp (file);
+			if (stamp != loaded_file_stamp) {
+				// remember the stamp even on error to not parse a broken file at each call
+				loaded_file_stamp = stamp;
+				var new_infos = new HashTable<unowned string, AURInfosLinked> (str_hash, str_equal);
+				if (stamp != "") {
+					parse_db (file, new_infos);
+				}
+				lock (cached_infos) {
+					cached_infos = new_infos;
+				}
+			}
+			load_mutex.unlock ();
+		}
+
+		void parse_db (File file, HashTable<unowned string, AURInfosLinked> infos) {
+			var pool = new AURStringPool ();
+			try {
+				// the file has one package object per line, parse them one by one
+				// to not build the whole json tree in memory
+				var stream = new DataInputStream (new ConverterInputStream (file.read (), new ZlibDecompressor (ZlibCompressorFormat.GZIP)));
 				var parser = new Json.Parser.immutable_new ();
-				parser.load_from_data ((string) dst_stream.get_data ());
-				unowned Json.Node? root = parser.get_root ();
-				if (root == null) {
-					stderr.printf ("Failed to read AUR data from %s\n", absolute_path);
-				} else {
-					unowned Json.Array? array = root.get_array ();
-					if (array == null) {
-						stderr.printf ("Failed to read AUR data from %s\n", absolute_path);
-					} else {
-						lock (search_results) {
-							search_results.remove_all ();
-						}
-						lock (cached_infos) {
-							cached_infos.remove_all ();
-							uint array_length = array.get_length ();
-							for (uint i = 0; i < array_length; i++) {
-								unowned Json.Object json_object = array.get_object_element (i);
-								var data = new AURInfosLinked (json_object);
-								cached_infos.insert (data.name, data);
-							}
-							db_loaded = true;
-						}
+				string? line;
+				while ((line = stream.read_line ()) != null) {
+					unowned string? json = trim_line (line);
+					if (json == null) {
+						continue;
 					}
+					try {
+						parser.load_from_data (json, -1);
+					} catch (Error e) {
+						// unexpected format
+						infos.remove_all ();
+						parse_db_whole (file, infos, pool);
+						return;
+					}
+					add_infos (parser.get_root (), infos, pool);
 				}
 			} catch (Error e) {
-				stderr.printf ("Failed to read AUR data from %s : %s\n", absolute_path, e.message);
+				warning ("Failed to read AUR data from %s: %s", db_path, e.message);
+			}
+		}
+
+		// remove the array delimiters around an object line, null if nothing remains
+		static unowned string? trim_line (string line) {
+			unowned string start = line;
+			while (start[0] == '[' || start[0] == ' ' || start[0] == '\t') {
+				start = (string) ((char*) start + 1);
+			}
+			long length = start.length;
+			while (length > 0 && (start[length - 1] == ']' || start[length - 1] == ',' || start[length - 1].isspace ())) {
+				length--;
+			}
+			if (length == 0) {
+				return null;
+			}
+			// line is owned by the caller and can be modified
+			((char*) start)[length] = '\0';
+			return start;
+		}
+
+		void parse_db_whole (File file, HashTable<unowned string, AURInfosLinked> infos, AURStringPool pool) {
+			try {
+				var stream = new ConverterInputStream (file.read (), new ZlibDecompressor (ZlibCompressorFormat.GZIP));
+				var parser = new Json.Parser.immutable_new ();
+				parser.load_from_stream (stream);
+				unowned Json.Node? root = parser.get_root ();
+				if (root == null || root.get_node_type () != Json.NodeType.ARRAY) {
+					warning ("Failed to read AUR data from %s", db_path);
+					return;
+				}
+				foreach (unowned Json.Node node in root.get_array ().get_elements ()) {
+					add_infos (node, infos, pool);
+				}
+			} catch (Error e) {
+				warning ("Failed to read AUR data from %s: %s", db_path, e.message);
+			}
+		}
+
+		static void add_infos (Json.Node? node, HashTable<unowned string, AURInfosLinked> infos, AURStringPool pool) {
+			if (node == null || node.get_node_type () != Json.NodeType.OBJECT) {
+				return;
+			}
+			AURInfosLinked? data = AURInfosLinked.from_json (node.get_object (), pool);
+			if (data != null) {
+				// the key is owned by data
+				infos.replace (data.name, data);
 			}
 		}
 
 		public AURInfos? get_infos (string pkgname) {
-			AURInfosLinked? data = null;
-			parse_db ();
+			ensure_loaded ();
 			lock (cached_infos) {
-				data = cached_infos.lookup (pkgname);
+				return cached_infos.lookup (pkgname);
 			}
-			return data;
 		}
 
-		public GenericArray<unowned AURInfos> get_multi_infos (GenericArray<string> pkgnames) {
-			var result = new GenericArray<unowned AURInfosLinked> ();
-			parse_db ();
+		// returned infos are owned: the database can be reloaded meanwhile
+		public GenericArray<AURInfos> get_multi_infos (GenericArray<string> pkgnames) {
+			var result = new GenericArray<AURInfos> ();
+			ensure_loaded ();
 			lock (cached_infos) {
 				foreach (unowned string pkgname in pkgnames) {
 					unowned AURInfosLinked? data = cached_infos.lookup (pkgname);
@@ -391,16 +405,56 @@ namespace Pamac {
 			return result;
 		}
 
-		public GenericArray<unowned AURInfos> get_providers (string depend) {
-			var result = new GenericArray<unowned AURInfosLinked> ();
-			parse_db ();
+		// name of a dependency or provide without version constraint
+		static string get_dep_name (string dep) {
+			for (int i = 0; i < dep.length; i++) {
+				char c = dep[i];
+				if (c == '<' || c == '=' || c == '>') {
+					return dep.substring (0, i);
+				}
+			}
+			return dep;
+		}
+
+		// same rules as pacman: an unversioned provide doesn't satisfy a versioned dependency
+		static bool provide_satisfies (string provide, Alpm.Depend dep) {
+			Alpm.Depend prov = Alpm.Depend.from_string (provide);
+			if (dep.mod == Alpm.Depend.Mode.ANY) {
+				return true;
+			}
+			if (prov.mod != Alpm.Depend.Mode.EQ || prov.version == null || dep.version == null) {
+				return false;
+			}
+			int cmp = Alpm.pkg_vercmp (prov.version, dep.version);
+			switch (dep.mod) {
+				case Alpm.Depend.Mode.EQ:
+					return cmp == 0;
+				case Alpm.Depend.Mode.GE:
+					return cmp >= 0;
+				case Alpm.Depend.Mode.LE:
+					return cmp <= 0;
+				case Alpm.Depend.Mode.GT:
+					return cmp > 0;
+				case Alpm.Depend.Mode.LT:
+					return cmp < 0;
+				default:
+					return false;
+			}
+		}
+
+		public GenericArray<AURInfos> get_providers (string depend) {
+			var result = new GenericArray<AURInfos> ();
+			Alpm.Depend dep = Alpm.Depend.from_string (depend);
+			ensure_loaded ();
 			lock (cached_infos) {
-				var iter = HashTableIter<string, AURInfosLinked> (cached_infos);
+				var iter = HashTableIter<unowned string, AURInfosLinked> (cached_infos);
 				unowned AURInfosLinked data;
 				while (iter.next (null, out data)) {
 					foreach (unowned string provide in data.provides) {
-						if (provide.has_prefix (depend)) {
+						// compare names first to avoid parsing all provides
+						if (get_dep_name (provide) == dep.name && provide_satisfies (provide, dep)) {
 							result.add (data);
+							break;
 						}
 					}
 				}
@@ -408,88 +462,74 @@ namespace Pamac {
 			return result;
 		}
 
+		// AND search: a package matches if each term matches its name, description, provides or groups,
+		// terms are case insensitive regexes like with pacman -Ss
 		public GenericArray<AURInfos> search (string search_string) {
-			parse_db ();
-			var needle_match = new GenericArray<AURInfosLinked> ();
-			string[] needles = search_string.split (" ");
-			if (needles.length == 0) {
-				return new GenericArray<AURInfosLinked> ();
-			} else {
-				unowned string targ = needles[0];
+			var result = new GenericArray<AURInfos> ();
+			string[] terms = {};
+			Regex?[] regexes = {};
+			foreach (unowned string term in search_string.split (" ")) {
+				if (term == "") {
+					continue;
+				}
 				Regex? regex = null;
 				try {
-					regex = new Regex (targ);
+					regex = new Regex (term, RegexCompileFlags.CASELESS | RegexCompileFlags.OPTIMIZE);
 				} catch (Error e) {
-					warning (e.message);
+					// not a valid regex: it will be searched as plain text
 				}
-				lock (cached_infos) {
-					var iter = HashTableIter<string, AURInfosLinked> (cached_infos);
-					unowned AURInfosLinked data;
-					while (iter.next (null, out data)) {
-						if (find_match (data, targ, regex)) {
-							needle_match.add (data);
+				terms += term.down ();
+				regexes += (owned) regex;
+			}
+			if (terms.length == 0) {
+				return result;
+			}
+			ensure_loaded ();
+			lock (cached_infos) {
+				var iter = HashTableIter<unowned string, AURInfosLinked> (cached_infos);
+				unowned AURInfosLinked data;
+				while (iter.next (null, out data)) {
+					bool all_matched = true;
+					for (int i = 0; i < terms.length; i++) {
+						if (!find_match (data, terms[i], regexes[i])) {
+							all_matched = false;
+							break;
 						}
 					}
-				}
-				uint needles_length = needles.length;
-				if (needles_length > 1) {
-					GenericArray<AURInfosLinked> all_match = needle_match;
-					uint i;
-					for (i = 1;  i < needles_length; i++) {
-						needle_match = new GenericArray<AURInfosLinked> ();
-						targ = needles[i];
-						try {
-							regex = new Regex (targ);
-						} catch (Error e) {
-							warning (e.message);
-						}
-						foreach (unowned AURInfosLinked data in all_match) {
-							if (find_match (data, targ, regex)) {
-								needle_match.add (data);
-							}
-						}
-						// use the returned list for the next needle
-						// this allows for AND-based package searching
-						all_match = needle_match;
+					if (all_matched) {
+						result.add (data);
 					}
-					return all_match;
-				} else {
-					return needle_match;
 				}
 			}
+			return result;
 		}
 
-		bool find_match (AURInfosLinked data, string targ, Regex regex) {
-			bool matched = false;
-			unowned string name = data.name;
-			unowned string desc = data.desc;
-			// check name as plain text AND pattern
-			if (name != null && (targ == name || targ == name.down () || (regex != null && regex.match (name)))) {
-				matched = true;
+		static bool string_matches (string str, string term, Regex? regex) {
+			if (regex != null) {
+				return regex.match (str);
 			}
-			// check if desc contains targ
-			else if (desc != null && (targ in desc)) {
-				matched = true;
+			return term in str.down ();
+		}
+
+		static bool find_match (AURInfosLinked data, string term, Regex? regex) {
+			if (string_matches (data.name, term, regex)) {
+				return true;
 			}
-			if (!matched) {
-				// check provides as plain text AND pattern
-				foreach (unowned string provide in data.provides) {
-					if (targ == provide || (regex != null && regex.match (provide))) {
-						matched = true;
-						break;
-					}
+			unowned string? desc = data.desc;
+			if (desc != null && string_matches (desc, term, regex)) {
+				return true;
+			}
+			foreach (unowned string provide in data.provides) {
+				if (string_matches (provide, term, regex)) {
+					return true;
 				}
 			}
-			if (!matched) {
-				// check groups as plain text AND pattern
-				foreach (unowned string group in data.groups) {
-					if (targ == group || (regex != null && regex.match (group))) {
-						matched = true;
-						break;
-					}
+			foreach (unowned string group in data.groups) {
+				if (string_matches (group, term, regex)) {
+					return true;
 				}
 			}
-			return matched;
+			return false;
 		}
 	}
 }
