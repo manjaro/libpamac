@@ -150,6 +150,8 @@ namespace Pamac {
 		HashTable<string, GenericArray<unowned App>> pkgname_apps_cache;
 		HashTable<string, HashTable<unowned string, unowned App>> categories_cache;
 		GenericArray<string> repos_names;
+		// not loaded, only used to build search tokens
+		AppStream.Pool search_pool;
 
 		public Appstream () {
 			Object ();
@@ -160,6 +162,7 @@ namespace Pamac {
 			stores_table = new GenericArray<HashTable<unowned string, App>> ();
 			categories_cache = new HashTable<string, HashTable<unowned string, unowned App>> (str_hash, str_equal);
 			pkgname_apps_cache = new HashTable<string, GenericArray<unowned App>> (str_hash, str_equal);
+			search_pool = new AppStream.Pool ();
 		}
 
 		void load (GenericArray<string> repos_names) {
@@ -333,13 +336,20 @@ namespace Pamac {
 
 		public GenericArray<unowned App> search (string[] search_tokens) {
 			var result = new GenericArray<unowned App> ();
+			// apps are indexed with stemmed words in the current locale
+			// (e.g. "disk" for "Disks"), search terms have to be processed the same way
+			string[] stemmed_tokens = search_pool.build_search_tokens (string.joinv (" ", search_tokens));
+			if (stemmed_tokens.length == 0) {
+				// e.g. only stop words: keep the given tokens
+				stemmed_tokens = search_tokens;
+			}
 			foreach (unowned HashTable<unowned string, App> apps in stores_table) {
 				var iter = HashTableIter<unowned string, App> (apps);
 				unowned string repo;
 				unowned App app;
 				while (iter.next (out repo, out app)) {
 					unowned AppLinked applinked = app as AppLinked;
-					uint match_score = applinked.search_matches_all (search_tokens);
+					uint match_score = applinked.search_matches_all (stemmed_tokens);
 					if (match_score > 0 || search_tokens[0] in app.id.down ()) {
 						result.add (app);
 					}
