@@ -1758,16 +1758,20 @@ namespace Pamac {
 							// spawnv needs a null terminated array
 							cmdline.length = cmdline.length + 1;
 							Subprocess process = launcher.spawnv (cmdline.data);
-							process.wait ();
+							// read the output while waiting,
+							// git would block on a full pipe
+							Bytes? stdout_buf;
+							process.communicate (null, null, out stdout_buf, null);
 							if (process.get_if_exited ()) {
 								status = process.get_exit_status ();
 							}
 							if (status == 1) {
 								// there is a diff
-								var dis = new DataInputStream (process.get_stdout_pipe ());
-								var dos = new DataOutputStream (file.create (FileCreateFlags.NONE));
-								// writing output to diff
-								dos.splice (dis, OutputStreamSpliceFlags.NONE);
+								if (stdout_buf != null) {
+									var dos = new DataOutputStream (file.create (FileCreateFlags.NONE));
+									// writing output to diff
+									dos.splice (new MemoryInputStream.from_bytes (stdout_buf), OutputStreamSpliceFlags.CLOSE_TARGET);
+								}
 								status = 0;
 							}
 						} catch (Error e) {
@@ -1880,11 +1884,14 @@ namespace Pamac {
 				cmdline.length = cmdline.length + 1;
 				Subprocess process = launcher.spawnv (cmdline.data);
 				try {
-					process.wait (cancellable);
+					// read the output while waiting,
+					// makepkg would block on a full pipe
+					Bytes? stdout_buf;
+					process.communicate (null, cancellable, out stdout_buf, null);
 					if (process.get_if_exited ()) {
-						if (process.get_exit_status () == 0) {
+						if (process.get_exit_status () == 0 && stdout_buf != null) {
 							try {
-								var dis = new DataInputStream (process.get_stdout_pipe ());
+								var dis = new MemoryInputStream.from_bytes (stdout_buf);
 								FileOutputStream fos;
 								if (srcinfo.query_exists ()) {
 									fos = srcinfo.replace (null, false, FileCreateFlags.NONE);
