@@ -440,6 +440,11 @@ namespace Pamac {
 		public void start_download_updates (BusName sender) throws Error {
 			if (alpm_utils.downloading_updates) {
 				// already downloading updates
+				// always answer, the caller is waiting for the finished signal
+				Idle.add (() => {
+					download_updates_finished (sender, false);
+					return false;
+				});
 				return;
 			}
 			try {
@@ -460,7 +465,7 @@ namespace Pamac {
 							thread.join ();
 						} catch (Error e) {
 							emit_error (sender, "Daemon Error", {e.message});
-							download_updates_finished (sender, false);
+							success = false;
 						}
 						lockfile_mutex.unlock ();
 					}
@@ -498,7 +503,7 @@ namespace Pamac {
 									thread.join ();
 								} catch (Error e) {
 									emit_error (sender, "Daemon Error", {e.message});
-									download_pkgs_finished (sender, {});
+									success = false;
 								}
 								lockfile_mutex.unlock ();
 							}
@@ -582,7 +587,7 @@ namespace Pamac {
 							}
 						} catch (Error e) {
 							emit_error (sender, "Daemon Error", {e.message});
-							trans_refresh_finished (sender, false);
+							success = false;
 						}
 						lockfile_mutex.unlock ();
 					}
@@ -623,7 +628,7 @@ namespace Pamac {
 							}
 						} catch (Error e) {
 							emit_error (sender, "Daemon Error", {e.message});
-							trans_refresh_files_finished (sender, false);
+							success = false;
 						}
 						lockfile_mutex.unlock ();
 					}
@@ -664,7 +669,7 @@ namespace Pamac {
 							}
 						} catch (Error e) {
 							emit_error (sender, "Daemon Error", {e.message});
-							trans_refresh_aur_finished (sender, false);
+							success = false;
 						}
 						lockfile_mutex.unlock ();
 					}
@@ -735,7 +740,7 @@ namespace Pamac {
 									thread.join ();
 								} catch (Error e) {
 									emit_error (sender, "Daemon Error", {e.message});
-									trans_run_finished (sender, false);
+									success = false;
 								}
 								lockfile_mutex.unlock ();
 							}
