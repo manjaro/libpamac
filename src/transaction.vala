@@ -43,6 +43,8 @@ namespace Pamac {
 		HashTable<string, FlatpakPackage> flatpak_to_install;
 		HashTable<string, FlatpakPackage> flatpak_to_remove;
 		HashTable<string, FlatpakPackage> flatpak_to_upgrade;
+		// keys asked to be imported
+		HashTable<string, PGPKey> pgp_keys;
 		// building data
 		string tmp_path;
 		string aurdb_path;
@@ -120,6 +122,7 @@ namespace Pamac {
 			ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
 			overwrite_files = new GenericSet<string?> (str_hash, str_equal);
 			to_install_as_dep = new GenericSet<string?> (str_hash, str_equal);
+			pgp_keys = new HashTable<string, PGPKey> (str_hash, str_equal);
 			alpm_utils.choose_provider.connect (choose_provider_real);
 			alpm_utils.emit_action.connect ((sender, action) => {
 				context.invoke (() => {
@@ -224,6 +227,11 @@ namespace Pamac {
 
 		protected virtual async void edit_build_files (GenericArray<string> pkgnames) {
 			// do nothing
+		}
+
+		// details of the key given to ask_import_key, null outside of it
+		public PGPKey? get_pgp_key (string key) {
+			return pgp_keys.lookup (key);
 		}
 
 		protected virtual async bool ask_import_key (string pkgname, string key, string? owner) {
@@ -1039,22 +1047,40 @@ namespace Pamac {
 							// try to get key infos
 							bool success = false;
 							launcher.set_flags (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
+							// untranslated messages to read the keyserver used
+							launcher.setenv ("LC_ALL", "C", true);
 							process = launcher.spawnv ({"gpg", "--with-colons", "--batch", "--search-keys", "--", key});
 							// read the whole output before waiting,
 							// gpg could block on a full pipe
 							var dis = new DataInputStream (process.get_stdout_pipe ());
-							string? owner = null;
+							var pgp_key = new PGPKey (key, pkgname);
 							string? line;
-							while ((line = yield dis.read_line_async ()) != null) {
-								// check if an owner is set in the first uid line
-								if (owner == null && line.has_prefix ("uid:")) {
-									owner = line.split (":", 3)[1];
+							// get the configured keyserver, the search only gives its address
+							try {
+								var gpgconf = new Subprocess.newv ({"gpgconf", "--list-options", "dirmngr"}, SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_SILENCE);
+								string? gpgconf_output;
+								yield gpgconf.communicate_utf8_async (null, null, out gpgconf_output, null);
+								if (gpgconf_output != null) {
+									foreach (unowned string gpgconf_line in gpgconf_output.split ("\n")) {
+										pgp_key.parse_dirmngr_options (gpgconf_line);
+									}
 								}
+							} catch (Error e) {
+								warning (e.message);
+							}
+							while ((line = yield dis.read_line_async ()) != null) {
+								pgp_key.parse_search_output (line);
 							}
 							yield process.wait_async ();
 							if (process.get_if_exited ()) {
 								if (process.get_exit_status () == 0) {
-									if (yield ask_import_key (pkgname, key, owner)) {
+									// frontends get the key details with get_pgp_key ()
+									pgp_keys.replace (key, pgp_key);
+									// keep the first uid as owner for frontends using it
+									string? owner = pgp_key.uids.length > 0 ? pgp_key.uids[0] : null;
+									bool import = yield ask_import_key (pkgname, key, owner);
+									pgp_keys.remove (key);
+									if (import) {
 										var cmdline = new GenericArray<string> (5);
 										cmdline.add ("gpg");
 										cmdline.add ("--with-colons");
