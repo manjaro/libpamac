@@ -194,8 +194,12 @@ namespace Pamac {
 					if (as_app != null) {
 						unowned GenericArray<AppStream.Screenshot> as_screenshots = as_app.get_screenshots_all ();
 						foreach (unowned AppStream.Screenshot as_screenshot in as_screenshots) {
-							// get a url with small image 
-							unowned AppStream.Image as_image = as_screenshot.get_image (500, 300, 1);
+							// get a url with small image,
+							// a screenshot can have no image (e.g. a video)
+							unowned AppStream.Image? as_image = as_screenshot.get_image (500, 300, 1);
+							if (as_image == null) {
+								continue;
+							}
 							unowned string? url = as_image.get_url ();
 							if (url != null) {
 								_screenshots.add (url);
