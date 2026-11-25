@@ -662,6 +662,16 @@ namespace Pamac {
 			do_emit_download_progress (current_action, current_status, current_progress);
 		}
 
+		// snapd download task summaries look like: Download snap "name" (rev) from channel "stable",
+		// fall back to the whole summary if it has no quoted name
+		string get_download_name (string summary) {
+			string[] splitted = summary.split ("\"", 3);
+			if (splitted.length < 3 || splitted[1].length == 0) {
+				return summary;
+			}
+			return splitted[1];
+		}
+
 		void progress_callback (Snapd.Client client, Snapd.Change change, void* deprecated) {
 			uint total = 0;
 			uint done = 0;
@@ -672,7 +682,7 @@ namespace Pamac {
 					if (task.status == "Doing") {
 						// at the beginning task.progress_total = 1 because the total download size is unknonwn
 						if (task.progress_total > 1 ) {
-							string pkgname = task.summary.split ("\"", 3)[1];
+							string pkgname = get_download_name (task.summary);
 							if (!download_files.contains (pkgname)) {
 								current_action = dgettext (null, "Download of %s started").printf (pkgname);
 								download_files.add ((owned) pkgname);
@@ -683,7 +693,7 @@ namespace Pamac {
 							emit_download (download_progress, download_total);
 						}
 					} else if (task.status == "Done") {
-						string pkgname = task.summary.split ("\"", 3)[1];
+						string pkgname = get_download_name (task.summary);
 						if (download_files.contains (pkgname)) {
 							current_action = dgettext (null, "Download of %s finished").printf (pkgname);
 							download_files.remove (pkgname);
