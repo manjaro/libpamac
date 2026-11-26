@@ -373,8 +373,9 @@ namespace Pamac {
 			// only refresh ".files" if force
 			if (force_refresh) {
 				// update ".files", do not need to know if we succeeded
-				alpm_handle = get_handle (true, false);
-				if (alpm_handle != null) {
+				var files_handle = get_handle (true, false);
+				if (files_handle != null) {
+					alpm_handle = (owned) files_handle;
 					update_dbs (alpm_handle, force);
 				}
 			}
@@ -420,7 +421,8 @@ namespace Pamac {
 			}
 			alpm_handle.dbext = ".json.gz";
 			alpm_handle.set_dlcb (cb_download, this);
-			unowned Alpm.DB db = alpm_handle.register_syncdb ("packages-meta-ext-v1", Alpm.Signature.Level.USE_DEFAULT);
+			// the AUR database is not signed, do not require a signature or try to download it
+			unowned Alpm.DB db = alpm_handle.register_syncdb ("packages-meta-ext-v1", 0);
 			unowned string server;
 			string? id = get_os_id ();
 			if (id == null || id != "manjaro") {
@@ -432,11 +434,11 @@ namespace Pamac {
 			db.usage = Alpm.DB.Usage.ALL;
 			// refresh
 			int force = (force_refresh) ? 1 : 0;
-			update_dbs (alpm_handle, force);
+			bool success = update_dbs (alpm_handle, force);
 			if (cancellable.is_cancelled ()) {
 				return false;
 			}
-			return true;
+			return success;
 		}
 
 		void add_ignorepkgs (Alpm.Handle? alpm_handle) {
@@ -484,14 +486,13 @@ namespace Pamac {
 		public bool download_updates (string sender) {
 			set_sender (sender);
 			downloading_updates = true;
-			// use a handle with no callback
+			// callbacks are needed to cancel the download (see cb_download)
+			// and to answer questions for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
 			}
 			alpm_handle.parallel_downloads = (uint) config.max_parallel_downloads;
-			// add question callback for replaces/conflicts/corrupted pkgs and import keys
-			alpm_handle.set_questioncb (cb_question, this);
 			cancellable.reset ();
 			bool success = false;
 			if (alpm_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
@@ -592,59 +593,70 @@ namespace Pamac {
 			} else {
 				bool success = trans_add_pkg_real (alpm_handle, pkg, emit_error);
 				if (success) {
-					if (("linux5" in pkg.name) || ("linux6" in pkg.name)) {
-						var installed_kernels = new GenericArray<string> ();
-						var installed_modules = new GenericArray<string> ();
-						unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
-						while (pkgcache != null) {
-							unowned Alpm.Package local_pkg = pkgcache.data;
-							if (("linux5" in local_pkg.name) || ("linux6" in local_pkg.name)) {
-								string[] local_pkg_splitted = local_pkg.name.split ("-", 2);
-								if (!installed_kernels.find_with_equal_func (local_pkg_splitted[0], str_equal)) {
-									installed_kernels.add (local_pkg_splitted[0]);
-								}
-								if (local_pkg_splitted.length == 2) {
-									if (!installed_modules.find_with_equal_func (local_pkg_splitted[1], str_equal)) {
-										installed_modules.add (local_pkg_splitted[1]);
-									}
-								}
-							}
-							pkgcache.next ();
-						}
-						string[] splitted = pkg.name.split ("-", 2);
-						if (splitted.length == 2) {
-							// we are adding a module
-							// add the same module for other installed kernels
-							foreach (unowned string installed_kernel in installed_kernels) {
-								var module = new StringBuilder ();
-								module.append (installed_kernel);
-								module.append ("-");
-								module.append (splitted[1]);
-								unowned Alpm.Package? installed_module_pkg = alpm_handle.localdb.get_pkg (module.str);
-								if (installed_module_pkg == null) {
-									unowned Alpm.Package? module_pkg = get_syncpkg (alpm_handle, module.str);
-									if (module_pkg != null) {
-										trans_add_pkg_real (alpm_handle, module_pkg, emit_error);
-									}
-								}
-							}
-						} else if (splitted.length == 1) {
-							// we are adding a kernel
-							// add all installed modules for other kernels
-							foreach (unowned string installed_module in installed_modules) {
-								var module = new StringBuilder ();
-								module.append (splitted[0]);
-								module.append ("-");
-								module.append (installed_module);
-								unowned Alpm.Package? module_pkg = get_syncpkg (alpm_handle, module.str);
-								if (module_pkg != null) {
-									trans_add_pkg_real (alpm_handle, module_pkg, emit_error);
-								}
-							}
+					add_kernel_modules (alpm_handle, pkg.name, emit_error);
+				}
+				return success;
+			}
+		}
+
+		// Manjaro numbered kernels and their modules: "linux612", "linux612-nvidia"…
+		static bool split_kernel_pkgname (string pkgname, out string kernel, out string? module) {
+			MatchInfo match_info;
+			if (!/^(linux[0-9]+)(?:-(.+))?$/.match (pkgname, 0, out match_info)) {
+				kernel = "";
+				module = null;
+				return false;
+			}
+			kernel = match_info.fetch (1);
+			module = match_info.fetch (2);
+			if (module == "") {
+				module = null;
+			}
+			return true;
+		}
+
+		// keep modules in sync between installed kernels
+		void add_kernel_modules (Alpm.Handle? alpm_handle, string pkgname, bool emit_error) {
+			string kernel;
+			string? module;
+			if (!split_kernel_pkgname (pkgname, out kernel, out module)) {
+				return;
+			}
+			var installed_kernels = new GenericSet<string?> (str_hash, str_equal);
+			var installed_modules = new GenericSet<string?> (str_hash, str_equal);
+			unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
+			while (pkgcache != null) {
+				string local_kernel;
+				string? local_module;
+				if (split_kernel_pkgname (pkgcache.data.name, out local_kernel, out local_module)) {
+					installed_kernels.add ((owned) local_kernel);
+					if (local_module != null) {
+						installed_modules.add ((owned) local_module);
+					}
+				}
+				pkgcache.next ();
+			}
+			if (module != null) {
+				// we are adding a module:
+				// add the same module for other installed kernels
+				foreach (unowned string installed_kernel in installed_kernels) {
+					string module_pkgname = "%s-%s".printf (installed_kernel, module);
+					if (alpm_handle.localdb.get_pkg (module_pkgname) == null) {
+						unowned Alpm.Package? module_pkg = get_syncpkg (alpm_handle, module_pkgname);
+						if (module_pkg != null) {
+							trans_add_pkg_real (alpm_handle, module_pkg, emit_error);
 						}
 					}
 				}
-				return success;
+			} else {
+				// we are adding a kernel:
+				// add all installed modules for other kernels
+				foreach (unowned string installed_module in installed_modules) {
+					unowned Alpm.Package? module_pkg = get_syncpkg (alpm_handle, "%s-%s".printf (kernel, installed_module));
+					if (module_pkg != null) {
+						trans_add_pkg_real (alpm_handle, module_pkg, emit_error);
+					}
+				}
 			}
 		}
 
@@ -1450,7 +1462,7 @@ namespace Pamac {
 					}
 				}
 			}
-			if (to_build.length > 0) {
+			if (success && to_build.length > 0) {
 				// add to_build from fake aur db
 				Alpm.List<unowned Alpm.DB> dbs = null;
 				dbs.add (aur_db);
@@ -1518,6 +1530,41 @@ namespace Pamac {
 			return success;
 		}
 
+		// follow the requiredby chain of a new dependency up to a package to build
+		// or, if include_to_install, to a package to install
+		string? get_top_requiredby (Alpm.Handle? alpm_handle, Alpm.Package trans_pkg, HashTable<string, int> checked, bool include_to_install) {
+			unowned Alpm.Package check_pkg = trans_pkg;
+			while (true) {
+				Alpm.List<string> requiredby = check_pkg.compute_requiredby ();
+				string? top_requiredby = null;
+				unowned Alpm.Package? next_pkg = null;
+				unowned Alpm.List<string> item = requiredby;
+				while (item != null) {
+					unowned string requiredby_name = item.data;
+					unowned Alpm.Package? pkg_to_add = Alpm.pkg_find (alpm_handle.trans_to_add (), requiredby_name);
+					if (pkg_to_add != null) {
+						if (requiredby_name in to_build || (include_to_install && requiredby_name in to_install)) {
+							top_requiredby = requiredby_name;
+							break;
+						}
+						// security for dependency cycle
+						int count = checked.contains (requiredby_name) ? checked.lookup (requiredby_name) + 1 : 0;
+						if (count <= 100) {
+							checked.insert (requiredby_name, count);
+							next_pkg = pkg_to_add;
+							break;
+						}
+					}
+					item.next ();
+				}
+				requiredby.free_inner (GLib.free);
+				if (top_requiredby != null || next_pkg == null) {
+					return top_requiredby;
+				}
+				check_pkg = next_pkg;
+			}
+		}
+
 		void get_transaction_summary (Alpm.Handle? alpm_handle, ref TransactionSummary summary) {
 			var checked = new HashTable<string, int> (str_hash, str_equal);
 			// to_install
@@ -1535,55 +1582,9 @@ namespace Pamac {
 					if (pkg.installed_version == null) {
 						if (!(trans_pkg_name in to_build)) {
 							// it is a new required dep
-							bool dep_found = false;
-							unowned Alpm.Package check_pkg = trans_pkg;
-							while (!dep_found) {
-								Alpm.List<string> pkg_requiredby = check_pkg.compute_requiredby ();
-								unowned Alpm.List<string*> requiredby_list = pkg_requiredby;
-								while (requiredby_list != null) {
-									string* requiredby_name = requiredby_list.data;
-									bool check_pkg_found = false;
-									unowned Alpm.List<unowned Alpm.Package> pkgs_to_add2 = alpm_handle.trans_to_add ();
-									while (pkgs_to_add2 != null) {
-										unowned Alpm.Package pkg_to_add = pkgs_to_add2.data;
-										unowned string pkg_to_add_name = pkg_to_add.name;
-										if (pkg_to_add_name == requiredby_name) {
-											if (pkg_to_add_name in to_build) {
-												// found the top requiredby package
-												pkg.requiredby.add ((owned) requiredby_name);
-												dep_found = true;
-											} else {
-												if (pkg_to_add_name in checked) {
-													int i = checked.lookup (pkg_to_add_name);
-													// security for dependency cycle
-													if (i < 100) {
-														// check pkg_to_add requiredby
-														check_pkg = pkg_to_add;
-														check_pkg_found = true;
-														checked.insert (pkg_to_add_name, i + 1);
-													}
-												} else {
-													// check pkg_to_add requiredby
-													check_pkg = pkg_to_add;
-													check_pkg_found = true;
-													checked.insert (pkg_to_add_name, 0);
-												}
-											}
-											break;
-										}
-										pkgs_to_add2.next ();
-									}
-									if (!dep_found) {
-										delete requiredby_name;
-									}
-									if (dep_found || check_pkg_found) {
-										break;
-									}
-									requiredby_list.next ();
-								}
-								if (requiredby_list == null) {
-									break;
-								}
+							string? top_requiredby = get_top_requiredby (alpm_handle, trans_pkg, checked, false);
+							if (top_requiredby != null) {
+								pkg.requiredby.add ((owned) top_requiredby);
 							}
 						}
 					}
@@ -1593,57 +1594,11 @@ namespace Pamac {
 					if (pkg.installed_version == null) {
 						if (db != null && !(trans_pkg_name in to_install)) {
 							// it is a new required dep or a replace
-							bool dep_found = false;
 							// 1 - check for required dep
-							unowned Alpm.Package check_pkg = trans_pkg;
-							while (!dep_found) {
-								Alpm.List<string> pkg_requiredby = check_pkg.compute_requiredby ();
-								unowned Alpm.List<string*> requiredby_list = pkg_requiredby;
-								while (requiredby_list != null) {
-									string* requiredby_name = requiredby_list.data;
-									bool check_pkg_found = false;
-									unowned Alpm.List<unowned Alpm.Package> pkgs_to_add2 = alpm_handle.trans_to_add ();
-									while (pkgs_to_add2 != null) {
-										unowned Alpm.Package pkg_to_add = pkgs_to_add2.data;
-										unowned string pkg_to_add_name = pkg_to_add.name;
-										if (pkg_to_add_name == requiredby_name) {
-											if (pkg_to_add_name in to_install
-												|| pkg_to_add_name in to_build) {
-												// found the top requiredby package
-												pkg.requiredby.add ((owned) requiredby_name);
-												dep_found = true;
-											} else {
-												if (pkg_to_add_name in checked) {
-													int i = checked.lookup (pkg_to_add_name);
-													// security for dependency cycle
-													if (i < 100) {
-														// check pkg_to_add requiredby
-														check_pkg = pkg_to_add;
-														check_pkg_found = true;
-														checked.insert (pkg_to_add_name, i + 1);
-													}
-												} else {
-													// check pkg_to_add requiredby
-													check_pkg = pkg_to_add;
-													check_pkg_found = true;
-													checked.insert (pkg_to_add_name, 0);
-												}
-											}
-											break;
-										}
-										pkgs_to_add2.next ();
-									}
-									if (!dep_found) {
-										delete requiredby_name;
-									}
-									if (dep_found || check_pkg_found) {
-										break;
-									}
-									requiredby_list.next ();
-								}
-								if (requiredby_list == null) {
-									break;
-								}
+							string? top_requiredby = get_top_requiredby (alpm_handle, trans_pkg, checked, true);
+							bool dep_found = top_requiredby != null;
+							if (dep_found) {
+								pkg.requiredby.add ((owned) top_requiredby);
 							}
 							// 2 - check for replaces
 							if (!dep_found) {
@@ -1793,60 +1748,36 @@ namespace Pamac {
 			}
 		}
 
+		static bool pkg_needs_reboot (string name) {
+			// kernels and their modules or firmwares: "linux", "linux-lts", "linux612-nvidia", "linux-firmware"…
+			if (/^linux[0-9]*(?:-.+)?$/.match (name)) {
+				// headers and docs are not loaded
+				return !name.has_suffix ("-headers") && !name.has_suffix ("-docs");
+			}
+			const string[] PREFIXES = {"nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
+			foreach (unowned string prefix in PREFIXES) {
+				if (name.has_prefix (prefix)) {
+					return true;
+				}
+			}
+			return "mesa" in name || "wayland" in name || name == "cryptsetup" || name.has_suffix ("-ucode");
+		}
+
 		bool need_reboot (Alpm.Handle? alpm_handle) {
-			bool reboot_needed = false;
-			string[] prefix = {"linux-", "linux4", "linux5", "linux6", "nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
-			string[] contains = {"mesa", "wayland"};
-			string[] full = {"cryptsetup"};
-			string[] suffix = {"-ucode"};
 			unowned Alpm.List<unowned Alpm.Package> to_add = alpm_handle.trans_to_add ();
 			while (to_add != null) {
-				unowned Alpm.Package pkg = to_add.data;
-				foreach (unowned string str in prefix) {
-					if (pkg.name.has_prefix (str)) {
-						reboot_needed = true;
-						break;
-					}
-				}
-				if (reboot_needed) {
-					break;
-				}
-				foreach (unowned string str in contains) {
-					if (str in pkg.name) {
-						reboot_needed = true;
-						break;
-					}
-				}
-				if (reboot_needed) {
-					break;
-				}
-				foreach (unowned string str in full) {
-					if (str == pkg.name) {
-						reboot_needed = true;
-						break;
-					}
-				}
-				if (reboot_needed) {
-					break;
-				}
-				foreach (unowned string str in suffix) {
-					if (pkg.name.has_suffix (str)) {
-						reboot_needed = true;
-						break;
-					}
-				}
-				if (reboot_needed) {
-					break;
+				if (pkg_needs_reboot (to_add.data.name)) {
+					return true;
 				}
 				to_add.next ();
 			}
-			return reboot_needed;
+			return false;
 		}
 
+		// commit the prepared transaction, packages in SyncFirst are upgraded first
 		bool trans_commit (Alpm.Handle? alpm_handle) {
-			add_overwrite_files (alpm_handle);
 			bool need_retry = false;
-			bool success = false;
+			bool success;
 			bool reboot_needed = false;
 			if (to_syncfirst.length > 0) {
 				trans_release (alpm_handle);
@@ -1859,126 +1790,91 @@ namespace Pamac {
 						}
 					}
 					if (success) {
+						// released on error
 						success = trans_prepare_real (alpm_handle);
+					} else {
+						trans_release (alpm_handle);
 					}
 					if (success) {
-						// check if reboot needed
 						reboot_needed = need_reboot (alpm_handle);
+						// released in any case
 						success = trans_commit_real (alpm_handle, ref need_retry);
 					}
-					trans_release (alpm_handle);
-					if (success) {
-						// remove syncfirsts from to_install
-						foreach (unowned string name in to_syncfirst) {
-							to_install.remove (name);
-						}
-						success = trans_init (alpm_handle, trans_flags);
-						if (success && sysupgrade) {
-							success = trans_sysupgrade (alpm_handle);
-						}
-						if (success) {
-							foreach (unowned string name in to_install) {
-								success = trans_add_pkg (alpm_handle, name);
-								if (!success) {
-									break;
-								}
-							}
-						}
-						if (success) {
-							foreach (unowned string name in to_remove) {
-								success = trans_remove_pkg (alpm_handle, name);
-								if (!success) {
-									break;
-								}
-							}
-						}
-						if (success) {
-							foreach (unowned string path in local_paths) {
-								success = trans_load_pkg (alpm_handle, path, alpm_handle.localfilesiglevel);
-								if (!success) {
-									break;
-								}
-							}
-						}
-						if (success) {
-							foreach (unowned string path in remote_paths) {
-								success = trans_load_pkg (alpm_handle, path, alpm_handle.remotefilesiglevel);
-								if (!success) {
-									break;
-								}
-							}
-						}
-						if (success) {
-							success = trans_prepare_real (alpm_handle);
-							// continue if needed
-							if (success && alpm_handle.trans_to_add () == null && alpm_handle.trans_to_remove () == null) {
-								trans_release (alpm_handle);
-								trans_reset ();
-								return true;
-							}
-						}
-						if (!success) {
-							trans_release (alpm_handle);
-						}
-					} else if (need_retry) {
-						// retry
-						if (commit_retries < 1) {
-							commit_retries++;
-							success = trans_run_real (alpm_handle);
-						}
-					}
 				}
+				if (!success) {
+					if (need_retry && commit_retries < 1) {
+						commit_retries++;
+						// the whole transaction is run again, including syncfirsts
+						return trans_run_real (alpm_handle);
+					}
+					trans_reset ();
+					return false;
+				}
+				// prepare again the rest of the transaction with the same targets
+				foreach (unowned string name in to_syncfirst) {
+					to_install.remove (name);
+				}
+				to_syncfirst.remove_all ();
+				// released on error
+				success = trans_prepare (alpm_handle, null);
 				if (!success) {
 					trans_reset ();
 					return false;
 				}
+				if (alpm_handle.trans_to_add () == null && alpm_handle.trans_to_remove () == null) {
+					// nothing else to do
+					trans_release (alpm_handle);
+					on_commit_success (alpm_handle, reboot_needed);
+					trans_reset ();
+					return true;
+				}
 			}
 			if (!reboot_needed) {
-				// check if reboot needed
 				reboot_needed = need_reboot (alpm_handle);
 			}
 			success = trans_commit_real (alpm_handle, ref need_retry);
 			if (success) {
-				foreach (unowned string path in local_paths) {
-					// only handle packages built by pamac, whatever the build directory is
-					// if a custom PKGDEST is set in makepkg.conf, package won't be moved or deleted
-					if (!is_built_pkg (path)) {
-						continue;
-					}
-					if (keep_built_pkgs) {
-						// get first cachedir
-						unowned Alpm.List<unowned string> cachedirs = alpm_handle.cachedirs;
-						move_built_pkg_to_cache (path, cachedirs.data);
-					} else if (path.has_suffix (".pkg.tar")) {
-						// rm built package, pamac builds it with PKGEXT=.pkg.tar
-						// unlink does not follow symlinks
-						FileUtils.unlink (path);
-					}
-				}
-				to_install_as_dep.foreach_remove ((pkgname, val) => {
-					unowned Alpm.Package? pkg = alpm_handle.localdb.get_pkg (pkgname);
-					if (pkg != null) {
-						pkg.reason = Alpm.Package.Reason.DEPEND;
-						return true; // remove current pkgname
-					}
-					return false;
-				});
-				if (reboot_needed) {
-					do_emit_warning (dgettext (null, "A restart is required for the changes to take effect") + ".");
-				}
-				if (sysupgrade) {
-					// removing a potential /system-update file
-					FileUtils.unlink ("/system-update");
-				}
-			} else if (need_retry) {
-				// retry
-				if (commit_retries < 1) {
-					commit_retries++;
-					success = trans_run_real (alpm_handle);
-				}
+				on_commit_success (alpm_handle, reboot_needed);
+			} else if (need_retry && commit_retries < 1) {
+				commit_retries++;
+				success = trans_run_real (alpm_handle);
 			}
 			trans_reset ();
 			return success;
+		}
+
+		void on_commit_success (Alpm.Handle? alpm_handle, bool reboot_needed) {
+			foreach (unowned string path in local_paths) {
+				// only handle packages built by pamac, whatever the build directory is
+				// if a custom PKGDEST is set in makepkg.conf, package won't be moved or deleted
+				if (!is_built_pkg (path)) {
+					continue;
+				}
+				if (keep_built_pkgs) {
+					// get first cachedir
+					unowned Alpm.List<unowned string> cachedirs = alpm_handle.cachedirs;
+					move_built_pkg_to_cache (path, cachedirs.data);
+				} else if (path.has_suffix (".pkg.tar")) {
+					// rm built package, pamac builds it with PKGEXT=.pkg.tar
+					// unlink does not follow symlinks
+					FileUtils.unlink (path);
+				}
+			}
+			to_install_as_dep.foreach_remove ((pkgname, val) => {
+				unowned Alpm.Package? pkg = alpm_handle.localdb.get_pkg (pkgname);
+				if (pkg != null) {
+					pkg.reason = Alpm.Package.Reason.DEPEND;
+					return true; // remove current pkgname
+				}
+				return false;
+			});
+			if (reboot_needed) {
+				do_emit_warning (dgettext (null, "A restart is required for the changes to take effect") + ".");
+			}
+			if (sysupgrade) {
+				// removing a potential /system-update file
+				FileUtils.unlink ("/system-update");
+			}
 		}
 
 		// pamac builds packages with PKGDEST set to the package build directory,
@@ -2058,8 +1954,11 @@ namespace Pamac {
 			return null;
 		}
 
+		// always releases the transaction
 		bool trans_commit_real (Alpm.Handle? alpm_handle, ref bool need_retry) {
 			bool success = true;
+			// removed in trans_release
+			add_overwrite_files (alpm_handle);
 			// real commit
 			Alpm.List err_data;
 			if (alpm_handle.trans_commit (out err_data) == -1) {
@@ -2264,29 +2163,13 @@ namespace Pamac {
 					do_stop_downloading ();
 					current_filename = "";
 					multi_progress.remove_all ();
-					download_rates.clear ();
-					download_rate = 0;
-					current_progress = 0;
-					already_downloaded = 0;
-					current_status = "";
-					total_download = 0;
-					last_download_progress_time = 0;
-					last_download_progress_action = "";
-					last_download_progress_value = 0;
+					reset_download_progress (0);
 					break;
 				case 23: //Alpm.Event.Type.PKG_RETRIEVE_FAILED
 					do_stop_downloading ();
 					current_filename = "";
 					multi_progress.remove_all ();
-					download_rates.clear ();
-					download_rate = 0;
-					current_progress = 0;
-					already_downloaded = 0;
-					current_status = "";
-					total_download = 0;
-					last_download_progress_time = 0;
-					last_download_progress_action = "";
-					last_download_progress_value = 0;
+					reset_download_progress (0);
 					do_emit_warning (dgettext (null, "failed to retrieve some files"));
 					break;
 				case 24: //Alpm.Event.Type.DISKSPACE_START
@@ -2375,7 +2258,7 @@ namespace Pamac {
 					fraction = (double) percent / 100;
 					break;
 			}
-			string status = "%lu/%lu".printf (current_target, n_targets);
+			string status = "%u/%u".printf (current_target, n_targets);
 			bool changed = false;
 			if (fraction != current_progress) {
 				current_progress = fraction;
@@ -2396,8 +2279,13 @@ namespace Pamac {
 			if (xfered == 0) {
 				rate_timer.start ();
 				if (total_download == 0) {
+					// a new single download (e.g. dbs refresh): its progress
+					// starts from zero, not from the end of the previous one
 					download_rates.clear ();
 					download_rate = 0;
+					already_downloaded = 0;
+					current_progress = 0;
+					last_download_progress_value = 0;
 				}
 				return;
 			}
@@ -2409,10 +2297,11 @@ namespace Pamac {
 					text.append ("/%s".printf (format_size (total)));
 					double elapsed = rate_timer.elapsed ();
 					if (elapsed > 1) {
-						double current_rate = (xfered - already_downloaded) / elapsed;
+						// xfered can go backward if a download is restarted
+						double current_rate = xfered > already_downloaded ? (xfered - already_downloaded) / elapsed : 0;
 						already_downloaded = xfered;
 						// only keep the last 10 rates
-						if (download_rates.length > 10) {
+						if (download_rates.length >= 10) {
 							download_rates.pop_head ();
 						}
 						download_rates.push_tail (current_rate);
@@ -2437,12 +2326,13 @@ namespace Pamac {
 						text.append (" ");
 						if (remaining_seconds > 0) {
 							if (remaining_seconds < 60) {
-								text.append (dngettext (null, "About %lu second remaining",
-											"About %lu seconds remaining", remaining_seconds).printf (remaining_seconds));
+								// %lu in translations: pass an ulong
+						text.append (dngettext (null, "About %lu second remaining",
+											"About %lu seconds remaining", remaining_seconds).printf ((ulong) remaining_seconds));
 							} else {
 								uint remaining_minutes = (uint) Math.round (remaining_seconds / 60);
 								text.append (dngettext (null, "About %lu minute remaining",
-											"About %lu minutes remaining", remaining_minutes).printf (remaining_minutes));
+											"About %lu minutes remaining", remaining_minutes).printf ((ulong) remaining_minutes));
 							}
 						}
 					}
@@ -2471,6 +2361,10 @@ namespace Pamac {
 		}
 
 		public void emit_totaldownload (uint64 total) {
+			reset_download_progress (total);
+		}
+
+		void reset_download_progress (uint64 total) {
 			download_rates.clear ();
 			download_rate = 0;
 			current_progress = 0;
@@ -2687,6 +2581,25 @@ void emit_download (Pamac.AlpmUtils alpm_utils, string filename, uint64 xfered, 
 	}
 }
 
+// "name (version-release)" from a package file name "name-version-release-arch.pkg.tar.zst",
+// null if the file name doesn't have this form
+string? get_download_pkg_label (string filename) {
+	int arch_index = filename.last_index_of_char ('-');
+	if (arch_index <= 0) {
+		return null;
+	}
+	string name_version_release = filename.substring (0, arch_index);
+	int release_index = name_version_release.last_index_of_char ('-');
+	if (release_index <= 0) {
+		return null;
+	}
+	int version_index = name_version_release.substring (0, release_index).last_index_of_char ('-');
+	if (version_index <= 0) {
+		return null;
+	}
+	return "%s (%s)".printf (name_version_release.substring (0, version_index), name_version_release.substring (version_index + 1));
+}
+
 void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, void* event_data) {
 	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
 	if (alpm_utils.cancellable.is_cancelled ()) {
@@ -2696,8 +2609,6 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 		alpm_utils.do_emit_action (dgettext (null, "Transaction cancelled") + ".");
 		Thread.exit(-1);
 	}
-	string name = "";
-	string version_release = "";
 	switch (event_type) {
 		case Alpm.Download.Event.INIT:
 			if (filename.has_suffix (".db") || filename.has_suffix (".files") || filename.has_suffix (".json.gz")) {
@@ -2705,22 +2616,9 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 			} else if (filename.has_suffix (".sig")) {
 				// don't signal sig download
 			} else {
-				// compute name and version_release
-				string? name_version_release = filename.slice (0, filename.last_index_of_char ('-'));
-				if (name_version_release != null) {
-					string? name_version = name_version_release.slice (0, name_version_release.last_index_of_char ('-'));
-					if (name_version != null) {
-						int version_index = name_version.last_index_of_char ('-');
-						string? tmp_name = name_version.slice (0, version_index);
-						if (tmp_name != null) {
-							name = tmp_name;
-							string? tmp_version_release = name_version_release.slice (version_index + 1, name_version_release.length);
-							if (tmp_version_release != null) {
-								version_release = tmp_version_release;
-								alpm_utils.current_action = _("Download of %s started").printf ("%s (%s)".printf (name, version_release));
-							}
-						}
-					}
+				string? pkg_label = get_download_pkg_label (filename);
+				if (pkg_label != null) {
+					alpm_utils.current_action = _("Download of %s started").printf (pkg_label);
 				}
 			}
 			emit_download (alpm_utils, filename, 0, 0);
@@ -2744,22 +2642,9 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 				} else if (filename.has_suffix (".sig")) {
 					// don't signal sig download
 				} else {
-					// compute name and version_release
-					string? name_version_release = filename.slice (0, filename.last_index_of_char ('-'));
-					if (name_version_release != null) {
-						string? name_version = name_version_release.slice (0, name_version_release.last_index_of_char ('-'));
-						if (name_version != null) {
-							int version_index = name_version.last_index_of_char ('-');
-							string? tmp_name = name_version.slice (0, version_index);
-							if (tmp_name != null) {
-								name = tmp_name;
-								string? tmp_version_release = name_version_release.slice (version_index + 1, name_version_release.length);
-								if (tmp_version_release != null) {
-									version_release = tmp_version_release;
-									alpm_utils.current_action = _("Download of %s finished").printf ("%s (%s)".printf (name, version_release));
-								}
-							}
-						}
+					string? pkg_label = get_download_pkg_label (filename);
+					if (pkg_label != null) {
+						alpm_utils.current_action = _("Download of %s finished").printf (pkg_label);
 					}
 					uint64 size = completed_data.total;
 					emit_download (alpm_utils, filename, size, size);
