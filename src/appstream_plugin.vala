@@ -199,6 +199,8 @@ namespace Pamac {
 			foreach (unowned string category in MAIN_CATEGORIES) {
 				categories_cache.insert (category, new HashTable<unowned string, unowned App> (str_hash, str_equal));
 			}
+			// Keep the first component in pacman repository order across all catalogs.
+			var seen_ids = new HashTable<string, bool> (str_hash, str_equal);
 			foreach (unowned string repo in repos_names) {
 				File appstream_file = File.new_for_path ("%s/xml/%s.xml.gz".printf (SWCATALOG_DIR, repo));
 				var mdata = new AppStream.Metadata ();
@@ -230,11 +232,12 @@ namespace Pamac {
 					}
 					var new_app = new AppLinked (app, repo, repo_origin);
 					unowned string id = new_app.id;
-					if (desktop_apps.contains (id)) {
+					if (seen_ids.contains (id)) {
 						// don't add duplicate app
 						continue;
 					}
 					// add to app cache
+					seen_ids.insert (id, true);
 					desktop_apps.insert (id, new_app);
 					// add pkgnames
 					unowned GenericArray<unowned App>? pkgname_apps = pkgname_apps_cache.lookup (pkgname);
