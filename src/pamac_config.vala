@@ -354,6 +354,8 @@ namespace Pamac {
 			if (system_daemon == null) {
 				try {
 					system_daemon = Bus.get_proxy_sync (BusType.SYSTEM, "org.manjaro.pamac.daemon", "/org/manjaro/pamac/daemon");
+					// the writes wait for the authorization
+					disable_timeout (system_daemon);
 				} catch (Error e) {
 					warning ("save pamac config error: %s", e.message);
 					return;
@@ -387,11 +389,13 @@ namespace Pamac {
 				new_pamac_conf.insert ("EnableFlatpak", new Variant.boolean (enable_flatpak));
 				new_pamac_conf.insert ("CheckFlatpakUpdates", new Variant.boolean (check_flatpak_updates));
 			}
-			try {
-				system_daemon.start_write_pamac_config (new_pamac_conf);
-			} catch (Error e) {
-				warning ("save pamac config error: %s", e.message);
-			}
+			system_daemon.write_pamac_config.begin (new_pamac_conf, (obj, res) => {
+				try {
+					system_daemon.write_pamac_config.end (res);
+				} catch (Error e) {
+					warning ("save pamac config error: %s", e.message);
+				}
+			});
 			// write alpm config
 			var new_alpm_conf = new HashTable<string, Variant> (str_hash, str_equal);
 			new_alpm_conf.insert ("CheckSpace", new Variant.boolean (checkspace));
@@ -403,11 +407,13 @@ namespace Pamac {
 				ignorepkgs_str.append (name);
 			}
 			new_alpm_conf.insert ("IgnorePkg", new Variant.string (ignorepkgs_str.str));
-			try {
-				system_daemon.start_write_alpm_config (new_alpm_conf);
-			} catch (Error e) {
-				warning ("save pamac config error: %s", e.message);
-			}
+			system_daemon.write_alpm_config.begin (new_alpm_conf, (obj, res) => {
+				try {
+					system_daemon.write_alpm_config.end (res);
+				} catch (Error e) {
+					warning ("save alpm config error: %s", e.message);
+				}
+			});
 		}
 	}
 }

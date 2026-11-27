@@ -44,3 +44,46 @@ string get_user_agent () {
 		return "Pamac/%s_%s".printf (VERSION, id);
 	}
 }
+
+namespace Pamac {
+	internal delegate bool BoolFunc ();
+
+	// run func in a new thread without blocking the main loop of context,
+	// the coroutine is resumed in context when func returns.
+	// func must not call Thread.exit: wrap it with run_exitable if it can.
+	// Throws an error if the thread can not be created
+	internal async bool run_in_thread (string name, MainContext context, owned BoolFunc func) throws Error {
+		bool result = false;
+		SourceFunc callback = run_in_thread.callback;
+		new Thread<int>.try (name, () => {
+			result = func ();
+			var idle = new IdleSource ();
+			idle.set_callback ((owned) callback);
+			idle.attach (context);
+			return 0;
+		});
+		yield;
+		return result;
+	}
+
+	// run func in a nested thread and wait for it: the nested thread is exited
+	// when a download is cancelled (see cb_download), the calling one is not.
+	// Returns false if the thread can not be created, is exited or func fails
+	internal bool run_exitable (string name, BoolFunc func) {
+		bool result = false;
+		try {
+			var thread = new Thread<int>.try (name, () => {
+				result = func ();
+				return 0;
+			});
+			// -1 when the thread was exited
+			if (thread.join () == -1) {
+				return false;
+			}
+		} catch (Error e) {
+			warning (e.message);
+			return false;
+		}
+		return result;
+	}
+}

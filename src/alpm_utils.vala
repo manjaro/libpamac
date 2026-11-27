@@ -51,7 +51,14 @@ namespace Pamac {
 		GenericSet<string?> overwrite_files;
 		GenericSet<string?> to_syncfirst;
 		public Cancellable cancellable;
-		public bool downloading_updates;
+		// state of the download of updates, protected by download_updates_mutex:
+		// requested from request_download_updates () to end_download_updates (),
+		// downloading while download_updates () may be cancelled with cancellable,
+		// cancel_pending if cancelled while requested but not downloading yet
+		Mutex download_updates_mutex;
+		bool download_updates_requested;
+		bool downloading_updates;
+		bool download_updates_cancel_pending;
 		// progress data
 		public string current_filename;
 		public string current_action;
@@ -113,7 +120,10 @@ namespace Pamac {
 			last_download_progress_value = 0;
 			sender_mutex = Mutex ();
 			cancellable = new Cancellable ();
+			download_updates_mutex = Mutex ();
+			download_updates_requested = false;
 			downloading_updates = false;
+			download_updates_cancel_pending = false;
 			check_old_lock ();
 		}
 
@@ -483,9 +493,76 @@ namespace Pamac {
 			return new AlpmPackageStatic.transaction (alpm_pkg, local_pkg, sync_pkg);
 		}
 
+		// returns false if a download of updates is already requested,
+		// else end_download_updates must be called when it is finished
+		public bool request_download_updates () {
+			download_updates_mutex.lock ();
+			bool already_requested = download_updates_requested;
+			if (!already_requested) {
+				download_updates_requested = true;
+				download_updates_cancel_pending = false;
+			}
+			download_updates_mutex.unlock ();
+			return !already_requested;
+		}
+
+		// to call when the download of updates is finished,
+		// also when its thread was exited (see cb_download)
+		public void end_download_updates () {
+			download_updates_mutex.lock ();
+			download_updates_requested = false;
+			downloading_updates = false;
+			download_updates_cancel_pending = false;
+			download_updates_mutex.unlock ();
+		}
+
+		public bool is_download_updates_requested () {
+			download_updates_mutex.lock ();
+			bool requested = download_updates_requested;
+			download_updates_mutex.unlock ();
+			return requested;
+		}
+
+		// cancel the requested download of updates, even if it is not started yet:
+		// returns false if none is requested
+		public bool cancel_download_updates () {
+			download_updates_mutex.lock ();
+			bool requested = download_updates_requested;
+			if (downloading_updates) {
+				cancellable.cancel ();
+			} else if (requested) {
+				download_updates_cancel_pending = true;
+			}
+			download_updates_mutex.unlock ();
+			return requested;
+		}
+
+		// called when the download thread is exited (see cb_download):
+		// with the lock still held, so cancel_download_updates
+		// can not cancel the next operation
+		public void download_exited () {
+			download_updates_mutex.lock ();
+			downloading_updates = false;
+			download_updates_mutex.unlock ();
+		}
+
 		public bool download_updates (string sender) {
-			set_sender (sender);
+			download_updates_mutex.lock ();
+			if (download_updates_cancel_pending) {
+				download_updates_mutex.unlock ();
+				return false;
+			}
 			downloading_updates = true;
+			// reset under the mutex: a cancel_download_updates can not be lost
+			cancellable.reset ();
+			download_updates_mutex.unlock ();
+			bool success = download_updates_real (sender);
+			download_exited ();
+			return success;
+		}
+
+		bool download_updates_real (string sender) {
+			set_sender (sender);
 			// callbacks are needed to cancel the download (see cb_download)
 			// and to answer questions for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle = get_handle (false, false);
@@ -493,7 +570,6 @@ namespace Pamac {
 				return false;
 			}
 			alpm_handle.parallel_downloads = (uint) config.max_parallel_downloads;
-			cancellable.reset ();
 			bool success = false;
 			if (alpm_handle.trans_init (Alpm.TransFlag.DOWNLOADONLY) == 0) {
 				if (alpm_handle.trans_sysupgrade (0) == 0) {
@@ -506,7 +582,6 @@ namespace Pamac {
 				}
 				alpm_handle.trans_release ();
 			}
-			downloading_updates = false;
 			// enable offline upgrade
 			if (success && config.offline_upgrade) {
 				run_command ({"touch", "/system-update"});
@@ -662,6 +737,8 @@ namespace Pamac {
 
 		public bool download_pkgs (string sender, string[] urls, ref GenericArray<string> dload_paths) {
 			set_sender (sender);
+			// a previous cancellation would exit the download at once (see cb_download)
+			cancellable.reset ();
 			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
@@ -1017,29 +1094,17 @@ namespace Pamac {
 			return success;
 		}
 
-		public bool trans_run (string sender,
-								bool sysupgrade,
-								bool enable_downgrade,
-								bool simple_install,
-								bool keep_built_pkgs,
-								int trans_flags,
-								string[] to_install,
-								string[] to_remove,
-								string[] to_load_local,
-								string[] to_load_remote,
-								string[] to_install_as_dep,
-								string[] ignorepkgs,
-								string[] overwrite_files) {
+		public bool trans_run (string sender, TransactionRequest request) {
 			// start from a clean state: a previous transaction may have failed
 			// or been interrupted (download cancelled) before resetting it
 			trans_reset ();
 			set_sender (sender);
-			this.sysupgrade = sysupgrade;
-			this.enable_downgrade = enable_downgrade;
-			this.simple_install = simple_install;
+			this.sysupgrade = request.sysupgrade;
+			this.enable_downgrade = request.enable_downgrade;
+			this.simple_install = request.simple_install;
 			this.no_confirm_commit = true;
-			this.keep_built_pkgs = keep_built_pkgs;
-			this.trans_flags = trans_flags;
+			this.keep_built_pkgs = request.keep_built_pkgs;
+			this.trans_flags = request.trans_flags;
 			// CASCADE and RECURSE flags already internally handled in trans_check_prepare
 			this.trans_flags &= ~Alpm.TransFlag.CASCADE;
 			this.trans_flags &= ~Alpm.TransFlag.RECURSE;
@@ -1051,26 +1116,26 @@ namespace Pamac {
 			alpm_handle.parallel_downloads = (uint) config.max_parallel_downloads;
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle.set_questioncb (cb_question, this);
-			foreach (unowned string name in to_install) {
-				this.to_install.add (name);
+			foreach (unowned string name in request.to_install) {
+				to_install.add (name);
 			}
-			foreach (unowned string name in to_remove) {
-				this.to_remove.add (name);
+			foreach (unowned string name in request.to_remove) {
+				to_remove.add (name);
 			}
-			foreach (unowned string path in to_load_local) {
+			foreach (unowned string path in request.to_load_local) {
 				local_paths.add (path);
 			}
-			foreach (unowned string path in to_load_remote) {
+			foreach (unowned string path in request.to_load_remote) {
 				remote_paths.add (path);
 			}
-			foreach (unowned string name in to_install_as_dep) {
-				this.to_install_as_dep.insert (name, name);
+			foreach (unowned string name in request.to_install_as_dep) {
+				to_install_as_dep.insert (name, name);
 			}
-			foreach (unowned string name in ignorepkgs) {
-				this.ignorepkgs.add (name);
+			foreach (unowned string name in request.ignorepkgs) {
+				ignorepkgs.add (name);
 			}
-			foreach (unowned string name in overwrite_files) {
-				this.overwrite_files.add (name);
+			foreach (unowned string name in request.overwrite_files) {
+				overwrite_files.add (name);
 			}
 			bool success = trans_run_real (alpm_handle);
 			// do not leave targets of a failed transaction for the next one
@@ -2607,6 +2672,7 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 		alpm_utils.alpm_handle.unlock();
 		alpm_utils.do_emit_script_output ("");
 		alpm_utils.do_emit_action (dgettext (null, "Transaction cancelled") + ".");
+		alpm_utils.download_exited ();
 		Thread.exit(-1);
 	}
 	switch (event_type) {

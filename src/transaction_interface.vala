@@ -30,18 +30,7 @@ namespace Pamac {
 		public abstract async bool trans_refresh (bool force) throws Error;
 		public abstract async bool trans_refresh_files (bool force) throws Error;
 		public abstract async bool trans_refresh_aur (bool force) throws Error;
-		public abstract async bool trans_run (bool sysupgrade,
-										bool enable_downgrade,
-										bool simple_install,
-										bool keep_built_pkgs,
-										int trans_flags,
-										GenericArray<string> to_install,
-										GenericArray<string> to_remove,
-										GenericArray<string> to_load_local,
-										GenericArray<string> to_load_remote,
-										GenericArray<string> to_install_as_dep,
-										GenericArray<string> ignorepkgs,
-										GenericArray<string> overwrite_files) throws Error;
+		public abstract async bool trans_run (TransactionRequest request) throws Error;
 		public abstract void trans_cancel () throws Error;
 		public abstract void quit_daemon () throws Error;
 		public signal void emit_action (string action);

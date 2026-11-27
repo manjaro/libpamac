@@ -212,10 +212,20 @@ namespace Pamac {
 			try {
 				transaction_interface.quit_daemon ();
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("quit_daemon: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("quit_daemon", e);
 			}
+		}
+
+		// method: the failed TransactionInterface method
+		void report_daemon_error (string method, Error e) {
+			if (e is IOError.CLOSED) {
+				// the connection to the daemon was lost:
+				// already reported by TransactionInterfaceDaemon
+				return;
+			}
+			var details = new GenericArray<string> (1);
+			details.add ("%s: %s".printf (method, e.message));
+			emit_error ("Daemon Error", details);
 		}
 
 		protected virtual async bool ask_commit (TransactionSummary summary) {
@@ -314,9 +324,7 @@ namespace Pamac {
 			try {
 				return yield transaction_interface.get_authorization ();
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("get_authorization: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("get_authorization", e);
 			}
 			return false;
 		}
@@ -325,9 +333,7 @@ namespace Pamac {
 			try {
 				transaction_interface.remove_authorization ();
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("remove_authorization: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("remove_authorization", e);
 			}
 		}
 
@@ -338,9 +344,7 @@ namespace Pamac {
 			try {
 				yield transaction_interface.generate_mirrors_list (country);
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("generate_mirrors_list: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("generate_mirrors_list", e);
 			}
 			transaction_interface.generate_mirrors_list_data.disconnect (on_generate_mirrors_list_data);
 			database.refresh ();
@@ -361,9 +365,7 @@ namespace Pamac {
 			try {
 				yield transaction_interface.clean_cache (array);
 			} catch (Error e) {
-				var error_details = new GenericArray<string> (1);
-				error_details.add ("clean_cache: %s".printf (e.message));
-				emit_error ("Daemon Error", error_details);
+				report_daemon_error ("clean_cache", e);
 			}
 		}
 
@@ -375,9 +377,7 @@ namespace Pamac {
 			try {
 				yield transaction_interface.clean_build_files (real_aur_build_dir);
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("clean_build_files: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("clean_build_files", e);
 			}
 		}
 
@@ -386,9 +386,7 @@ namespace Pamac {
 			try {
 				success = yield transaction_interface.set_pkgreason (pkgname, reason);
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("set_pkgreason: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("set_pkgreason", e);
 			}
 			database.refresh ();
 			return success;
@@ -399,9 +397,7 @@ namespace Pamac {
 			try {
 				success = yield transaction_interface.download_updates ();
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("download_updates: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("download_updates", e);
 			}
 			return success;
 		}
@@ -1307,9 +1303,7 @@ namespace Pamac {
 						}
 					}
 				} catch (Error e) {
-					var details = new GenericArray<string> (1);
-					details.add ("download_pkgs: %s".printf (e.message));
-					emit_error ("Daemon Error", details);
+					report_daemon_error ("download_pkgs", e);
 					success = false;
 				}
 				if (!success) {
@@ -1318,8 +1312,8 @@ namespace Pamac {
 			}
 			var new_summary = new TransactionSummary ();
 			try {
-				new Thread<int>.try ("trans_check_prepare", () => {
-					success = alpm_utils.trans_check_prepare (alpm_sysupgrade,
+				success = yield run_in_thread ("trans_check_prepare", context, () => {
+					return alpm_utils.trans_check_prepare (alpm_sysupgrade,
 															config.enable_downgrade,
 															config.simple_install,
 															trans_flags,
@@ -1331,12 +1325,12 @@ namespace Pamac {
 															ignorepkgs,
 															overwrite_files,
 															ref new_summary);
-					context.invoke (trans_check_prepare.callback);
-					return 0;
 				});
-				yield;
 			} catch (Error e) {
-				warning (e.message);
+				var details = new GenericArray<string> (1);
+				details.add (e.message);
+				emit_error (dgettext (null, "Failed to prepare transaction"), details);
+				success = false;
 			}
 			summary = new_summary;
 			return success;
@@ -1373,9 +1367,7 @@ namespace Pamac {
 					}
 				}
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("trans_refresh: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("trans_refresh", e);
 				success = false;
 			}
 			return success;
@@ -1386,9 +1378,7 @@ namespace Pamac {
 			try {
 				success = yield transaction_interface.trans_refresh_files (force_refresh);
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("trans_refresh_files: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("trans_refresh_files", e);
 				success = false;
 			}
 			return success;
@@ -1553,55 +1543,27 @@ namespace Pamac {
 					if (!(yield prepare_build_files (summary.aur_pkgbases_to_build))) {
 						return false;
 					}
-					var to_install_array = new GenericArray<string> (to_install.length);
-					var to_remove_array = new GenericArray<string> (to_remove.length);
-					var to_load_local_array = new GenericArray<string> (to_load_local.length);
-					var to_load_remote_array = new GenericArray<string> (to_load_remote.length);
-					var to_install_as_dep_array = new GenericArray<string> (to_install_as_dep.length);
-					var ignorepkgs_array = new GenericArray<string> (ignorepkgs.length);
-					var overwrite_files_array = new GenericArray<string> (overwrite_files.length);
-					foreach (unowned string name in to_install) {
-						to_install_array.add (name);
-					}
-					foreach (unowned string name in to_remove) {
-						to_remove_array.add (name);
-					}
-					foreach (unowned string name in to_load_local) {
-						to_load_local_array.add (name);
-					}
-					foreach (unowned string name in to_load_remote) {
-						to_load_remote_array.add (name);
-					}
-					foreach (unowned string name in to_install_as_dep) {
-						to_install_as_dep_array.add (name);
-					}
-					foreach (unowned string name in ignorepkgs) {
-						ignorepkgs_array.add (name);
-					}
-					foreach (unowned string name in overwrite_files) {
-						overwrite_files_array.add (name);
-					}
 					success = yield get_authorization_async ();
 					if (!success) {
 						return false;
 					}
 					try {
-						success = yield transaction_interface.trans_run (alpm_sysupgrade,
-																	config.enable_downgrade,
-																	config.simple_install,
-																	config.keep_built_pkgs,
-																	trans_flags,
-																	to_install_array,
-																	to_remove_array,
-																	to_load_local_array,
-																	to_load_remote_array,
-																	to_install_as_dep_array,
-																	ignorepkgs_array,
-																	overwrite_files_array);
+						var request = new TransactionRequest ();
+						request.sysupgrade = alpm_sysupgrade;
+						request.enable_downgrade = config.enable_downgrade;
+						request.simple_install = config.simple_install;
+						request.keep_built_pkgs = config.keep_built_pkgs;
+						request.trans_flags = trans_flags;
+						request.to_install = set_to_strv (to_install);
+						request.to_remove = set_to_strv (to_remove);
+						request.to_load_local = set_to_strv (to_load_local);
+						request.to_load_remote = set_to_strv (to_load_remote);
+						request.to_install_as_dep = set_to_strv (to_install_as_dep);
+						request.ignorepkgs = set_to_strv (ignorepkgs);
+						request.overwrite_files = set_to_strv (overwrite_files);
+						success = yield transaction_interface.trans_run (request);
 					} catch (Error e) {
-						var details = new GenericArray<string> (1);
-						details.add ("trans_run: %s".printf (e.message));
-						emit_error ("Daemon Error", details);
+						report_daemon_error ("trans_run", e);
 						success = false;
 		 			}
 		 			return success;
@@ -1765,9 +1727,7 @@ namespace Pamac {
 			try {
 				success = yield transaction_interface.snap_trans_run (snap_to_install_array, snap_to_remove_array);
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("snap_trans_run: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("snap_trans_run", e);
 			}
 			stop_downloading ();
 			return success;
@@ -1778,9 +1738,7 @@ namespace Pamac {
 				try {
 					return yield transaction_interface.snap_switch_channel (snap_name, channel);
 				} catch (Error e) {
-					var details = new GenericArray<string> (1);
-					details.add ("snap_switch_channel: %s".printf (e.message));
-					emit_error ("Daemon Error", details);
+					report_daemon_error ("snap_switch_channel", e);
 				}
 			} else {
 				warning ("snap support disabled");
@@ -1840,9 +1798,7 @@ namespace Pamac {
 																flatpak_to_remove_array,
 																flatpak_to_upgrade_array);
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("flatpak_trans_run: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("flatpak_trans_run", e);
 			}
 			stop_downloading ();
 			return success;
@@ -2141,22 +2097,14 @@ namespace Pamac {
 			bool success = false;
 			try {
 				emit_script_output ("");
-				success = yield transaction_interface.trans_run (false, // sysupgrading,
-															false, // enable_downgrade
-															false, // simple_install
-															config.keep_built_pkgs,
-															0, // trans_flags,
-															new GenericArray<string> (), // to_install
-															new GenericArray<string> (), // to_remove
-															to_load_array,
-															new GenericArray<string> (), // to_load_remote
-															to_install_as_dep_array,
-															new GenericArray<string> (), // ignorepkgs
-															new GenericArray<string> ()); // overwrite_files
+				// only the built packages, other options are false
+				var request = new TransactionRequest ();
+				request.keep_built_pkgs = config.keep_built_pkgs;
+				request.to_load_local = to_load_array.data;
+				request.to_install_as_dep = to_install_as_dep_array.data;
+				success = yield transaction_interface.trans_run (request);
 			} catch (Error e) {
-				var details = new GenericArray<string> (1);
-				details.add ("trans_run: %s".printf (e.message));
-				emit_error ("Daemon Error", details);
+				report_daemon_error ("trans_run", e);
 				success = false;
 			}
 			return success;
@@ -2169,25 +2117,34 @@ namespace Pamac {
 				try {
 					transaction_interface.trans_cancel ();
 				} catch (Error e) {
-					var details = new GenericArray<string> (1);
-					details.add ("trans_cancel: %s".printf (e.message));
-					emit_error ("Daemon Error", details);
+					report_daemon_error ("trans_cancel", e);
 				}
 			}
 		}
 
+		// called by alpm from a worker thread: ask in context and wait for the answer
 		int choose_provider_real (string depend, GenericArray<string> providers) {
-			int index = 0;
-			var loop = new MainLoop (context);
-			context.invoke (() => {
+			if (context.is_owner ()) {
+				// not expected: waiting would block the context, iterate it instead
+				int index = 0;
+				bool answered = false;
 				choose_provider.begin (depend, providers, (obj, res) => {
 					index = choose_provider.end (res);
-					loop.quit ();
+					answered = true;
+				});
+				while (!answered) {
+					context.iteration (true);
+				}
+				return index;
+			}
+			var answer = new AsyncQueue<int?> ();
+			context.invoke (() => {
+				choose_provider.begin (depend, providers, (obj, res) => {
+					answer.push (choose_provider.end (res));
 				});
 				return false;
 			});
-			loop.run ();
-			return index;
+			return answer.pop ();
 		}
 
 		async bool ask_commit_real (TransactionSummary summary) {

@@ -20,10 +20,6 @@
 namespace Pamac {
 	internal class TransactionInterfaceRoot: Object, TransactionInterface {
 		unowned AlpmUtils alpm_utils;
-		bool trans_refresh_success;
-		bool trans_refresh_files_success;
-		bool trans_refresh_aur_success;
-		bool trans_run_success;
 		Cancellable trans_cancellable;
 		MainContext context;
 
@@ -58,315 +54,128 @@ namespace Pamac {
 			alpm_utils.alpm_config.reload ();
 		}
 
-		public async bool clean_cache (GenericArray<string> filenames) {
-			return alpm_utils.clean_cache (filenames.data);
+		public async bool clean_cache (GenericArray<string> filenames) throws Error {
+			string[] names = filenames.data;
+			return yield run_in_thread ("clean_cache", context, () => {
+				return alpm_utils.clean_cache (names);
+			});
 		}
 
-		public async bool clean_build_files (string aur_build_dir) {
-			return alpm_utils.clean_build_files (aur_build_dir, Posix.geteuid ());
+		public async bool clean_build_files (string aur_build_dir) throws Error {
+			return yield run_in_thread ("clean_build_files", context, () => {
+				return alpm_utils.clean_build_files (aur_build_dir, Posix.geteuid ());
+			});
 		}
 
 		public async bool set_pkgreason (string pkgname, uint reason) {
-			bool success = alpm_utils.set_pkgreason ("root", pkgname, reason);
-			return success;
+			return alpm_utils.set_pkgreason ("root", pkgname, reason);
 		}
 
-		public async bool download_updates () {
-			bool success = false;
-			// thread to exit when cancelled
-			try {
-				var thread = new Thread<int>.try ("download_updates", () => {
-					success = alpm_utils.download_updates ("root");
-					return 0;
-				});
-				thread.join ();
-			} catch (Error e) {
-				warning (e.message);
+		public async bool download_updates () throws Error {
+			if (!alpm_utils.request_download_updates ()) {
+				// already downloading updates
+				return false;
 			}
-			return success;
+			try {
+				return yield run_in_thread ("download_updates", context, () => {
+					return run_exitable ("download_updates", () => {
+						return alpm_utils.download_updates ("root");
+					});
+				});
+			} finally {
+				// the download thread is exited when cancelled: always end it here
+				alpm_utils.end_download_updates ();
+			}
 		}
 
 		public async string[] download_pkgs (GenericArray<string> urls) throws Error {
-			GenericArray<string> urls_copy = urls.copy (strdup);
+			string[] urls_copy = urls.data;
 			var dload_paths = new GenericArray<string> ();
-			// thread to exit when cancelled
-			try {
-				var thread = new Thread<int>.try ("download_pkgs", () => {
-					alpm_utils.download_pkgs ("root", urls_copy.data, ref dload_paths);
-					return 0;
+			yield run_in_thread ("download_pkgs", context, () => {
+				return run_exitable ("download_pkgs", () => {
+					return alpm_utils.download_pkgs ("root", urls_copy, ref dload_paths);
 				});
-				thread.join ();
-			} catch (Error e) {
-				warning (e.message);
-				trans_refresh_success = false;
-			}
+			});
 			return dload_paths.data;
 		}
 
+		async void wait_ms (uint ms) {
+			var timeout = new TimeoutSource (ms);
+			timeout.set_callback (wait_ms.callback);
+			timeout.attach (context);
+			yield;
+		}
+
+		// cancel the download of updates and wait for its end:
+		// it holds the alpm lock until its thread is exited
+		async void cancel_download_updates () {
+			if (!alpm_utils.cancel_download_updates ()) {
+				return;
+			}
+			while (alpm_utils.is_download_updates_requested ()) {
+				yield wait_ms (100);
+			}
+		}
+
+		// returns false if cancelled or after 5 min
 		async bool wait_for_lock () {
-			bool waiting = false;
-			bool success = false;
 			trans_cancellable.reset ();
-			if (alpm_utils.lockfile.query_exists ()) {
-				waiting = true;
-				start_waiting ();
-				emit_action (dgettext (null, "Waiting for another package manager to quit") + "...");
-				int i = 0;
-				var timeout = new TimeoutSource (200);
-				timeout.set_callback (() => {
-					if (!alpm_utils.lockfile.query_exists () || trans_cancellable.is_cancelled ()) {
-						context.invoke (wait_for_lock.callback);
-						success = true;
-						return false;
-					}
-					i++;
-					// wait 5 min max
-					if (i == 1500) {
-						emit_action ("%s: %s.".printf (dgettext (null, "Transaction cancelled"), dgettext (null, "Timeout expired")));
-						trans_cancellable.cancel ();
-						context.invoke (wait_for_lock.callback);
-						return false;
-					}
-					return true;
-				});
-				timeout.attach (context);
-				yield;
-			} else {
-				success = true;
+			if (!alpm_utils.lockfile.query_exists ()) {
+				return true;
 			}
-			if (waiting) {
-				stop_waiting ();
+			start_waiting ();
+			emit_action (dgettext (null, "Waiting for another package manager to quit") + "...");
+			bool success = false;
+			int64 deadline = get_monotonic_time () + 5 * TimeSpan.MINUTE;
+			while (!trans_cancellable.is_cancelled ()) {
+				yield wait_ms (200);
+				if (!alpm_utils.lockfile.query_exists ()) {
+					success = true;
+					break;
+				}
+				if (get_monotonic_time () >= deadline) {
+					emit_action ("%s: %s.".printf (dgettext (null, "Transaction cancelled"), dgettext (null, "Timeout expired")));
+					break;
+				}
 			}
+			stop_waiting ();
 			return success;
 		}
 
-		async void trans_refresh_real (bool force) {
-			bool success = yield wait_for_lock ();
-			if (!success) {
-				// cancelled
-				trans_refresh_success = false;
-				return;
+		// run func in a thread when the lock is free,
+		// returns false if cancelled, the download is cancelled or func fails
+		async bool run_locked (string name, owned BoolFunc func) throws Error {
+			yield cancel_download_updates ();
+			if (!(yield wait_for_lock ())) {
+				return false;
 			}
-			try {
-				new Thread<int>.try ("trans_refresh_real", () => {
-					// nested thread to exit when cancelled
-					try {
-						var thread = new Thread<int>.try ("trans_refresh", () => {
-							trans_refresh_success = alpm_utils.trans_refresh ("root", force);
-							return 0;
-						});
-						thread.join ();
-					} catch (Error e) {
-						warning (e.message);
-						trans_refresh_success = false;
-					}
-					context.invoke (trans_refresh_real.callback);
-					return 0;
-				});
-				yield;
-			} catch (Error e) {
-				warning (e.message);
-				trans_refresh_success = false;
-			}
+			return yield run_in_thread (name, context, () => {
+				return run_exitable (name, func);
+			});
 		}
 
-		public async bool trans_refresh (bool force) {
-			if (alpm_utils.downloading_updates) {
-				alpm_utils.cancellable.cancel ();
-				// let time to cancel download updates
-				var timeout = new TimeoutSource (1000);
-				timeout.set_callback (() => {
-					context.invoke (trans_refresh.callback);
-					return false;
-				});
-				timeout.attach (context);
-				yield;
-			}
-			yield trans_refresh_real (force);
-			return trans_refresh_success;
+		public async bool trans_refresh (bool force) throws Error {
+			return yield run_locked ("trans_refresh", () => {
+				return alpm_utils.trans_refresh ("root", force);
+			});
 		}
 
-		async void trans_refresh_files_real (bool force) {
-			bool success = yield wait_for_lock ();
-			if (!success) {
-				// cancelled
-				trans_refresh_files_success = false;
-				return;
-			}
-			try {
-				new Thread<int>.try ("trans_refresh_files_real", () => {
-					// nested thread to exit when cancelled
-					try {
-						var thread = new Thread<int>.try ("trans_refresh_files", () => {
-							trans_refresh_success = alpm_utils.trans_refresh_files ("root", force);
-							return 0;
-						});
-						thread.join ();
-					} catch (Error e) {
-						warning (e.message);
-						trans_refresh_files_success = false;
-					}
-					context.invoke (trans_refresh_files_real.callback);
-					return 0;
-				});
-				yield;
-			} catch (Error e) {
-				warning (e.message);
-				trans_refresh_files_success = false;
-			}
+		public async bool trans_refresh_files (bool force) throws Error {
+			return yield run_locked ("trans_refresh_files", () => {
+				return alpm_utils.trans_refresh_files ("root", force);
+			});
 		}
 
-		public async bool trans_refresh_files (bool force) {
-			if (alpm_utils.downloading_updates) {
-				alpm_utils.cancellable.cancel ();
-				// let time to cancel download updates
-				var timeout = new TimeoutSource (1000);
-				timeout.set_callback (() => {
-					context.invoke (trans_refresh_files.callback);
-					return false;
-				});
-				timeout.attach (context);
-				yield;
-			}
-			yield trans_refresh_files_real (force);
-			return trans_refresh_files_success;
+		public async bool trans_refresh_aur (bool force) throws Error {
+			return yield run_locked ("trans_refresh_aur", () => {
+				return alpm_utils.trans_refresh_aur ("root", force);
+			});
 		}
 
-		async void trans_refresh_aur_real (bool force) {
-			bool success = yield wait_for_lock ();
-			if (!success) {
-				// cancelled
-				trans_refresh_aur_success = false;
-				return;
-			}
-			try {
-				new Thread<int>.try ("trans_refresh_aur_real", () => {
-					// nested thread to exit when cancelled
-					try {
-						var thread = new Thread<int>.try ("trans_refresh_aur", () => {
-							trans_refresh_success = alpm_utils.trans_refresh_aur ("root", force);
-							return 0;
-						});
-						thread.join ();
-					} catch (Error e) {
-						warning (e.message);
-						trans_refresh_aur_success = false;
-					}
-					context.invoke (trans_refresh_aur_real.callback);
-					return 0;
-				});
-				yield;
-			} catch (Error e) {
-				warning (e.message);
-				trans_refresh_aur_success = false;
-			}
-		}
-
-		public async bool trans_refresh_aur (bool force) {
-			if (alpm_utils.downloading_updates) {
-				alpm_utils.cancellable.cancel ();
-				// let time to cancel download updates
-				var timeout = new TimeoutSource (1000);
-				timeout.set_callback (() => {
-					context.invoke (trans_refresh_aur.callback);
-					return false;
-				});
-				timeout.attach (context);
-				yield;
-			}
-			yield trans_refresh_aur_real (force);
-			return trans_refresh_aur_success;
-		}
-
-		async void trans_run_real (bool sysupgrade,
-							bool enable_downgrade,
-							bool simple_install,
-							bool keep_built_pkgs,
-							int trans_flags,
-							GenericArray<string> to_install,
-							GenericArray<string> to_remove,
-							GenericArray<string> to_load_local,
-							GenericArray<string> to_load_remote,
-							GenericArray<string> to_install_as_dep,
-							GenericArray<string> ignorepkgs,
-							GenericArray<string> overwrite_files) {
-			bool success = yield wait_for_lock ();
-			if (!success) {
-				// cancelled
-				trans_run_success = false;
-				return;
-			}
-			try {
-				new Thread<int>.try ("trans_run_real", () => {
-					// nested thread to exit when download is cancelled
-					try {
-						var thread = new Thread<int>.try ("trans_run", () => {
-							trans_run_success = alpm_utils.trans_run ("root",
-																sysupgrade,
-																enable_downgrade,
-																simple_install,
-																keep_built_pkgs,
-																trans_flags,
-																to_install.data,
-																to_remove.data,
-																to_load_local.data,
-																to_load_remote.data,
-																to_install_as_dep.data,
-																ignorepkgs.data,
-																overwrite_files.data);
-							return 0;
-						});
-						thread.join ();
-					} catch (Error e) {
-						warning (e.message);
-						trans_run_success = false;
-					}
-					context.invoke (trans_run_real.callback);
-					return 0;
-				});
-				yield;
-			} catch (Error e) {
-				warning (e.message);
-				trans_run_success = false;
-			}
-		}
-
-		public async bool trans_run (bool sysupgrade,
-								bool enable_downgrade,
-								bool simple_install,
-								bool keep_built_pkgs,
-								int trans_flags,
-								GenericArray<string> to_install,
-								GenericArray<string> to_remove,
-								GenericArray<string> to_load_local,
-								GenericArray<string> to_load_remote,
-								GenericArray<string> to_install_as_dep,
-								GenericArray<string> ignorepkgs,
-								GenericArray<string> overwrite_files) {
-			if (alpm_utils.downloading_updates) {
-				alpm_utils.cancellable.cancel ();
-				// let time to cancel download updates
-				var timeout = new TimeoutSource (1000);
-				timeout.set_callback (() => {
-					context.invoke (trans_run.callback);
-					return false;
-				});
-				timeout.attach (context);
-				yield;
-			}
-			yield trans_run_real (sysupgrade,
-								enable_downgrade,
-								simple_install,
-								keep_built_pkgs,
-								trans_flags,
-								to_install,
-								to_remove,
-								to_load_local,
-								to_load_remote,
-								to_install_as_dep,
-								ignorepkgs,
-								overwrite_files);
-			return trans_run_success;
+		public async bool trans_run (TransactionRequest request) throws Error {
+			return yield run_locked ("trans_run", () => {
+				return alpm_utils.trans_run ("root", request);
+			});
 		}
 
 		public async bool snap_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove) {

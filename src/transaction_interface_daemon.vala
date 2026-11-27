@@ -22,368 +22,85 @@ namespace Pamac {
 		Config config;
 		Daemon? system_daemon;
 		string sender;
-		SourceFunc generate_mirrors_list_callback;
-		bool download_updates_success;
-		SourceFunc download_updates_callback;
-		SourceFunc get_authorization_callback;
-		bool get_authorization_authorized;
-		string[] download_paths;
-		SourceFunc download_pkgs_callback;
-		SourceFunc clean_cache_callback;
-		bool clean_cache_success;
-		SourceFunc clean_build_files_callback;
-		bool clean_build_files_success;
-		SourceFunc set_pkgreason_callback;
-		bool set_pkgreason_success;
-		SourceFunc trans_refresh_callback;
-		bool trans_refresh_success;
-		SourceFunc trans_refresh_files_callback;
-		bool trans_refresh_files_success;
-		SourceFunc trans_refresh_aur_callback;
-		bool trans_refresh_aur_success;
-		SourceFunc trans_run_callback;
-		bool trans_run_success;
-		SourceFunc snap_trans_run_callback;
-		bool snap_trans_run_success;
-		SourceFunc snap_switch_channel_callback;
-		bool snap_switch_channel_success;
-		SourceFunc flatpak_trans_run_callback;
-		bool flatpak_trans_run_success;
 
 		public TransactionInterfaceDaemon (Config config) {
 			this.config = config;
 			sender = "";
 			try {
-				connecting_system_daemon ();
+				get_system_daemon ();
 			} catch (Error e) {
 				warning ("failed to connect to dbus daemon: %s", e.message);
 			}
 		}
 
+		// each method of the daemon replies when its operation is finished,
+		// with an error if the connection is lost meanwhile
 		public async bool get_authorization () throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_get_authorization ();
-				get_authorization_callback = get_authorization.callback;
-				yield;
-				return get_authorization_authorized;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_get_authorization_finished (string sender, bool authorized) {
-			if (sender == this.sender) {
-				get_authorization_authorized = authorized;
-				resume_pending ((owned) get_authorization_callback);
-			}
+			return yield get_system_daemon ().get_authorization ();
 		}
 
 		public void remove_authorization () throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.remove_authorization ();
-			} catch (Error e) {
-				throw e;
-			}
+			get_system_daemon ().remove_authorization ();
 		}
 
 		public async void generate_mirrors_list (string country) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_generate_mirrors_list (country);
-				generate_mirrors_list_callback = generate_mirrors_list.callback;
-				yield;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_generate_mirrors_list_finished (string sender) {
-			if (sender == this.sender) {
-				resume_pending ((owned) generate_mirrors_list_callback);
-			}
-		}
-
-		void on_generate_mirrors_list_data (string sender, string line) {
-			if (sender == this.sender) {
-				generate_mirrors_list_data (line);
-			}
+			yield get_system_daemon ().generate_mirrors_list (country);
 		}
 
 		public async bool clean_cache (GenericArray<string> filenames) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_clean_cache (filenames.data);
-				clean_cache_callback = clean_cache.callback;
-				yield;
-				return clean_cache_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_clean_cache_finished (string sender, bool success) {
-			if (sender == this.sender) {
-				clean_cache_success = success;
-				resume_pending ((owned) clean_cache_callback);
-			}
+			return yield get_system_daemon ().clean_cache (filenames.data);
 		}
 
 		public async bool clean_build_files (string aur_build_dir) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_clean_build_files (aur_build_dir);
-				clean_build_files_callback = clean_build_files.callback;
-				yield;
-				return clean_build_files_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_clean_clean_build_files_finished (string sender, bool success) {
-			if (sender == this.sender) {
-				clean_build_files_success = success;
-				resume_pending ((owned) clean_build_files_callback);
-			}
+			return yield get_system_daemon ().clean_build_files (aur_build_dir);
 		}
 
 		public async bool set_pkgreason (string pkgname, uint reason) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_set_pkgreason (pkgname, reason);
-				set_pkgreason_callback = set_pkgreason.callback;
-				yield;
-				return set_pkgreason_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_set_pkgreason_finished (string sender, bool success) {
-			if (sender == this.sender) {
-				set_pkgreason_success = success;
-				resume_pending ((owned) set_pkgreason_callback);
-			}
+			return yield get_system_daemon ().set_pkgreason (pkgname, reason);
 		}
 
 		public async bool download_updates () throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_download_updates ();
-				download_updates_callback = download_updates.callback;
-				yield;
-				return download_updates_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_download_updates_finished (string sender, bool success) {
-			if (sender == this.sender) {
-				download_updates_success = success;
-				resume_pending ((owned) download_updates_callback);
-			}
+			return yield get_system_daemon ().download_updates ();
 		}
 
 		public async string[] download_pkgs (GenericArray<string> urls) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_download_pkgs (urls.data);
-				download_pkgs_callback = download_pkgs.callback;
-				yield;
-				return download_paths;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_download_pkgs_finished (string sender, string[] dload_paths) {
-			if (sender == this.sender) {
-				download_paths = dload_paths;
-				resume_pending ((owned) download_pkgs_callback);
-			}
+			return yield get_system_daemon ().download_pkgs (urls.data);
 		}
 
 		public async bool trans_refresh (bool force) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_trans_refresh (force);
-				trans_refresh_callback = trans_refresh.callback;
-				yield;
-				return trans_refresh_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_trans_refresh_finished (string sender, bool success) {
-			if (sender != this.sender) {
-				return;
-			}
-			trans_refresh_success = success;
-			resume_pending ((owned) trans_refresh_callback);
+			return yield get_system_daemon ().trans_refresh (force);
 		}
 
 		public async bool trans_refresh_files (bool force) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_trans_refresh_files (force);
-				trans_refresh_files_callback = trans_refresh_files.callback;
-				yield;
-				return trans_refresh_files_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_trans_refresh_files_finished (string sender, bool success) {
-			if (sender != this.sender) {
-				return;
-			}
-			trans_refresh_files_success = success;
-			resume_pending ((owned) trans_refresh_files_callback);
+			return yield get_system_daemon ().trans_refresh_files (force);
 		}
 
 		public async bool trans_refresh_aur (bool force) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_trans_refresh_aur (force);
-				trans_refresh_aur_callback = trans_refresh_aur.callback;
-				yield;
-				return trans_refresh_aur_success;
-			} catch (Error e) {
-				throw e;
-			}
+			return yield get_system_daemon ().trans_refresh_aur (force);
 		}
 
-		void on_trans_refresh_aur_finished (string sender, bool success) {
-			if (sender != this.sender) {
-				return;
-			}
-			trans_refresh_aur_success = success;
-			resume_pending ((owned) trans_refresh_aur_callback);
-		}
-
-		public async bool trans_run (bool sysupgrade,
-								bool enable_downgrade,
-								bool simple_install,
-								bool keep_built_pkgs,
-								int trans_flags,
-								GenericArray<string> to_install,
-								GenericArray<string> to_remove,
-								GenericArray<string> to_load_local,
-								GenericArray<string> to_load_remote,
-								GenericArray<string> to_install_as_dep,
-								GenericArray<string> ignorepkgs,
-								GenericArray<string> overwrite_files) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_trans_run (sysupgrade,
-												enable_downgrade,
-												simple_install,
-												keep_built_pkgs,
-												trans_flags,
-												to_install.data,
-												to_remove.data,
-												to_load_local.data,
-												to_load_remote.data,
-												to_install_as_dep.data,
-												ignorepkgs.data,
-												overwrite_files.data);
-				trans_run_callback = trans_run.callback;
-				yield;
-				return trans_run_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_trans_run_finished (string sender, bool success) {
-			if (sender != this.sender) {
-				return;
-			}
-			trans_run_success = success;
-			resume_pending ((owned) trans_run_callback);
+		public async bool trans_run (TransactionRequest request) throws Error {
+			return yield get_system_daemon ().trans_run (request.to_dict ());
 		}
 
 		public void trans_cancel () throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.trans_cancel ();
-			} catch (Error e) {
-				throw e;
-			}
+			get_system_daemon ().trans_cancel ();
 		}
 
 		public async bool snap_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_snap_trans_run (to_install.data, to_remove.data);
-				snap_trans_run_callback = snap_trans_run.callback;
-				yield;
-				return snap_trans_run_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_snap_trans_run_finished (string sender, bool success) {
-			if (sender != this.sender) {
-				return;
-			}
-			snap_trans_run_success = success;
-			resume_pending ((owned) snap_trans_run_callback);
+			return yield get_system_daemon ().snap_trans_run (to_install.data, to_remove.data);
 		}
 
 		public async bool snap_switch_channel (string snap_name, string channel) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_snap_switch_channel (snap_name, channel);
-				snap_switch_channel_callback = snap_switch_channel.callback;
-				yield;
-				return snap_switch_channel_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_snap_switch_channel_finished (string sender, bool success) {
-			if (sender != this.sender) {
-				return;
-			}
-			snap_switch_channel_success = success;
-			resume_pending ((owned) snap_switch_channel_callback);
+			return yield get_system_daemon ().snap_switch_channel (snap_name, channel);
 		}
 
 		public async bool flatpak_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove, GenericArray<string> to_upgrade) throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.start_flatpak_trans_run (to_install.data, to_remove.data, to_upgrade.data);
-				flatpak_trans_run_callback = flatpak_trans_run.callback;
-				yield;
-				return flatpak_trans_run_success;
-			} catch (Error e) {
-				throw e;
-			}
-		}
-
-		void on_flatpak_trans_run_finished (string sender, bool success) {
-			if (sender != this.sender) {
-				return;
-			}
-			flatpak_trans_run_success = success;
-			resume_pending ((owned) flatpak_trans_run_callback);
+			return yield get_system_daemon ().flatpak_trans_run (to_install.data, to_remove.data, to_upgrade.data);
 		}
 
 		public void quit_daemon () throws Error {
-			try {
-				connecting_system_daemon ();
-				system_daemon.quit ();
-			} catch (Error e) {
-				throw e;
-			}
+			get_system_daemon ().quit ();
 		}
 
 		void on_emit_action (string sender, string action) {
@@ -462,9 +179,15 @@ namespace Pamac {
 			}
 		}
 
-		void connecting_system_daemon () throws Error {
+		void on_generate_mirrors_list_data (string sender, string line) {
+			if (sender == this.sender) {
+				generate_mirrors_list_data (line);
+			}
+		}
+
+		Daemon get_system_daemon () throws Error {
 			if (system_daemon != null) {
-				return;
+				return system_daemon;
 			}
 			DBusConnection connection = Bus.get_sync (BusType.SYSTEM);
 			if (connection.is_closed ()) {
@@ -478,6 +201,7 @@ namespace Pamac {
 			// which silently kills the client while the daemon keeps running
 			connection.exit_on_close = false;
 			Daemon daemon = connection.get_proxy_sync ("org.manjaro.pamac.daemon", "/org/manjaro/pamac/daemon");
+			disable_timeout (daemon);
 			// Set environment variables
 			daemon.set_environment_variables (config.environment_variables);
 			string new_sender = daemon.get_sender ();
@@ -485,12 +209,7 @@ namespace Pamac {
 			sender = new_sender;
 			connecting_dbus_signals ();
 			connection.on_closed.connect (on_connection_closed);
-		}
-
-		void resume_pending (owned SourceFunc? callback) {
-			if (callback != null) {
-				callback ();
-			}
+			return daemon;
 		}
 
 		void on_connection_closed (DBusConnection connection, bool remote_peer_vanished, Error? error) {
@@ -503,36 +222,9 @@ namespace Pamac {
 				details.add (error.message);
 			}
 			emit_error (_("Connection to the daemon was lost"), details);
-			// resume pending operations, they will report a failure
-			get_authorization_authorized = false;
-			clean_cache_success = false;
-			clean_build_files_success = false;
-			set_pkgreason_success = false;
-			download_updates_success = false;
-			download_paths = {};
-			trans_refresh_success = false;
-			trans_refresh_files_success = false;
-			trans_refresh_aur_success = false;
-			trans_run_success = false;
-			snap_trans_run_success = false;
-			snap_switch_channel_success = false;
-			flatpak_trans_run_success = false;
+			// the pending calls fail with IOError.CLOSED
 			stop_downloading ();
 			stop_waiting ();
-			resume_pending ((owned) get_authorization_callback);
-			resume_pending ((owned) generate_mirrors_list_callback);
-			resume_pending ((owned) clean_cache_callback);
-			resume_pending ((owned) clean_build_files_callback);
-			resume_pending ((owned) set_pkgreason_callback);
-			resume_pending ((owned) download_updates_callback);
-			resume_pending ((owned) download_pkgs_callback);
-			resume_pending ((owned) trans_refresh_callback);
-			resume_pending ((owned) trans_refresh_files_callback);
-			resume_pending ((owned) trans_refresh_aur_callback);
-			resume_pending ((owned) trans_run_callback);
-			resume_pending ((owned) snap_trans_run_callback);
-			resume_pending ((owned) snap_switch_channel_callback);
-			resume_pending ((owned) flatpak_trans_run_callback);
 		}
 
 		void connecting_dbus_signals () {
@@ -548,21 +240,7 @@ namespace Pamac {
 			system_daemon.stop_downloading.connect (on_stop_downloading);
 			system_daemon.start_waiting.connect (on_start_waiting);
 			system_daemon.stop_waiting.connect (on_stop_waiting);
-			system_daemon.get_authorization_finished.connect (on_get_authorization_finished);
-			system_daemon.clean_cache_finished.connect (on_clean_cache_finished);
-			system_daemon.clean_build_files_finished.connect (on_clean_clean_build_files_finished);
-			system_daemon.set_pkgreason_finished.connect (on_set_pkgreason_finished);
-			system_daemon.trans_refresh_finished.connect (on_trans_refresh_finished);
-			system_daemon.trans_refresh_files_finished.connect (on_trans_refresh_files_finished);
-			system_daemon.trans_refresh_aur_finished.connect (on_trans_refresh_aur_finished);
-			system_daemon.trans_run_finished.connect (on_trans_run_finished);
-			system_daemon.download_updates_finished.connect (on_download_updates_finished);
-			system_daemon.download_pkgs_finished.connect (on_download_pkgs_finished);
 			system_daemon.generate_mirrors_list_data.connect (on_generate_mirrors_list_data);
-			system_daemon.generate_mirrors_list_finished.connect (on_generate_mirrors_list_finished);
-			system_daemon.snap_trans_run_finished.connect (on_snap_trans_run_finished);
-			system_daemon.snap_switch_channel_finished.connect (on_snap_switch_channel_finished);
-			system_daemon.flatpak_trans_run_finished.connect (on_flatpak_trans_run_finished);
 		}
 	}
 }

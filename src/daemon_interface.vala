@@ -18,39 +18,35 @@
  */
 
 namespace Pamac {
+	// the long methods reply when they are finished:
+	// use the proxy with no timeout (see disable_timeout)
 	[DBus (name = "org.manjaro.pamac.daemon")]
 	interface Daemon : Object {
 		public abstract string get_sender () throws Error;
 		public abstract string get_lockfile () throws Error;
 		public abstract void set_environment_variables (HashTable<string,string> variables) throws Error;
-		public abstract void start_get_authorization () throws Error;
+		public abstract async bool get_authorization () throws Error;
 		public abstract void remove_authorization () throws Error;
-		public abstract void start_write_alpm_config (HashTable<string,Variant> new_alpm_conf) throws Error;
-		public abstract void start_write_pamac_config (HashTable<string,Variant> new_pamac_conf) throws Error;
-		public abstract void start_generate_mirrors_list (string country) throws Error;
-		public abstract void start_clean_cache (string[] filenames) throws Error;
-		public abstract void start_clean_build_files (string aur_build_dir) throws Error;
-		public abstract void start_set_pkgreason (string pkgname, uint reason) throws Error;
-		public abstract void start_download_updates () throws Error;
-		public abstract void start_download_pkgs (string[] urls) throws Error;
-		public abstract void start_trans_refresh (bool force) throws Error;
-		public abstract void start_trans_refresh_files (bool force) throws Error;
-		public abstract void start_trans_refresh_aur (bool force) throws Error;
-		public abstract void start_trans_run (bool sysupgrade,
-											bool enable_downgrade,
-											bool simple_install,
-											bool keep_built_pkgs,
-											int trans_flags,
-											string[] to_install,
-											string[] to_remove,
-											string[] to_load_local,
-											string[] to_load_remote,
-											string[] to_install_as_dep,
-											string[] ignorepkgs,
-											string[] overwrite_files) throws Error;
+		public abstract async void write_alpm_config (HashTable<string,Variant> new_alpm_conf) throws Error;
+		public abstract async void write_pamac_config (HashTable<string,Variant> new_pamac_conf) throws Error;
+		public abstract async void generate_mirrors_list (string country) throws Error;
+		public abstract async bool clean_cache (string[] filenames) throws Error;
+		public abstract async bool clean_build_files (string aur_build_dir) throws Error;
+		public abstract async bool set_pkgreason (string pkgname, uint reason) throws Error;
+		public abstract async bool download_updates () throws Error;
+		public abstract async string[] download_pkgs (string[] urls) throws Error;
+		public abstract async bool trans_refresh (bool force) throws Error;
+		public abstract async bool trans_refresh_files (bool force) throws Error;
+		public abstract async bool trans_refresh_aur (bool force) throws Error;
+		// request: see TransactionRequest
+		public abstract async bool trans_run (HashTable<string,Variant> request) throws Error;
+		public abstract async bool snap_trans_run (string[] to_install, string[] to_remove) throws Error;
+		public abstract async bool snap_switch_channel (string snap_name, string channel) throws Error;
+		public abstract async bool flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade) throws Error;
 		public abstract void trans_cancel () throws Error;
 		[DBus (no_reply = true)]
 		public abstract void quit () throws Error;
+		// progress signals, sent only to the client given as sender
 		public signal void emit_action (string sender, string action);
 		public signal void emit_action_progress (string sender, string action, string status, double progress);
 		public signal void emit_download_progress (string sender, string action, string status, double progress);
@@ -61,27 +57,13 @@ namespace Pamac {
 		public signal void important_details_outpout (string sender, bool must_show);
 		public signal void start_downloading (string sender);
 		public signal void stop_downloading (string sender);
-		public signal void set_pkgreason_finished (string sender, bool success);
 		public signal void start_waiting (string sender);
 		public signal void stop_waiting (string sender);
-		public signal void download_pkgs_finished (string sender, string[] dload_paths);
-		public signal void trans_refresh_finished (string sender, bool success);
-		public signal void trans_refresh_files_finished (string sender, bool success);
-		public signal void trans_refresh_aur_finished (string sender, bool success);
-		public signal void trans_run_finished (string sender, bool success);
-		public signal void download_updates_finished (string sender, bool success);
-		public signal void get_authorization_finished (string sender, bool authorized);
-		public signal void write_alpm_config_finished (string sender);
-		public signal void write_pamac_config_finished (string sender);
 		public signal void generate_mirrors_list_data (string sender, string line);
-		public signal void generate_mirrors_list_finished (string sender);
-		public signal void clean_cache_finished (string sender, bool success);
-		public signal void clean_build_files_finished (string sender, bool success);
-		public abstract void start_snap_trans_run (string[] to_install, string[] to_remove) throws Error;
-		public abstract void start_snap_switch_channel (string snap_name, string channel) throws Error;
-		public signal void snap_trans_run_finished (string sender, bool success);
-		public signal void snap_switch_channel_finished (string sender, bool success);
-		public abstract void start_flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade) throws Error;
-		public signal void flatpak_trans_run_finished (string sender, bool success);
+	}
+
+	// the methods of the daemon can last longer than the default D-Bus timeout
+	internal void disable_timeout (Daemon daemon) {
+		((DBusProxy) daemon).set_default_timeout (int.MAX);
 	}
 }

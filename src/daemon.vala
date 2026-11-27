@@ -28,7 +28,8 @@ namespace Pamac {
 	public class Daemon: Object {
 		Config config;
 		AlpmUtils alpm_utils;
-		int running_threads;
+		// operations in progress, quit waits for them
+		int running_operations;
 		FileMonitor lockfile_monitor;
 		// signaled when the external lock file is removed
 		Cond lockfile_cond;
@@ -41,8 +42,6 @@ namespace Pamac {
 		HashTable<string, HashTable<string, string>> pending_environments;
 		// uid of the user who started the current download of updates
 		int64 download_updates_uid;
-		// 1 from the request of a download of updates to its end
-		int download_updates_running;
 		HashTable<string, Cancellable> cancellables_table;
 		SnapPlugin snap_plugin;
 		FlatpakPlugin flatpak_plugin;
@@ -57,25 +56,9 @@ namespace Pamac {
 		public signal void important_details_outpout (string sender, bool must_show);
 		public signal void start_downloading (string sender);
 		public signal void stop_downloading (string sender);
-		public signal void set_pkgreason_finished (string sender, bool success);
 		public signal void start_waiting (string sender);
 		public signal void stop_waiting (string sender);
-		public signal void trans_refresh_finished (string sender, bool success);
-		public signal void trans_refresh_files_finished (string sender, bool success);
-		public signal void trans_refresh_aur_finished (string sender, bool success);
-		public signal void trans_run_finished (string sender, bool success);
-		public signal void download_updates_finished (string sender, bool success);
-		public signal void download_pkgs_finished (string sender, string[] dload_paths);
-		public signal void get_authorization_finished (string sender, bool authorized);
-		public signal void write_alpm_config_finished (string sender);
-		public signal void write_pamac_config_finished (string sender);
 		public signal void generate_mirrors_list_data (string sender, string line);
-		public signal void generate_mirrors_list_finished (string sender);
-		public signal void clean_cache_finished (string sender, bool success);
-		public signal void clean_build_files_finished (string sender, bool success);
-		public signal void snap_trans_run_finished (string sender, bool success);
-		public signal void snap_switch_channel_finished (string sender, bool success);
-		public signal void flatpak_trans_run_finished (string sender, bool success);
 		// broadcast to every client, unlike the signals above which are sent
 		// only to the client they are meant for (see direct_signals_filter):
 		// it carries no information about who ran the transaction, so other
@@ -104,24 +87,14 @@ namespace Pamac {
 			} catch (Error e) {
 				warning (e.message);
 			}
-			running_threads = 0;
+			running_operations = 0;
 			answer_cond = Cond ();
 			answer_mutex = Mutex ();
 			authorization_mutex = Mutex ();
 			authorized_senders = new GenericSet<string> (str_hash, str_equal);
 			pending_environments = new HashTable<string, HashTable<string, string>> (str_hash, str_equal);
 			download_updates_uid = -1;
-			download_updates_running = 0;
 			cancellables_table = new HashTable<string, Cancellable> (str_hash, str_equal);
-			trans_run_finished.connect (() => {
-				transaction_finished ();
-			});
-			snap_trans_run_finished.connect (() => {
-				transaction_finished ();
-			});
-			flatpak_trans_run_finished.connect (() => {
-				transaction_finished ();
-			});
 			// forget the clients which left the bus
 			try {
 				Bus.get_sync (BusType.SYSTEM).signal_subscribe ("org.freedesktop.DBus",
@@ -292,7 +265,7 @@ namespace Pamac {
 		// an unauthenticated refresh may only interrupt a download of updates
 		// started by the same user, otherwise it waits for the lock
 		bool may_cancel_download_updates (string sender) {
-			if (!alpm_utils.downloading_updates) {
+			if (!alpm_utils.is_download_updates_requested ()) {
 				return false;
 			}
 			int64 uid = get_sender_uid (sender);
@@ -331,10 +304,17 @@ namespace Pamac {
 			}
 		}
 
+		// the methods doing some work are counted from their call to their reply,
+		// including the wait for polkit, so quit does not stop the daemon meanwhile
+		void hold () {
+			AtomicInt.inc (ref running_operations);
+		}
+
+		void release () {
+			AtomicInt.dec_and_test (ref running_operations);
+		}
+
 		async bool check_authorization (BusName sender) {
-			// a pending authorization counts as running work: quit must not
-			// stop the daemon while waiting for polkit
-			AtomicInt.inc (ref running_threads);
 			bool authorized = false;
 			try {
 				Polkit.Authority authority = yield Polkit.Authority.get_async ();
@@ -353,37 +333,31 @@ namespace Pamac {
 			} catch (Error e) {
 				emit_error (sender, _("Authentication failed"), {e.message});
 			}
-			// released after the caller callback has started its worker thread
-			Idle.add (() => {
-				AtomicInt.dec_and_test (ref running_threads);
-				return false;
-			});
 			return authorized;
 		}
 
-		public void start_get_authorization (BusName sender) throws Error {
+		public async bool get_authorization (BusName sender) throws Error {
 			authorization_mutex.lock ();
 			bool fast_authorized = authorized_senders.contains (sender);
 			authorization_mutex.unlock ();
 			if (fast_authorized) {
-				Idle.add (() => {
-					// the client may have sent new proxy settings since
-					// it was authorized, apply them as check_authorization does
-					apply_pending_environment (sender);
-					get_authorization_finished (sender, true);
-					return false;
-				});
-				return;
+				// the client may have sent new proxy settings since
+				// it was authorized, apply them as check_authorization does
+				apply_pending_environment (sender);
+				return true;
 			}
-			check_authorization.begin (sender, (obj, res) => {
-				bool authorized = check_authorization.end (res);
+			hold ();
+			try {
+				bool authorized = yield check_authorization (sender);
 				if (authorized) {
 					authorization_mutex.lock ();
 					authorized_senders.add (sender);
 					authorization_mutex.unlock ();
 				}
-				get_authorization_finished (sender, authorized);
-			});
+				return authorized;
+			} finally {
+				release ();
+			}
 		}
 
 		public void remove_authorization (BusName sender) throws Error {
@@ -391,10 +365,6 @@ namespace Pamac {
 			authorized_senders.remove (sender);
 			authorization_mutex.unlock ();
 		}
-
-		delegate void WorkerFunc ();
-		delegate bool LockedFunc ();
-		delegate void FinishedFunc (bool success);
 
 		Cancellable get_cancellable (string sender) {
 			Cancellable? cancellable = cancellables_table.lookup (sender);
@@ -405,70 +375,40 @@ namespace Pamac {
 			return cancellable;
 		}
 
-		// run func in a worker thread counted in running_threads, so quit waits for it.
-		// Called from the main thread: the counter is incremented before the thread starts
-		bool start_thread (string sender, string name, owned WorkerFunc func) {
-			AtomicInt.inc (ref running_threads);
-			try {
-				new Thread<int>.try (name, () => {
-					func ();
-					AtomicInt.dec_and_test (ref running_threads);
-					return 0;
-				});
-				return true;
-			} catch (Error e) {
-				emit_error (sender, "Daemon Error", {e.message});
-				AtomicInt.dec_and_test (ref running_threads);
-				return false;
-			}
-		}
-
-		// check the authorization of sender then run func in a worker thread,
-		// on_failure is called instead if it is not authorized or the thread can not start
-		void start_authorized_thread (BusName sender, string name, owned WorkerFunc func, owned WorkerFunc on_failure) {
-			check_authorization.begin (sender, (obj, res) => {
-				bool authorized = check_authorization.end (res);
-				if (!authorized || !start_thread (sender, name, (owned) func)) {
-					on_failure ();
-				}
-			});
+		// run func in a worker thread, the coroutine is resumed in the main thread
+		async bool run_thread (string name, owned BoolFunc func) throws Error {
+			return yield run_in_thread (name, MainContext.default (), (owned) func);
 		}
 
 		// run func with the lock held, in a nested thread which is exited
 		// when a download is cancelled (see cb_download).
+		// To call from a worker thread.
 		// Returns false if the lock is not acquired, the thread is exited or func fails
-		bool run_locked (string sender, Cancellable cancellable, bool quiet, LockedFunc func) {
+		bool run_locked (string sender, Cancellable cancellable, bool quiet, BoolFunc func) {
 			if (!wait_for_lock (sender, cancellable, quiet)) {
 				return false;
 			}
-			bool success = false;
-			try {
-				var thread = new Thread<int>.try ("locked_work", () => {
-					success = func ();
-					return 0;
-				});
-				// -1 when the thread was exited
-				if (thread.join () == -1) {
-					success = false;
-				}
-			} catch (Error e) {
-				emit_error (sender, "Daemon Error", {e.message});
-				success = false;
-			}
+			bool success = run_exitable ("locked_work", func);
 			lockfile_mutex.unlock ();
 			return success;
 		}
 
-		public void start_write_alpm_config (HashTable<string,Variant> new_alpm_conf, BusName sender) throws Error {
-			start_authorized_thread (sender, "write_alpm_config", () => {
-				lockfile_mutex.lock ();
-				alpm_utils.alpm_config.write (new_alpm_conf);
-				alpm_utils.alpm_config.reload ();
-				lockfile_mutex.unlock ();
-				write_alpm_config_finished (sender);
-			}, () => {
-				write_alpm_config_finished (sender);
-			});
+		public async void write_alpm_config (HashTable<string,Variant> new_alpm_conf, BusName sender) throws Error {
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return;
+				}
+				yield run_thread ("write_alpm_config", () => {
+					lockfile_mutex.lock ();
+					alpm_utils.alpm_config.write (new_alpm_conf);
+					alpm_utils.alpm_config.reload ();
+					lockfile_mutex.unlock ();
+					return true;
+				});
+			} finally {
+				release ();
+			}
 		}
 
 		// run a command without shell parsing and without waiting for it
@@ -480,144 +420,168 @@ namespace Pamac {
 			}
 		}
 
-		public void start_write_pamac_config (HashTable<string,Variant> new_pamac_conf, BusName sender) throws Error {
-			check_authorization.begin (sender, (obj, res) => {
-				bool authorized = check_authorization.end (res);
-				if (authorized) {
-					bool old_enable_snap = config.enable_snap;
-					bool old_offline_upgrade = config.offline_upgrade;
-					config.write (new_pamac_conf);
-					config.reload ();
-					// only change the services when the options changed
-					if (config.enable_snap && !old_enable_snap) {
-						spawn_command_async ({"systemctl", "enable", "--now", "snapd.service"});
-					}
-					if (config.offline_upgrade != old_offline_upgrade) {
-						spawn_command_async ({"systemctl", config.offline_upgrade ? "enable" : "disable", "pamac-offline-upgrade.service"});
-					}
+		public async void write_pamac_config (HashTable<string,Variant> new_pamac_conf, BusName sender) throws Error {
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return;
 				}
-				write_pamac_config_finished (sender);
-			});
+				bool old_enable_snap = config.enable_snap;
+				bool old_offline_upgrade = config.offline_upgrade;
+				config.write (new_pamac_conf);
+				config.reload ();
+				// only change the services when the options changed
+				if (config.enable_snap && !old_enable_snap) {
+					spawn_command_async ({"systemctl", "enable", "--now", "snapd.service"});
+				}
+				if (config.offline_upgrade != old_offline_upgrade) {
+					spawn_command_async ({"systemctl", config.offline_upgrade ? "enable" : "disable", "pamac-offline-upgrade.service"});
+				}
+			} finally {
+				release ();
+			}
 		}
 
-		public void start_generate_mirrors_list (string country, BusName sender) throws Error {
+		public async void generate_mirrors_list (string country, BusName sender) throws Error {
 			// the country must not be read as an option by pacman-mirrors
 			if (country.length == 0 || country.has_prefix ("-")) {
 				emit_error (sender, "Daemon Error", {"invalid country: %s".printf (country)});
-				Idle.add (() => {
-					generate_mirrors_list_finished (sender);
-					return false;
-				});
 				return;
 			}
-			start_authorized_thread (sender, "generate_mirrors_list", () => {
-				try {
-					var process = new Subprocess.newv (
-						{"pacman-mirrors", "--no-color", "--country=" + country},
-						SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
-					var dis = new DataInputStream (process.get_stdout_pipe ());
-					string? line;
-					while ((line = dis.read_line ()) != null) {
-						generate_mirrors_list_data (sender, line);
-					}
-				} catch (Error e) {
-					emit_error (sender, "Daemon Error", {e.message});
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return;
 				}
-				lockfile_mutex.lock ();
-				alpm_utils.alpm_config.reload ();
-				lockfile_mutex.unlock ();
-				generate_mirrors_list_finished (sender);
-			}, () => {
-				generate_mirrors_list_finished (sender);
-			});
+				yield run_thread ("generate_mirrors_list", () => {
+					try {
+						var process = new Subprocess.newv (
+							{"pacman-mirrors", "--no-color", "--country=" + country},
+							SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
+						var dis = new DataInputStream (process.get_stdout_pipe ());
+						string? line;
+						while ((line = dis.read_line ()) != null) {
+							generate_mirrors_list_data (sender, line);
+						}
+					} catch (Error e) {
+						emit_error (sender, "Daemon Error", {e.message});
+					}
+					lockfile_mutex.lock ();
+					alpm_utils.alpm_config.reload ();
+					lockfile_mutex.unlock ();
+					return true;
+				});
+			} finally {
+				release ();
+			}
 		}
 
 		// the cleanings run with the lock held: they must not remove the files
 		// used by a running transaction nor block the main loop
-		public void start_clean_cache (string[] filenames, BusName sender) throws Error {
+		public async bool clean_cache (string[] filenames, BusName sender) throws Error {
 			string[] names = filenames;
 			var cancellable = get_cancellable (sender);
-			start_authorized_thread (sender, "clean_cache", () => {
-				bool success = false;
-				if (wait_for_lock (sender, cancellable, true)) {
-					success = alpm_utils.clean_cache (names);
-					lockfile_mutex.unlock ();
-				}
-				clean_cache_finished (sender, success);
-			}, () => {
-				clean_cache_finished (sender, false);
-			});
-		}
-
-		public void start_clean_build_files (string aur_build_dir, BusName sender) throws Error {
-			var cancellable = get_cancellable (sender);
-			start_authorized_thread (sender, "clean_build_files", () => {
-				bool success = false;
-				if (wait_for_lock (sender, cancellable, true)) {
-					success = alpm_utils.clean_build_files (aur_build_dir, get_sender_uid (sender));
-					lockfile_mutex.unlock ();
-				}
-				clean_build_files_finished (sender, success);
-			}, () => {
-				clean_build_files_finished (sender, false);
-			});
-		}
-
-		public void start_set_pkgreason (string pkgname, uint reason, BusName sender) throws Error {
-			start_authorized_thread (sender, "set_pkgreason", () => {
-				lockfile_mutex.lock ();
-				bool success = alpm_utils.set_pkgreason (sender, pkgname, reason);
-				lockfile_mutex.unlock ();
-				set_pkgreason_finished (sender, success);
-			}, () => {
-				set_pkgreason_finished (sender, false);
-			});
-		}
-
-		public void start_download_updates (BusName sender) throws Error {
-			// set from the main thread: a second call can not start another download
-			// while the first one waits for the lock
-			if (!AtomicInt.compare_and_exchange (ref download_updates_running, 0, 1)) {
-				// already downloading updates
-				// always answer, the caller is waiting for the finished signal
-				Idle.add (() => {
-					download_updates_finished (sender, false);
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
 					return false;
+				}
+				return yield run_thread ("clean_cache", () => {
+					if (!wait_for_lock (sender, cancellable, true)) {
+						return false;
+					}
+					bool success = alpm_utils.clean_cache (names);
+					lockfile_mutex.unlock ();
+					return success;
 				});
-				return;
+			} finally {
+				release ();
+			}
+		}
+
+		public async bool clean_build_files (string aur_build_dir, BusName sender) throws Error {
+			var cancellable = get_cancellable (sender);
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return false;
+				}
+				return yield run_thread ("clean_build_files", () => {
+					if (!wait_for_lock (sender, cancellable, true)) {
+						return false;
+					}
+					bool success = alpm_utils.clean_build_files (aur_build_dir, get_sender_uid (sender));
+					lockfile_mutex.unlock ();
+					return success;
+				});
+			} finally {
+				release ();
+			}
+		}
+
+		public async bool set_pkgreason (string pkgname, uint reason, BusName sender) throws Error {
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return false;
+				}
+				return yield run_thread ("set_pkgreason", () => {
+					lockfile_mutex.lock ();
+					bool success = alpm_utils.set_pkgreason (sender, pkgname, reason);
+					lockfile_mutex.unlock ();
+					return success;
+				});
+			} finally {
+				release ();
+			}
+		}
+
+		// does not check authorization
+		public async bool download_updates (BusName sender) throws Error {
+			// requested from the main thread: a second call can not start another download
+			// while the first one waits for the lock
+			if (!alpm_utils.request_download_updates ()) {
+				// already downloading updates
+				return false;
 			}
 			var cancellable = get_cancellable (sender);
 			download_updates_uid = get_sender_uid (sender);
-			bool started = start_thread (sender, "download_updates", () => {
-				bool success = run_locked (sender, cancellable, true, () => {
-					return alpm_utils.download_updates (sender);
+			hold ();
+			try {
+				return yield run_thread ("download_updates", () => {
+					return run_locked (sender, cancellable, true, () => {
+						return alpm_utils.download_updates (sender);
+					});
 				});
+			} finally {
 				// the download thread is exited when cancelled
-				// or may return early: always reset the flags here
-				alpm_utils.downloading_updates = false;
-				AtomicInt.set (ref download_updates_running, 0);
-				download_updates_finished (sender, success);
-			});
-			if (!started) {
-				AtomicInt.set (ref download_updates_running, 0);
-				download_updates_finished (sender, false);
+				// or may return early: always end it here
+				alpm_utils.end_download_updates ();
+				release ();
 			}
 		}
 
-		public void start_download_pkgs (string[] urls, BusName sender) throws Error {
+		public async string[] download_pkgs (string[] urls, BusName sender) throws Error {
 			string[] urls_copy = urls;
 			var cancellable = get_cancellable (sender);
-			start_authorized_thread (sender, "download_pkgs", () => {
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return {};
+				}
 				var dload_paths = new GenericArray<string> ();
-				run_locked (sender, cancellable, true, () => {
-					return alpm_utils.download_pkgs (sender, urls_copy, ref dload_paths);
+				yield run_thread ("download_pkgs", () => {
+					return run_locked (sender, cancellable, true, () => {
+						return alpm_utils.download_pkgs (sender, urls_copy, ref dload_paths);
+					});
 				});
-				download_pkgs_finished (sender, dload_paths.data);
-			}, () => {
-				download_pkgs_finished (sender, {});
-			});
+				return dload_paths.data;
+			} finally {
+				release ();
+			}
 		}
 
+		// to call from a worker thread
 		bool wait_for_lock (string sender, Cancellable cancellable, bool quiet = false) {
 			bool waiting = false;
 			bool success = false;
@@ -629,7 +593,9 @@ namespace Pamac {
 					emit_action (sender, _("Waiting for another package manager to quit") + "...");
 				}
 				answer_mutex.lock ();
-				int i = 0;
+				// wait 5 min max: a deadline because answer_cond is also
+				// broadcast by the cancellations of other clients
+				int64 deadline = get_monotonic_time () + 5 * TimeSpan.MINUTE;
 				while (!cancellable.is_cancelled ()) {
 					// wait 200 ms for cancellation
 					int64 end_time = get_monotonic_time () + 200 * TimeSpan.MILLISECOND;
@@ -638,9 +604,7 @@ namespace Pamac {
 						success = true;
 						break;
 					}
-					i++;
-					// wait 5 min max
-					if (i == 1500) {
+					if (get_monotonic_time () >= deadline) {
 						cancellable.cancel ();
 						if (!quiet) {
 							emit_action (sender, "%s: %s.".printf (_("Transaction cancelled"), _("Timeout expired")));
@@ -658,143 +622,118 @@ namespace Pamac {
 		}
 
 		// the refreshes do not check authorization
-		void start_refresh (string sender, string name, owned LockedFunc func, owned FinishedFunc finished) {
+		async bool refresh (string sender, string name, owned BoolFunc func) throws Error {
 			var cancellable = get_cancellable (sender);
-			bool cancel_download = may_cancel_download_updates (sender);
-			bool started = start_thread (sender, name, () => {
-				if (cancel_download && alpm_utils.downloading_updates) {
-					// cancel download updates
-					alpm_utils.cancellable.cancel ();
-				}
-				finished (run_locked (sender, cancellable, false, func));
-			});
-			if (!started) {
-				finished (false);
+			if (may_cancel_download_updates (sender)) {
+				// also if it waits for the lock, else the refresh would wait for it
+				alpm_utils.cancel_download_updates ();
+			}
+			hold ();
+			try {
+				return yield run_thread (name, () => {
+					return run_locked (sender, cancellable, false, func);
+				});
+			} finally {
+				release ();
 			}
 		}
 
-		public void start_trans_refresh (bool force, BusName sender) throws Error {
-			start_refresh (sender, "trans_refresh", () => {
+		public async bool trans_refresh (bool force, BusName sender) throws Error {
+			return yield refresh (sender, "trans_refresh", () => {
 				return alpm_utils.trans_refresh (sender, force);
-			}, (success) => {
-				trans_refresh_finished (sender, success);
 			});
 		}
 
-		public void start_trans_refresh_files (bool force, BusName sender) throws Error {
-			start_refresh (sender, "trans_refresh_files", () => {
+		public async bool trans_refresh_files (bool force, BusName sender) throws Error {
+			return yield refresh (sender, "trans_refresh_files", () => {
 				return alpm_utils.trans_refresh_files (sender, force);
-			}, (success) => {
-				trans_refresh_files_finished (sender, success);
 			});
 		}
 
-		public void start_trans_refresh_aur (bool force, BusName sender) throws Error {
-			start_refresh (sender, "trans_refresh_aur", () => {
+		public async bool trans_refresh_aur (bool force, BusName sender) throws Error {
+			return yield refresh (sender, "trans_refresh_aur", () => {
 				return alpm_utils.trans_refresh_aur (sender, force);
-			}, (success) => {
-				trans_refresh_aur_finished (sender, success);
 			});
 		}
 
-		public void start_trans_run (bool sysupgrade,
-									bool enable_downgrade,
-									bool simple_install,
-									bool keep_built_pkgs,
-									int trans_flags,
-									string[] to_install,
-									string[] to_remove,
-									string[] to_load_local,
-									string[] to_load_remote,
-									string[] to_install_as_dep,
-									string[] ignorepkgs,
-									string[] overwrite_files,
-									BusName sender) throws Error {
-			string[] to_install_copy = to_install;
-			string[] to_remove_copy = to_remove;
-			string[] to_load_local_copy = to_load_local;
-			string[] to_load_remote_copy = to_load_remote;
-			string[] to_install_as_dep_copy = to_install_as_dep;
-			string[] ignorepkgs_copy = ignorepkgs;
-			string[] overwrite_files_copy = overwrite_files;
+		// request: see TransactionRequest
+		public async bool trans_run (HashTable<string,Variant> request, BusName sender) throws Error {
+			var trans_request = new TransactionRequest.from_dict (request);
 			var cancellable = get_cancellable (sender);
-			start_authorized_thread (sender, "trans_run", () => {
-				if (alpm_utils.downloading_updates) {
-					// cancel download updates
-					alpm_utils.cancellable.cancel ();
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return false;
 				}
-				bool success = run_locked (sender, cancellable, false, () => {
-					return alpm_utils.trans_run (sender,
-												sysupgrade,
-												enable_downgrade,
-												simple_install,
-												keep_built_pkgs,
-												trans_flags,
-												to_install_copy,
-												to_remove_copy,
-												to_load_local_copy,
-												to_load_remote_copy,
-												to_install_as_dep_copy,
-												ignorepkgs_copy,
-												overwrite_files_copy);
+				// also if it waits for the lock, else the transaction would wait for it
+				alpm_utils.cancel_download_updates ();
+				return yield run_thread ("trans_run", () => {
+					return run_locked (sender, cancellable, false, () => {
+						return alpm_utils.trans_run (sender, trans_request);
+					});
 				});
-				trans_run_finished (sender, success);
-			}, () => {
-				trans_run_finished (sender, false);
-			});
+			} finally {
+				transaction_finished ();
+				release ();
+			}
 		}
 
-		public void start_snap_trans_run (string[] to_install, string[] to_remove, BusName sender) throws Error {
+		public async bool snap_trans_run (string[] to_install, string[] to_remove, BusName sender) throws Error {
 			if (!config.enable_snap) {
-				Idle.add (() => {
-					snap_trans_run_finished (sender, false);
-					return false;
-				});
-				return;
+				return false;
 			}
 			string[] to_install_copy = to_install;
 			string[] to_remove_copy = to_remove;
-			start_authorized_thread (sender, "snap_trans_run", () => {
-				bool success = snap_plugin.trans_run (sender, to_install_copy, to_remove_copy);
-				snap_trans_run_finished (sender, success);
-			}, () => {
-				snap_trans_run_finished (sender, false);
-			});
-		}
-
-		public void start_snap_switch_channel (string snap_name, string snap_channel, BusName sender) throws Error {
-			if (!config.enable_snap) {
-				Idle.add (() => {
-					snap_switch_channel_finished (sender, false);
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
 					return false;
+				}
+				return yield run_thread ("snap_trans_run", () => {
+					return snap_plugin.trans_run (sender, to_install_copy, to_remove_copy);
 				});
-				return;
+			} finally {
+				transaction_finished ();
+				release ();
 			}
-			start_authorized_thread (sender, "snap_switch_channel", () => {
-				bool success = snap_plugin.switch_channel (sender, snap_name, snap_channel);
-				snap_switch_channel_finished (sender, success);
-			}, () => {
-				snap_switch_channel_finished (sender, false);
-			});
 		}
 
-		public void start_flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade, BusName sender) throws Error {
-			if (!config.enable_flatpak) {
-				Idle.add (() => {
-					flatpak_trans_run_finished (sender, false);
+		public async bool snap_switch_channel (string snap_name, string snap_channel, BusName sender) throws Error {
+			if (!config.enable_snap) {
+				return false;
+			}
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
 					return false;
+				}
+				return yield run_thread ("snap_switch_channel", () => {
+					return snap_plugin.switch_channel (sender, snap_name, snap_channel);
 				});
-				return;
+			} finally {
+				release ();
+			}
+		}
+
+		public async bool flatpak_trans_run (string[] to_install, string[] to_remove, string[] to_upgrade, BusName sender) throws Error {
+			if (!config.enable_flatpak) {
+				return false;
 			}
 			string[] to_install_copy = to_install;
 			string[] to_remove_copy = to_remove;
 			string[] to_upgrade_copy = to_upgrade;
-			start_authorized_thread (sender, "flatpak_trans_run", () => {
-				bool success = flatpak_plugin.trans_run (sender, to_install_copy, to_remove_copy, to_upgrade_copy);
-				flatpak_trans_run_finished (sender, success);
-			}, () => {
-				flatpak_trans_run_finished (sender, false);
-			});
+			hold ();
+			try {
+				if (!(yield check_authorization (sender))) {
+					return false;
+				}
+				return yield run_thread ("flatpak_trans_run", () => {
+					return flatpak_plugin.trans_run (sender, to_install_copy, to_remove_copy, to_upgrade_copy);
+				});
+			} finally {
+				transaction_finished ();
+				release ();
+			}
 		}
 
 		public void trans_cancel (BusName sender) throws Error {
@@ -818,10 +757,10 @@ namespace Pamac {
 		[DBus (no_reply = true)]
 		public void quit () throws Error {
 			// do not quit if downloading updates
-			if (alpm_utils.downloading_updates) {
+			if (alpm_utils.is_download_updates_requested ()) {
 				return;
 			}
-			if (AtomicInt.get (ref running_threads) == 0) {
+			if (AtomicInt.get (ref running_operations) == 0) {
 				loop.quit ();
 			}
 		}
