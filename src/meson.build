@@ -76,14 +76,20 @@ if get_option('enable-flatpak')
 	common_vala_args += '--define=ENABLE_FLATPAK'
 endif
 
-libpamac = library('pamac',
-	sources: ['package.vala', 'alpm_package.vala', 'utils.vala',
+# the source lists are also used by the tests, which need the internal symbols
+libpamac_sources = files('package.vala', 'alpm_package.vala', 'utils.vala',
 			'plugin_loader.vala', 'alpm_config.vala', 'pamac_config.vala', 'version.vala',
 			'aur_interface.vala', 'database.vala', 'transaction.vala', 'alpm_utils.vala',
 			'transaction_request.vala', 'transaction_sink.vala', 'alpm_runner.vala', 'transaction_interface.vala', 'transaction_interface_root.vala', 'daemon_interface.vala',
 			'transaction_interface_daemon.vala', 'snap_interface.vala', 'flatpak_interface.vala', 'pgp_key.vala',
-			'appstream_interface.vala', 'updates_checker.vala'],
-	dependencies: [alpm_deps, math, libsoup, gmodule],
+			'appstream_interface.vala', 'updates_checker.vala')
+libpamac_deps = [alpm_deps, math, libsoup, gmodule]
+# for the unit tests
+utils_test_sources = files('utils.vala', 'version.vala', 'transaction_request.vala', 'transaction_sink.vala')
+
+libpamac = library('pamac',
+	sources: libpamac_sources,
+	dependencies: libpamac_deps,
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
 	version: '12.0',
@@ -100,11 +106,15 @@ pkg.generate(libpamac,
 # fix the gir and create typelib files
 subdir('gir')
 
-executable('pamac-daemon',
-	sources: ['version.vala', 'package.vala', 'alpm_package.vala', 'aur_interface.vala', 'utils.vala',
-				'alpm_utils.vala', 'transaction_request.vala', 'transaction_sink.vala', 'alpm_runner.vala', 'alpm_config.vala', 'pamac_config_daemon.vala', 'daemon.vala', 'plugin_loader.vala',
-				'database.vala', 'appstream_interface.vala', 'snap_interface.vala', 'flatpak_interface.vala'],
-	dependencies: [alpm_deps, math, libsoup, polkit, gmodule],
+# the daemon sources without its D-Bus service and main
+daemon_common_sources = files('version.vala', 'package.vala', 'alpm_package.vala', 'aur_interface.vala', 'utils.vala',
+				'alpm_utils.vala', 'transaction_request.vala', 'transaction_sink.vala', 'alpm_runner.vala', 'alpm_config.vala', 'pamac_config_daemon.vala', 'plugin_loader.vala',
+				'database.vala', 'appstream_interface.vala', 'snap_interface.vala', 'flatpak_interface.vala')
+daemon_deps = [alpm_deps, math, libsoup, polkit, gmodule]
+
+pamac_daemon = executable('pamac-daemon',
+	sources: [daemon_common_sources, 'daemon.vala'],
+	dependencies: daemon_deps,
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
 	install : true)

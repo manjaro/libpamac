@@ -7,3 +7,4 @@ project('libpamac', 'c', 'vala',
 subdir('src')
 subdir('po')
 subdir('data')
+subdir('tests')
