@@ -11,6 +11,7 @@ resources/updates_dialog.ui
 src/alpm_package.vala
 src/alpm_utils.vala
 src/aur_plugin.vala
+src/aur_review.vala
 src/cli.vala
 src/daemon.vala
 src/database-gtk.vala

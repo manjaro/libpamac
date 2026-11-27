@@ -72,6 +72,7 @@ namespace Pamac {
 		public signal void emit_hook_progress (string action, string details, string status, double progress);
 		public signal void emit_script_output (string message);
 		public signal void emit_warning (string message);
+		public signal void aur_review_ready (string pkgbase, AurReview review);
 		public signal void emit_error (string message, GenericArray<string> details);
 		public signal void start_waiting ();
 		public signal void stop_waiting ();
@@ -90,6 +91,7 @@ namespace Pamac {
 		construct {
 			config = database.config;
 			context = database.context;
+			database.aur_review_ready.connect (on_aur_review_ready);
 			alpm_utils = new AlpmUtils (config);
 			if (Posix.geteuid () == 0) {
 				// we are root
@@ -199,6 +201,19 @@ namespace Pamac {
 			build_cancellable = new Cancellable ();
 			building = false;
 			connecting_signals ();
+		}
+
+		void on_aur_review_ready (string pkgbase, AurReview review) {
+			context.invoke (() => {
+				aur_review_ready (pkgbase, review);
+				foreach (unowned string message in review.warnings) {
+					emit_warning ("%s: %s".printf (pkgbase, message));
+				}
+				foreach (unowned string message in review.notes) {
+					emit_script_output ("%s: %s".printf (pkgbase, message));
+				}
+				return false;
+			});
 		}
 
 		~Transaction () {
@@ -2035,6 +2050,8 @@ namespace Pamac {
 				unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
 				string pkgdir = Path.build_filename (real_aur_build_dir, pkgname);
 				bool as_root = Posix.geteuid () == 0;
+				// Check current content again, including edits made after preparation.
+				database.review_build_files (pkgname);
 				// building
 				building = true;
 				start_building ();
@@ -2083,6 +2100,7 @@ namespace Pamac {
 							cmdline.add ("--property=WorkingDirectory=/var/cache/pamac/%s".printf (pkgname));
 						}
 						cmdline.add ("makepkg");
+						database.review_build_files (pkgname);
 						cmdline.add ("--packagelist");
 						if (!config.keep_built_pkgs) {
 							cmdline.add ("PKGDEST=%s".printf (pkgdir));
