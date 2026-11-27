@@ -20,12 +20,14 @@
 namespace Pamac {
 	internal class TransactionInterfaceRoot: Object, TransactionInterface {
 		unowned AlpmUtils alpm_utils;
+		TransactionSink sink;
 		Cancellable trans_cancellable;
 		MainContext context;
 
-		public TransactionInterfaceRoot (AlpmUtils alpm_utils, MainContext context) {
+		public TransactionInterfaceRoot (AlpmUtils alpm_utils, MainContext context, TransactionSink sink) {
 			this.alpm_utils = alpm_utils;
 			this.context = context;
+			this.sink = sink;
 			trans_cancellable = new Cancellable ();
 		}
 
@@ -46,7 +48,7 @@ namespace Pamac {
 				var dis = new DataInputStream (process.get_stdout_pipe ());
 				string? line;
 				while ((line = yield dis.read_line_async ()) != null) {
-					generate_mirrors_list_data (line);
+					sink.emit_script_output (line);
 				}
 			} catch (Error e) {
 				warning (e.message);
@@ -68,7 +70,7 @@ namespace Pamac {
 		}
 
 		public async bool set_pkgreason (string pkgname, uint reason) {
-			return alpm_utils.set_pkgreason ("root", pkgname, reason);
+			return alpm_utils.set_pkgreason (sink, pkgname, reason);
 		}
 
 		public async bool download_updates () throws Error {
@@ -79,7 +81,7 @@ namespace Pamac {
 			try {
 				return yield run_in_thread ("download_updates", context, () => {
 					return run_exitable ("download_updates", () => {
-						return alpm_utils.download_updates ("root");
+						return alpm_utils.download_updates (sink);
 					});
 				});
 			} finally {
@@ -93,7 +95,7 @@ namespace Pamac {
 			var dload_paths = new GenericArray<string> ();
 			yield run_in_thread ("download_pkgs", context, () => {
 				return run_exitable ("download_pkgs", () => {
-					return alpm_utils.download_pkgs ("root", urls_copy, ref dload_paths);
+					return alpm_utils.download_pkgs (sink, urls_copy, ref dload_paths);
 				});
 			});
 			return dload_paths.data;
@@ -123,8 +125,8 @@ namespace Pamac {
 			if (!alpm_utils.lockfile.query_exists ()) {
 				return true;
 			}
-			start_waiting ();
-			emit_action (dgettext (null, "Waiting for another package manager to quit") + "...");
+			sink.start_waiting ();
+			sink.emit_action (dgettext (null, "Waiting for another package manager to quit") + "...");
 			bool success = false;
 			int64 deadline = get_monotonic_time () + 5 * TimeSpan.MINUTE;
 			while (!trans_cancellable.is_cancelled ()) {
@@ -134,11 +136,11 @@ namespace Pamac {
 					break;
 				}
 				if (get_monotonic_time () >= deadline) {
-					emit_action ("%s: %s.".printf (dgettext (null, "Transaction cancelled"), dgettext (null, "Timeout expired")));
+					sink.emit_action ("%s: %s.".printf (dgettext (null, "Transaction cancelled"), dgettext (null, "Timeout expired")));
 					break;
 				}
 			}
-			stop_waiting ();
+			sink.stop_waiting ();
 			return success;
 		}
 
@@ -156,25 +158,25 @@ namespace Pamac {
 
 		public async bool trans_refresh (bool force) throws Error {
 			return yield run_locked ("trans_refresh", () => {
-				return alpm_utils.trans_refresh ("root", force);
+				return alpm_utils.trans_refresh (sink, force);
 			});
 		}
 
 		public async bool trans_refresh_files (bool force) throws Error {
 			return yield run_locked ("trans_refresh_files", () => {
-				return alpm_utils.trans_refresh_files ("root", force);
+				return alpm_utils.trans_refresh_files (sink, force);
 			});
 		}
 
 		public async bool trans_refresh_aur (bool force) throws Error {
 			return yield run_locked ("trans_refresh_aur", () => {
-				return alpm_utils.trans_refresh_aur ("root", force);
+				return alpm_utils.trans_refresh_aur (sink, force);
 			});
 		}
 
 		public async bool trans_run (TransactionRequest request) throws Error {
 			return yield run_locked ("trans_run", () => {
-				return alpm_utils.trans_run ("root", request);
+				return alpm_utils.trans_run (sink, request);
 			});
 		}
 
@@ -195,7 +197,7 @@ namespace Pamac {
 
 		public void trans_cancel () {
 			trans_cancellable.cancel ();
-			alpm_utils.trans_cancel ("root");
+			alpm_utils.trans_cancel (sink);
 		}
 
 		public void quit_daemon () {

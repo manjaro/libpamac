@@ -20,11 +20,13 @@
 namespace Pamac {
 	internal class TransactionInterfaceDaemon: Object, TransactionInterface {
 		Config config;
+		TransactionSink sink;
 		Daemon? system_daemon;
 		string sender;
 
-		public TransactionInterfaceDaemon (Config config) {
+		public TransactionInterfaceDaemon (Config config, TransactionSink sink) {
 			this.config = config;
+			this.sink = sink;
 			sender = "";
 			try {
 				get_system_daemon ();
@@ -103,88 +105,6 @@ namespace Pamac {
 			get_system_daemon ().quit ();
 		}
 
-		void on_emit_action (string sender, string action) {
-			if (sender == this.sender) {
-				emit_action (action);
-			}
-		}
-
-		void on_emit_action_progress (string sender, string action, string status, double progress) {
-			if (sender == this.sender) {
-				emit_action_progress (action, status, progress);
-			}
-		}
-
-		void on_emit_download_progress (string sender, string action, string status, double progress) {
-			if (sender == this.sender) {
-				emit_download_progress (action, status, progress);
-			}
-		}
-
-		void on_emit_hook_progress (string sender, string action, string details, string status, double progress) {
-			if (sender == this.sender) {
-				emit_hook_progress (action, details, status, progress);
-			}
-		}
-
-		void on_emit_script_output (string sender, string message) {
-			if (sender == this.sender) {
-				emit_script_output (message);
-			}
-		}
-
-		void on_emit_warning (string sender, string message) {
-			if (sender == this.sender) {
-				emit_warning (message);
-			}
-		}
-
-		void on_emit_error (string sender, string message, string[] details) {
-			if (sender == this.sender) {
-				var details_array = new GenericArray<string> (details.length);
-				foreach (unowned string detail in details) {
-					details_array.add (detail);
-				}
-				emit_error (message, details_array);
-			}
-		}
-
-		void on_important_details_outpout (string sender, bool must_show) {
-			if (sender == this.sender) {
-				important_details_outpout (must_show);
-			}
-		}
-
-		void on_start_downloading (string sender) {
-			if (sender == this.sender) {
-				start_downloading ();
-			}
-		}
-
-		void on_stop_downloading (string sender) {
-			if (sender == this.sender) {
-				stop_downloading ();
-			}
-		}
-
-		void on_start_waiting (string sender) {
-			if (sender == this.sender) {
-				start_waiting ();
-			}
-		}
-
-		void on_stop_waiting (string sender) {
-			if (sender == this.sender) {
-				stop_waiting ();
-			}
-		}
-
-		void on_generate_mirrors_list_data (string sender, string line) {
-			if (sender == this.sender) {
-				generate_mirrors_list_data (line);
-			}
-		}
-
 		Daemon get_system_daemon () throws Error {
 			if (system_daemon != null) {
 				return system_daemon;
@@ -221,26 +141,79 @@ namespace Pamac {
 			if (error != null) {
 				details.add (error.message);
 			}
-			emit_error (_("Connection to the daemon was lost"), details);
+			sink.emit_error (_("Connection to the daemon was lost"), details);
 			// the pending calls fail with IOError.CLOSED
-			stop_downloading ();
-			stop_waiting ();
+			sink.stop_downloading ();
+			sink.stop_waiting ();
 		}
 
+		// the signals are sent only to this client (see the daemon),
+		// check the sender in case another one would be broadcast
 		void connecting_dbus_signals () {
-			system_daemon.emit_action.connect (on_emit_action);
-			system_daemon.emit_action_progress.connect (on_emit_action_progress);
-			system_daemon.emit_download_progress.connect (on_emit_download_progress);
-			system_daemon.emit_hook_progress.connect (on_emit_hook_progress);
-			system_daemon.emit_script_output.connect (on_emit_script_output);
-			system_daemon.emit_warning.connect (on_emit_warning);
-			system_daemon.emit_error.connect (on_emit_error);
-			system_daemon.important_details_outpout.connect (on_important_details_outpout);
-			system_daemon.start_downloading.connect (on_start_downloading);
-			system_daemon.stop_downloading.connect (on_stop_downloading);
-			system_daemon.start_waiting.connect (on_start_waiting);
-			system_daemon.stop_waiting.connect (on_stop_waiting);
-			system_daemon.generate_mirrors_list_data.connect (on_generate_mirrors_list_data);
+			system_daemon.emit_action.connect ((sender, action) => {
+				if (sender == this.sender) {
+					sink.emit_action (action);
+				}
+			});
+			system_daemon.emit_action_progress.connect ((sender, action, status, progress) => {
+				if (sender == this.sender) {
+					sink.emit_action_progress (action, status, progress);
+				}
+			});
+			system_daemon.emit_download_progress.connect ((sender, action, status, progress) => {
+				if (sender == this.sender) {
+					sink.emit_download_progress (action, status, progress);
+				}
+			});
+			system_daemon.emit_hook_progress.connect ((sender, action, details, status, progress) => {
+				if (sender == this.sender) {
+					sink.emit_hook_progress (action, details, status, progress);
+				}
+			});
+			system_daemon.emit_script_output.connect ((sender, message) => {
+				if (sender == this.sender) {
+					sink.emit_script_output (message);
+				}
+			});
+			system_daemon.emit_warning.connect ((sender, message) => {
+				if (sender == this.sender) {
+					sink.emit_warning (message);
+				}
+			});
+			system_daemon.emit_error.connect ((sender, message, details) => {
+				if (sender == this.sender) {
+					var details_array = new GenericArray<string> (details.length);
+					foreach (unowned string detail in details) {
+						details_array.add (detail);
+					}
+					sink.emit_error (message, details_array);
+				}
+			});
+			system_daemon.important_details_outpout.connect ((sender, must_show) => {
+				if (sender == this.sender) {
+					sink.important_details_outpout (must_show);
+				}
+			});
+			system_daemon.start_downloading.connect ((sender) => {
+				if (sender == this.sender) {
+					sink.start_downloading ();
+				}
+			});
+			system_daemon.stop_downloading.connect ((sender) => {
+				if (sender == this.sender) {
+					sink.stop_downloading ();
+				}
+			});
+			system_daemon.start_waiting.connect ((sender) => {
+				if (sender == this.sender) {
+					sink.start_waiting ();
+				}
+			});
+			system_daemon.stop_waiting.connect ((sender) => {
+				if (sender == this.sender) {
+					sink.stop_waiting ();
+				}
+			});
 		}
 	}
 }

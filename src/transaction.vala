@@ -20,6 +20,8 @@
 namespace Pamac {
 	public class Transaction: Object {
 		TransactionInterface transaction_interface;
+		// receives the progress of the operations, from any thread
+		TransactionSink sink;
 		unowned Config config;
 		unowned MainContext context;
 		// run transaction data
@@ -94,12 +96,13 @@ namespace Pamac {
 			config = database.config;
 			context = database.context;
 			alpm_utils = new AlpmUtils (config);
+			sink = new MainContextSink (this, context);
 			if (Posix.geteuid () == 0) {
 				// we are root
-				transaction_interface = new TransactionInterfaceRoot (alpm_utils, context);
+				transaction_interface = new TransactionInterfaceRoot (alpm_utils, context, sink);
 			} else {
 				// use dbus daemon
-				transaction_interface = new TransactionInterfaceDaemon (config);
+				transaction_interface = new TransactionInterfaceDaemon (config, sink);
 			}
 			// transaction options
 			download_only = false;
@@ -126,67 +129,6 @@ namespace Pamac {
 			overwrite_files = new GenericSet<string?> (str_hash, str_equal);
 			to_install_as_dep = new GenericSet<string?> (str_hash, str_equal);
 			pgp_keys = new HashTable<string, PGPKey> (str_hash, str_equal);
-			alpm_utils.choose_provider.connect (choose_provider_real);
-			alpm_utils.emit_action.connect ((sender, action) => {
-				context.invoke (() => {
-					emit_action (action);
-					return false;
-				});
-			});
-			alpm_utils.emit_action_progress.connect ((sender, action, status, progress) => {
-				context.invoke (() => {
-					emit_action_progress (action, status, progress);
-					return false;
-				});
-			});
-			alpm_utils.emit_hook_progress.connect ((sender, action, details, status, progress) => {
-				context.invoke (() => {
-					emit_hook_progress (action, details, status, progress);
-					return false;
-				});
-			});
-			alpm_utils.emit_download_progress.connect ((sender, action, status, progress) => {
-				context.invoke (() => {
-					emit_download_progress (action, status, progress);
-					return false;
-				});
-			});
-			alpm_utils.start_downloading.connect ((sender) => {
-				context.invoke (() => {
-					start_downloading ();
-					return false;
-				});
-			});
-			alpm_utils.stop_downloading.connect ((sender) => {
-				context.invoke (() => {
-					stop_downloading ();
-					return false;
-				});
-			});
-			alpm_utils.emit_script_output.connect ((sender, message) => {
-				context.invoke (() => {
-					emit_script_output (message);
-					return false;
-				});
-			});
-			alpm_utils.emit_warning.connect ((sender, message) => {
-				context.invoke (() => {
-					emit_warning (message);
-					return false;
-				});
-			});
-			alpm_utils.emit_error.connect ((sender, message, details) => {
-				context.invoke (() => {
-					emit_error (message, details);
-					return false;
-				});
-			});
-			alpm_utils.important_details_outpout.connect ((sender, must_show) => {
-				context.invoke (() => {
-					important_details_outpout (must_show);
-					return false;
-				});
-			});
 			snap_to_install = new HashTable<string, SnapPackage> (str_hash, str_equal);
 			snap_to_remove = new HashTable<string, SnapPackage> (str_hash, str_equal);
 			flatpak_to_install = new HashTable<string, FlatpakPackage> (str_hash, str_equal);
@@ -201,7 +143,6 @@ namespace Pamac {
 			to_build_queue = new Queue<string> ();
 			build_cancellable = new Cancellable ();
 			building = false;
-			connecting_signals ();
 		}
 
 		~Transaction () {
@@ -340,18 +281,12 @@ namespace Pamac {
 		public async void generate_mirrors_list_async (string country) {
 			emit_action (dgettext (null, "Refreshing mirrors list") + "...");
 			important_details_outpout (false);
-			transaction_interface.generate_mirrors_list_data.connect (on_generate_mirrors_list_data);
 			try {
 				yield transaction_interface.generate_mirrors_list (country);
 			} catch (Error e) {
 				report_daemon_error ("generate_mirrors_list", e);
 			}
-			transaction_interface.generate_mirrors_list_data.disconnect (on_generate_mirrors_list_data);
 			database.refresh ();
-		}
-
-		void on_generate_mirrors_list_data (string line) {
-			emit_script_output (line);
 		}
 
 		public async void clean_cache_async () {
@@ -1313,7 +1248,8 @@ namespace Pamac {
 			var new_summary = new TransactionSummary ();
 			try {
 				success = yield run_in_thread ("trans_check_prepare", context, () => {
-					return alpm_utils.trans_check_prepare (alpm_sysupgrade,
+					return alpm_utils.trans_check_prepare (sink,
+															alpm_sysupgrade,
 															config.enable_downgrade,
 															config.simple_install,
 															trans_flags,
@@ -2123,7 +2059,7 @@ namespace Pamac {
 		}
 
 		// called by alpm from a worker thread: ask in context and wait for the answer
-		int choose_provider_real (string depend, GenericArray<string> providers) {
+		internal int choose_provider_real (string depend, GenericArray<string> providers) {
 			if (context.is_owner ()) {
 				// not expected: waiting would block the context, iterate it instead
 				int index = 0;
@@ -2182,68 +2118,123 @@ namespace Pamac {
 			add_snaps_flatpaks_to_summary (full_summary);
 			return yield ask_edit_build_files (full_summary);
 		}
+	}
 
-		void on_emit_action (string action) {
-			emit_action (action);
+	// emits the progress with the signals of a transaction, in its context
+	internal class MainContextSink : Object, TransactionSink {
+		// the transaction owns its sink
+		unowned Transaction transaction;
+		unowned MainContext context;
+
+		public MainContextSink (Transaction transaction, MainContext context) {
+			this.transaction = transaction;
+			this.context = context;
 		}
 
-		void on_emit_action_progress (string action, string status, double progress) {
-			emit_action_progress (action, status, progress);
+		// run func in context: at once if called from it,
+		// so the order of the calls is kept in any case
+		void invoke (owned SourceFunc func) {
+			context.invoke ((owned) func);
 		}
 
-		void on_emit_download_progress (string action, string status, double progress) {
-			emit_download_progress (action, status, progress);
+		public void emit_action (string action) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_action (action);
+				return false;
+			});
 		}
 
-		void on_emit_hook_progress (string action, string details, string status, double progress) {
-			emit_hook_progress (action, details, status, progress);
+		public void emit_action_progress (string action, string status, double progress) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_action_progress (action, status, progress);
+				return false;
+			});
 		}
 
-		void on_emit_script_output (string message) {
-			emit_script_output (message);
+		public void emit_download_progress (string action, string status, double progress) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_download_progress (action, status, progress);
+				return false;
+			});
 		}
 
-		void on_emit_warning (string message) {
-			emit_warning (message);
+		public void emit_hook_progress (string action, string details, string status, double progress) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_hook_progress (action, details, status, progress);
+				return false;
+			});
 		}
 
-		void on_emit_error (string message, GenericArray<string> details) {
-			emit_error (message, details);
+		public void emit_script_output (string message) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_script_output (message);
+				return false;
+			});
 		}
 
-		void on_important_details_outpout (bool must_show) {
-			important_details_outpout (must_show);
+		public void emit_warning (string message) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_warning (message);
+				return false;
+			});
 		}
 
-		void on_start_downloading () {
-			start_downloading ();
+		public void emit_error (string message, GenericArray<string> details) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_error (message, details);
+				return false;
+			});
 		}
 
-		void on_stop_downloading () {
-			stop_downloading ();
+		public void important_details_outpout (bool must_show) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.important_details_outpout (must_show);
+				return false;
+			});
 		}
 
-		void on_start_waiting () {
-			start_waiting ();
+		public void start_downloading () {
+			Transaction t = transaction;
+			invoke (() => {
+				t.start_downloading ();
+				return false;
+			});
 		}
 
-		void on_stop_waiting () {
-			stop_waiting ();
+		public void stop_downloading () {
+			Transaction t = transaction;
+			invoke (() => {
+				t.stop_downloading ();
+				return false;
+			});
 		}
 
-		void connecting_signals () {
-			transaction_interface.emit_action.connect (on_emit_action);
-			transaction_interface.emit_action_progress.connect (on_emit_action_progress);
-			transaction_interface.emit_download_progress.connect (on_emit_download_progress);
-			transaction_interface.emit_hook_progress.connect (on_emit_hook_progress);
-			transaction_interface.emit_script_output.connect (on_emit_script_output);
-			transaction_interface.emit_warning.connect (on_emit_warning);
-			transaction_interface.emit_error.connect (on_emit_error);
-			transaction_interface.important_details_outpout.connect (on_important_details_outpout);
-			transaction_interface.start_downloading.connect (on_start_downloading);
-			transaction_interface.stop_downloading.connect (on_stop_downloading);
-			transaction_interface.start_waiting.connect (on_start_waiting);
-			transaction_interface.stop_waiting.connect (on_stop_waiting);
+		public void start_waiting () {
+			Transaction t = transaction;
+			invoke (() => {
+				t.start_waiting ();
+				return false;
+			});
+		}
+
+		public void stop_waiting () {
+			Transaction t = transaction;
+			invoke (() => {
+				t.stop_waiting ();
+				return false;
+			});
+		}
+
+		public int choose_provider (string depend, GenericArray<string> providers) {
+			return transaction.choose_provider_real (depend, providers);
 		}
 	}
 }

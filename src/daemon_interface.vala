@@ -59,7 +59,6 @@ namespace Pamac {
 		public signal void stop_downloading (string sender);
 		public signal void start_waiting (string sender);
 		public signal void stop_waiting (string sender);
-		public signal void generate_mirrors_list_data (string sender, string line);
 	}
 
 	// the methods of the daemon can last longer than the default D-Bus timeout

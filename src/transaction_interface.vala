@@ -18,6 +18,8 @@
  */
 
 namespace Pamac {
+	// runs the operations, as root or with the daemon,
+	// and reports their progress to the TransactionSink given to the implementation
 	internal interface TransactionInterface : Object {
 		public abstract async bool get_authorization () throws Error;
 		public abstract void remove_authorization () throws Error;
@@ -33,19 +35,6 @@ namespace Pamac {
 		public abstract async bool trans_run (TransactionRequest request) throws Error;
 		public abstract void trans_cancel () throws Error;
 		public abstract void quit_daemon () throws Error;
-		public signal void emit_action (string action);
-		public signal void emit_action_progress (string action, string status, double progress);
-		public signal void start_downloading ();
-		public signal void stop_downloading ();
-		public signal void start_waiting ();
-		public signal void stop_waiting ();
-		public signal void emit_download_progress (string action, string status, double progress);
-		public signal void emit_hook_progress (string action, string details, string status, double progress);
-		public signal void emit_script_output (string message);
-		public signal void emit_warning (string message);
-		public signal void emit_error (string message, GenericArray<string> details);
-		public signal void important_details_outpout (bool must_show);
-		public signal void generate_mirrors_list_data (string line);
 		public abstract async bool snap_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove) throws Error;
 		public abstract async bool snap_switch_channel (string snap_name, string channel) throws Error;
 		public abstract async bool flatpak_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove, GenericArray<string> to_upgrade) throws Error;

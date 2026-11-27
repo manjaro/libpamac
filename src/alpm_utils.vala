@@ -19,10 +19,23 @@
 
 namespace Pamac {
 	internal class AlpmUtils: Object {
-		string sender;
-		// trans_cancel reads sender from the main thread
-		// while worker threads replace it
-		Mutex sender_mutex;
+		// receives the progress of the current operation, replaced by each one:
+		// read by the alpm callbacks and trans_cancel from other threads
+		TransactionSink _sink;
+		Mutex sink_mutex;
+		public TransactionSink sink {
+			owned get {
+				sink_mutex.lock ();
+				TransactionSink current = _sink;
+				sink_mutex.unlock ();
+				return current;
+			}
+			set {
+				sink_mutex.lock ();
+				_sink = value;
+				sink_mutex.unlock ();
+			}
+		}
 		Config config;
 		public AlpmConfig alpm_config;
 		public File lockfile;
@@ -78,20 +91,10 @@ namespace Pamac {
 		string last_download_progress_action;
 		double last_download_progress_value;
 
-		public signal int choose_provider (string depend, GenericArray<string> providers);
-		public signal void start_downloading (string sender);
-		public signal void stop_downloading (string sender);
-		public signal void emit_action (string sender, string action);
-		public signal void emit_action_progress (string sender, string action, string status, double progress);
-		public signal void emit_download_progress (string sender, string action, string status, double progress);
-		public signal void emit_hook_progress (string sender, string action, string details, string status, double progress);
-		public signal void emit_script_output (string sender, string message);
-		public signal void emit_warning (string sender, string message);
-		public signal void emit_error (string sender, string message, GenericArray<string> details);
-		public signal void important_details_outpout (string sender, bool must_show);
 
 		public AlpmUtils (Config config) {
-			sender = "";
+			sink_mutex = Mutex ();
+			_sink = new NullSink ();
 			this.config = config;
 			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
 			alpm_config = config.alpm_config;
@@ -118,57 +121,12 @@ namespace Pamac {
 			last_download_progress_time = 0;
 			last_download_progress_action = "";
 			last_download_progress_value = 0;
-			sender_mutex = Mutex ();
 			cancellable = new Cancellable ();
 			download_updates_mutex = Mutex ();
 			download_updates_requested = false;
 			downloading_updates = false;
 			download_updates_cancel_pending = false;
 			check_old_lock ();
-		}
-
-		public int do_choose_provider (string depend, GenericArray<string> providers) {
-			return choose_provider (depend, providers);
-		}
-
-		void do_start_downloading () {
-			start_downloading (sender);
-		}
-
-		void do_stop_downloading () {
-			stop_downloading (sender);
-		}
-
-		public void do_emit_action (string action) {
-			emit_action (sender, action);
-		}
-
-		void do_emit_action_progress (string action, string status, double progress) {
-			emit_action_progress (sender, action, status, progress);
-		}
-
-		void do_emit_download_progress (string action, string status, double progress) {
-			emit_download_progress (sender, action, status, progress);
-		}
-
-		void do_emit_hook_progress (string action, string details, string status, double progress) {
-			emit_hook_progress (sender, action, details, status, progress);
-		}
-
-		public void do_emit_script_output (string message) {
-			emit_script_output (sender, message);
-		}
-
-		void do_emit_warning (string message) {
-			emit_warning (sender, message);
-		}
-
-		void do_emit_error (string message, GenericArray<string> details) {
-			emit_error (sender, message, details);
-		}
-
-		void do_important_details_outpout (bool must_show) {
-			important_details_outpout (sender, must_show);
 		}
 
 		void check_old_lock () {
@@ -210,7 +168,7 @@ namespace Pamac {
 			if (alpm_handle == null) {
 				var details = new GenericArray<string> (1);
 				details.add (_("Failed to initialize alpm library"));
-				do_emit_error ("Alpm Error", details);
+				sink.emit_error ("Alpm Error", details);
 				return alpm_handle;
 			}
 			if (callbacks) {
@@ -224,8 +182,8 @@ namespace Pamac {
 			return alpm_handle;
 		}
 
-		public bool set_pkgreason (string sender, string pkgname, uint reason) {
-			set_sender (sender);
+		public bool set_pkgreason (TransactionSink sink, string pkgname, uint reason) {
+			this.sink = sink;
 			var alpm_handle = get_handle (false, false, false);
 			if (alpm_handle == null) {
 				return false;
@@ -355,15 +313,15 @@ namespace Pamac {
 						// remove remaining lock in tmp dbs cache
 						FileUtils.unlink (Path.build_filename (get_pamac_tmp_dir (), "dbs", "db.lck"));
 					}
-					do_emit_warning (Alpm.strerror (err_no));
+					sink.emit_warning (Alpm.strerror (err_no));
 				}
 			}
 			return success;
 		}
 
-		public bool trans_refresh (string sender, bool force_refresh) {
-			set_sender (sender);
-			do_emit_action (_("Synchronizing package databases") + "...");
+		public bool trans_refresh (TransactionSink sink, bool force_refresh) {
+			this.sink = sink;
+			sink.emit_action (_("Synchronizing package databases") + "...");
 			write_log_file (alpm_config.logfile, "synchronizing package lists");
 			cancellable.reset ();
 			int force = (force_refresh) ? 1 : 0;
@@ -392,7 +350,7 @@ namespace Pamac {
 			if (cancellable.is_cancelled ()) {
 				return false;
 			} else if (!success) {
-				do_emit_warning (_("Failed to synchronize databases"));
+				sink.emit_warning (_("Failed to synchronize databases"));
 			}
 			if (success) {
 				// save now as last refresh time
@@ -405,8 +363,8 @@ namespace Pamac {
 			return true;
 		}
 
-		public bool trans_refresh_files (string sender, bool force_refresh) {
-			set_sender (sender);
+		public bool trans_refresh_files (TransactionSink sink, bool force_refresh) {
+			this.sink = sink;
 			cancellable.reset ();
 			// update ".files", do not need to know if we succeeded
 			alpm_handle = get_handle (true, false);
@@ -421,8 +379,8 @@ namespace Pamac {
 			return true;
 		}
 
-		public bool trans_refresh_aur (string sender, bool force_refresh) {
-			set_sender (sender);
+		public bool trans_refresh_aur (TransactionSink sink, bool force_refresh) {
+			this.sink = sink;
 			cancellable.reset ();
 			// special aur handle
 			alpm_handle = alpm_config.get_handle (false, false, false);
@@ -546,7 +504,7 @@ namespace Pamac {
 			download_updates_mutex.unlock ();
 		}
 
-		public bool download_updates (string sender) {
+		public bool download_updates (TransactionSink sink) {
 			download_updates_mutex.lock ();
 			if (download_updates_cancel_pending) {
 				download_updates_mutex.unlock ();
@@ -556,13 +514,13 @@ namespace Pamac {
 			// reset under the mutex: a cancel_download_updates can not be lost
 			cancellable.reset ();
 			download_updates_mutex.unlock ();
-			bool success = download_updates_real (sender);
+			bool success = download_updates_real (sink);
 			download_exited ();
 			return success;
 		}
 
-		bool download_updates_real (string sender) {
-			set_sender (sender);
+		bool download_updates_real (TransactionSink sink) {
+			this.sink = sink;
 			// callbacks are needed to cancel the download (see cb_download)
 			// and to answer questions for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle = get_handle (false, false);
@@ -598,7 +556,7 @@ namespace Pamac {
 					if (err_no != 0) {
 						details.add (Alpm.strerror (err_no));
 					}
-					do_emit_error (_("Failed to init transaction"), details);
+					sink.emit_error (_("Failed to init transaction"), details);
 				}
 				return false;
 			}
@@ -614,7 +572,7 @@ namespace Pamac {
 					if (err_no != 0) {
 						details.add (Alpm.strerror (err_no));
 					}
-					do_emit_error (_("Failed to prepare transaction"), details);
+					sink.emit_error (_("Failed to prepare transaction"), details);
 				}
 				return false;
 			}
@@ -643,7 +601,7 @@ namespace Pamac {
 						if (err_no != 0) {
 							details.add (Alpm.strerror (err_no));
 						}
-						do_emit_error (_("Failed to prepare transaction"), details);
+						sink.emit_error (_("Failed to prepare transaction"), details);
 					}
 					return false;
 				}
@@ -662,7 +620,7 @@ namespace Pamac {
 					} else {
 						details.add (_("target not found: %s").printf (pkgname));
 					}
-					do_emit_error (_("Failed to prepare transaction"), details);
+					sink.emit_error (_("Failed to prepare transaction"), details);
 				}
 				return false;
 			} else {
@@ -735,8 +693,8 @@ namespace Pamac {
 			}
 		}
 
-		public bool download_pkgs (string sender, string[] urls, ref GenericArray<string> dload_paths) {
-			set_sender (sender);
+		public bool download_pkgs (TransactionSink sink, string[] urls, ref GenericArray<string> dload_paths) {
+			this.sink = sink;
 			// a previous cancellation would exit the download at once (see cb_download)
 			cancellable.reset ();
 			alpm_handle = get_handle (false, false);
@@ -779,7 +737,7 @@ namespace Pamac {
 			if (dload_paths.length == 0 && !cancellable.is_cancelled ()) {
 				var details = new GenericArray<string> ();
 				details.add (_("failed to retrieve some files"));
-				do_emit_error (_("Failed to prepare transaction"), details);
+				sink.emit_error (_("Failed to prepare transaction"), details);
 				return false;
 			}
 			return true;
@@ -795,7 +753,7 @@ namespace Pamac {
 					if (err_no != 0) {
 						details.add (Alpm.strerror (err_no));
 					}
-					do_emit_error (_("Failed to prepare transaction"), details);
+					sink.emit_error (_("Failed to prepare transaction"), details);
 				}
 				return false;
 			} else if (alpm_handle.trans_add_pkg (pkg) == -1) {
@@ -809,7 +767,7 @@ namespace Pamac {
 						if (err_no != 0) {
 							details.add ("%s: %s".printf (pkg->name, Alpm.strerror (err_no)));
 						}
-						do_emit_error (_("Failed to prepare transaction"), details);
+						sink.emit_error (_("Failed to prepare transaction"), details);
 					}
 					// free the package because it will not be used
 					delete pkg;
@@ -826,7 +784,7 @@ namespace Pamac {
 				if (emit_error) {
 					var details = new GenericArray<string> (1);
 					details.add (_("target not found: %s").printf (pkgname));
-					do_emit_error (_("Failed to prepare transaction"), details);
+					sink.emit_error (_("Failed to prepare transaction"), details);
 				}
 				success = false;
 			} else if (alpm_handle.trans_remove_pkg (pkg) == -1) {
@@ -838,7 +796,7 @@ namespace Pamac {
 						if (err_no != 0) {
 							details.add ("%s: %s".printf (pkg.name, Alpm.strerror (err_no)));
 						}
-						do_emit_error (_("Failed to prepare transaction"), details);
+						sink.emit_error (_("Failed to prepare transaction"), details);
 					}
 					success = false;
 				}
@@ -887,8 +845,8 @@ namespace Pamac {
 							} else if ((pkg = Alpm.pkg_find (trans_add, miss->causingpkg)) != null) {
 								/* upgrading a package breaks a local dependency */
 								if (commit_retries < 1) {
-									do_emit_warning (_("Warning") + ": " + _("installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s").printf (miss->causingpkg, pkg.version, depstring, miss->target));
-									do_emit_warning (_("Add %s to remove").printf (miss->target));
+									sink.emit_warning (_("Warning") + ": " + _("installing %1$s (%2$s) breaks dependency '%3$s' required by %4$s").printf (miss->causingpkg, pkg.version, depstring, miss->target));
+									sink.emit_warning (_("Add %s to remove").printf (miss->target));
 									required_to_remove.add (miss->target);
 									if (trans_remove_pkg (alpm_handle, miss->target)) {
 										need_retry = true;
@@ -901,8 +859,8 @@ namespace Pamac {
 								// we don't want to retry if cascade option is not used
 								/* removing a package breaks a local dependency */
 								//if (commit_retries < 1) {
-									//do_emit_warning (_("Warning") + ": " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target));
-									//do_emit_warning (_("Add %s to remove").printf (miss->target));
+									//sink.emit_warning (_("Warning") + ": " + _("removing %1$s breaks dependency '%2$s' required by %3$s").printf (miss->causingpkg, depstring, miss->target));
+									//sink.emit_warning (_("Add %s to remove").printf (miss->target));
 									//required_to_remove.add (miss->target);
 									//if (trans_remove_pkg (alpm_handle, miss->target)) {
 										//need_retry = true;
@@ -943,7 +901,7 @@ namespace Pamac {
 				} else {
 					trans_release (alpm_handle);
 					if (emit_error) {
-						do_emit_error (_("Failed to prepare transaction"), details);
+						sink.emit_error (_("Failed to prepare transaction"), details);
 					}
 					success = false;
 				}
@@ -961,7 +919,7 @@ namespace Pamac {
 					to_remove.next ();
 				}
 				if (found_locked_pkg) {
-					do_emit_error (_("Failed to prepare transaction"), details);
+					sink.emit_error (_("Failed to prepare transaction"), details);
 					trans_release (alpm_handle);
 					success = false;
 				}
@@ -976,7 +934,7 @@ namespace Pamac {
 		void prepare_aur_db (Alpm.Handle? alpm_handle) {
 			// fake aur db
 			if (run_command ({"cp", "--", Path.build_filename (get_pamac_tmp_dir (), "pamac_aur.db"), Path.build_filename (alpm_handle.dbpath, "sync")}) != 0) {
-				do_emit_warning ("failed to copy pamac_aur.db");
+				sink.emit_warning ("failed to copy pamac_aur.db");
 			}
 			// check if we need to remove debug package to avoid dep problem
 			foreach (unowned string name in to_build) {
@@ -1004,7 +962,8 @@ namespace Pamac {
 			FileUtils.unlink (Path.build_filename (alpm_handle.dbpath, "sync", "pamac_aur.db"));
 		}
 
-		public bool trans_check_prepare (bool sysupgrade,
+		public bool trans_check_prepare (TransactionSink sink,
+										bool sysupgrade,
 										bool enable_downgrade,
 										bool simple_install,
 										int trans_flags,
@@ -1016,6 +975,7 @@ namespace Pamac {
 										GenericSet<string?> ignorepkgs,
 										GenericSet<string?> overwrite_files,
 										ref TransactionSummary summary) {
+			this.sink = sink;
 			// use an tmp handle with no callback to avoid double prepare signals
 			var tmp_handle = get_handle (false, true, false);
 			if (tmp_handle == null) {
@@ -1027,7 +987,6 @@ namespace Pamac {
 			// or been interrupted before resetting it
 			trans_reset ();
 			// compute arguments
-			set_sender ("");
 			this.sysupgrade = sysupgrade;
 			this.enable_downgrade = enable_downgrade;
 			this.simple_install = simple_install;
@@ -1068,7 +1027,7 @@ namespace Pamac {
 						Alpm.Errno err_no = tmp_handle.errno ();
 						var details = new GenericArray<string> (1);
 						details.add (Alpm.strerror (err_no));
-						do_emit_error (_("Failed to initialize AUR database"), details);
+						sink.emit_error (_("Failed to initialize AUR database"), details);
 						return false;
 					}
 				}
@@ -1094,11 +1053,11 @@ namespace Pamac {
 			return success;
 		}
 
-		public bool trans_run (string sender, TransactionRequest request) {
+		public bool trans_run (TransactionSink sink, TransactionRequest request) {
 			// start from a clean state: a previous transaction may have failed
 			// or been interrupted (download cancelled) before resetting it
 			trans_reset ();
-			set_sender (sender);
+			this.sink = sink;
 			this.sysupgrade = request.sysupgrade;
 			this.enable_downgrade = request.enable_downgrade;
 			this.simple_install = request.simple_install;
@@ -1157,7 +1116,7 @@ namespace Pamac {
 					alpm_handle.set_logcb (cb_log, this);
 					success = trans_commit (alpm_handle);
 				} else {
-					//do_emit_action (dgettext (null, "Nothing to do") + ".");
+					//sink.emit_action (dgettext (null, "Nothing to do") + ".");
 					trans_release (alpm_handle);
 					trans_reset ();
 					success = true;
@@ -1238,7 +1197,7 @@ namespace Pamac {
 					if (satisfier != null) {
 						if (!(satisfier.name in checked_deps)) {
 							if (to_remove.remove (satisfier.name)) {
-								do_emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
+								sink.emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
 							}
 							deps_to_check_next.add (satisfier);
 						}
@@ -1252,7 +1211,7 @@ namespace Pamac {
 					if (satisfier != null) {
 						if (!(satisfier.name in checked_deps)) {
 							if (to_remove.remove (satisfier.name)) {
-								do_emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
+								sink.emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
 							}
 							deps_to_check_next.add (satisfier);
 						}
@@ -1344,7 +1303,7 @@ namespace Pamac {
 					}
 					if (to_remove.length > 0) {
 						if (to_remove.remove (trans_pkg.name)) {
-							do_emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (trans_pkg.name));
+							sink.emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (trans_pkg.name));
 						}
 						checked_deps.add (trans_pkg.name);
 						// deps
@@ -1354,7 +1313,7 @@ namespace Pamac {
 							if (satisfier != null) {
 								if (!(satisfier.name in checked_deps)) {
 									if (to_remove.remove (satisfier.name)) {
-										do_emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
+										sink.emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
 									}
 									deps_to_check.add (satisfier);
 								}
@@ -1368,7 +1327,7 @@ namespace Pamac {
 							if (satisfier != null) {
 								if (!(satisfier.name in checked_deps)) {
 									if (to_remove.remove (satisfier.name)) {
-										do_emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
+										sink.emit_script_output (dgettext (null, "Warning") + ": " + dgettext (null, "removing %s from target list").printf (satisfier.name));
 									}
 									deps_to_check.add (satisfier);
 								}
@@ -1536,7 +1495,7 @@ namespace Pamac {
 					if (pkg == null) {
 						var details = new GenericArray<string> (1);
 						details.add (_("target not found: %s").printf (name));
-						do_emit_error (_("Failed to prepare transaction"), details);
+						sink.emit_error (_("Failed to prepare transaction"), details);
 						success = false;
 						break;
 					} else {
@@ -1934,7 +1893,7 @@ namespace Pamac {
 				return false;
 			});
 			if (reboot_needed) {
-				do_emit_warning (dgettext (null, "A restart is required for the changes to take effect") + ".");
+				sink.emit_warning (dgettext (null, "A restart is required for the changes to take effect") + ".");
 			}
 			if (sysupgrade) {
 				// removing a potential /system-update file
@@ -2052,8 +2011,8 @@ namespace Pamac {
 												details.add ("- " + _("%1$s: %2$s already exists in filesystem").printf (conflict->target, conflict->file) + ",");
 												details.add ("  " + _("if this file is not needed, remove it and retry"));
 											} else {
-												do_emit_warning (_("Warning") + ": " + _("%1$s: %2$s already exists in filesystem").printf (conflict->target, conflict->file));
-												do_emit_warning (_("It has been backed up to %s").printf (backup_path));
+												sink.emit_warning (_("Warning") + ": " + _("%1$s: %2$s already exists in filesystem").printf (conflict->target, conflict->file));
+												sink.emit_warning (_("It has been backed up to %s").printf (backup_path));
 												need_retry = true;
 											}
 										} else {
@@ -2070,7 +2029,7 @@ namespace Pamac {
 					case Alpm.Errno.PKG_INVALID_CHECKSUM:
 						unowned Alpm.List<string*> list = err_data;
 						if (commit_retries < 1) {
-							do_emit_script_output (_("Removing invalid files and retrying") + "...");
+							sink.emit_script_output (_("Removing invalid files and retrying") + "...");
 							need_retry = true;
 						} else {
 							details.add (Alpm.strerror (err_no) + ":");
@@ -2089,7 +2048,7 @@ namespace Pamac {
 					case Alpm.Errno.PKG_INVALID:
 					case Alpm.Errno.PKG_INVALID_SIG:
 						if (commit_retries < 1) {
-							do_emit_script_output (_("Removing invalid files and retrying") + "...");
+							sink.emit_script_output (_("Removing invalid files and retrying") + "...");
 							need_retry = true;
 						} else {
 							details.add (Alpm.strerror (err_no) + ":");
@@ -2114,7 +2073,7 @@ namespace Pamac {
 				}
 				success = false;
 				if (!need_retry) {
-					do_emit_error (_("Failed to commit transaction"), details);
+					sink.emit_error (_("Failed to commit transaction"), details);
 				}
 			}
 			trans_release (alpm_handle);
@@ -2127,17 +2086,9 @@ namespace Pamac {
 			remove_overwrite_files (alpm_handle);
 		}
 
-		void set_sender (string sender) {
-			sender_mutex.lock ();
-			this.sender = sender;
-			sender_mutex.unlock ();
-		}
-
-		public void trans_cancel (string sender) {
-			sender_mutex.lock ();
-			bool same_sender = sender == this.sender;
-			sender_mutex.unlock ();
-			if (same_sender) {
+		// cancel the current operation if it reports to sink
+		public void trans_cancel (TransactionSink sink) {
+			if (sink == this.sink) {
 				cancellable.cancel ();
 			}
 		}
@@ -2154,16 +2105,16 @@ namespace Pamac {
 		public void emit_event (uint primary_event, uint secondary_event, GenericArray<string> details) {
 			switch (primary_event) {
 				case 1: //Alpm.Event.Type.CHECKDEPS_START
-					do_emit_action (dgettext (null, "Checking dependencies") + "...");
+					sink.emit_action (dgettext (null, "Checking dependencies") + "...");
 					break;
 				case 3: //Alpm.Event.Type.FILECONFLICTS_START
 					current_action = dgettext (null, "Checking file conflicts") + "...";
 					break;
 				case 5: //Alpm.Event.Type.RESOLVEDEPS_START
-					do_emit_action (dgettext (null, "Resolving dependencies") + "...");
+					sink.emit_action (dgettext (null, "Resolving dependencies") + "...");
 					break;
 				case 7: //Alpm.Event.Type.INTERCONFLICTS_START
-					do_emit_action (dgettext (null, "Checking inter-conflicts") + "...");
+					sink.emit_action (dgettext (null, "Checking inter-conflicts") + "...");
 					break;
 				case 11: //Alpm.Event.Type.PACKAGE_OPERATION_START
 					switch (secondary_event) {
@@ -2199,64 +2150,64 @@ namespace Pamac {
 				case 17: //Alpm.Event.Type.SCRIPTLET_INFO
 					// hooks output are also emitted as SCRIPTLET_INFO
 					string msg = remove_bash_colors (details[0]).replace ("\n", "");
-					do_emit_script_output (msg);
+					sink.emit_script_output (msg);
 					if (current_filename != "") {
 						string action = dgettext (null, "Configuring %s").printf (current_filename) + "...";
 						if (action != current_action) {
 							current_action = (owned) action;
 						}
-						//do_emit_action (current_action);
+						//sink.emit_action (current_action);
 						if ("error" in msg.down ()) {
-							do_emit_warning (dgettext (null, "Error while configuring %s").printf (current_filename));
-							do_important_details_outpout (true);
+							sink.emit_warning (dgettext (null, "Error while configuring %s").printf (current_filename));
+							sink.important_details_outpout (true);
 						} else {
-							do_important_details_outpout (false);
+							sink.important_details_outpout (false);
 						}
 					}
 					break;
 				case 18: //Alpm.Event.Type.DB_RETRIEVE_START
-					do_start_downloading ();
+					sink.start_downloading ();
 					break;
 				case 19: //Alpm.Event.Type.DB_RETRIEVE_DONE
 				case 20: //Alpm.Event.Type.DB_RETRIEVE_FAILED
-					do_stop_downloading ();
+					sink.stop_downloading ();
 					break;
 				case 21: //Alpm.Event.Type.PKG_RETRIEVE_START
-					do_start_downloading ();
+					sink.start_downloading ();
 					break;
 				case 22: //Alpm.Event.Type.PKG_RETRIEVE_DONE
-					do_stop_downloading ();
+					sink.stop_downloading ();
 					current_filename = "";
 					multi_progress.remove_all ();
 					reset_download_progress (0);
 					break;
 				case 23: //Alpm.Event.Type.PKG_RETRIEVE_FAILED
-					do_stop_downloading ();
+					sink.stop_downloading ();
 					current_filename = "";
 					multi_progress.remove_all ();
 					reset_download_progress (0);
-					do_emit_warning (dgettext (null, "failed to retrieve some files"));
+					sink.emit_warning (dgettext (null, "failed to retrieve some files"));
 					break;
 				case 24: //Alpm.Event.Type.DISKSPACE_START
 					current_action = dgettext (null, "Checking available disk space") + "...";
 					break;
 				case 26: //Alpm.Event.Type.OPTDEP_REMOVAL
-					do_emit_warning ("%s: %s".printf (dgettext (null, "Warning"), dgettext (null, "%1$s optionally requires %2$s").printf (details[0], details[1])));
+					sink.emit_warning ("%s: %s".printf (dgettext (null, "Warning"), dgettext (null, "%1$s optionally requires %2$s").printf (details[0], details[1])));
 					break;
 				case 27: //Alpm.Event.Type.DATABASE_MISSING
-					//do_emit_script_output (dgettext (null, "Database file for %s does not exist").printf (details[0]) + ".");
+					//sink.emit_script_output (dgettext (null, "Database file for %s does not exist").printf (details[0]) + ".");
 					break;
 				case 28: //Alpm.Event.Type.KEYRING_START
 					current_action = dgettext (null, "Checking keyring") + "...";
 					break;
 				case 30: //Alpm.Event.Type.KEY_DOWNLOAD_START
-					do_emit_action (dgettext (null, "Downloading required keys") + "...");
+					sink.emit_action (dgettext (null, "Downloading required keys") + "...");
 					break;
 				case 32: //Alpm.Event.Type.PACNEW_CREATED
-					do_emit_script_output (dgettext (null, "%1$s installed as %2$s.pacnew").printf (details[0], details[0])+ ".");
+					sink.emit_script_output (dgettext (null, "%1$s installed as %2$s.pacnew").printf (details[0], details[0])+ ".");
 					break;
 				case 33: //Alpm.Event.Type.PACSAVE_CREATED
-					do_emit_script_output (dgettext (null, "%1$s installed as %2$s.pacsave").printf (details[0], details[0])+ ".");
+					sink.emit_script_output (dgettext (null, "%1$s installed as %2$s.pacsave").printf (details[0], details[0])+ ".");
 					break;
 				case 34: //Alpm.Event.Type.HOOK_START
 					switch (secondary_event) {
@@ -2285,16 +2236,16 @@ namespace Pamac {
 					}
 					if (changed) {
 						if (details[1] != "") {
-							do_emit_hook_progress (current_action, details[1], current_status, current_progress);
+							sink.emit_hook_progress (current_action, details[1], current_status, current_progress);
 							if ("error" in details[1].down ()) {
-								do_emit_warning (dgettext (null, "Error while running hooks"));
-								do_important_details_outpout (true);
+								sink.emit_warning (dgettext (null, "Error while running hooks"));
+								sink.important_details_outpout (true);
 							}
 						} else {
-							do_emit_hook_progress (current_action, details[0], current_status, current_progress);
+							sink.emit_hook_progress (current_action, details[0], current_status, current_progress);
 							if ("error" in details[0].down ()) {
-								do_emit_warning (dgettext (null, "Error while running hooks"));
-								do_important_details_outpout (true);
+								sink.emit_warning (dgettext (null, "Error while running hooks"));
+								sink.important_details_outpout (true);
 							}
 						}
 					}
@@ -2335,7 +2286,7 @@ namespace Pamac {
 			}
 			if (changed) {
 				if (current_action != "") {
-					do_emit_action_progress (current_action, current_status, current_progress);
+					sink.emit_action_progress (current_action, current_status, current_progress);
 				}
 			}
 		}
@@ -2421,7 +2372,7 @@ namespace Pamac {
 				last_download_progress_time = now;
 				last_download_progress_action = current_action;
 				last_download_progress_value = current_progress;
-				do_emit_download_progress (current_action, current_status, current_progress);
+				sink.emit_download_progress (current_action, current_status, current_progress);
 			}
 		}
 
@@ -2450,8 +2401,8 @@ namespace Pamac {
 				} else {
 					line = dgettext (null, "Error") + ": " + msg;
 				}
-				do_important_details_outpout (false);
-				do_emit_script_output (line.replace ("\n", ""));
+				sink.important_details_outpout (false);
+				sink.emit_script_output (line.replace ("\n", ""));
 			} else if (level == (1 << 1)) { //Alpm.LogLevel.WARNING
 				// warnings when no_confirm_commit should already have been sent
 				if (no_confirm_commit) {
@@ -2464,7 +2415,7 @@ namespace Pamac {
 					} else {
 						line = dgettext (null, "Warning") + ": " + msg;
 					}
-					do_emit_script_output (line.replace ("\n", ""));
+					sink.emit_script_output (line.replace ("\n", ""));
 				}
 			}
 		}
@@ -2606,7 +2557,7 @@ void cb_question (void* ctx, Alpm.Question.Data data) {
 				providers_str.add (pkg.name);
 				list.next ();
 			}
-			data.select_provider_use_index = alpm_utils.do_choose_provider (depend_str, providers_str);
+			data.select_provider_use_index = alpm_utils.sink.choose_provider (depend_str, providers_str);
 			break;
 		case Alpm.Question.Type.CORRUPTED_PKG:
 			// Auto-remove corrupted pkgs in cache
@@ -2670,8 +2621,8 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 	if (alpm_utils.cancellable.is_cancelled ()) {
 		// cancel download
 		alpm_utils.alpm_handle.unlock();
-		alpm_utils.do_emit_script_output ("");
-		alpm_utils.do_emit_action (dgettext (null, "Transaction cancelled") + ".");
+		alpm_utils.sink.emit_script_output ("");
+		alpm_utils.sink.emit_action (dgettext (null, "Transaction cancelled") + ".");
 		alpm_utils.download_exited ();
 		Thread.exit(-1);
 	}

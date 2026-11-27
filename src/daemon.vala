@@ -43,6 +43,8 @@ namespace Pamac {
 		// uid of the user who started the current download of updates
 		int64 download_updates_uid;
 		HashTable<string, Cancellable> cancellables_table;
+		// the sink of each client, to send it the progress of its operations
+		HashTable<string, DaemonSink> sinks_table;
 		SnapPlugin snap_plugin;
 		FlatpakPlugin flatpak_plugin;
 
@@ -58,7 +60,6 @@ namespace Pamac {
 		public signal void stop_downloading (string sender);
 		public signal void start_waiting (string sender);
 		public signal void stop_waiting (string sender);
-		public signal void generate_mirrors_list_data (string sender, string line);
 		// broadcast to every client, unlike the signals above which are sent
 		// only to the client they are meant for (see direct_signals_filter):
 		// it carries no information about who ran the transaction, so other
@@ -95,6 +96,7 @@ namespace Pamac {
 			pending_environments = new HashTable<string, HashTable<string, string>> (str_hash, str_equal);
 			download_updates_uid = -1;
 			cancellables_table = new HashTable<string, Cancellable> (str_hash, str_equal);
+			sinks_table = new HashTable<string, DaemonSink> (str_hash, str_equal);
 			// forget the clients which left the bus
 			try {
 				Bus.get_sync (BusType.SYSTEM).signal_subscribe ("org.freedesktop.DBus",
@@ -107,37 +109,6 @@ namespace Pamac {
 			} catch (Error e) {
 				warning (e.message);
 			}
-			alpm_utils.emit_action.connect ((sender, action) => {
-				emit_action (sender, action);
-			});
-			alpm_utils.emit_action_progress.connect ((sender, action, status, progress) => {
-				emit_action_progress (sender, action, status, progress);
-			});
-			alpm_utils.emit_hook_progress.connect ((sender, action, details, status, progress) => {
-				emit_hook_progress (sender, action, details, status, progress);
-			});
-			alpm_utils.emit_download_progress.connect ((sender, action, status, progress) => {
-				emit_download_progress (sender, action, status, progress);
-			});
-			alpm_utils.start_downloading.connect ((sender) => {
-				start_downloading (sender);
-			});
-			alpm_utils.stop_downloading.connect ((sender) => {
-				stop_downloading (sender);
-			});
-			alpm_utils.emit_script_output.connect ((sender, message) => {
-				emit_script_output (sender, message);
-			});
-			alpm_utils.emit_warning.connect ((sender, message) => {
-				emit_warning (sender, message);
-			});
-			alpm_utils.emit_error.connect ((sender, message, details) => {
-				string[] details_copy = details.data;
-				emit_error (sender, message, details_copy);
-			});
-			alpm_utils.important_details_outpout.connect ((sender, must_show) => {
-				important_details_outpout (sender, must_show);
-			});
 			if (config.support_snap) {
 				snap_plugin = config.get_snap_plugin ();
 				snap_plugin.emit_action_progress.connect ((sender, action, status, progress) => {
@@ -229,8 +200,9 @@ namespace Pamac {
 			authorized_senders.remove (name);
 			pending_environments.remove (name);
 			authorization_mutex.unlock ();
-			// running operations keep their own reference on the cancellable
+			// running operations keep their own reference on the cancellable and the sink
 			cancellables_table.remove (name);
+			sinks_table.remove (name);
 		}
 
 		public string get_sender (BusName sender) throws Error {
@@ -366,6 +338,15 @@ namespace Pamac {
 			authorization_mutex.unlock ();
 		}
 
+		DaemonSink get_sink (string sender) {
+			DaemonSink? sink = sinks_table.lookup (sender);
+			if (sink == null) {
+				sink = new DaemonSink (this, sender);
+				sinks_table.insert (sender, sink);
+			}
+			return sink;
+		}
+
 		Cancellable get_cancellable (string sender) {
 			Cancellable? cancellable = cancellables_table.lookup (sender);
 			if (cancellable == null) {
@@ -461,7 +442,7 @@ namespace Pamac {
 						var dis = new DataInputStream (process.get_stdout_pipe ());
 						string? line;
 						while ((line = dis.read_line ()) != null) {
-							generate_mirrors_list_data (sender, line);
+							emit_script_output (sender, line);
 						}
 					} catch (Error e) {
 						emit_error (sender, "Daemon Error", {e.message});
@@ -520,6 +501,7 @@ namespace Pamac {
 		}
 
 		public async bool set_pkgreason (string pkgname, uint reason, BusName sender) throws Error {
+			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
@@ -527,7 +509,7 @@ namespace Pamac {
 				}
 				return yield run_thread ("set_pkgreason", () => {
 					lockfile_mutex.lock ();
-					bool success = alpm_utils.set_pkgreason (sender, pkgname, reason);
+					bool success = alpm_utils.set_pkgreason (sink, pkgname, reason);
 					lockfile_mutex.unlock ();
 					return success;
 				});
@@ -545,12 +527,13 @@ namespace Pamac {
 				return false;
 			}
 			var cancellable = get_cancellable (sender);
+			var sink = get_sink (sender);
 			download_updates_uid = get_sender_uid (sender);
 			hold ();
 			try {
 				return yield run_thread ("download_updates", () => {
 					return run_locked (sender, cancellable, true, () => {
-						return alpm_utils.download_updates (sender);
+						return alpm_utils.download_updates (sink);
 					});
 				});
 			} finally {
@@ -564,6 +547,7 @@ namespace Pamac {
 		public async string[] download_pkgs (string[] urls, BusName sender) throws Error {
 			string[] urls_copy = urls;
 			var cancellable = get_cancellable (sender);
+			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
@@ -572,7 +556,7 @@ namespace Pamac {
 				var dload_paths = new GenericArray<string> ();
 				yield run_thread ("download_pkgs", () => {
 					return run_locked (sender, cancellable, true, () => {
-						return alpm_utils.download_pkgs (sender, urls_copy, ref dload_paths);
+						return alpm_utils.download_pkgs (sink, urls_copy, ref dload_paths);
 					});
 				});
 				return dload_paths.data;
@@ -639,20 +623,23 @@ namespace Pamac {
 		}
 
 		public async bool trans_refresh (bool force, BusName sender) throws Error {
+			var sink = get_sink (sender);
 			return yield refresh (sender, "trans_refresh", () => {
-				return alpm_utils.trans_refresh (sender, force);
+				return alpm_utils.trans_refresh (sink, force);
 			});
 		}
 
 		public async bool trans_refresh_files (bool force, BusName sender) throws Error {
+			var sink = get_sink (sender);
 			return yield refresh (sender, "trans_refresh_files", () => {
-				return alpm_utils.trans_refresh_files (sender, force);
+				return alpm_utils.trans_refresh_files (sink, force);
 			});
 		}
 
 		public async bool trans_refresh_aur (bool force, BusName sender) throws Error {
+			var sink = get_sink (sender);
 			return yield refresh (sender, "trans_refresh_aur", () => {
-				return alpm_utils.trans_refresh_aur (sender, force);
+				return alpm_utils.trans_refresh_aur (sink, force);
 			});
 		}
 
@@ -660,6 +647,7 @@ namespace Pamac {
 		public async bool trans_run (HashTable<string,Variant> request, BusName sender) throws Error {
 			var trans_request = new TransactionRequest.from_dict (request);
 			var cancellable = get_cancellable (sender);
+			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
@@ -669,7 +657,7 @@ namespace Pamac {
 				alpm_utils.cancel_download_updates ();
 				return yield run_thread ("trans_run", () => {
 					return run_locked (sender, cancellable, false, () => {
-						return alpm_utils.trans_run (sender, trans_request);
+						return alpm_utils.trans_run (sink, trans_request);
 					});
 				});
 			} finally {
@@ -751,7 +739,10 @@ namespace Pamac {
 			if (config.enable_flatpak) {
 				flatpak_plugin.trans_cancel (sender);
 			}
-			alpm_utils.trans_cancel (sender);
+			DaemonSink? sink = sinks_table.lookup (sender);
+			if (sink != null) {
+				alpm_utils.trans_cancel (sink);
+			}
 		}
 
 		[DBus (no_reply = true)]
@@ -763,6 +754,71 @@ namespace Pamac {
 			if (AtomicInt.get (ref running_operations) == 0) {
 				loop.quit ();
 			}
+		}
+	}
+
+	// sends the progress to a client: the D-Bus signals are thread-safe
+	// and sent only to this client (see direct_signals_filter)
+	internal class DaemonSink : Object, TransactionSink {
+		unowned Daemon daemon;
+		string sender;
+
+		public DaemonSink (Daemon daemon, string sender) {
+			this.daemon = daemon;
+			this.sender = sender;
+		}
+
+		public void emit_action (string action) {
+			daemon.emit_action (sender, action);
+		}
+
+		public void emit_action_progress (string action, string status, double progress) {
+			daemon.emit_action_progress (sender, action, status, progress);
+		}
+
+		public void emit_download_progress (string action, string status, double progress) {
+			daemon.emit_download_progress (sender, action, status, progress);
+		}
+
+		public void emit_hook_progress (string action, string details, string status, double progress) {
+			daemon.emit_hook_progress (sender, action, details, status, progress);
+		}
+
+		public void emit_script_output (string message) {
+			daemon.emit_script_output (sender, message);
+		}
+
+		public void emit_warning (string message) {
+			daemon.emit_warning (sender, message);
+		}
+
+		public void emit_error (string message, GenericArray<string> details) {
+			daemon.emit_error (sender, message, details.data);
+		}
+
+		public void important_details_outpout (bool must_show) {
+			daemon.important_details_outpout (sender, must_show);
+		}
+
+		public void start_downloading () {
+			daemon.start_downloading (sender);
+		}
+
+		public void stop_downloading () {
+			daemon.stop_downloading (sender);
+		}
+
+		public void start_waiting () {
+			daemon.start_waiting (sender);
+		}
+
+		public void stop_waiting () {
+			daemon.stop_waiting (sender);
+		}
+
+		public int choose_provider (string depend, GenericArray<string> providers) {
+			// the providers are chosen by the client when preparing the transaction
+			return 0;
 		}
 	}
 }
