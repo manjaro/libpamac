@@ -22,6 +22,8 @@ namespace Pamac {
 		TransactionInterface transaction_interface;
 		// receives the progress of the operations, from any thread
 		TransactionSink sink;
+		// packages with unresolvable dependencies found by the last failed prepare
+		GenericArray<string> unresolvables;
 		unowned Config config;
 		unowned MainContext context;
 		// run transaction data
@@ -97,6 +99,7 @@ namespace Pamac {
 			context = database.context;
 			alpm_utils = new AlpmUtils (config);
 			sink = new MainContextSink (this, context);
+			unresolvables = new GenericArray<string> ();
 			if (Posix.geteuid () == 0) {
 				// we are root
 				transaction_interface = new TransactionInterfaceRoot (alpm_utils, context, sink);
@@ -1246,9 +1249,12 @@ namespace Pamac {
 				}
 			}
 			var new_summary = new TransactionSummary ();
+			var new_unresolvables = new GenericArray<string> ();
 			try {
 				success = yield run_in_thread ("trans_check_prepare", context, () => {
+					// not cancellable
 					return alpm_utils.trans_check_prepare (sink,
+															new Cancellable (),
 															alpm_sysupgrade,
 															config.enable_downgrade,
 															config.simple_install,
@@ -1260,7 +1266,8 @@ namespace Pamac {
 															to_build,
 															ignorepkgs,
 															overwrite_files,
-															ref new_summary);
+															ref new_summary,
+															out new_unresolvables);
 				});
 			} catch (Error e) {
 				var details = new GenericArray<string> (1);
@@ -1269,6 +1276,7 @@ namespace Pamac {
 				success = false;
 			}
 			summary = new_summary;
+			unresolvables = new_unresolvables;
 			return success;
 		}
 
@@ -1331,16 +1339,16 @@ namespace Pamac {
 					var empty_summary = new TransactionSummary ();
 					if (yield ask_edit_build_files_real (empty_summary)) {
 						foreach (unowned string name in to_build) {
-							bool found = alpm_utils.unresolvables.find_with_equal_func (name, str_equal, null);
+							bool found = unresolvables.find_with_equal_func (name, str_equal, null);
 							if (!found) {
-								alpm_utils.unresolvables.add (name);
+								unresolvables.add (name);
 							}
 						}
 						// build files are stored by pkgbase, which differs
 						// from the package name for split packages
 						var pkgbases = new GenericArray<string> ();
-						var aur_pkgs = yield database.get_aur_pkgs_async (alpm_utils.unresolvables);
-						foreach (unowned string name in alpm_utils.unresolvables) {
+						var aur_pkgs = yield database.get_aur_pkgs_async (unresolvables);
+						foreach (unowned string name in unresolvables) {
 							unowned AURPackage? aur_pkg = aur_pkgs.lookup (name);
 							string pkgbase = aur_pkg == null ? name : aur_pkg.packagebase;
 							if (aur_pkg != null && name in clone_files) {
@@ -1358,12 +1366,12 @@ namespace Pamac {
 								var details = new GenericArray<string> (1);
 								details.add (dgettext (null, "Failed to clone %s build files").printf (pkgbase));
 								emit_error (dgettext (null, "Failed to prepare transaction"), details);
-								alpm_utils.unresolvables = new GenericArray<string> ();
+								unresolvables = new GenericArray<string> ();
 								return false;
 							}
 						}
 						yield edit_build_files (pkgbases);
-						alpm_utils.unresolvables = new GenericArray<string> ();
+						unresolvables = new GenericArray<string> ();
 						emit_script_output ("");
 						success = yield compute_aur_build_list ();
 						if (!success) {

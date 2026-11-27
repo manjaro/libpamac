@@ -27,24 +27,19 @@ namespace Pamac {
 	[DBus (name = "org.manjaro.pamac.daemon")]
 	public class Daemon: Object {
 		Config config;
+		// runs the alpm operations, with the lock
+		AlpmRunner runner;
 		AlpmUtils alpm_utils;
 		// operations in progress, quit waits for them
 		int running_operations;
-		FileMonitor lockfile_monitor;
-		// signaled when the external lock file is removed
-		Cond lockfile_cond;
-		Mutex lockfile_cond_mutex;
-		Mutex lockfile_mutex;
-		Cond answer_cond;
-		Mutex answer_mutex;
 		Mutex authorization_mutex;
 		GenericSet<string> authorized_senders;
 		HashTable<string, HashTable<string, string>> pending_environments;
 		// uid of the user who started the current download of updates
 		int64 download_updates_uid;
-		HashTable<string, Cancellable> cancellables_table;
-		// the sink of each client, to send it the progress of its operations
-		HashTable<string, DaemonSink> sinks_table;
+		// each client receives the progress of its operations with a DaemonSink
+		// and cancels them with its cancellable
+		HashTable<string, AlpmClient> clients_table;
 		SnapPlugin snap_plugin;
 		FlatpakPlugin flatpak_plugin;
 
@@ -70,33 +65,15 @@ namespace Pamac {
 			config = new Config ("/etc/pamac.conf");
 			string user_agent = get_user_agent ();
 			alpm_utils = new AlpmUtils (config);
+			runner = new AlpmRunner (alpm_utils, MainContext.default ());
 			// set HTTP_USER_AGENT needed when downloading using libalpm
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
-			lockfile_cond = Cond ();
-			lockfile_cond_mutex = Mutex ();
-			lockfile_mutex = Mutex ();
-			if (alpm_utils.lockfile.query_exists ()) {
-				try {
-					new Thread<int>.try ("set_extern_lock", set_extern_lock);
-				} catch (Error e) {
-					warning (e.message);
-				}
-			}
-			try {
-				lockfile_monitor = alpm_utils.lockfile.monitor (FileMonitorFlags.NONE, null);
-				lockfile_monitor.changed.connect (check_extern_lock);
-			} catch (Error e) {
-				warning (e.message);
-			}
 			running_operations = 0;
-			answer_cond = Cond ();
-			answer_mutex = Mutex ();
 			authorization_mutex = Mutex ();
 			authorized_senders = new GenericSet<string> (str_hash, str_equal);
 			pending_environments = new HashTable<string, HashTable<string, string>> (str_hash, str_equal);
 			download_updates_uid = -1;
-			cancellables_table = new HashTable<string, Cancellable> (str_hash, str_equal);
-			sinks_table = new HashTable<string, DaemonSink> (str_hash, str_equal);
+			clients_table = new HashTable<string, AlpmClient> (str_hash, str_equal);
 			// forget the clients which left the bus
 			try {
 				Bus.get_sync (BusType.SYSTEM).signal_subscribe ("org.freedesktop.DBus",
@@ -174,9 +151,8 @@ namespace Pamac {
 			authorized_senders.remove (name);
 			pending_environments.remove (name);
 			authorization_mutex.unlock ();
-			// running operations keep their own reference on the cancellable and the sink
-			cancellables_table.remove (name);
-			sinks_table.remove (name);
+			// running operations keep their own reference on the client
+			clients_table.remove (name);
 		}
 
 		public string get_sender (BusName sender) throws Error {
@@ -216,38 +192,6 @@ namespace Pamac {
 			}
 			int64 uid = get_sender_uid (sender);
 			return uid != -1 && uid == download_updates_uid;
-		}
-
-		int set_extern_lock () {
-			// hold lockfile_mutex while another package manager holds the lock file
-			// a GMutex must be unlocked by the thread which locked it:
-			// this thread does both and only waits for the lock file removal
-			if (!lockfile_mutex.trylock ()) {
-				return 0;
-			}
-			lockfile_cond_mutex.lock ();
-			while (alpm_utils.lockfile.query_exists ()) {
-				// woken up by check_extern_lock when the lock file is deleted,
-				// check again every second in case the event is missed
-				lockfile_cond.wait_until (lockfile_cond_mutex, get_monotonic_time () + TimeSpan.SECOND);
-			}
-			lockfile_cond_mutex.unlock ();
-			lockfile_mutex.unlock ();
-			return 0;
-		}
-
-		void check_extern_lock (File src, File? dest, FileMonitorEvent event_type) {
-			if (event_type == FileMonitorEvent.CREATED) {
-				try {
-					new Thread<int>.try ("check_extern_lock", set_extern_lock);
-				} catch (Error e) {
-					warning (e.message);
-				}
-			} else if (event_type == FileMonitorEvent.DELETED) {
-				lockfile_cond_mutex.lock ();
-				lockfile_cond.broadcast ();
-				lockfile_cond_mutex.unlock ();
-			}
 		}
 
 		// the methods doing some work are counted from their call to their reply,
@@ -312,40 +256,18 @@ namespace Pamac {
 			authorization_mutex.unlock ();
 		}
 
-		DaemonSink get_sink (string sender) {
-			DaemonSink? sink = sinks_table.lookup (sender);
-			if (sink == null) {
-				sink = new DaemonSink (this, sender);
-				sinks_table.insert (sender, sink);
+		AlpmClient get_client (string sender) {
+			AlpmClient? client = clients_table.lookup (sender);
+			if (client == null) {
+				client = new AlpmClient (new DaemonSink (this, sender));
+				clients_table.insert (sender, client);
 			}
-			return sink;
+			return client;
 		}
 
-		Cancellable get_cancellable (string sender) {
-			Cancellable? cancellable = cancellables_table.lookup (sender);
-			if (cancellable == null) {
-				cancellable = new Cancellable ();
-				cancellables_table.insert (sender, cancellable);
-			}
-			return cancellable;
-		}
-
-		// run func in a worker thread, the coroutine is resumed in the main thread
+		// run func in a worker thread, for the plugins
 		async bool run_thread (string name, owned BoolFunc func) throws Error {
 			return yield run_in_thread (name, MainContext.default (), (owned) func);
-		}
-
-		// run func with the lock held, in a nested thread which is exited
-		// when a download is cancelled (see cb_download).
-		// To call from a worker thread.
-		// Returns false if the lock is not acquired, the thread is exited or func fails
-		bool run_locked (string sender, Cancellable cancellable, bool quiet, BoolFunc func) {
-			if (!wait_for_lock (sender, cancellable, quiet)) {
-				return false;
-			}
-			bool success = run_exitable ("locked_work", func);
-			lockfile_mutex.unlock ();
-			return success;
 		}
 
 		public async void write_alpm_config (HashTable<string,Variant> new_alpm_conf, BusName sender) throws Error {
@@ -354,13 +276,7 @@ namespace Pamac {
 				if (!(yield check_authorization (sender))) {
 					return;
 				}
-				yield run_thread ("write_alpm_config", () => {
-					lockfile_mutex.lock ();
-					alpm_utils.alpm_config.write (new_alpm_conf);
-					alpm_utils.alpm_config.reload ();
-					lockfile_mutex.unlock ();
-					return true;
-				});
+				yield runner.write_alpm_config (new_alpm_conf);
 			} finally {
 				release ();
 			}
@@ -398,95 +314,48 @@ namespace Pamac {
 		}
 
 		public async void generate_mirrors_list (string country, BusName sender) throws Error {
-			// the country must not be read as an option by pacman-mirrors
-			if (country.length == 0 || country.has_prefix ("-")) {
-				emit_error (sender, "Daemon Error", {"invalid country: %s".printf (country)});
-				return;
-			}
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return;
 				}
-				yield run_thread ("generate_mirrors_list", () => {
-					try {
-						var process = new Subprocess.newv (
-							{"pacman-mirrors", "--no-color", "--country=" + country},
-							SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
-						var dis = new DataInputStream (process.get_stdout_pipe ());
-						string? line;
-						while ((line = dis.read_line ()) != null) {
-							emit_script_output (sender, line);
-						}
-					} catch (Error e) {
-						emit_error (sender, "Daemon Error", {e.message});
-					}
-					lockfile_mutex.lock ();
-					alpm_utils.alpm_config.reload ();
-					lockfile_mutex.unlock ();
-					return true;
-				});
+				yield runner.generate_mirrors_list (get_client (sender), country);
 			} finally {
 				release ();
 			}
 		}
 
-		// the cleanings run with the lock held: they must not remove the files
-		// used by a running transaction nor block the main loop
 		public async bool clean_cache (string[] filenames, BusName sender) throws Error {
-			string[] names = filenames;
-			var cancellable = get_cancellable (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return false;
 				}
-				return yield run_thread ("clean_cache", () => {
-					if (!wait_for_lock (sender, cancellable, true)) {
-						return false;
-					}
-					bool success = alpm_utils.clean_cache (names);
-					lockfile_mutex.unlock ();
-					return success;
-				});
+				return yield runner.clean_cache (get_client (sender), filenames);
 			} finally {
 				release ();
 			}
 		}
 
 		public async bool clean_build_files (string aur_build_dir, BusName sender) throws Error {
-			var cancellable = get_cancellable (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return false;
 				}
-				return yield run_thread ("clean_build_files", () => {
-					if (!wait_for_lock (sender, cancellable, true)) {
-						return false;
-					}
-					bool success = alpm_utils.clean_build_files (aur_build_dir, get_sender_uid (sender));
-					lockfile_mutex.unlock ();
-					return success;
-				});
+				return yield runner.clean_build_files (get_client (sender), aur_build_dir, get_sender_uid (sender));
 			} finally {
 				release ();
 			}
 		}
 
 		public async bool set_pkgreason (string pkgname, uint reason, BusName sender) throws Error {
-			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return false;
 				}
-				return yield run_thread ("set_pkgreason", () => {
-					lockfile_mutex.lock ();
-					bool success = alpm_utils.set_pkgreason (sink, pkgname, reason);
-					lockfile_mutex.unlock ();
-					return success;
-				});
+				return yield runner.set_pkgreason (get_client (sender), pkgname, reason);
 			} finally {
 				release ();
 			}
@@ -494,146 +363,67 @@ namespace Pamac {
 
 		// does not check authorization
 		public async bool download_updates (BusName sender) throws Error {
-			// requested from the main thread: a second call can not start another download
-			// while the first one waits for the lock
-			if (!alpm_utils.request_download_updates ()) {
-				// already downloading updates
+			if (alpm_utils.is_download_updates_requested ()) {
 				return false;
 			}
-			var cancellable = get_cancellable (sender);
-			var sink = get_sink (sender);
 			download_updates_uid = get_sender_uid (sender);
 			hold ();
 			try {
-				return yield run_thread ("download_updates", () => {
-					return run_locked (sender, cancellable, true, () => {
-						return alpm_utils.download_updates (sink);
-					});
-				});
+				return yield runner.download_updates (get_client (sender));
 			} finally {
-				// the download thread is exited when cancelled
-				// or may return early: always end it here
-				alpm_utils.end_download_updates ();
 				release ();
 			}
 		}
 
 		public async string[] download_pkgs (string[] urls, BusName sender) throws Error {
-			string[] urls_copy = urls;
-			var cancellable = get_cancellable (sender);
-			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return {};
 				}
-				var dload_paths = new GenericArray<string> ();
-				yield run_thread ("download_pkgs", () => {
-					return run_locked (sender, cancellable, true, () => {
-						return alpm_utils.download_pkgs (sink, urls_copy, ref dload_paths);
-					});
-				});
-				return dload_paths.data;
+				return yield runner.download_pkgs (get_client (sender), urls);
 			} finally {
 				release ();
 			}
-		}
-
-		// to call from a worker thread
-		bool wait_for_lock (string sender, Cancellable cancellable, bool quiet = false) {
-			bool waiting = false;
-			bool success = false;
-			cancellable.reset ();
-			if (!lockfile_mutex.trylock ()) {
-				waiting = true;
-				start_waiting (sender);
-				if (!quiet) {
-					emit_action (sender, _("Waiting for another package manager to quit") + "...");
-				}
-				answer_mutex.lock ();
-				// wait 5 min max: a deadline because answer_cond is also
-				// broadcast by the cancellations of other clients
-				int64 deadline = get_monotonic_time () + 5 * TimeSpan.MINUTE;
-				while (!cancellable.is_cancelled ()) {
-					// wait 200 ms for cancellation
-					int64 end_time = get_monotonic_time () + 200 * TimeSpan.MILLISECOND;
-					answer_cond.wait_until (answer_mutex, end_time);
-					if (lockfile_mutex.trylock ()) {
-						success = true;
-						break;
-					}
-					if (get_monotonic_time () >= deadline) {
-						cancellable.cancel ();
-						if (!quiet) {
-							emit_action (sender, "%s: %s.".printf (_("Transaction cancelled"), _("Timeout expired")));
-						}
-					}
-				}
-				answer_mutex.unlock ();
-			} else {
-				success = true;
-			}
-			if (waiting) {
-				stop_waiting (sender);
-			}
-			return success;
 		}
 
 		// the refreshes do not check authorization
-		async bool refresh (string sender, string name, owned BoolFunc func) throws Error {
-			var cancellable = get_cancellable (sender);
-			if (may_cancel_download_updates (sender)) {
-				// also if it waits for the lock, else the refresh would wait for it
-				alpm_utils.cancel_download_updates ();
-			}
+		public async bool trans_refresh (bool force, BusName sender) throws Error {
 			hold ();
 			try {
-				return yield run_thread (name, () => {
-					return run_locked (sender, cancellable, false, func);
-				});
+				return yield runner.trans_refresh (get_client (sender), force, may_cancel_download_updates (sender));
 			} finally {
 				release ();
 			}
 		}
 
-		public async bool trans_refresh (bool force, BusName sender) throws Error {
-			var sink = get_sink (sender);
-			return yield refresh (sender, "trans_refresh", () => {
-				return alpm_utils.trans_refresh (sink, force);
-			});
-		}
-
 		public async bool trans_refresh_files (bool force, BusName sender) throws Error {
-			var sink = get_sink (sender);
-			return yield refresh (sender, "trans_refresh_files", () => {
-				return alpm_utils.trans_refresh_files (sink, force);
-			});
+			hold ();
+			try {
+				return yield runner.trans_refresh_files (get_client (sender), force, may_cancel_download_updates (sender));
+			} finally {
+				release ();
+			}
 		}
 
 		public async bool trans_refresh_aur (bool force, BusName sender) throws Error {
-			var sink = get_sink (sender);
-			return yield refresh (sender, "trans_refresh_aur", () => {
-				return alpm_utils.trans_refresh_aur (sink, force);
-			});
+			hold ();
+			try {
+				return yield runner.trans_refresh_aur (get_client (sender), force, may_cancel_download_updates (sender));
+			} finally {
+				release ();
+			}
 		}
 
 		// request: see TransactionRequest
 		public async bool trans_run (HashTable<string,Variant> request, BusName sender) throws Error {
 			var trans_request = new TransactionRequest.from_dict (request);
-			var cancellable = get_cancellable (sender);
-			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return false;
 				}
-				// also if it waits for the lock, else the transaction would wait for it
-				alpm_utils.cancel_download_updates ();
-				return yield run_thread ("trans_run", () => {
-					return run_locked (sender, cancellable, false, () => {
-						return alpm_utils.trans_run (sink, trans_request);
-					});
-				});
+				return yield runner.trans_run (get_client (sender), trans_request);
 			} finally {
 				transaction_finished ();
 				release ();
@@ -646,7 +436,7 @@ namespace Pamac {
 			}
 			string[] to_install_copy = to_install;
 			string[] to_remove_copy = to_remove;
-			var sink = get_sink (sender);
+			var sink = get_client (sender).sink;
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
@@ -665,7 +455,7 @@ namespace Pamac {
 			if (!config.enable_snap) {
 				return false;
 			}
-			var sink = get_sink (sender);
+			var sink = get_client (sender).sink;
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
@@ -686,7 +476,7 @@ namespace Pamac {
 			string[] to_install_copy = to_install;
 			string[] to_remove_copy = to_remove;
 			string[] to_upgrade_copy = to_upgrade;
-			var sink = get_sink (sender);
+			var sink = get_client (sender).sink;
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
@@ -702,26 +492,19 @@ namespace Pamac {
 		}
 
 		public void trans_cancel (BusName sender) throws Error {
-			Cancellable? cancellable = cancellables_table.lookup (sender);
-			if (cancellable != null) {
-				answer_mutex.lock ();
-				cancellable.cancel ();
-				// every waiting thread shares answer_cond: wake them all
-				answer_cond.broadcast ();
-				answer_mutex.unlock ();
-			}
-			// no sink: this client never ran an operation
-			DaemonSink? sink = sinks_table.lookup (sender);
-			if (sink == null) {
+			AlpmClient? client = clients_table.lookup (sender);
+			if (client == null) {
+				// this client never ran an operation
 				return;
 			}
+			// stops the wait for the lock and the alpm operation
+			client.cancellable.cancel ();
 			if (config.enable_snap) {
-				snap_plugin.trans_cancel (sink);
+				snap_plugin.trans_cancel (client.sink);
 			}
 			if (config.enable_flatpak) {
-				flatpak_plugin.trans_cancel (sink);
+				flatpak_plugin.trans_cancel (client.sink);
 			}
-			alpm_utils.trans_cancel (sink);
 		}
 
 		[DBus (no_reply = true)]

@@ -18,119 +18,32 @@
  */
 
 namespace Pamac {
+	// the alpm operations: each one is run by a new AlpmJob in the calling thread,
+	// which is exited when a download is cancelled (see cb_download):
+	// call them with run_exitable
 	internal class AlpmUtils: Object {
-		// receives the progress of the current operation, replaced by each one:
-		// read by the alpm callbacks and trans_cancel from other threads
-		TransactionSink _sink;
-		Mutex sink_mutex;
-		public TransactionSink sink {
-			owned get {
-				sink_mutex.lock ();
-				TransactionSink current = _sink;
-				sink_mutex.unlock ();
-				return current;
-			}
-			set {
-				sink_mutex.lock ();
-				_sink = value;
-				sink_mutex.unlock ();
-			}
-		}
-		Config config;
+		internal Config config;
 		public AlpmConfig alpm_config;
 		public File lockfile;
-		// run transaction data
-		public Alpm.Handle? alpm_handle;
-		uint8 commit_retries;
-		string current_status;
-		bool sysupgrade;
-		bool enable_downgrade;
-		bool simple_install;
-		bool no_confirm_commit;
-		bool keep_built_pkgs;
-		int trans_flags;
-		GenericSet<string?> to_install;
-		GenericSet<string?> deps_to_install;
-		GenericSet<string?> to_remove;
-		GenericSet<string?> required_to_remove;
-		GenericSet<string?> orphans_to_remove;
-		GenericSet<string?> conflicts_to_remove;
-		GenericSet<string?> local_paths;
-		GenericSet<string?> remote_paths;
-		GenericSet<string?> to_build;
-		GenericSet<string?> checked_deps;
-		HashTable<string, string> to_install_as_dep;
-		GenericSet<string?> ignorepkgs;
-		GenericSet<string?> overwrite_files;
-		GenericSet<string?> to_syncfirst;
-		public Cancellable cancellable;
-		// state of the download of updates, protected by download_updates_mutex:
-		// requested from request_download_updates () to end_download_updates (),
-		// downloading while download_updates () may be cancelled with cancellable,
-		// cancel_pending if cancelled while requested but not downloading yet
-		Mutex download_updates_mutex;
-		bool download_updates_requested;
-		bool downloading_updates;
-		bool download_updates_cancel_pending;
-		// progress data
-		public string current_filename;
-		public string current_action;
-		public double current_progress;
-		public GenericArray<string> unresolvables;
-		// download data
-		public uint64 total_download;
-		public uint64 already_downloaded;
-		public HashTable<string, uint64?> multi_progress;
-		public Timer rate_timer;
-		Queue<double?> download_rates;
-		double download_rate;
-		// libalpm calls the download callback for every chunk received by curl,
-		// so progress signals are rate-limited to avoid flooding the bus
-		const int64 DOWNLOAD_PROGRESS_INTERVAL = 100 * TimeSpan.MILLISECOND;
-		int64 last_download_progress_time;
-		string last_download_progress_action;
-		double last_download_progress_value;
-
+		// the following data is protected by mutex
+		Mutex mutex;
+		// cancels the download of updates, set from request_download_updates ()
+		// to end_download_updates ()
+		Cancellable? download_updates_cancellable;
+		// handle of the last job exited in a download (see cb_download):
+		// libalpm was interrupted while using it, it is freed when replaced
+		Alpm.Handle? exited_handle;
 
 		public AlpmUtils (Config config) {
-			sink_mutex = Mutex ();
-			_sink = new NullSink ();
 			this.config = config;
-			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
 			alpm_config = config.alpm_config;
-			to_syncfirst = new GenericSet<string?> (str_hash, str_equal);
-			to_install = new GenericSet<string?> (str_hash, str_equal);
-			deps_to_install = new GenericSet<string?> (str_hash, str_equal);
-			to_remove = new GenericSet<string?> (str_hash, str_equal);
-			required_to_remove = new GenericSet<string?> (str_hash, str_equal);
-			orphans_to_remove = new GenericSet<string?> (str_hash, str_equal);
-			conflicts_to_remove = new GenericSet<string?> (str_hash, str_equal);
-			local_paths = new GenericSet<string?> (str_hash, str_equal);
-			remote_paths = new GenericSet<string?> (str_hash, str_equal);
-			to_build = new GenericSet<string?> (str_hash, str_equal);
-			checked_deps = new GenericSet<string?> (str_hash, str_equal);
-			to_install_as_dep = new HashTable<string, string> (str_hash, str_equal);
-			ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
-			overwrite_files = new GenericSet<string?> (str_hash, str_equal);
-			unresolvables = new GenericArray<string> ();
-			current_filename = "";
-			current_action = "";
-			current_status = "";
-			rate_timer = new Timer ();
-			download_rates = new Queue<double?> ();
-			last_download_progress_time = 0;
-			last_download_progress_action = "";
-			last_download_progress_value = 0;
-			cancellable = new Cancellable ();
-			download_updates_mutex = Mutex ();
-			download_updates_requested = false;
-			downloading_updates = false;
-			download_updates_cancel_pending = false;
+			mutex = Mutex ();
 			check_old_lock ();
 		}
 
 		void check_old_lock () {
-			var alpm_handle = get_handle (false, false, false);
+			alpm_config.reload ();
+			var alpm_handle = alpm_config.get_handle (false, false);
 			if (alpm_handle == null) {
 				return;
 			}
@@ -160,44 +73,6 @@ namespace Pamac {
 					warning (e.message);
 				}
 			}
-		}
-
-		public Alpm.Handle? get_handle (bool files_db = false, bool tmp_db = false, bool callbacks = true) {
-			alpm_config.reload ();
-			var alpm_handle = alpm_config.get_handle (files_db, tmp_db);
-			if (alpm_handle == null) {
-				var details = new GenericArray<string> (1);
-				details.add (_("Failed to initialize alpm library"));
-				sink.emit_error ("Alpm Error", details);
-				return alpm_handle;
-			}
-			if (callbacks) {
-				alpm_handle.set_eventcb (cb_event, this);
-				alpm_handle.set_progresscb (cb_progress, this);
-				alpm_handle.set_questioncb (cb_question, this);
-				alpm_handle.set_dlcb (cb_download, this);
-				alpm_handle.set_logcb (cb_log, this);
-			}
-			alpm_config.register_syncdbs (alpm_handle);
-			return alpm_handle;
-		}
-
-		public bool set_pkgreason (TransactionSink sink, string pkgname, uint reason) {
-			this.sink = sink;
-			var alpm_handle = get_handle (false, false, false);
-			if (alpm_handle == null) {
-				return false;
-			}
-			unowned Alpm.Package? pkg = alpm_handle.localdb.get_pkg (pkgname);
-			if (pkg != null) {
-				// lock the database
-				if (alpm_handle.trans_init (0) == 0) {
-					pkg.reason = (Alpm.Package.Reason) reason;
-					alpm_handle.trans_release ();
-					return true;
-				}
-			}
-			return false;
 		}
 
 		public bool clean_cache (string[] filenames) {
@@ -288,6 +163,245 @@ namespace Pamac {
 			return false;
 		}
 
+		public bool set_pkgreason (TransactionSink sink, string pkgname, uint reason) {
+			var job = new AlpmJob (this, sink, new Cancellable ());
+			return job.set_pkgreason (pkgname, reason);
+		}
+
+		// returns false only if cancelled
+		public bool trans_refresh (TransactionSink sink, Cancellable cancellable, bool force_refresh) {
+			var job = new AlpmJob (this, sink, cancellable);
+			return job.trans_refresh (force_refresh);
+		}
+
+		public bool trans_refresh_files (TransactionSink sink, Cancellable cancellable, bool force_refresh) {
+			var job = new AlpmJob (this, sink, cancellable);
+			return job.trans_refresh_files (force_refresh);
+		}
+
+		public bool trans_refresh_aur (TransactionSink sink, Cancellable cancellable, bool force_refresh) {
+			var job = new AlpmJob (this, sink, cancellable);
+			return job.trans_refresh_aur (force_refresh);
+		}
+
+		public bool download_pkgs (TransactionSink sink, Cancellable cancellable, string[] urls, ref GenericArray<string> dload_paths) {
+			var job = new AlpmJob (this, sink, cancellable);
+			return job.download_pkgs (urls, ref dload_paths);
+		}
+
+		// unresolvables: the packages with unresolvable dependencies when it fails
+		public bool trans_check_prepare (TransactionSink sink,
+										Cancellable cancellable,
+										bool sysupgrade,
+										bool enable_downgrade,
+										bool simple_install,
+										int trans_flags,
+										GenericSet<string?> to_install,
+										GenericSet<string?> to_remove,
+										GenericSet<string?> local_paths,
+										GenericSet<string?> remote_paths,
+										GenericSet<string?> to_build,
+										GenericSet<string?> ignorepkgs,
+										GenericSet<string?> overwrite_files,
+										ref TransactionSummary summary,
+										out GenericArray<string> unresolvables) {
+			var job = new AlpmJob (this, sink, cancellable);
+			bool success = job.trans_check_prepare (sysupgrade,
+													enable_downgrade,
+													simple_install,
+													trans_flags,
+													to_install,
+													to_remove,
+													local_paths,
+													remote_paths,
+													to_build,
+													ignorepkgs,
+													overwrite_files,
+													ref summary);
+			unresolvables = job.unresolvables;
+			return success;
+		}
+
+		public bool trans_run (TransactionSink sink, Cancellable cancellable, TransactionRequest request) {
+			var job = new AlpmJob (this, sink, cancellable);
+			return job.trans_run (request);
+		}
+
+		// cancellable: cancels this download, also with cancel_download_updates.
+		// Returns false if a download of updates is already requested,
+		// else end_download_updates must be called when it is finished
+		public bool request_download_updates (Cancellable cancellable) {
+			mutex.lock ();
+			bool already_requested = download_updates_cancellable != null;
+			if (!already_requested) {
+				download_updates_cancellable = cancellable;
+			}
+			mutex.unlock ();
+			return !already_requested;
+		}
+
+		public void end_download_updates () {
+			mutex.lock ();
+			download_updates_cancellable = null;
+			mutex.unlock ();
+		}
+
+		public bool is_download_updates_requested () {
+			mutex.lock ();
+			bool requested = download_updates_cancellable != null;
+			mutex.unlock ();
+			return requested;
+		}
+
+		// cancel the requested download of updates, even if it is not started yet:
+		// returns false if none is requested
+		public bool cancel_download_updates () {
+			mutex.lock ();
+			Cancellable? cancellable = download_updates_cancellable;
+			mutex.unlock ();
+			if (cancellable == null) {
+				return false;
+			}
+			cancellable.cancel ();
+			return true;
+		}
+
+		// cancellable: the one given to request_download_updates
+		public bool download_updates (TransactionSink sink, Cancellable cancellable) {
+			var job = new AlpmJob (this, sink, cancellable);
+			return job.download_updates ();
+		}
+
+		// called by cb_download before exiting the thread of job
+		internal void job_exited (AlpmJob job) {
+			mutex.lock ();
+			exited_handle = (owned) job.alpm_handle;
+			mutex.unlock ();
+		}
+	}
+
+	// one alpm operation: used by the thread running it only,
+	// the alpm callbacks receive it as context.
+	// The job is leaked if its thread is exited (see cb_download)
+	internal class AlpmJob: Object {
+		public unowned AlpmUtils utils;
+		// never replaced, so they can be read from any thread
+		public TransactionSink sink;
+		public Cancellable cancellable;
+		Config config;
+		AlpmConfig alpm_config;
+		// run transaction data
+		public Alpm.Handle? alpm_handle;
+		uint8 commit_retries;
+		string current_status;
+		bool sysupgrade;
+		bool enable_downgrade;
+		bool simple_install;
+		bool no_confirm_commit;
+		bool keep_built_pkgs;
+		int trans_flags;
+		GenericSet<string?> to_install;
+		GenericSet<string?> deps_to_install;
+		GenericSet<string?> to_remove;
+		GenericSet<string?> required_to_remove;
+		GenericSet<string?> orphans_to_remove;
+		GenericSet<string?> conflicts_to_remove;
+		GenericSet<string?> local_paths;
+		GenericSet<string?> remote_paths;
+		GenericSet<string?> to_build;
+		GenericSet<string?> checked_deps;
+		HashTable<string, string> to_install_as_dep;
+		GenericSet<string?> ignorepkgs;
+		GenericSet<string?> overwrite_files;
+		GenericSet<string?> to_syncfirst;
+		// progress data
+		public string current_filename;
+		public string current_action;
+		public double current_progress;
+		public GenericArray<string> unresolvables;
+		// download data
+		public uint64 total_download;
+		public uint64 already_downloaded;
+		public HashTable<string, uint64?> multi_progress;
+		public Timer rate_timer;
+		Queue<double?> download_rates;
+		double download_rate;
+		// libalpm calls the download callback for every chunk received by curl,
+		// so progress signals are rate-limited to avoid flooding the bus
+		const int64 DOWNLOAD_PROGRESS_INTERVAL = 100 * TimeSpan.MILLISECOND;
+		int64 last_download_progress_time;
+		string last_download_progress_action;
+		double last_download_progress_value;
+
+		public AlpmJob (AlpmUtils utils, TransactionSink sink, Cancellable cancellable) {
+			this.utils = utils;
+			this.sink = sink;
+			this.cancellable = cancellable;
+			config = utils.config;
+			alpm_config = utils.alpm_config;
+			multi_progress = new HashTable<string, uint64?> (str_hash, str_equal);
+			to_syncfirst = new GenericSet<string?> (str_hash, str_equal);
+			to_install = new GenericSet<string?> (str_hash, str_equal);
+			deps_to_install = new GenericSet<string?> (str_hash, str_equal);
+			to_remove = new GenericSet<string?> (str_hash, str_equal);
+			required_to_remove = new GenericSet<string?> (str_hash, str_equal);
+			orphans_to_remove = new GenericSet<string?> (str_hash, str_equal);
+			conflicts_to_remove = new GenericSet<string?> (str_hash, str_equal);
+			local_paths = new GenericSet<string?> (str_hash, str_equal);
+			remote_paths = new GenericSet<string?> (str_hash, str_equal);
+			to_build = new GenericSet<string?> (str_hash, str_equal);
+			checked_deps = new GenericSet<string?> (str_hash, str_equal);
+			to_install_as_dep = new HashTable<string, string> (str_hash, str_equal);
+			ignorepkgs = new GenericSet<string?> (str_hash, str_equal);
+			overwrite_files = new GenericSet<string?> (str_hash, str_equal);
+			unresolvables = new GenericArray<string> ();
+			current_filename = "";
+			current_action = "";
+			current_status = "";
+			rate_timer = new Timer ();
+			download_rates = new Queue<double?> ();
+			last_download_progress_time = 0;
+			last_download_progress_action = "";
+			last_download_progress_value = 0;
+		}
+
+		public Alpm.Handle? get_handle (bool files_db = false, bool tmp_db = false, bool callbacks = true) {
+			alpm_config.reload ();
+			var alpm_handle = alpm_config.get_handle (files_db, tmp_db);
+			if (alpm_handle == null) {
+				var details = new GenericArray<string> (1);
+				details.add (_("Failed to initialize alpm library"));
+				sink.emit_error ("Alpm Error", details);
+				return alpm_handle;
+			}
+			if (callbacks) {
+				alpm_handle.set_eventcb (cb_event, this);
+				alpm_handle.set_progresscb (cb_progress, this);
+				alpm_handle.set_questioncb (cb_question, this);
+				alpm_handle.set_dlcb (cb_download, this);
+				alpm_handle.set_logcb (cb_log, this);
+			}
+			alpm_config.register_syncdbs (alpm_handle);
+			return alpm_handle;
+		}
+
+		public bool set_pkgreason (string pkgname, uint reason) {
+			var alpm_handle = get_handle (false, false, false);
+			if (alpm_handle == null) {
+				return false;
+			}
+			unowned Alpm.Package? pkg = alpm_handle.localdb.get_pkg (pkgname);
+			if (pkg != null) {
+				// lock the database
+				if (alpm_handle.trans_init (0) == 0) {
+					pkg.reason = (Alpm.Package.Reason) reason;
+					alpm_handle.trans_release ();
+					return true;
+				}
+			}
+			return false;
+		}
+
 		unowned Alpm.Package? get_syncpkg (Alpm.Handle? alpm_handle, string name) {
 			unowned Alpm.Package? pkg = null;
 			unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
@@ -319,11 +433,9 @@ namespace Pamac {
 			return success;
 		}
 
-		public bool trans_refresh (TransactionSink sink, bool force_refresh) {
-			this.sink = sink;
+		public bool trans_refresh (bool force_refresh) {
 			sink.emit_action (_("Synchronizing package databases") + "...");
 			write_log_file (alpm_config.logfile, "synchronizing package lists");
-			cancellable.reset ();
 			int force = (force_refresh) ? 1 : 0;
 			if (force_refresh) {
 				// remove dbs in tmp
@@ -363,9 +475,7 @@ namespace Pamac {
 			return true;
 		}
 
-		public bool trans_refresh_files (TransactionSink sink, bool force_refresh) {
-			this.sink = sink;
-			cancellable.reset ();
+		public bool trans_refresh_files (bool force_refresh) {
 			// update ".files", do not need to know if we succeeded
 			alpm_handle = get_handle (true, false);
 			if (alpm_handle == null) {
@@ -379,9 +489,7 @@ namespace Pamac {
 			return true;
 		}
 
-		public bool trans_refresh_aur (TransactionSink sink, bool force_refresh) {
-			this.sink = sink;
-			cancellable.reset ();
+		public bool trans_refresh_aur (bool force_refresh) {
 			// special aur handle
 			alpm_handle = alpm_config.get_handle (false, false, false);
 			if (alpm_handle == null) {
@@ -451,76 +559,11 @@ namespace Pamac {
 			return new AlpmPackageStatic.transaction (alpm_pkg, local_pkg, sync_pkg);
 		}
 
-		// returns false if a download of updates is already requested,
-		// else end_download_updates must be called when it is finished
-		public bool request_download_updates () {
-			download_updates_mutex.lock ();
-			bool already_requested = download_updates_requested;
-			if (!already_requested) {
-				download_updates_requested = true;
-				download_updates_cancel_pending = false;
-			}
-			download_updates_mutex.unlock ();
-			return !already_requested;
-		}
-
-		// to call when the download of updates is finished,
-		// also when its thread was exited (see cb_download)
-		public void end_download_updates () {
-			download_updates_mutex.lock ();
-			download_updates_requested = false;
-			downloading_updates = false;
-			download_updates_cancel_pending = false;
-			download_updates_mutex.unlock ();
-		}
-
-		public bool is_download_updates_requested () {
-			download_updates_mutex.lock ();
-			bool requested = download_updates_requested;
-			download_updates_mutex.unlock ();
-			return requested;
-		}
-
-		// cancel the requested download of updates, even if it is not started yet:
-		// returns false if none is requested
-		public bool cancel_download_updates () {
-			download_updates_mutex.lock ();
-			bool requested = download_updates_requested;
-			if (downloading_updates) {
-				cancellable.cancel ();
-			} else if (requested) {
-				download_updates_cancel_pending = true;
-			}
-			download_updates_mutex.unlock ();
-			return requested;
-		}
-
-		// called when the download thread is exited (see cb_download):
-		// with the lock still held, so cancel_download_updates
-		// can not cancel the next operation
-		public void download_exited () {
-			download_updates_mutex.lock ();
-			downloading_updates = false;
-			download_updates_mutex.unlock ();
-		}
-
-		public bool download_updates (TransactionSink sink) {
-			download_updates_mutex.lock ();
-			if (download_updates_cancel_pending) {
-				download_updates_mutex.unlock ();
+		public bool download_updates () {
+			// may be cancelled while waiting for the lock
+			if (cancellable.is_cancelled ()) {
 				return false;
 			}
-			downloading_updates = true;
-			// reset under the mutex: a cancel_download_updates can not be lost
-			cancellable.reset ();
-			download_updates_mutex.unlock ();
-			bool success = download_updates_real (sink);
-			download_exited ();
-			return success;
-		}
-
-		bool download_updates_real (TransactionSink sink) {
-			this.sink = sink;
 			// callbacks are needed to cancel the download (see cb_download)
 			// and to answer questions for replaces/conflicts/corrupted pkgs and import keys
 			alpm_handle = get_handle (false, false);
@@ -548,7 +591,6 @@ namespace Pamac {
 		}
 
 		bool trans_init (Alpm.Handle? alpm_handle, int flags, bool emit_error = true) {
-			cancellable.reset ();
 			if (alpm_handle.trans_init ((Alpm.TransFlag) flags) == -1) {
 				if (emit_error) {
 					var details = new GenericArray<string> ();
@@ -693,10 +735,8 @@ namespace Pamac {
 			}
 		}
 
-		public bool download_pkgs (TransactionSink sink, string[] urls, ref GenericArray<string> dload_paths) {
-			this.sink = sink;
+		public bool download_pkgs (string[] urls, ref GenericArray<string> dload_paths) {
 			// a previous cancellation would exit the download at once (see cb_download)
-			cancellable.reset ();
 			alpm_handle = get_handle (false, false);
 			if (alpm_handle == null) {
 				return false;
@@ -962,8 +1002,7 @@ namespace Pamac {
 			FileUtils.unlink (Path.build_filename (alpm_handle.dbpath, "sync", "pamac_aur.db"));
 		}
 
-		public bool trans_check_prepare (TransactionSink sink,
-										bool sysupgrade,
+		public bool trans_check_prepare (bool sysupgrade,
 										bool enable_downgrade,
 										bool simple_install,
 										int trans_flags,
@@ -975,7 +1014,6 @@ namespace Pamac {
 										GenericSet<string?> ignorepkgs,
 										GenericSet<string?> overwrite_files,
 										ref TransactionSummary summary) {
-			this.sink = sink;
 			// use an tmp handle with no callback to avoid double prepare signals
 			var tmp_handle = get_handle (false, true, false);
 			if (tmp_handle == null) {
@@ -983,9 +1021,6 @@ namespace Pamac {
 			}
 			// add question callback for replaces/conflicts/corrupted pkgs and import keys
 			tmp_handle.set_questioncb (cb_question, this);
-			// start from a clean state: a previous transaction may have failed
-			// or been interrupted before resetting it
-			trans_reset ();
 			// compute arguments
 			this.sysupgrade = sysupgrade;
 			this.enable_downgrade = enable_downgrade;
@@ -1053,11 +1088,7 @@ namespace Pamac {
 			return success;
 		}
 
-		public bool trans_run (TransactionSink sink, TransactionRequest request) {
-			// start from a clean state: a previous transaction may have failed
-			// or been interrupted (download cancelled) before resetting it
-			trans_reset ();
-			this.sink = sink;
+		public bool trans_run (TransactionRequest request) {
 			this.sysupgrade = request.sysupgrade;
 			this.enable_downgrade = request.enable_downgrade;
 			this.simple_install = request.simple_install;
@@ -2086,13 +2117,6 @@ namespace Pamac {
 			remove_overwrite_files (alpm_handle);
 		}
 
-		// cancel the current operation if it reports to sink
-		public void trans_cancel (TransactionSink sink) {
-			if (sink == this.sink) {
-				cancellable.cancel ();
-			}
-		}
-
 		string remove_bash_colors (string msg) {
 			Regex regex = /\x1B\[[0-9;]*[JKmsu]/;
 			try {
@@ -2438,7 +2462,7 @@ void write_log_file (string? logfile, string event) {
 }
 
 void cb_event (void* ctx, Alpm.Event.Data data) {
-	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
+	unowned Pamac.AlpmJob job = (Pamac.AlpmJob) ctx;
 	var details = new GenericArray<string> ();
 	uint secondary_type = 0;
 	switch (data.type) {
@@ -2498,10 +2522,10 @@ void cb_event (void* ctx, Alpm.Event.Data data) {
 			break;
 		case Alpm.Event.Type.PKG_RETRIEVE_START:
 			// do not emit event when download is cancelled
-			if (alpm_utils.cancellable.is_cancelled ()) {
+			if (job.cancellable.is_cancelled ()) {
 				return;
 			}
-			alpm_utils.emit_totaldownload (data.pkg_retrieve_total_size);
+			job.emit_totaldownload (data.pkg_retrieve_total_size);
 			break;
 		case Alpm.Event.Type.OPTDEP_REMOVAL:
 			details.add (data.optdep_removal_pkg.name);
@@ -2519,11 +2543,11 @@ void cb_event (void* ctx, Alpm.Event.Data data) {
 		default:
 			break;
 	}
-	alpm_utils.emit_event ((uint) data.type, secondary_type, details);
+	job.emit_event ((uint) data.type, secondary_type, details);
 }
 
 void cb_question (void* ctx, Alpm.Question.Data data) {
-	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
+	unowned Pamac.AlpmJob job = (Pamac.AlpmJob) ctx;
 	switch (data.type) {
 		case Alpm.Question.Type.INSTALL_IGNOREPKG:
 			// Do not install package in IgnorePkg/IgnoreGroup
@@ -2538,11 +2562,11 @@ void cb_question (void* ctx, Alpm.Question.Data data) {
 			data.conflict_remove = 1;
 			break;
 		case Alpm.Question.Type.REMOVE_PKGS:
-			alpm_utils.unresolvables = new GenericArray<string> ();
+			job.unresolvables = new GenericArray<string> ();
 			unowned Alpm.List<unowned Alpm.Package> list = data.remove_pkgs_packages;
 			while (list != null) {
 				unowned Alpm.Package pkg = list.data;
-				alpm_utils.unresolvables.add (pkg.name);
+				job.unresolvables.add (pkg.name);
 				list.next ();
 			}
 			// Return an error if there are top-level packages which have unresolvable dependencies
@@ -2557,7 +2581,7 @@ void cb_question (void* ctx, Alpm.Question.Data data) {
 				providers_str.add (pkg.name);
 				list.next ();
 			}
-			data.select_provider_use_index = alpm_utils.sink.choose_provider (depend_str, providers_str);
+			data.select_provider_use_index = job.sink.choose_provider (depend_str, providers_str);
 			break;
 		case Alpm.Question.Type.CORRUPTED_PKG:
 			// Auto-remove corrupted pkgs in cache
@@ -2574,26 +2598,26 @@ void cb_question (void* ctx, Alpm.Question.Data data) {
 }
 
 void cb_progress (void* ctx, Alpm.Progress progress, string pkgname, int percent, uint n_targets, uint current_target) {
-	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
-	alpm_utils.emit_progress ((uint) progress, pkgname, (uint) percent, n_targets, current_target);
+	unowned Pamac.AlpmJob job = (Pamac.AlpmJob) ctx;
+	job.emit_progress ((uint) progress, pkgname, (uint) percent, n_targets, current_target);
 }
 
-void compute_multi_download_progress (Pamac.AlpmUtils alpm_utils) {
+void compute_multi_download_progress (Pamac.AlpmJob job) {
 	uint64 total_progress = 0;
-	var iter = HashTableIter<string, uint64?> (alpm_utils.multi_progress);
+	var iter = HashTableIter<string, uint64?> (job.multi_progress);
 	uint64? progress;
 	while (iter.next (null, out progress)) {
 		total_progress += progress;
 	}
-	alpm_utils.emit_download (total_progress, alpm_utils.total_download);
+	job.emit_download (total_progress, job.total_download);
 }
 
-void emit_download (Pamac.AlpmUtils alpm_utils, string filename, uint64 xfered, uint64 total) {
-	if (alpm_utils.total_download == 0) {
-		alpm_utils.emit_download (xfered, total);
+void emit_download (Pamac.AlpmJob job, string filename, uint64 xfered, uint64 total) {
+	if (job.total_download == 0) {
+		job.emit_download (xfered, total);
 	} else {
-		alpm_utils.multi_progress.insert (filename, xfered);
-		compute_multi_download_progress (alpm_utils);
+		job.multi_progress.insert (filename, xfered);
+		compute_multi_download_progress (job);
 	}
 }
 
@@ -2617,13 +2641,14 @@ string? get_download_pkg_label (string filename) {
 }
 
 void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, void* event_data) {
-	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
-	if (alpm_utils.cancellable.is_cancelled ()) {
+	unowned Pamac.AlpmJob job = (Pamac.AlpmJob) ctx;
+	if (job.cancellable.is_cancelled ()) {
 		// cancel download
-		alpm_utils.alpm_handle.unlock();
-		alpm_utils.sink.emit_script_output ("");
-		alpm_utils.sink.emit_action (dgettext (null, "Transaction cancelled") + ".");
-		alpm_utils.download_exited ();
+		job.alpm_handle.unlock();
+		job.sink.emit_script_output ("");
+		job.sink.emit_action (dgettext (null, "Transaction cancelled") + ".");
+		// the handle is used by libalpm in this thread: give it to utils to free it later
+		job.utils.job_exited (job);
 		Thread.exit(-1);
 	}
 	switch (event_type) {
@@ -2635,21 +2660,21 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 			} else {
 				string? pkg_label = get_download_pkg_label (filename);
 				if (pkg_label != null) {
-					alpm_utils.current_action = _("Download of %s started").printf (pkg_label);
+					job.current_action = _("Download of %s started").printf (pkg_label);
 				}
 			}
-			emit_download (alpm_utils, filename, 0, 0);
+			emit_download (job, filename, 0, 0);
 			break;
 		case Alpm.Download.Event.PROGRESS:
-			if (!(filename in alpm_utils.current_action)) {
+			if (!(filename in job.current_action)) {
 				if (filename.has_suffix (".db") || filename.has_suffix (".files")) {
-					alpm_utils.current_action = _("Refreshing %s").printf (filename) + "...";
+					job.current_action = _("Refreshing %s").printf (filename) + "...";
 				} else if (filename.has_suffix (".json.gz")) {
-					alpm_utils.current_action = _("Refreshing %s").printf (_("AUR")) + "...";
+					job.current_action = _("Refreshing %s").printf (_("AUR")) + "...";
 				}
 			}
 			unowned Alpm.Download.Progress progress_data = (Alpm.Download.Progress) event_data;
-			emit_download (alpm_utils, filename, progress_data.downloaded, progress_data.total);
+			emit_download (job, filename, progress_data.downloaded, progress_data.total);
 			break;
 		case Alpm.Download.Event.COMPLETED:
 			unowned Alpm.Download.Completed completed_data = (Alpm.Download.Completed) event_data;
@@ -2661,10 +2686,10 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 				} else {
 					string? pkg_label = get_download_pkg_label (filename);
 					if (pkg_label != null) {
-						alpm_utils.current_action = _("Download of %s finished").printf (pkg_label);
+						job.current_action = _("Download of %s finished").printf (pkg_label);
 					}
 					uint64 size = completed_data.total;
-					emit_download (alpm_utils, filename, size, size);
+					emit_download (job, filename, size, size);
 				}
 			}
 			break;
@@ -2674,9 +2699,9 @@ void cb_download (void* ctx, string filename, Alpm.Download.Event event_type, vo
 }
 
 void cb_log (void* ctx, Alpm.LogLevel level, string fmt, va_list args) {
-	unowned Pamac.AlpmUtils alpm_utils = (Pamac.AlpmUtils) ctx;
+	unowned Pamac.AlpmJob job = (Pamac.AlpmJob) ctx;
 	// do not log errors when download is cancelled
-	if (alpm_utils.cancellable.is_cancelled ()) {
+	if (job.cancellable.is_cancelled ()) {
 		return;
 	}
 	Alpm.LogLevel logmask = Alpm.LogLevel.ERROR | Alpm.LogLevel.WARNING;
@@ -2686,6 +2711,6 @@ void cb_log (void* ctx, Alpm.LogLevel level, string fmt, va_list args) {
 	string? log = null;
 	log = fmt.vprintf (args);
 	if (log != null) {
-		alpm_utils.emit_log ((uint) level, log);
+		job.emit_log ((uint) level, log);
 	}
 }

@@ -18,17 +18,14 @@
  */
 
 namespace Pamac {
+	// runs the operations in this process, see AlpmRunner
 	internal class TransactionInterfaceRoot: Object, TransactionInterface {
-		unowned AlpmUtils alpm_utils;
-		TransactionSink sink;
-		Cancellable trans_cancellable;
-		MainContext context;
+		AlpmRunner runner;
+		AlpmClient client;
 
 		public TransactionInterfaceRoot (AlpmUtils alpm_utils, MainContext context, TransactionSink sink) {
-			this.alpm_utils = alpm_utils;
-			this.context = context;
-			this.sink = sink;
-			trans_cancellable = new Cancellable ();
+			runner = new AlpmRunner (alpm_utils, context);
+			client = new AlpmClient (sink);
 		}
 
 		public async bool get_authorization () {
@@ -40,144 +37,45 @@ namespace Pamac {
 			// we are root
 		}
 
-		public async void generate_mirrors_list (string country) {
-			try {
-				var process = new Subprocess.newv (
-					{"pacman-mirrors", "--country=" + country},
-					SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
-				var dis = new DataInputStream (process.get_stdout_pipe ());
-				string? line;
-				while ((line = yield dis.read_line_async ()) != null) {
-					sink.emit_script_output (line);
-				}
-			} catch (Error e) {
-				warning (e.message);
-			}
-			alpm_utils.alpm_config.reload ();
+		public async void generate_mirrors_list (string country) throws Error {
+			yield runner.generate_mirrors_list (client, country);
 		}
 
 		public async bool clean_cache (GenericArray<string> filenames) throws Error {
-			string[] names = filenames.data;
-			return yield run_in_thread ("clean_cache", context, () => {
-				return alpm_utils.clean_cache (names);
-			});
+			return yield runner.clean_cache (client, filenames.data);
 		}
 
 		public async bool clean_build_files (string aur_build_dir) throws Error {
-			return yield run_in_thread ("clean_build_files", context, () => {
-				return alpm_utils.clean_build_files (aur_build_dir, Posix.geteuid ());
-			});
+			return yield runner.clean_build_files (client, aur_build_dir, Posix.geteuid ());
 		}
 
-		public async bool set_pkgreason (string pkgname, uint reason) {
-			return alpm_utils.set_pkgreason (sink, pkgname, reason);
+		public async bool set_pkgreason (string pkgname, uint reason) throws Error {
+			return yield runner.set_pkgreason (client, pkgname, reason);
 		}
 
 		public async bool download_updates () throws Error {
-			if (!alpm_utils.request_download_updates ()) {
-				// already downloading updates
-				return false;
-			}
-			try {
-				return yield run_in_thread ("download_updates", context, () => {
-					return run_exitable ("download_updates", () => {
-						return alpm_utils.download_updates (sink);
-					});
-				});
-			} finally {
-				// the download thread is exited when cancelled: always end it here
-				alpm_utils.end_download_updates ();
-			}
+			return yield runner.download_updates (client);
 		}
 
 		public async string[] download_pkgs (GenericArray<string> urls) throws Error {
-			string[] urls_copy = urls.data;
-			var dload_paths = new GenericArray<string> ();
-			yield run_in_thread ("download_pkgs", context, () => {
-				return run_exitable ("download_pkgs", () => {
-					return alpm_utils.download_pkgs (sink, urls_copy, ref dload_paths);
-				});
-			});
-			return dload_paths.data;
+			return yield runner.download_pkgs (client, urls.data);
 		}
 
-		async void wait_ms (uint ms) {
-			var timeout = new TimeoutSource (ms);
-			timeout.set_callback (wait_ms.callback);
-			timeout.attach (context);
-			yield;
-		}
-
-		// cancel the download of updates and wait for its end:
-		// it holds the alpm lock until its thread is exited
-		async void cancel_download_updates () {
-			if (!alpm_utils.cancel_download_updates ()) {
-				return;
-			}
-			while (alpm_utils.is_download_updates_requested ()) {
-				yield wait_ms (100);
-			}
-		}
-
-		// returns false if cancelled or after 5 min
-		async bool wait_for_lock () {
-			trans_cancellable.reset ();
-			if (!alpm_utils.lockfile.query_exists ()) {
-				return true;
-			}
-			sink.start_waiting ();
-			sink.emit_action (dgettext (null, "Waiting for another package manager to quit") + "...");
-			bool success = false;
-			int64 deadline = get_monotonic_time () + 5 * TimeSpan.MINUTE;
-			while (!trans_cancellable.is_cancelled ()) {
-				yield wait_ms (200);
-				if (!alpm_utils.lockfile.query_exists ()) {
-					success = true;
-					break;
-				}
-				if (get_monotonic_time () >= deadline) {
-					sink.emit_action ("%s: %s.".printf (dgettext (null, "Transaction cancelled"), dgettext (null, "Timeout expired")));
-					break;
-				}
-			}
-			sink.stop_waiting ();
-			return success;
-		}
-
-		// run func in a thread when the lock is free,
-		// returns false if cancelled, the download is cancelled or func fails
-		async bool run_locked (string name, owned BoolFunc func) throws Error {
-			yield cancel_download_updates ();
-			if (!(yield wait_for_lock ())) {
-				return false;
-			}
-			return yield run_in_thread (name, context, () => {
-				return run_exitable (name, func);
-			});
-		}
-
+		// the refreshes interrupt the download of updates
 		public async bool trans_refresh (bool force) throws Error {
-			return yield run_locked ("trans_refresh", () => {
-				return alpm_utils.trans_refresh (sink, force);
-			});
+			return yield runner.trans_refresh (client, force, true);
 		}
 
 		public async bool trans_refresh_files (bool force) throws Error {
-			return yield run_locked ("trans_refresh_files", () => {
-				return alpm_utils.trans_refresh_files (sink, force);
-			});
+			return yield runner.trans_refresh_files (client, force, true);
 		}
 
 		public async bool trans_refresh_aur (bool force) throws Error {
-			return yield run_locked ("trans_refresh_aur", () => {
-				return alpm_utils.trans_refresh_aur (sink, force);
-			});
+			return yield runner.trans_refresh_aur (client, force, true);
 		}
 
 		public async bool trans_run (TransactionRequest request) throws Error {
-			return yield run_locked ("trans_run", () => {
-				return alpm_utils.trans_run (sink, request);
-			});
+			return yield runner.trans_run (client, request);
 		}
 
 		public async bool snap_trans_run (GenericArray<string> to_install, GenericArray<string> to_remove) {
@@ -196,8 +94,7 @@ namespace Pamac {
 		}
 
 		public void trans_cancel () {
-			trans_cancellable.cancel ();
-			alpm_utils.trans_cancel (sink);
+			client.cancellable.cancel ();
 		}
 
 		public void quit_daemon () {
