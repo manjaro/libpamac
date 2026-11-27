@@ -2247,31 +2247,16 @@ namespace Pamac {
 					}
 					break;
 				case 36: // Alpm.Event.Type.HOOK_RUN_START
-					double progress = (double) int.parse (details[2]) / int.parse (details[3]);
-					string status = "%s/%s".printf (details[2], details[3]);
-					bool changed = false;
-					if (progress != current_progress) {
-						current_progress = progress;
-						changed = true;
-					}
-					if (status != current_status) {
-						current_status = (owned) status;
-						changed = true;
-					}
-					if (changed) {
-						if (details[1] != "") {
-							sink.emit_hook_progress (current_action, details[1], current_status, current_progress);
-							if ("error" in details[1].down ()) {
-								sink.emit_warning (dgettext (null, "Error while running hooks"));
-								sink.important_details_outpout (true);
-							}
-						} else {
-							sink.emit_hook_progress (current_action, details[0], current_status, current_progress);
-							if ("error" in details[0].down ()) {
-								sink.emit_warning (dgettext (null, "Error while running hooks"));
-								sink.important_details_outpout (true);
-							}
-						}
+					// each hook run is reported: its progress can equal the previous one,
+					// e.g. 1/1 after the install of 1 package
+					current_progress = (double) int.parse (details[2]) / int.parse (details[3]);
+					current_status = "%s/%s".printf (details[2], details[3]);
+					// the description of the hook, else its name
+					unowned string hook = details[1] != "" ? details[1] : details[0];
+					sink.emit_hook_progress (current_action, hook, current_status, current_progress);
+					if ("error" in hook.down ()) {
+						sink.emit_warning (dgettext (null, "Error while running hooks"));
+						sink.important_details_outpout (true);
 					}
 					break;
 				default:
