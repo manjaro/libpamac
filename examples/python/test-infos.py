@@ -96,7 +96,8 @@ class GetInfosCase(unittest.TestCase):
 
     def test_count_installed(self):
         """count on disk pacman db packages installed"""
-        pkgs = self.db.get_installed_pkgs()
+        # with appstream, a package which provides several apps is listed once per app
+        pkgs = {pkg.get_name() for pkg in self.db.get_installed_pkgs()}
         ldir = os.listdir("/var/lib/pacman/local/")
         ldir.remove("ALPM_DB_VERSION")
         self.assertEqual(len(ldir), len(pkgs))
@@ -133,7 +134,7 @@ class GetInfosCase(unittest.TestCase):
                     package = self.db.get_pkg(pkg.props.name)
                     result = get_item_desc(fdesc, "%DEPENDS%")
                     for dep in result:
-                        self.assertIn(dep, package.props.depends)
+                        self.assertIn(dep, package.get_depends())
 
     def test_search_pacman(self):
         """compare results with pacman -Ssq"""

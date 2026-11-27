@@ -35,6 +35,9 @@ namespace Pamac {
 			if (module == null) {
 				return false;
 			}
+			// the plugin types are registered statically and can't be unregistered:
+			// never unload the module, a reloaded one would register them again
+			module.make_resident ();
 
 			void* function;
 			module.symbol ("register_plugin", out function);
