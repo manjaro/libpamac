@@ -927,7 +927,7 @@ namespace Pamac {
 										cmdline.add ("--recv-keys");
 										cmdline.add ("--");
 										cmdline.add (key);
-										int status = yield run_cmd_line_async (cmdline, null, build_cancellable);
+										int status = yield run_build_cmd_line (cmdline, null);
 										emit_script_output ("");
 										if (status == 0) {
 											success = true;
@@ -1798,44 +1798,44 @@ namespace Pamac {
 			}
 		}
 
-		public async virtual int run_cmd_line_async (GenericArray<string> args, string? working_directory, Cancellable cancellable) {
-			int status = 1;
+		// run_cmd_line_async with build_cancellable, which may be overridden:
+		// returns 1 if the command can not be run or is cancelled
+		async int run_build_cmd_line (GenericArray<string> args, string? working_directory) {
+			try {
+				return yield run_cmd_line_async (args, working_directory, build_cancellable);
+			} catch (IOError.CANCELLED e) {
+				return 1;
+			} catch (Error e) {
+				warning (e.message);
+				return 1;
+			}
+		}
+
+		// run a command, send its output with emit_script_output and return its exit status.
+		// Throws IOError.CANCELLED when cancellable is cancelled, after killing the command
+		public async virtual int run_cmd_line_async (GenericArray<string> args, string? working_directory, Cancellable cancellable) throws Error {
 			var launcher = new SubprocessLauncher (SubprocessFlags.STDIN_INHERIT | SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_MERGE);
 			if (working_directory != null) {
 				launcher.set_cwd (working_directory);
 			}
 			launcher.set_environ (Environ.get ());
+			// spawnv needs a null terminated array
+			GenericArray<string> args_copy = args.copy (strdup);
+			args_copy.length = args_copy.length + 1;
+			Subprocess process = launcher.spawnv (args_copy.data);
+			var dis = new DataInputStream (process.get_stdout_pipe ());
 			try {
-				// spawnv needs a null terminated array
-				GenericArray<string> args_copy = args.copy (strdup);
-				args_copy.length = args_copy.length + 1;
-				Subprocess process = launcher.spawnv (args_copy.data);
-				var dis = new DataInputStream (process.get_stdout_pipe ());
 				string? line;
-				try {
-					// cancellable: stop waiting for a line, the process may not print anything for a long time
-					while ((line = yield dis.read_line_async (Priority.DEFAULT, cancellable)) != null) {
-						emit_script_output (remove_bash_colors (line));
-					}
-				} catch (IOError.CANCELLED e) {
-					// process killed below
+				// cancellable: stop waiting for a line, the process may not print anything for a long time
+				while ((line = yield dis.read_line_async (Priority.DEFAULT, cancellable)) != null) {
+					emit_script_output (remove_bash_colors (line));
 				}
-				if (cancellable.is_cancelled ()) {
-					kill_process_tree (process);
-				}
-				try {
-					yield process.wait_async (cancellable);
-					if (process.get_if_exited ()) {
-						status = process.get_exit_status ();
-					}
-				} catch (Error e) {
-					// cancelled
-					kill_process_tree (process);
-				}
-			} catch (Error e) {
-				warning (e.message);
+				yield process.wait_async (cancellable);
+			} catch (IOError.CANCELLED e) {
+				kill_process_tree (process);
+				throw e;
 			}
-			return status;
+			return process.get_if_exited () ? process.get_exit_status () : 1;
 		}
 
 		// get name from a package file name like name-version-release-arch.pkg.tar*
@@ -1910,10 +1910,8 @@ namespace Pamac {
 				emit_script_output ("");
 				emit_action (dgettext (null, "Building %s").printf (pkgname) + "...");
 				important_details_outpout (false);
-				int status = yield run_cmd_line_async (cmdline, pkgdir, build_cancellable);
-				if (build_cancellable.is_cancelled ()) {
-					status = 1;
-				} else if (status != 0) {
+				int status = yield run_build_cmd_line (cmdline, pkgdir);
+				if (status != 0 && !build_cancellable.is_cancelled ()) {
 					emit_error (dgettext (null, "Failed to build %s").printf (pkgname), new GenericArray<string> ());
 				}
 				if (status == 0) {
