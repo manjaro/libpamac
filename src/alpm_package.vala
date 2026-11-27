@@ -43,6 +43,63 @@ namespace Pamac {
 		public abstract async unowned GenericArray<string> get_files_async ();
 	}
 
+	// libalpm is not thread safe and loads data lazily: one recursive lock
+	// for all the handles of a Database, also taken by the packages accessors
+	internal class AlpmLock {
+		RecMutex mutex;
+
+		public AlpmLock () {
+			mutex = RecMutex ();
+		}
+
+		public void acquire () {
+			mutex.lock ();
+		}
+
+		public void release () {
+			mutex.unlock ();
+		}
+	}
+
+	// owns an alpm handle: packages created from it keep a reference,
+	// so their alpm data stay valid after Database.refresh () replaced the handle
+	internal class AlpmHandleRef {
+		public Alpm.Handle handle;
+		public AlpmLock alpm_lock;
+
+		public AlpmHandleRef (owned Alpm.Handle handle, AlpmLock alpm_lock) {
+			this.handle = (owned) handle;
+			this.alpm_lock = alpm_lock;
+		}
+
+		// the lock must be held
+		public unowned Alpm.Package? get_local_pkg (string pkgname) {
+			return handle.localdb.get_pkg (pkgname);
+		}
+
+		// the lock must be held
+		public unowned Alpm.Package? get_sync_pkg (string pkgname) {
+			unowned Alpm.List<unowned Alpm.DB> syncdbs = handle.syncdbs;
+			while (syncdbs != null) {
+				unowned Alpm.Package? pkg = syncdbs.data.get_pkg (pkgname);
+				if (pkg != null) {
+					return pkg;
+				}
+				syncdbs.next ();
+			}
+			return null;
+		}
+
+		// files of pkg, which comes from this handle
+		public GenericArray<string> get_pkg_files (Alpm.Package pkg) {
+			var files = new GenericArray<string> ();
+			alpm_lock.acquire ();
+			Database.add_pkg_files (handle.root, pkg, files);
+			alpm_lock.release ();
+			return files;
+		}
+	}
+
 	internal class AlpmPackageLinked : AlpmPackage {
 		// Package
 		string _name;
@@ -57,7 +114,7 @@ namespace Pamac {
 		uint64 _download_size;
 		DateTime? _install_date;
 		// App
-		unowned App? _app;
+		App? _app;
 		unowned string? _app_name;
 		unowned string? _app_id;
 		unowned string? _long_desc;
@@ -65,7 +122,9 @@ namespace Pamac {
 		unowned string? _icon;
 		GenericArray<string> _screenshots;
 		// AlpmPackage
-		unowned Database database;
+		WeakRef database;
+		// the handle of alpm_pkg, local_pkg and sync_pkg, null for static packages
+		AlpmHandleRef? handle_ref;
 		unowned Alpm.Package? alpm_pkg;
 		unowned Alpm.Package? local_pkg;
 		unowned Alpm.Package? sync_pkg;
@@ -99,9 +158,11 @@ namespace Pamac {
 		// Package
 		public override string name {
 			get {
+				lock_alpm ();
 				if (_name == null) {
 					_name = alpm_pkg.name;
 				}
+				unlock_alpm ();
 				return _name;
 			}
 			internal set { _name = value; }
@@ -121,6 +182,7 @@ namespace Pamac {
 		}
 		public override string version {
 			get {
+				lock_alpm ();
 				if (!version_set) {
 					version_set = true;
 					found_sync_pkg ();
@@ -130,23 +192,27 @@ namespace Pamac {
 						_version = alpm_pkg.version;
 					}
 				}
+				unlock_alpm ();
 				return _version;
 			}
 			internal set { _version = value; }
 		}
 		public override string? installed_version {
 			get {
+				lock_alpm ();
 				if (!installed_version_set) {
 					installed_version_set = true;
 					found_local_pkg ();
 					_installed_version = local_pkg.version;
 				}
+				unlock_alpm ();
 				return _installed_version;
 			}
 			internal set { _installed_version = value; }
 		}
 		public override string? desc {
 			get {
+				lock_alpm ();
 				if (_desc == null) {
 					if (_app != null) {
 						unowned string? summary = _app.desc;
@@ -159,12 +225,14 @@ namespace Pamac {
 						_desc = alpm_pkg.desc;
 					}
 				}
+				unlock_alpm ();
 				return _desc;
 			}
 			internal set { _desc = value; }
 		}
 		public override string? repo {
 			get {
+				lock_alpm ();
 				if (!repo_set) {
 					repo_set = true;
 					found_sync_pkg ();
@@ -173,12 +241,14 @@ namespace Pamac {
 						_repo = db.name;
 					}
 				}
+				unlock_alpm ();
 				return _repo;
 			}
 			internal set { _repo = value; }
 		}
 		public override string? license {
 			get {
+				lock_alpm ();
 				if (!license_set) {
 					license_set = true;
 					unowned Alpm.List<unowned string>? list = alpm_pkg.licenses;
@@ -195,37 +265,45 @@ namespace Pamac {
 						_license = dgettext (null, "Unknown");
 					}
 				}
+				unlock_alpm ();
 				return _license;
 			}
 		}
 		public override string? url {
 			get {
+				lock_alpm ();
 				if (_url == null) {
 					_url = alpm_pkg.url;
 				}
+				unlock_alpm ();
 				return _url;
 			}
 		}
 		public override uint64 installed_size {
 			get {
+				lock_alpm ();
 				if (_installed_size == 0 && !installed_size_set) {
 					installed_size_set = true;
 					_installed_size = alpm_pkg.isize;
 				}
+				unlock_alpm ();
 				return _installed_size;
 			}
 		}
 		public override uint64 download_size {
 			get {
+				lock_alpm ();
 				if (!download_size_set) {
 					download_size_set = true;
 					_download_size = alpm_pkg.download_size;
 				}
+				unlock_alpm ();
 				return _download_size;
 			}
 		}
 		public override DateTime? install_date {
 			get {
+				lock_alpm ();
 				if (!install_date_set) {
 					install_date_set = true;
 					found_local_pkg ();
@@ -233,6 +311,7 @@ namespace Pamac {
 						_install_date = new DateTime.from_unix_local (local_pkg.installdate);
 					}
 				}
+				unlock_alpm ();
 				return _install_date;
 			}
 		}
@@ -292,22 +371,27 @@ namespace Pamac {
 		// AlpmPackage
 		public override DateTime? build_date {
 			get {
+				lock_alpm ();
 				if (_build_date == null) {
 					_build_date = new DateTime.from_unix_local (alpm_pkg.builddate);
 				}
+				unlock_alpm ();
 				return _build_date;
 			}
 		}
 		public override string? packager {
 			get {
+				lock_alpm ();
 				if (_packager == null) {
 					_packager = alpm_pkg.packager;
 				}
+				unlock_alpm ();
 				return _packager;
 			}
 		}
 		public override string? reason {
 			get {
+				lock_alpm ();
 				if (!reason_set) {
 					reason_set = true;
 					found_local_pkg ();
@@ -319,11 +403,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _reason;
 			}
 		}
 		public override GenericArray<string> validations {
 			get {
+				lock_alpm ();
 				if (_validations == null) {
 					_validations = new GenericArray<string> ();
 					Alpm.Package.Validation validation = alpm_pkg.validation;
@@ -345,11 +431,13 @@ namespace Pamac {
 						_validations.add (dgettext (null, "Unknown"));
 					}
 				}
+				unlock_alpm ();
 				return _validations;
 			}
 		}
 		public override GenericArray<string> groups {
 			get {
+				lock_alpm ();
 				if (_groups == null) {
 					_groups = new GenericArray<string> ();
 					unowned Alpm.List<unowned string> list = alpm_pkg.groups;
@@ -358,11 +446,13 @@ namespace Pamac {
 						list.next ();
 					}
 				}
+				unlock_alpm ();
 				return _groups;
 			}
 		}
 		public override GenericArray<string> depends {
 			get {
+				lock_alpm ();
 				if (_depends == null) {
 					_depends = new GenericArray<string> ();
 					unowned Alpm.List<unowned Alpm.Depend> list = alpm_pkg.depends;
@@ -371,12 +461,14 @@ namespace Pamac {
 						list.next ();
 					}
 				}
+				unlock_alpm ();
 				return _depends;
 			}
 			internal set { _depends = value; }
 		}
 		public override GenericArray<string> optdepends {
 			get {
+				lock_alpm ();
 				if (_optdepends == null) {
 					_optdepends = new GenericArray<string> ();
 					unowned Alpm.List<unowned Alpm.Depend> list = alpm_pkg.optdepends;
@@ -385,11 +477,13 @@ namespace Pamac {
 						list.next ();
 					}
 				}
+				unlock_alpm ();
 				return _optdepends;
 			}
 		}
 		public override GenericArray<string> makedepends {
 			get {
+				lock_alpm ();
 				if (_makedepends == null) {
 					_makedepends = new GenericArray<string> ();
 					if (sync_pkg != null) {
@@ -400,11 +494,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _makedepends;
 			}
 		}
 		public override GenericArray<string> checkdepends {
 			get {
+				lock_alpm ();
 				if (_checkdepends == null) {
 					_checkdepends = new GenericArray<string> ();
 					if (sync_pkg != null) {
@@ -415,11 +511,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _checkdepends;
 			}
 		}
 		public override GenericArray<string> requiredby {
 			get {
+				lock_alpm ();
 				if (_requiredby == null) {
 					_requiredby = new GenericArray<string> ();
 					found_local_pkg ();
@@ -432,11 +530,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _requiredby;
 			}
 		}
 		public override GenericArray<string> optionalfor {
 			get {
+				lock_alpm ();
 				if (_optionalfor == null) {
 					_optionalfor = new GenericArray<string> ();
 					found_local_pkg ();
@@ -449,11 +549,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _optionalfor;
 			}
 		}
 		public override GenericArray<string> provides {
 			get {
+				lock_alpm ();
 				if (_provides == null) {
 					_provides = new GenericArray<string> ();
 					unowned Alpm.List<unowned Alpm.Depend> list = alpm_pkg.provides;
@@ -462,12 +564,14 @@ namespace Pamac {
 						list.next ();
 					}
 				}
+				unlock_alpm ();
 				return _provides;
 			}
 			internal set { _provides = value; }
 		}
 		public override GenericArray<string> replaces {
 			get {
+				lock_alpm ();
 				if (_replaces == null) {
 					_replaces = new GenericArray<string> ();
 					unowned Alpm.List<unowned Alpm.Depend> list = alpm_pkg.replaces;
@@ -476,12 +580,14 @@ namespace Pamac {
 						list.next ();
 					}
 				}
+				unlock_alpm ();
 				return _replaces;
 			}
 			internal set { _replaces = value; }
 		}
 		public override GenericArray<string> conflicts {
 			get {
+				lock_alpm ();
 				if (_conflicts == null) {
 					_conflicts = new GenericArray<string> ();
 					unowned Alpm.List<unowned Alpm.Depend> list = alpm_pkg.conflicts;
@@ -490,12 +596,14 @@ namespace Pamac {
 						list.next ();
 					}
 				}
+				unlock_alpm ();
 				return _conflicts;
 			}
 			internal set { _conflicts = value; }
 		}
 		public override GenericArray<string> backups {
 			get {
+				lock_alpm ();
 				if (_backups == null) {
 					_backups = new GenericArray<string> ();
 					found_local_pkg ();
@@ -509,15 +617,17 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _backups;
 			}
 		}
 
 		internal AlpmPackageLinked () {}
 
-		internal AlpmPackageLinked.from_alpm (Alpm.Package? alpm_pkg, Database database) {
+		internal AlpmPackageLinked.from_alpm (Alpm.Package? alpm_pkg, Database database, AlpmHandleRef handle_ref) {
 			this.alpm_pkg = alpm_pkg;
-			this.database = database;
+			this.database = WeakRef (database);
+			this.handle_ref = handle_ref;
 		}
 
 		internal void set_alpm_pkg (Alpm.Package? alpm_pkg) {
@@ -534,32 +644,56 @@ namespace Pamac {
 			sync_pkg_set = true;
 		}
 
+		// static packages have no handle, their data are already computed
+		void lock_alpm () {
+			if (handle_ref != null) {
+				handle_ref.alpm_lock.acquire ();
+			}
+		}
+
+		void unlock_alpm () {
+			if (handle_ref != null) {
+				handle_ref.alpm_lock.release ();
+			}
+		}
+
 		void found_local_pkg () {
+			lock_alpm ();
 			if (!local_pkg_set) {
 				local_pkg_set = true;
 				if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
 					local_pkg = alpm_pkg;
 				} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
-					local_pkg = database.intern_get_local_pkg (alpm_pkg.name);
+					local_pkg = handle_ref.get_local_pkg (alpm_pkg.name);
 				}
 			}
+			unlock_alpm ();
 		}
 
 		void found_sync_pkg () {
+			lock_alpm ();
 			if (!sync_pkg_set) {
 				sync_pkg_set = true;
 				if (alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
-					sync_pkg = database.intern_get_syncpkg (alpm_pkg.name);
+					sync_pkg = handle_ref.get_sync_pkg (alpm_pkg.name);
 				} else if (alpm_pkg.origin == Alpm.Package.From.SYNCDB) {
 					sync_pkg = alpm_pkg;
 				}
 			}
+			unlock_alpm ();
 		}
 
 		public override unowned GenericArray<string> get_files () {
 			if (_files == null) {
 				found_local_pkg ();
-				_files = database.get_pkg_files (name, local_pkg);
+				var db = database.get () as Database;
+				if (db != null) {
+					_files = db.get_pkg_files (name, local_pkg);
+				} else if (local_pkg != null) {
+					_files = handle_ref.get_pkg_files (local_pkg);
+				} else {
+					_files = new GenericArray<string> ();
+				}
 			}
 			return _files;
 		}
@@ -567,7 +701,14 @@ namespace Pamac {
 		public override async unowned GenericArray<string> get_files_async () {
 			if (_files == null) {
 				found_local_pkg ();
-				_files = yield database.get_pkg_files_async (name, local_pkg);
+				var db = database.get () as Database;
+				if (db != null) {
+					_files = yield db.get_pkg_files_async (name, local_pkg);
+				} else if (local_pkg != null) {
+					_files = handle_ref.get_pkg_files (local_pkg);
+				} else {
+					_files = new GenericArray<string> ();
+				}
 			}
 			return _files;
 		}
@@ -613,6 +754,8 @@ namespace Pamac {
 			_version = alpm_pkg.version;
 			// desc
 			_desc = alpm_pkg.desc;
+			// url
+			_url = alpm_pkg.url;
 			// packager
 			_packager = alpm_pkg.packager;
 			// set pkgs
@@ -687,6 +830,8 @@ namespace Pamac {
 			_version = alpm_pkg.version;
 			// desc
 			_desc = alpm_pkg.desc;
+			// url
+			_url = alpm_pkg.url;
 			uint64 val = installed_size;
 			val = download_size;
 			if (local_pkg != null) {
@@ -750,7 +895,9 @@ namespace Pamac {
 		DateTime? _install_date;
 		// AlpmPackage
 		unowned Alpm.Package? local_pkg;
-		unowned Database database;
+		// the handle of local_pkg
+		AlpmHandleRef? handle_ref;
+		WeakRef database;
 		DateTime? _build_date;
 		unowned string? _packager;
 		unowned string? _reason;
@@ -810,18 +957,21 @@ namespace Pamac {
 		}
 		public override string? installed_version {
 			get {
+				lock_alpm ();
 				if (!installed_version_set) {
 					installed_version_set = true;
 					if (local_pkg != null) {
 						_installed_version = local_pkg.version;
 					}
 				}
+				unlock_alpm ();
 				return _installed_version;
 			}
 			internal set { _installed_version = value; }
 		}
 		public override string? desc {
 			get {
+				lock_alpm ();
 				if (_desc == null) {
 					if (!is_update && local_pkg != null) {
 						_desc = local_pkg.desc;
@@ -829,6 +979,7 @@ namespace Pamac {
 						_desc = aur_infos.desc;
 					}
 				}
+				unlock_alpm ();
 				return _desc;
 			}
 			internal set { _desc = value; }
@@ -844,6 +995,7 @@ namespace Pamac {
 		}
 		public override string? license {
 			get {
+				lock_alpm ();
 				if (_license == null && !license_set) {
 					license_set = true;
 					if (!is_update && local_pkg != null) {
@@ -864,11 +1016,13 @@ namespace Pamac {
 						_license = aur_infos.license;
 					}
 				}
+				unlock_alpm ();
 				return _license;
 			}
 		}
 		public override string? url {
 			get {
+				lock_alpm ();
 				if (_url == null) {
 					if (!is_update && local_pkg != null) {
 						_url = local_pkg.url;
@@ -876,39 +1030,46 @@ namespace Pamac {
 						_url = aur_infos.url;
 					}
 				}
+				unlock_alpm ();
 				return _url;
 			}
 		}
 		public override uint64 installed_size {
 			get {
+				lock_alpm ();
 				if (!installed_size_set) {
 					installed_size_set = true;
 					if (local_pkg != null) {
 						_installed_size = local_pkg.isize;
 					}
 				}
+				unlock_alpm ();
 				return _installed_size;
 			}
 		}
 		public override uint64 download_size {
 			get {
+				lock_alpm ();
 				if (!download_size_set) {
 					download_size_set = true;
 					if (local_pkg != null) {
 						_download_size = local_pkg.download_size;
 					}
 				}
+				unlock_alpm ();
 				return _download_size;
 			}
 		}
 		public override DateTime? install_date {
 			get {
+				lock_alpm ();
 				if (!install_date_set) {
 					install_date_set = true;
 					if (local_pkg != null) {
 						_install_date = new DateTime.from_unix_local (local_pkg.installdate);
 					}
 				}
+				unlock_alpm ();
 				return _install_date;
 			}
 		}
@@ -929,28 +1090,33 @@ namespace Pamac {
 		// AlpmPackage
 		public override DateTime? build_date {
 			get {
+				lock_alpm ();
 				if (!build_date_set) {
 					build_date_set = true;
 					if (local_pkg != null) {
 						_build_date = new DateTime.from_unix_local (local_pkg.builddate);
 					}
 				}
+				unlock_alpm ();
 				return _build_date;
 			}
 		}
 		public override string? packager {
 			get {
+				lock_alpm ();
 				if (!packager_set) {
 					packager_set = true;
 					if (local_pkg != null) {
 						_packager = local_pkg.packager;
 					}
 				}
+				unlock_alpm ();
 				return _packager;
 			}
 		}
 		public override string? reason {
 			get {
+				lock_alpm ();
 				if (!reason_set) {
 					reason_set = true;
 					if (local_pkg != null) {
@@ -961,11 +1127,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _reason;
 			}
 		}
 		public override GenericArray<string> validations {
 			get {
+				lock_alpm ();
 				if (_validations == null) {
 					_validations = new GenericArray<string> ();
 					if (local_pkg != null) {
@@ -991,11 +1159,13 @@ namespace Pamac {
 						_validations.add (dgettext (null, "Unknown"));
 					}
 				}
+				unlock_alpm ();
 				return _validations;
 			}
 		}
 		public override GenericArray<string> groups {
 			get {
+				lock_alpm ();
 				if (_groups == null) {
 					_groups = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1008,11 +1178,13 @@ namespace Pamac {
 						_groups = aur_infos.groups;
 					}
 				}
+				unlock_alpm ();
 				return _groups;
 			}
 		}
 		public override GenericArray<string> depends {
 			get {
+				lock_alpm ();
 				if (_depends == null) {
 					_depends = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1025,12 +1197,14 @@ namespace Pamac {
 						_depends = aur_infos.depends;
 					}
 				}
+				unlock_alpm ();
 				return _depends;
 			}
 			internal set { _depends = value; }
 		}
 		public override GenericArray<string> optdepends {
 			get {
+				lock_alpm ();
 				if (_optdepends == null) {
 					_optdepends = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1043,6 +1217,7 @@ namespace Pamac {
 						_optdepends = aur_infos.optdepends;
 					}
 				}
+				unlock_alpm ();
 				return _optdepends;
 			}
 		}
@@ -1070,6 +1245,7 @@ namespace Pamac {
 		}
 		public override GenericArray<string> requiredby {
 			get {
+				lock_alpm ();
 				if (_requiredby == null) {
 					_requiredby = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1081,11 +1257,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _requiredby;
 			}
 		}
 		public override GenericArray<string> optionalfor {
 			get {
+				lock_alpm ();
 				if (_optionalfor == null) {
 					_optionalfor = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1097,11 +1275,13 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _optionalfor;
 			}
 		}
 		public override GenericArray<string> provides {
 			get {
+				lock_alpm ();
 				if (_provides == null) {
 					_provides = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1114,12 +1294,14 @@ namespace Pamac {
 						_provides = aur_infos.provides;
 					}
 				}
+				unlock_alpm ();
 				return _provides;
 			}
 			internal set { _provides = value; }
 		}
 		public override GenericArray<string> replaces {
 			get {
+				lock_alpm ();
 				if (_replaces == null) {
 					_replaces = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1132,12 +1314,14 @@ namespace Pamac {
 						_replaces = aur_infos.replaces;
 					}
 				}
+				unlock_alpm ();
 				return _replaces;
 			}
 			internal set { _replaces = value; }
 		}
 		public override GenericArray<string> conflicts {
 			get {
+				lock_alpm ();
 				if (_conflicts == null) {
 					_conflicts = new GenericArray<string> ();
 					if (!is_update && local_pkg != null) {
@@ -1150,12 +1334,14 @@ namespace Pamac {
 						_conflicts = aur_infos.conflicts;
 					}
 				}
+				unlock_alpm ();
 				return _conflicts;
 			}
 			internal set { _conflicts = value; }
 		}
 		public override GenericArray<string> backups {
 			get {
+				lock_alpm ();
 				if (_backups == null) {
 					_backups = new GenericArray<string> ();
 					if (local_pkg != null) {
@@ -1168,6 +1354,7 @@ namespace Pamac {
 						}
 					}
 				}
+				unlock_alpm ();
 				return _backups;
 			}
 		}
@@ -1232,11 +1419,24 @@ namespace Pamac {
 
 		internal AURPackageLinked () {}
 
-		internal void initialise_from_aur_infos (AURInfos? aur_infos, Alpm.Package? local_pkg, Database database, bool is_update = false) {
+		internal void initialise_from_aur_infos (AURInfos? aur_infos, Alpm.Package? local_pkg, Database database, AlpmHandleRef handle_ref, bool is_update = false) {
 			this.aur_infos = aur_infos;
 			this.local_pkg = local_pkg;
-			this.database = database;
+			this.database = WeakRef (database);
+			this.handle_ref = handle_ref;
 			this.is_update = is_update;
+		}
+
+		void lock_alpm () {
+			if (handle_ref != null) {
+				handle_ref.alpm_lock.acquire ();
+			}
+		}
+
+		void unlock_alpm () {
+			if (handle_ref != null) {
+				handle_ref.alpm_lock.release ();
+			}
 		}
 
 		public override unowned GenericArray<string> get_files () {
@@ -1244,7 +1444,7 @@ namespace Pamac {
 				if (local_pkg == null) {
 					_files = new GenericArray<string> ();
 				} else {
-					_files = database.get_pkg_files (local_pkg.name, local_pkg);
+					_files = handle_ref.get_pkg_files (local_pkg);
 				}
 			}
 			return _files;
@@ -1255,7 +1455,13 @@ namespace Pamac {
 				if (local_pkg == null) {
 					_files = new GenericArray<string> ();
 				} else {
-					_files = yield database.get_pkg_files_async (local_pkg.name, local_pkg);
+					// reading the files list can be slow
+					var db = database.get () as Database;
+					if (db != null) {
+						_files = yield db.get_pkg_files_async (local_pkg.name, local_pkg);
+					} else {
+						_files = handle_ref.get_pkg_files (local_pkg);
+					}
 				}
 			}
 			return _files;

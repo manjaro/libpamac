@@ -26,13 +26,13 @@ namespace Pamac {
 		public signal void start_downloading (string sender);
 		public signal void stop_downloading (string sender);
 
-		public abstract void search_snaps (string search_string, ref GenericArray<unowned SnapPackage> pkgs);
+		public abstract void search_snaps (string search_string, ref GenericArray<SnapPackage> pkgs);
 		public abstract bool is_installed_snap (string name);
-		public abstract unowned SnapPackage? get_snap (string name);
-		public abstract unowned SnapPackage? get_snap_by_app_id (string app_id);
-		public abstract void get_installed_snaps (ref GenericArray<unowned SnapPackage> pkgs);
+		public abstract SnapPackage? get_snap (string name);
+		public abstract SnapPackage? get_snap_by_app_id (string app_id);
+		public abstract void get_installed_snaps (ref GenericArray<SnapPackage> pkgs);
 		public abstract string get_installed_snap_icon (string name) throws Error;
-		public abstract void get_category_snaps (string category, ref GenericArray<unowned SnapPackage> pkgs);
+		public abstract void get_category_snaps (string category, ref GenericArray<SnapPackage> pkgs);
 		public abstract bool trans_run (string sender, string[] to_install, string[] to_remove);
 		public abstract bool switch_channel (string sender, string name, string channel);
 		public abstract void trans_cancel (string sender);

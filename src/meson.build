@@ -24,7 +24,7 @@ if get_option('enable-aur')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [alpm_deps, math, json, libsoup, gmodule],
-		version: '11.7',
+		version: '12.0',
 		install: true,
 		install_dir: [true])
 
@@ -39,7 +39,7 @@ if get_option('enable-appstream')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, appstream, gmodule],
-		version: '11.7',
+		version: '12.0',
 		install: true,
 		install_dir: [true])
 
@@ -54,7 +54,7 @@ if get_option('enable-snap')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, snapd, gmodule],
-		version: '11.7',
+		version: '12.0',
 		install: true,
 		install_dir: [true])
 
@@ -69,7 +69,7 @@ if get_option('enable-flatpak')
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, flatpak, appstream, gmodule],
-		version: '11.7',
+		version: '12.0',
 		install: true,
 		install_dir: [true])
 
@@ -86,24 +86,19 @@ libpamac = library('pamac',
 	dependencies: [alpm_deps, math, libsoup, gmodule],
 	vala_args: common_vala_args,
 	c_args: [common_c_args, alpm_c_args],
-	version: '11.7',
-	vala_gir: 'Pamac-11.gir',
+	version: '12.0',
+	vala_gir: 'Pamac-12.gir',
 	install: true,
-	install_dir: [true, true, true, true])
-				# lib, header, vapi, gir
+	install_dir: [true, true, true, false])
+				# lib, header, vapi, gir (the fixed one is installed by gir/meson.build)
 
 # create pkg-config file
 pkg = import('pkgconfig')
 pkg.generate(libpamac,
 	description: 'Pamac Library')
 
-# create typelib files
-g_ir_compiler = find_program('g-ir-compiler')
-custom_target('pamac typelib', command: [g_ir_compiler, '--shared-library', 'libpamac', '--output', '@OUTPUT@', join_paths(meson.current_build_dir(), 'Pamac-11.gir')],
-	output: 'Pamac-11.typelib',
-	depends: libpamac,
-	install: true,
-	install_dir: join_paths(get_option('libdir'), 'girepository-1.0'))
+# fix the gir and create typelib files
+subdir('gir')
 
 executable('pamac-daemon',
 	sources: ['version.vala', 'package.vala', 'alpm_package.vala', 'aur_interface.vala', 'utils.vala',

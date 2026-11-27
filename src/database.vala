@@ -20,7 +20,12 @@
 namespace Pamac {
 	public class Database : Object {
 		AlpmConfig alpm_config;
-		Alpm.Handle? alpm_handle;
+		// protects alpm_config, the handles and the caches,
+		// shared with the packages which use the handles
+		AlpmLock alpm_lock;
+		// the current handle, packages created from it keep a reference
+		AlpmHandleRef? handle_ref;
+		unowned Alpm.Handle? alpm_handle;
 		Alpm.Handle? files_handle;
 		HashTable<string, AURPackageLinked> aur_vcs_pkgs;
 		HashTable<unowned string, AlpmPackageLinked> pkgs_cache;
@@ -47,6 +52,7 @@ namespace Pamac {
 		}
 
 		construct {
+			alpm_lock = new AlpmLock ();
 			alpm_config = config.alpm_config;
 			context = MainContext.default ();
 			aur_vcs_pkgs = new HashTable<string, AURPackageLinked> (str_hash, str_equal);
@@ -60,10 +66,13 @@ namespace Pamac {
 			// set HTTP_USER_AGENT needed when downloading using libalpm like refreshing dbs
 			Environment.set_variable ("HTTP_USER_AGENT", user_agent, true);
 			// init dbs
-			lock (alpm_config) {
-				alpm_handle = alpm_config.get_handle ();
+			alpm_lock.acquire ();
+			try {
+				Alpm.Handle? new_handle = alpm_config.get_handle ();
 				// plugins are loaded anyway, so their config is consistent
-				if (alpm_handle != null) {
+				if (new_handle != null) {
+					handle_ref = new AlpmHandleRef ((owned) new_handle, alpm_lock);
+					alpm_handle = handle_ref.handle;
 					// add ignorepkgs
 					foreach (unowned string name in config.ignorepkgs) {
 						alpm_handle.add_ignorepkg (name);
@@ -78,6 +87,8 @@ namespace Pamac {
 				aur_vcs_pkgs.remove_all ();
 				pkgs_cache.remove_all ();
 				aur_pkgs_cache.remove_all ();
+			} finally {
+				alpm_lock.release ();
 			}
 			// load aur plugin
 			if (config.support_aur) {
@@ -124,12 +135,17 @@ namespace Pamac {
 		}
 
 		internal void refresh () {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				alpm_config.reload ();
-				alpm_handle = alpm_config.get_handle ();
-				if (alpm_handle == null) {
+				Alpm.Handle? new_handle = alpm_config.get_handle ();
+				if (new_handle == null) {
+					// keep the current handle
 					return;
 				} else {
+					// the previous handle is released with the last package created from it
+					handle_ref = new AlpmHandleRef ((owned) new_handle, alpm_lock);
+					alpm_handle = handle_ref.handle;
 					// add ignorepkgs
 					foreach (unowned string name in config.ignorepkgs) {
 						alpm_handle.add_ignorepkg (name);
@@ -148,6 +164,8 @@ namespace Pamac {
 				// repos or groups may have changed
 				repos_names = null;
 				groups_names = null;
+			} finally {
+				alpm_lock.release ();
 			}
 			if (config.enable_snap) {
 				snap_plugin.refresh ();
@@ -158,12 +176,15 @@ namespace Pamac {
 		}
 
 		internal Alpm.Handle? get_tmp_handle () {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				var tmp_handle = alpm_config.get_handle (false, true);
 				if (tmp_handle != null) {
 					alpm_config.register_syncdbs (tmp_handle);
 				}
 				return tmp_handle;
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
@@ -272,7 +293,8 @@ namespace Pamac {
 		void get_clean_cache_details_real (ref HashTable<string, uint64?> filenames_size) {
 			var pkg_version_filenames = new HashTable<string, GenericArray<string>> (str_hash, str_equal);
 			var pkg_versions = new HashTable<string, GenericArray<string>> (str_hash, str_equal);
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				unowned Alpm.List<unowned string> cachedirs_names = alpm_handle.cachedirs;
 				while (cachedirs_names != null) {
 					unowned string cachedir_name = cachedirs_names.data;
@@ -323,6 +345,8 @@ namespace Pamac {
 					}
 					cachedirs_names.next ();
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 			if (config.clean_keep_num_pkgs == 0) {
 				return;
@@ -430,38 +454,45 @@ namespace Pamac {
 		}
 
 		public bool is_installed_pkg (string pkgname) {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				return alpm_handle.localdb.get_pkg (pkgname) != null;
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		internal unowned Alpm.Package? intern_get_local_pkg (string pkgname) {
-			lock (alpm_config) {
-				return alpm_handle.localdb.get_pkg (pkgname);
-			}
-		}
-
-		public unowned AlpmPackage? get_installed_pkg (string pkgname) {
-			lock (alpm_config) {
+		public AlpmPackage? get_installed_pkg (string pkgname) {
+			alpm_lock.acquire ();
+			try {
 				return initialise_pkg (alpm_handle.localdb.get_pkg (pkgname), null);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
 		public bool has_installed_satisfier (string depstring) {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				return Alpm.find_satisfier (alpm_handle.localdb.pkgcache, depstring) != null;
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public unowned AlpmPackage? get_installed_satisfier (string depstring) {
-			lock (alpm_config) {
+		public AlpmPackage? get_installed_satisfier (string depstring) {
+			alpm_lock.acquire ();
+			try {
 				return initialise_pkg (Alpm.find_satisfier (alpm_handle.localdb.pkgcache, depstring), null);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_installed_pkgs_by_glob (string glob) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
-			lock (alpm_config) {
+		public GenericArray<AlpmPackage> get_installed_pkgs_by_glob (string glob) {
+			var pkgs = new GenericArray<AlpmPackage> ();
+			alpm_lock.acquire ();
+			try {
 				unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
 				while (pkgcache != null) {
 					unowned Alpm.Package local_pkg = pkgcache.data;
@@ -471,13 +502,18 @@ namespace Pamac {
 					}
 					pkgcache.next ();
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 			return pkgs;
 		}
 
 		public bool should_hold (string pkgname) {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				return pkgname in alpm_config.holdpkgs;
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
@@ -486,7 +522,8 @@ namespace Pamac {
 			string pkgname_copy = pkgname;
 			try {
 				new Thread<int>.try ("get_uninstalled_optdeps", () => {
-					lock (alpm_config) {
+					alpm_lock.acquire ();
+					try {
 						unowned Alpm.Package? pkg = get_syncpkg (alpm_handle, pkgname_copy);
 						if (pkg != null) {
 							unowned Alpm.List<unowned Alpm.Depend> optdepends = pkg.optdepends;
@@ -499,6 +536,8 @@ namespace Pamac {
 								optdepends.next ();
 							}
 						}
+					} finally {
+						alpm_lock.release ();
 					}
 					context.invoke (get_uninstalled_optdeps_async.callback);
 					return 0;
@@ -523,18 +562,18 @@ namespace Pamac {
 			return pkg;
 		}
 
-		unowned AlpmPackage? initialise_pkg (Alpm.Package? alpm_pkg, Alpm.Package? sync_pkg) {
+		AlpmPackage? initialise_pkg (Alpm.Package? alpm_pkg, Alpm.Package? sync_pkg) {
 			if (alpm_pkg == null) {
 				return null;
 			}
-			unowned AlpmPackageLinked? pkg = null;
+			AlpmPackageLinked? pkg = null;
 			// first search in cache only with pkgname
 			unowned string pkgname = alpm_pkg.name;
 			pkg = pkgs_cache.lookup (pkgname);
 			if (pkg != null) {
 				return pkg;
 			}
-			var new_pkg = new AlpmPackageLinked.from_alpm (alpm_pkg, this);
+			var new_pkg = new AlpmPackageLinked.from_alpm (alpm_pkg, this, handle_ref);
 			if (sync_pkg != null) {
 				new_pkg.set_sync_pkg (sync_pkg);
 			} else if (config.enable_aur && alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
@@ -562,7 +601,7 @@ namespace Pamac {
 			return pkg;
 		}
 
-		void initialise_pkgs (Alpm.List<unowned Alpm.Package>? alpm_pkgs, ref GenericArray<unowned AlpmPackage> pkgs) {
+		void initialise_pkgs (Alpm.List<unowned Alpm.Package>? alpm_pkgs, ref GenericArray<AlpmPackage> pkgs) {
 			var data = new HashTable<unowned string, AlpmPackageLinked> (str_hash, str_equal);
 			var foreign_pkgnames = new GenericArray<string> ();
 			while (alpm_pkgs != null) {
@@ -575,7 +614,7 @@ namespace Pamac {
 					alpm_pkgs.next ();
 					continue;
 				}
-				pkg = new AlpmPackageLinked.from_alpm (alpm_pkg, this);
+				pkg = new AlpmPackageLinked.from_alpm (alpm_pkg, this, handle_ref);
 				if (config.enable_aur && alpm_pkg.origin == Alpm.Package.From.LOCALDB) {
 					unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
 					pkg.set_sync_pkg (sync_pkg);
@@ -593,7 +632,7 @@ namespace Pamac {
 						unowned App app = apps[0];
 						pkg.set_app (app);
 						// check if pkg with app exists in cache
-						unowned AlpmPackageLinked? cached_pkg = pkgs_cache.lookup (pkg.id);
+						AlpmPackageLinked? cached_pkg = pkgs_cache.lookup (pkg.id);
 						if (cached_pkg == null) {
 							// add in cache
 							pkgs_cache.replace (pkg.id, pkg);
@@ -605,7 +644,7 @@ namespace Pamac {
 							app = apps[i];
 							cached_pkg = pkgs_cache.lookup (app.id);
 							if (cached_pkg == null) {
-								var pkg_dup = new AlpmPackageLinked.from_alpm (alpm_pkg, this);
+								var pkg_dup = new AlpmPackageLinked.from_alpm (alpm_pkg, this, handle_ref);
 								pkg_dup.set_app (apps[i]);
 								pkgs.add (pkg_dup);
 								// add in cache
@@ -630,7 +669,7 @@ namespace Pamac {
 			if (foreign_pkgnames.length > 0) {
 				var aur_infos_list = aur_plugin.get_multi_infos (foreign_pkgnames);
 				foreach (unowned AURInfos aur_infos in aur_infos_list) {
-					unowned AlpmPackageLinked? pkg = data.lookup (aur_infos.name);
+					AlpmPackageLinked? pkg = data.lookup (aur_infos.name);
 					if (pkg != null) {
 						pkg.repo = dgettext (null, "AUR");
 					}
@@ -638,20 +677,26 @@ namespace Pamac {
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_installed_pkgs () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
-			lock (alpm_config) {
+		public GenericArray<AlpmPackage> get_installed_pkgs () {
+			var pkgs = new GenericArray<AlpmPackage> ();
+			alpm_lock.acquire ();
+			try {
 				initialise_pkgs (alpm_handle.localdb.pkgcache, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_installed_pkgs_async () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_installed_pkgs_async () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("get_installed_pkgs", () => {
-					lock (alpm_config) {
+					alpm_lock.acquire ();
+					try {
 						initialise_pkgs (alpm_handle.localdb.pkgcache, ref pkgs);
+					} finally {
+						alpm_lock.release ();
 					}
 					context.invoke (get_installed_pkgs_async.callback);
 					return 0;
@@ -663,12 +708,13 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_installed_apps_async () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_installed_apps_async () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			if (config.enable_appstream) {
 				try {
 					new Thread<int>.try ("get_installed_apps", () => {
-						lock (alpm_config) {
+						alpm_lock.acquire ();
+						try {
 							foreach (unowned HashTable<unowned string, App> apps in appstream_plugin.get_apps ()) {
 								var iter = HashTableIter<unowned string, App> (apps);
 								unowned App app;
@@ -678,7 +724,7 @@ namespace Pamac {
 									if (local_pkg != null) {
 										AlpmPackageLinked? pkg = pkgs_cache.lookup (app.id);
 										if (pkg == null) {
-											pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+											pkg = new AlpmPackageLinked.from_alpm (local_pkg, this, handle_ref);
 											pkg.set_local_pkg (local_pkg);
 											pkg.set_app (app);
 											pkgs_cache.replace (pkg.id, pkg);
@@ -687,6 +733,8 @@ namespace Pamac {
 									}
 								}
 							}
+						} finally {
+							alpm_lock.release ();
 						}
 						context.invoke (get_installed_apps_async.callback);
 						return 0;
@@ -699,8 +747,9 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		void get_explicitly_installed_pkgs_real (ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void get_explicitly_installed_pkgs_real (ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> alpm_pkgs = null;
 				unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
 				while (pkgcache != null) {
@@ -711,17 +760,19 @@ namespace Pamac {
 					pkgcache.next ();
 				}
 				initialise_pkgs (alpm_pkgs, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_explicitly_installed_pkgs () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public GenericArray<AlpmPackage> get_explicitly_installed_pkgs () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			get_explicitly_installed_pkgs_real (ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_explicitly_installed_pkgs_async () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_explicitly_installed_pkgs_async () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("get_explicitly_installed_pkgs", () => {
 					get_explicitly_installed_pkgs_real (ref pkgs);
@@ -735,8 +786,9 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		void get_foreign_pkgs_real (ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void get_foreign_pkgs_real (ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> alpm_pkgs = null;
 				unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
 				while (pkgcache != null) {
@@ -747,17 +799,19 @@ namespace Pamac {
 					pkgcache.next ();
 				}
 				initialise_pkgs (alpm_pkgs, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_foreign_pkgs () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public GenericArray<AlpmPackage> get_foreign_pkgs () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			get_foreign_pkgs_real (ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_foreign_pkgs_async () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_foreign_pkgs_async () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("get_foreign_pkgs", () => {
 					get_foreign_pkgs_real (ref pkgs);
@@ -771,8 +825,9 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		void get_orphans_real (ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void get_orphans_real (ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> alpm_pkgs = null;
 				unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
 				while (pkgcache != null) {
@@ -793,17 +848,19 @@ namespace Pamac {
 					pkgcache.next ();
 				}
 				initialise_pkgs (alpm_pkgs, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_orphans () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public GenericArray<AlpmPackage> get_orphans () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			get_orphans_real (ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_orphans_async () {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_orphans_async () {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("get_orphans", () => {
 					get_orphans_real (ref pkgs);
@@ -815,12 +872,6 @@ namespace Pamac {
 				warning (e.message);
 			}
 			return pkgs;
-		}
-
-		internal unowned Alpm.Package? intern_get_syncpkg (string pkgname) {
-			lock (alpm_config) {
-				return get_syncpkg (alpm_handle, pkgname);
-			}
 		}
 
 		unowned Alpm.Package? get_syncpkg (Alpm.Handle? handle, string pkgname) {
@@ -846,15 +897,21 @@ namespace Pamac {
 		}
 
 		public bool is_sync_pkg (string pkgname) {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				return is_syncpkg (pkgname);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public unowned AlpmPackage? get_sync_pkg (string pkgname) {
-			lock (alpm_config) {
+		public AlpmPackage? get_sync_pkg (string pkgname) {
+			alpm_lock.acquire ();
+			try {
 				unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
 				return initialise_pkg (sync_pkg, sync_pkg);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
@@ -873,21 +930,28 @@ namespace Pamac {
 		}
 
 		public bool has_sync_satisfier (string depstring) {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				return find_dbs_satisfier (depstring) != null;
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public unowned AlpmPackage? get_sync_satisfier (string depstring) {
-			lock (alpm_config) {
+		public AlpmPackage? get_sync_satisfier (string depstring) {
+			alpm_lock.acquire ();
+			try {
 				unowned Alpm.Package? sync_pkg = find_dbs_satisfier (depstring);
 				return initialise_pkg (sync_pkg, sync_pkg);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_sync_pkgs_by_glob (string glob) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
-			lock (alpm_config) {
+		public GenericArray<AlpmPackage> get_sync_pkgs_by_glob (string glob) {
+			var pkgs = new GenericArray<AlpmPackage> ();
+			alpm_lock.acquire ();
+			try {
 				// dbs in reverse order, alpm_list_reverse would return a new list
 				var dbs = new GenericArray<unowned Alpm.DB> ();
 				unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
@@ -907,13 +971,16 @@ namespace Pamac {
 						pkgcache.next ();
 					}
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 			return pkgs;
 		}
 
-		public unowned Package? get_app_by_id (string app_id) {
-			unowned Package? pkg = null;
-			lock (alpm_config) {
+		public Package? get_app_by_id (string app_id) {
+			Package? pkg = null;
+			alpm_lock.acquire ();
+			try {
 				// fast search, the cache is modified by other threads
 				pkg = pkgs_cache.lookup (app_id);
 				if (pkg == null && config.enable_appstream) {
@@ -926,7 +993,7 @@ namespace Pamac {
 								unowned string pkgname = app.pkgname;
 								unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 								if (local_pkg != null) {
-									var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+									var new_pkg = new AlpmPackageLinked.from_alpm (local_pkg, this, handle_ref);
 									new_pkg.set_local_pkg (local_pkg);
 									new_pkg.set_app (app);
 									pkgs_cache.replace (new_pkg.id, new_pkg);
@@ -934,7 +1001,7 @@ namespace Pamac {
 								} else {
 									unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
 									if (sync_pkg != null) {
-										var new_pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
+										var new_pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this, handle_ref);
 										new_pkg.set_local_pkg (local_pkg);
 										new_pkg.set_sync_pkg (sync_pkg);
 										new_pkg.set_app (app);
@@ -947,6 +1014,8 @@ namespace Pamac {
 						}
 					}
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 			if (pkg == null && config.enable_flatpak) {
 				pkg = flatpak_plugin.get_flatpak_by_app_id (app_id);
@@ -1110,24 +1179,27 @@ namespace Pamac {
 			}
 		}
 
-		void search_installed_pkgs_real (string search_string, ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void search_installed_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> result = search_local_db (search_string);
 				add_appstream_results (ref result, search_string.split (" "), true, false);
 				initialise_pkgs (result, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> search_installed_pkgs (string search_string) {
+		public GenericArray<AlpmPackage> search_installed_pkgs (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+			var pkgs = new GenericArray<AlpmPackage> ();
 			search_installed_pkgs_real (search_string_down, ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> search_installed_pkgs_async (string search_string) {
+		public async GenericArray<AlpmPackage> search_installed_pkgs_async (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("search_installed_pkgs", () => {
 					search_installed_pkgs_real (search_string_down, ref pkgs);
@@ -1141,24 +1213,27 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		void search_repos_pkgs_real (string search_string, ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void search_repos_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> result = search_sync_dbs (search_string);
 				add_appstream_results (ref result, search_string.split (" "), false, true);
 				initialise_pkgs (result, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> search_repos_pkgs (string search_string) {
+		public GenericArray<AlpmPackage> search_repos_pkgs (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+			var pkgs = new GenericArray<AlpmPackage> ();
 			search_repos_pkgs_real (search_string_down, ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> search_repos_pkgs_async (string search_string) {
+		public async GenericArray<AlpmPackage> search_repos_pkgs_async (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("search_repos_pkgs", () => {
 					search_repos_pkgs_real (search_string_down, ref pkgs);
@@ -1172,10 +1247,11 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		public GenericArray<unowned AlpmPackage> search_uninstalled_apps (GenericArray<string> search_terms) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public GenericArray<AlpmPackage> search_uninstalled_apps (GenericArray<string> search_terms) {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			// search only in appstream
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> appstream_result = null;
 				if (config.enable_appstream) {
 					string[] data = search_terms.data;
@@ -1193,28 +1269,33 @@ namespace Pamac {
 					}
 				}
 				initialise_pkgs (appstream_result, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 			return pkgs;
 		}
 
-		void search_pkgs_real (string search_string, ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void search_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> result = search_all_dbs (search_string);
 				add_appstream_results (ref result, search_string.split (" "), true, true);
 				initialise_pkgs (result, ref pkgs);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> search_pkgs (string search_string) {
+		public GenericArray<AlpmPackage> search_pkgs (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+			var pkgs = new GenericArray<AlpmPackage> ();
 			search_pkgs_real (search_string_down, ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> search_pkgs_async (string search_string) {
+		public async GenericArray<AlpmPackage> search_pkgs_async (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("search_pkgs", () => {
 					search_pkgs_real (search_string_down, ref pkgs);
@@ -1228,35 +1309,38 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		void search_aur_pkgs_real (string search_string, ref GenericArray<unowned AURPackage> pkgs) {
+		void search_aur_pkgs_real (string search_string, ref GenericArray<AURPackage> pkgs) {
 			var aur_infos_list = aur_plugin.search (search_string);
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				foreach (unowned AURInfos aur_infos in aur_infos_list) {
 					unowned string name = aur_infos.name;
 					AURPackageLinked pkg = aur_pkgs_cache.lookup (name);
 					if (pkg == null) {
 						unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (name);
 						pkg = new AURPackageLinked ();
-						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
+						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, handle_ref);
 						aur_pkgs_cache.replace (pkg.id, pkg);
 					}
 					pkgs.add (pkg);
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AURPackage> search_aur_pkgs (string search_string) {
+		public GenericArray<AURPackage> search_aur_pkgs (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AURPackage> ();
+			var pkgs = new GenericArray<AURPackage> ();
 			if (config.enable_aur) {
 				search_aur_pkgs_real (search_string_down, ref pkgs);
 			}
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AURPackage> search_aur_pkgs_async (string search_string) {
+		public async GenericArray<AURPackage> search_aur_pkgs_async (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned AURPackage> ();
+			var pkgs = new GenericArray<AURPackage> ();
 			if (config.enable_aur) {
 				try {
 					new Thread<int>.try ("search_aur_pkgs", () => {
@@ -1347,7 +1431,8 @@ namespace Pamac {
 
 		public HashTable<string, GenericArray<string>> search_files (GenericArray<string> files) {
 			var result = new HashTable<string, GenericArray<string>> (str_hash, str_equal);
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				FileSearch[] searches = {};
 				foreach (unowned string file in files) {
 					searches += new FileSearch (alpm_handle.root, file);
@@ -1363,6 +1448,8 @@ namespace Pamac {
 					search_files_in_pkgs (syncdbs.data.pkgcache, searches, result);
 					syncdbs.next ();
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 			return result;
 		}
@@ -1390,8 +1477,8 @@ namespace Pamac {
 			return categories_names;
 		}
 
-		GenericArray<unowned AlpmPackage> get_apps_pkgs (HashTable<unowned string, unowned App> apps) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		GenericArray<AlpmPackage> get_apps_pkgs (HashTable<unowned string, unowned App> apps) {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			var iter = HashTableIter<unowned string, unowned App> (apps);
 			unowned App app;
 			while (iter.next (null, out app)) {
@@ -1403,7 +1490,7 @@ namespace Pamac {
 				}
 				unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
 				if (local_pkg != null) {
-					pkg = new AlpmPackageLinked.from_alpm (local_pkg, this);
+					pkg = new AlpmPackageLinked.from_alpm (local_pkg, this, handle_ref);
 					pkg.set_local_pkg (local_pkg);
 					pkg.set_app (app);
 					pkgs.add (pkg);
@@ -1411,7 +1498,7 @@ namespace Pamac {
 				} else {
 					unowned Alpm.Package? sync_pkg = get_syncpkg (alpm_handle, pkgname);
 					if (sync_pkg != null) {
-						pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this);
+						pkg = new AlpmPackageLinked.from_alpm (sync_pkg, this, handle_ref);
 						pkg.set_local_pkg (local_pkg);
 						pkg.set_sync_pkg (sync_pkg);
 						pkg.set_app (app);
@@ -1423,16 +1510,19 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_category_pkgs_async (string category) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_category_pkgs_async (string category) {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			if (config.enable_appstream) {
 				string category_copy = category;
 				try {
 					new Thread<int>.try ("get_category_pkgs", () => {
-						lock (alpm_config) {
+						alpm_lock.acquire ();
+						try {
 							if (category_copy in CATEGORIES) {
 								pkgs = get_apps_pkgs (appstream_plugin.get_category_apps (category_copy));
 							}
+						} finally {
+							alpm_lock.release ();
 						}
 						context.invoke (get_category_pkgs_async.callback);
 						return 0;
@@ -1447,7 +1537,8 @@ namespace Pamac {
 
 		// a copy that callers can modify, updated by refresh ()
 		public GenericArray<string> get_repos_names () {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				if (repos_names == null) {
 					repos_names = new GenericArray<string> ();
 					if (alpm_handle == null) {
@@ -1461,11 +1552,14 @@ namespace Pamac {
 					}
 				}
 				return repos_names.copy (strdup);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		void get_repo_pkgs_real (string repo, ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void get_repo_pkgs_real (string repo, ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				unowned Alpm.List<unowned Alpm.DB> syncdbs = alpm_handle.syncdbs;
 				while (syncdbs != null) {
 					unowned Alpm.DB db = syncdbs.data;
@@ -1475,10 +1569,10 @@ namespace Pamac {
 							unowned Alpm.Package sync_pkg = pkgcache.data;
 							unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (sync_pkg.name);
 							if (local_pkg != null) {
-								unowned AlpmPackage? new_pkg = initialise_pkg (local_pkg, sync_pkg);
+								AlpmPackage? new_pkg = initialise_pkg (local_pkg, sync_pkg);
 								pkgs.add (new_pkg);
 							} else {
-								unowned AlpmPackage? new_pkg = initialise_pkg (sync_pkg, sync_pkg);
+								AlpmPackage? new_pkg = initialise_pkg (sync_pkg, sync_pkg);
 								pkgs.add (new_pkg);
 							}
 							pkgcache.next ();
@@ -1487,17 +1581,19 @@ namespace Pamac {
 					}
 					syncdbs.next ();
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_repo_pkgs (string repo) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public GenericArray<AlpmPackage> get_repo_pkgs (string repo) {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			get_repo_pkgs_real (repo, ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_repo_pkgs_async (string repo) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_repo_pkgs_async (string repo) {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			string repo_copy = repo;
 			try {
 				new Thread<int>.try ("get_repo_pkgs", () => {
@@ -1514,7 +1610,8 @@ namespace Pamac {
 
 		// a copy that callers can modify, updated by refresh ()
 		public GenericArray<string> get_groups_names () {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				if (groups_names != null) {
 					return groups_names.copy (strdup);
 				}
@@ -1540,11 +1637,14 @@ namespace Pamac {
 				}
 				groups_names.sort (strcmp);
 				return groups_names.copy (strdup);
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		void get_group_pkgs_real (string group_name, ref GenericArray<unowned AlpmPackage> pkgs) {
-			lock (alpm_config) {
+		void get_group_pkgs_real (string group_name, ref GenericArray<AlpmPackage> pkgs) {
+			alpm_lock.acquire ();
+			try {
 				Alpm.List<unowned Alpm.Package> alpm_pkgs = null;
 				int dbs_found = 0;
 				unowned Alpm.Group? grp = alpm_handle.localdb.get_group (group_name);
@@ -1578,17 +1678,19 @@ namespace Pamac {
 				if (dbs_found > 1) {
 					pkgs.sort (pkg_compare_name);
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public GenericArray<unowned AlpmPackage> get_group_pkgs (string group_name) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public GenericArray<AlpmPackage> get_group_pkgs (string group_name) {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			get_group_pkgs_real (group_name, ref pkgs);
 			return pkgs;
 		}
 
-		public async GenericArray<unowned AlpmPackage> get_group_pkgs_async (string group_name) {
-			var pkgs = new GenericArray<unowned AlpmPackage> ();
+		public async GenericArray<AlpmPackage> get_group_pkgs_async (string group_name) {
+			var pkgs = new GenericArray<AlpmPackage> ();
 			string group_name_copy = group_name;
 			try {
 				new Thread<int>.try ("get_group_pkgs", () => {
@@ -1603,45 +1705,45 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		public unowned AlpmPackage? get_pkg (string pkgname) {
+		public AlpmPackage? get_pkg (string pkgname) {
 			if (is_installed_pkg (pkgname)) {
 				return get_installed_pkg (pkgname);
 			}
 			return get_sync_pkg (pkgname);
 		}
 
+		// files of pkg with their full path, the alpm lock must be held
+		internal static void add_pkg_files (string root, Alpm.Package pkg, GenericArray<string> files) {
+			unowned Alpm.FileList filelist = pkg.files;
+			Alpm.File* file_ptr = filelist.files;
+			for (size_t i = 0; i < filelist.count; i++, file_ptr++) {
+				if (!file_ptr->name.has_suffix ("/")) {
+					var filename = new StringBuilder (root);
+					filename.append (file_ptr->name);
+					files.add ((owned) filename.str);
+				}
+			}
+		}
+
 		void get_pkg_files_real (string pkgname, Alpm.Package? local_pkg, ref GenericArray<string> files) {
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				if (local_pkg != null) {
-					unowned Alpm.FileList filelist = local_pkg.files;
-					Alpm.File* file_ptr = filelist.files;
-					for (size_t i = 0; i < filelist.count; i++, file_ptr++) {
-						if (!file_ptr->name.has_suffix ("/")) {
-							var filename = new StringBuilder (alpm_handle.root);
-							filename.append (file_ptr->name);
-							files.add ((owned) filename.str);
-						}
-					}
+					add_pkg_files (alpm_handle.root, local_pkg, files);
 				} else {
 					unowned Alpm.List<unowned Alpm.DB> syncdbs = files_handle.syncdbs;
 					while (syncdbs != null) {
 						unowned Alpm.DB db = syncdbs.data;
 						unowned Alpm.Package? files_pkg = db.get_pkg (pkgname);
 						if (files_pkg != null) {
-							unowned Alpm.FileList filelist = files_pkg.files;
-							Alpm.File* file_ptr = filelist.files;
-							for (size_t i = 0; i < filelist.count; i++, file_ptr++) {
-								if (!file_ptr->name.has_suffix ("/")) {
-									var filename = new StringBuilder (alpm_handle.root);
-									filename.append (file_ptr->name);
-									files.add ((owned) filename.str);
-								}
-							}
+							add_pkg_files (alpm_handle.root, files_pkg, files);
 							break;
 						}
 						syncdbs.next ();
 					}
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
@@ -2004,28 +2106,39 @@ namespace Pamac {
 			return success;
 		}
 
-		public unowned AURPackage? get_aur_pkg (string pkgname) {
-			unowned AURPackageLinked? pkg = null;
+		public AURPackage? get_aur_pkg (string pkgname) {
+			AURPackageLinked? pkg = null;
 			if (config.enable_aur) {
-				lock (alpm_config) {
+				alpm_lock.acquire ();
+				pkg = aur_pkgs_cache.lookup (pkgname);
+				alpm_lock.release ();
+				if (pkg != null) {
+					return pkg;
+				}
+				// can reload the AUR data, do not hold the lock
+				AURInfos? aur_infos = aur_plugin.get_infos (pkgname);
+				if (aur_infos == null) {
+					return null;
+				}
+				alpm_lock.acquire ();
+				try {
+					// may have been added meanwhile
 					pkg = aur_pkgs_cache.lookup (pkgname);
 					if (pkg == null) {
-						AURInfos? aur_infos = aur_plugin.get_infos (pkgname);
-						if (aur_infos != null) {
-							unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
-							var new_pkg = new AURPackageLinked ();
-							new_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
-							pkg = new_pkg;
-							aur_pkgs_cache.replace (pkg.id, new_pkg);
-						}
+						unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
+						pkg = new AURPackageLinked ();
+						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, handle_ref);
+						aur_pkgs_cache.replace (pkg.id, pkg);
 					}
+				} finally {
+					alpm_lock.release ();
 				}
 			}
 			return pkg;
 		}
 
-		public async unowned AURPackage? get_aur_pkg_async (string pkgname) {
-			unowned AURPackage? pkg = null;
+		public async AURPackage? get_aur_pkg_async (string pkgname) {
+			AURPackage? pkg = null;
 			if (config.enable_aur) {
 				string pkgname_copy = pkgname;
 				try {
@@ -2042,29 +2155,32 @@ namespace Pamac {
 			return pkg;
 		}
 
-		void get_aur_pkgs_real (GenericArray<string> pkgnames, ref HashTable<string, unowned AURPackageLinked?> data) {
+		void get_aur_pkgs_real (GenericArray<string> pkgnames, ref HashTable<string, AURPackage?> data) {
 			// prepare data with all keys
 			foreach (unowned string pkgname in pkgnames) {
 				data.insert (pkgname, null);
 			}
 			var aur_infos_list = aur_plugin.get_multi_infos (pkgnames);
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				foreach (unowned AURInfos aur_infos in aur_infos_list) {
 					unowned string name = aur_infos.name;
 					AURPackageLinked pkg = aur_pkgs_cache.lookup (name);
 					if (pkg == null) {
 						unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (name);
 						pkg = new AURPackageLinked ();
-						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this);
+						pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, handle_ref);
 						aur_pkgs_cache.replace (pkg.id, pkg);
 					}
 					data.insert (name, pkg);
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 		}
 
-		public HashTable<string, unowned AURPackage?> get_aur_pkgs (GenericArray<string> pkgnames) {
-			var data = new HashTable<string, unowned AURPackageLinked?> (str_hash, str_equal);
+		public HashTable<string, AURPackage?> get_aur_pkgs (GenericArray<string> pkgnames) {
+			var data = new HashTable<string, AURPackage?> (str_hash, str_equal);
 			if (!config.enable_aur) {
 				return data;
 			}
@@ -2072,8 +2188,8 @@ namespace Pamac {
 			return data;
 		}
 
-		public async HashTable<string, unowned AURPackage?> get_aur_pkgs_async (GenericArray<string> pkgnames) {
-			var data = new HashTable<string, unowned AURPackageLinked?> (str_hash, str_equal);
+		public async HashTable<string, AURPackage?> get_aur_pkgs_async (GenericArray<string> pkgnames) {
+			var data = new HashTable<string, AURPackage?> (str_hash, str_equal);
 			if (!config.enable_aur) {
 				return data;
 			}
@@ -2104,13 +2220,17 @@ namespace Pamac {
 		}
 
 		public void refresh_tmp_files_dbs () {
-			lock (alpm_config) {
-				var tmp_files_handle = alpm_config.get_handle (true, true);
-				if (tmp_files_handle != null) {
-					alpm_config.register_syncdbs (tmp_files_handle);
-					unowned Alpm.List<unowned Alpm.DB> syncdbs = tmp_files_handle.syncdbs;
-					tmp_files_handle.update_dbs (syncdbs, 0);
-				}
+			Alpm.Handle? tmp_files_handle;
+			alpm_lock.acquire ();
+			tmp_files_handle = alpm_config.get_handle (true, true);
+			if (tmp_files_handle != null) {
+				alpm_config.register_syncdbs (tmp_files_handle);
+			}
+			alpm_lock.release ();
+			// the download uses only this private handle, do not hold the lock
+			if (tmp_files_handle != null) {
+				unowned Alpm.List<unowned Alpm.DB> syncdbs = tmp_files_handle.syncdbs;
+				tmp_files_handle.update_dbs (syncdbs, 0);
 			}
 		}
 
@@ -2192,7 +2312,8 @@ namespace Pamac {
 		void get_updates_real (ref Updates updates) {
 			var local_pkgs = new GenericArray<string> ();
 			var vcs_local_pkgs = new GenericArray<string> ();
-			lock (alpm_config) {
+			alpm_lock.acquire ();
+			try {
 				unowned GenericArray<AlpmPackage> repos_updates = updates.repos_updates;
 				unowned GenericArray<AlpmPackage> ignored_repos_updates = updates.ignored_repos_updates;
 				unowned Alpm.List<unowned Alpm.Package> pkgcache = alpm_handle.localdb.pkgcache;
@@ -2215,6 +2336,8 @@ namespace Pamac {
 				if (config.check_aur_updates) {
 					get_aur_local_pkgs (local_pkgs, vcs_local_pkgs);
 				}
+			} finally {
+				alpm_lock.release ();
 			}
 			GenericArray<FlatpakPackage> flatpak_updates = updates.flatpak_updates;
 			if (config.check_flatpak_updates) {
@@ -2229,8 +2352,11 @@ namespace Pamac {
 				}
 				// count this step as 5% of the total
 				emit_get_updates_progress (95);
-				lock (alpm_config) {
+				alpm_lock.acquire ();
+				try {
 					get_aur_updates_real (aur_infos_list, vcs_versions, ref updates);
+				} finally {
+					alpm_lock.release ();
 				}
 			}
 			emit_get_updates_progress (100);
@@ -2367,7 +2493,7 @@ namespace Pamac {
 							new_version = aur_infos.version;
 						}
 						aur_pkg = new AURPackageLinked ();
-						aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, true);
+						aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, handle_ref, true);
 						// set aur_pkg.version
 						aur_pkg.version = new_version;
 						aur_vcs_pkgs.insert (name, aur_pkg);
@@ -2377,7 +2503,7 @@ namespace Pamac {
 				} else {
 					new_version = aur_infos.version;
 					aur_pkg = new AURPackageLinked ();
-					aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, true);
+					aur_pkg.initialise_from_aur_infos (aur_infos, local_pkg, this, handle_ref, true);
 					// set aur_pkg.version
 					aur_pkg.version = new_version;
 				}
@@ -2398,7 +2524,8 @@ namespace Pamac {
 			var updates = new Updates ();
 			try {
 				new Thread<int>.try ("get_aur_updates", () => {
-					lock (alpm_config) {
+					alpm_lock.acquire ();
+					try {
 						// get local pkgs
 						var local_pkgs = new GenericArray<string> ();
 						var vcs_local_pkgs = new GenericArray<string> ();
@@ -2432,6 +2559,8 @@ namespace Pamac {
 						foreach (unowned string name in handle_ignorepkgs) {
 							alpm_handle.add_ignorepkg (name);
 						}
+					} finally {
+						alpm_lock.release ();
 					}
 					context.invoke (get_aur_updates_async.callback);
 					return 0;
@@ -2443,9 +2572,9 @@ namespace Pamac {
 			return updates;
 		}
 
-		public async GenericArray<unowned SnapPackage> search_snaps_async (string search_string) {
+		public async GenericArray<SnapPackage> search_snaps_async (string search_string) {
 			string search_string_down = search_string.down ();
-			var pkgs = new GenericArray<unowned SnapPackage> ();
+			var pkgs = new GenericArray<SnapPackage> ();
 			if (config.enable_snap) {
 				try {
 					new Thread<int>.try ("search_snaps", () => {
@@ -2468,8 +2597,8 @@ namespace Pamac {
 			return false;
 		}
 
-		public async unowned SnapPackage? get_snap_async (string name) {
-			unowned SnapPackage? pkg = null;
+		public async SnapPackage? get_snap_async (string name) {
+			SnapPackage? pkg = null;
 			if (config.enable_snap) {
 				string name_copy = name;
 				try {
@@ -2486,8 +2615,8 @@ namespace Pamac {
 			return pkg;
 		}
 
-		public async GenericArray<unowned SnapPackage> get_installed_snaps_async () {
-			var pkgs = new GenericArray<unowned SnapPackage> ();
+		public async GenericArray<SnapPackage> get_installed_snaps_async () {
+			var pkgs = new GenericArray<SnapPackage> ();
 			if (config.enable_snap) {
 				try {
 					new Thread<int>.try ("get_installed_snaps", () => {
@@ -2525,8 +2654,8 @@ namespace Pamac {
 			return icon;
 		}
 
-		public async GenericArray<unowned SnapPackage> get_category_snaps_async (string category) {
-			var pkgs = new GenericArray<unowned SnapPackage> ();
+		public async GenericArray<SnapPackage> get_category_snaps_async (string category) {
+			var pkgs = new GenericArray<SnapPackage> ();
 			if (config.enable_snap) {
 				string category_copy = category;
 				try {
@@ -2564,16 +2693,16 @@ namespace Pamac {
 			}
 		}
 
-		public GenericArray<unowned string> get_flatpak_remotes_names () {
-			var list = new GenericArray<unowned string> ();
+		public GenericArray<string> get_flatpak_remotes_names () {
+			var list = new GenericArray<string> ();
 			if (config.enable_flatpak) {
 				flatpak_plugin.get_remotes_names (ref list);
 			}
 			return list;
 		}
 
-		public async GenericArray<unowned FlatpakPackage> get_installed_flatpaks_async () {
-			var pkgs = new GenericArray<unowned FlatpakPackage> ();
+		public async GenericArray<FlatpakPackage> get_installed_flatpaks_async () {
+			var pkgs = new GenericArray<FlatpakPackage> ();
 			if (config.enable_flatpak) {
 				try {
 					new Thread<int>.try ("get_installed_flatpak", () => {
@@ -2589,8 +2718,8 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		public async GenericArray<unowned FlatpakPackage> search_flatpaks_async (string search_string) {
-			var pkgs = new GenericArray<unowned FlatpakPackage> ();
+		public async GenericArray<FlatpakPackage> search_flatpaks_async (string search_string) {
+			var pkgs = new GenericArray<FlatpakPackage> ();
 			if (config.enable_flatpak) {
 				string search_string_down = search_string.down ();
 				try {
@@ -2614,8 +2743,8 @@ namespace Pamac {
 			return false;
 		}
 
-		public async unowned FlatpakPackage? get_flatpak_async (string id) {
-			unowned FlatpakPackage? pkg = null;
+		public async FlatpakPackage? get_flatpak_async (string id) {
+			FlatpakPackage? pkg = null;
 			if (config.enable_flatpak) {
 				string id_copy = id;
 				try {
@@ -2632,8 +2761,8 @@ namespace Pamac {
 			return pkg;
 		}
 
-		public async GenericArray<unowned FlatpakPackage> get_category_flatpaks_async (string category) {
-			var pkgs = new GenericArray<unowned FlatpakPackage> ();
+		public async GenericArray<FlatpakPackage> get_category_flatpaks_async (string category) {
+			var pkgs = new GenericArray<FlatpakPackage> ();
 			if (config.enable_flatpak) {
 				string category_copy = category;
 				try {

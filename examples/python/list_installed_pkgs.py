@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import gi
-gi.require_version('Pamac', '11')
+gi.require_version('Pamac', '12')
 from gi.repository import Pamac
 
 def list_installed_pkgs():

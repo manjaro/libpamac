@@ -277,9 +277,9 @@ namespace Pamac {
 		}
 
 		// snap: the data to display, the installed one or the store one
-		unowned SnapPackageLinked initialize_snap (Snapd.Snap snap, Snapd.Snap? installed_snap, Snapd.Snap? store_snap) {
+		SnapPackageLinked initialize_snap (Snapd.Snap snap, Snapd.Snap? installed_snap, Snapd.Snap? store_snap) {
 			lock (pkgs_cache) {
-				unowned SnapPackageLinked? pkg = pkgs_cache.lookup ("Snap/%s".printf (snap.name));
+				SnapPackageLinked? pkg = pkgs_cache.lookup ("Snap/%s".printf (snap.name));
 				if (pkg == null) {
 					var new_pkg = new SnapPackageLinked (snap, installed_snap, store_snap);
 					pkg = new_pkg;
@@ -319,7 +319,7 @@ namespace Pamac {
 		void add_store_snaps (GenericArray<unowned Snapd.Snap> found,
 							HashTable<string, Snapd.Snap> installed_snaps,
 							GenericSet<string> added,
-							GenericArray<unowned SnapPackage> pkgs) {
+							GenericArray<SnapPackage> pkgs) {
 			foreach (unowned Snapd.Snap snap in found) {
 				if (snap.snap_type != Snapd.SnapType.APP || snap.name in added) {
 					continue;
@@ -329,7 +329,7 @@ namespace Pamac {
 			}
 		}
 
-		public void search_snaps (string search_string, ref GenericArray<unowned SnapPackage> pkgs) {
+		public void search_snaps (string search_string, ref GenericArray<SnapPackage> pkgs) {
 			GenericArray<unowned Snapd.Snap>? found;
 			lock (search_snaps_cache) {
 				found = search_snaps_cache.lookup (search_string);
@@ -355,21 +355,21 @@ namespace Pamac {
 			return get_local_snap (name) != null;
 		}
 
-		public unowned SnapPackage? get_snap (string name) {
+		public SnapPackage? get_snap (string name) {
 			Snapd.Snap? installed_snap = get_local_snap (name);
 			Snapd.Snap? store_snap = get_store_snap (name);
 			Snapd.Snap? snap = installed_snap ?? store_snap;
 			if (snap == null) {
 				return null;
 			}
-			unowned SnapPackageLinked pkg = initialize_snap (snap, installed_snap, store_snap);
+			SnapPackageLinked pkg = initialize_snap (snap, installed_snap, store_snap);
 			if (store_snap != null) {
 				pkg.set_store_snap (store_snap);
 			}
 			return pkg;
 		}
 
-		public unowned SnapPackage? get_snap_by_app_id (string app_id) {
+		public SnapPackage? get_snap_by_app_id (string app_id) {
 			string desktop_id = app_id.has_suffix (".desktop") ? app_id : app_id + ".desktop";
 			foreach (unowned Snapd.Snap snap in get_installed_app_snaps ()) {
 				unowned Snapd.App? primary_app = get_primary_app (snap);
@@ -378,7 +378,7 @@ namespace Pamac {
 				}
 				if (Path.get_basename (primary_app.desktop_file) == desktop_id) {
 					Snapd.Snap? store_snap = get_store_snap (snap.name);
-					unowned SnapPackageLinked pkg = initialize_snap (snap, snap, store_snap);
+					SnapPackageLinked pkg = initialize_snap (snap, snap, store_snap);
 					if (store_snap != null) {
 						pkg.set_store_snap (store_snap);
 					}
@@ -484,14 +484,14 @@ namespace Pamac {
 			context.pop_thread_default ();
 		}
 
-		public void get_installed_snaps (ref GenericArray<unowned SnapPackage> pkgs) {
+		public void get_installed_snaps (ref GenericArray<SnapPackage> pkgs) {
 			GenericArray<unowned Snapd.Snap> snaps = get_installed_app_snaps ();
 			// store data is needed to display channels and screenshots
 			prefetch_store_snaps (snaps);
 			foreach (unowned Snapd.Snap snap in snaps) {
 				Snapd.Snap? store_snap;
 				lookup_store_snap (snap.name, out store_snap);
-				unowned SnapPackageLinked pkg = initialize_snap (snap, snap, store_snap);
+				SnapPackageLinked pkg = initialize_snap (snap, snap, store_snap);
 				if (store_snap != null) {
 					pkg.set_store_snap (store_snap);
 				}
@@ -578,10 +578,10 @@ namespace Pamac {
 			return found;
 		}
 
-		public void get_category_snaps (string category, ref GenericArray<unowned SnapPackage> pkgs) {
+		public void get_category_snaps (string category, ref GenericArray<SnapPackage> pkgs) {
 			if (category == "Featured") {
 				foreach (unowned string name in FEATURED_SNAPS) {
-					unowned SnapPackage? pkg = get_snap (name);
+					SnapPackage? pkg = get_snap (name);
 					if (pkg != null) {
 						pkgs.add (pkg);
 					}

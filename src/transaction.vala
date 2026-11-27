@@ -502,7 +502,7 @@ namespace Pamac {
 					to_get_from_aur.add (pkgname);
 				}
 			}
-			HashTable<string, unowned AURPackage?> aur_pkgs = null;
+			HashTable<string, AURPackage?> aur_pkgs = null;
 			if (to_get_from_aur.length > 0) {
 				aur_pkgs = yield database.get_aur_pkgs_async (to_get_from_aur);
 			}
@@ -1212,7 +1212,7 @@ namespace Pamac {
 				foreach (unowned string name in to_install) {
 					if (database.is_installed_pkg (name)) {
 						if (database.is_sync_pkg (name)) {
-							unowned AlpmPackage? pkg = database.get_installed_pkg (name);
+							AlpmPackage? pkg = database.get_installed_pkg (name);
 							if (pkg.installed_version != pkg.version) {
 								auto_sysupgrading = true;
 								break;

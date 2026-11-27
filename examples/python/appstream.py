@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import gi
-gi.require_version('Pamac', '11')
+gi.require_version('Pamac', '12')
 from gi.repository import Pamac
 
 def print_pkg_details(details):
@@ -11,20 +11,20 @@ def print_pkg_details(details):
     print(" -Icon:", details.get_icon())
     print(" -Screenshots:", details.get_screenshots())
 
-if __name__ == "__main__":
+def search(pkgname, enable_appstream):
     config = Pamac.Config(conf_path="/etc/pamac.conf")
+    # appstream data are loaded when the database is created
+    config.set_enable_appstream(enable_appstream)
     db = Pamac.Database(config=config)
+    for pkg in db.search_pkgs(pkgname):
+        print_pkg_details(pkg)
 
+if __name__ == "__main__":
     pkgname = "gimp"
 
     print("Without appstream support:")
-    pkgs = db.search_pkgs(pkgname)
-    for pkg in pkgs:
-        print_pkg_details(pkg)
+    search(pkgname, False)
 
     print("")
     print("With appstream support:")
-    db.enable_appstream()
-    pkgs = db.search_pkgs(pkgname)
-    for pkg in pkgs:
-        print_pkg_details(pkg)
+    search(pkgname, True)

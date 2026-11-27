@@ -16,9 +16,8 @@ import gi
 import os
 import subprocess
 import locale
-from datetime import date
 import unittest
-gi.require_version('Pamac', '11')
+gi.require_version('Pamac', '12')
 from gi.repository import GLib, Pamac
 
 
@@ -61,21 +60,19 @@ class GetInfosCase(unittest.TestCase):
         self.assertIsNotNone(pkg.props.installed_version)
 
     def test_app_name_empty(self):
-        """pacman installed for tests"""
+        """pacman is not an app"""
         pkg = self.db.get_pkg("pacman")
-        name = pkg.get_app_name()
-        if not name:
-            self.assertTrue(name)
+        self.assertIsNone(pkg.get_app_name())
 
     def test_not_installed(self):
         """detect not installed"""
         # package not exist
         pkg = self.db.get_pkg("toto-test")
-        self.assertNotEqual("toto-test", pkg.get_name())
-        self.assertEqual(pkg.props.installed_version, "")
+        self.assertIsNone(pkg)
         # package exist
         pkg = self.db.get_pkg("ruby-yard")
-        self.assertEqual(pkg.props.installed_version, "")
+        self.assertIsNotNone(pkg)
+        self.assertIsNone(pkg.props.installed_version)
 
     def test_giobject_detail_name(self):
         """attrs .props are same as fonctions"""
@@ -160,15 +157,14 @@ class GetInfosCase(unittest.TestCase):
         self.assertTrue(os.path.exists(fdesc))
         result = get_item_desc(fdesc, "%BUILDDATE%")
         d_test = int(next(result))
-        d_test = date.fromtimestamp(d_test).strftime("%x")
-        self.assertEqual(pkg.props.builddate, d_test)
+        self.assertEqual(pkg.props.build_date.to_unix(), d_test)
 
     def test_files(self):
         """files same as pacman db"""
         pkg = self.db.get_pkg("pacman")
         fdesc = f"/var/lib/pacman/local/{pkg.props.name}-{pkg.props.version}/files"
         self.assertTrue(os.path.exists(fdesc))
-        myfiles = self.db.get_pkg_files("pacman")
+        myfiles = pkg.get_files()
         result = get_item_desc(fdesc, "%FILES%")
         for f_name in result:
             if not f_name.endswith("/"):
@@ -176,7 +172,7 @@ class GetInfosCase(unittest.TestCase):
 
     def test_search_aur(self):
         """simple search in aur"""
-        pkgs = self.db.search_in_aur('pamac');
+        pkgs = self.db.search_aur_pkgs('pamac')
         found = False
         for pkg in pkgs:
             with self.subTest(pkg=pkg):

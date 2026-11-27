@@ -261,7 +261,6 @@ namespace Pamac {
 		// key: remote name, value: appstream dir path
 		HashTable<string, string> appstream_dirs;
 		// returned unowned to callers so never removed
-		GenericArray<string> remotes_names;
 
 		public uint64 refresh_period { get; set; }
 
@@ -279,7 +278,6 @@ namespace Pamac {
 			remote_refs_table = new HashTable<string, Flatpak.RemoteRef> (str_hash, str_equal);
 			missing_refs = new GenericSet<string> (str_hash, str_equal);
 			appstream_dirs = new HashTable<string, string> (str_hash, str_equal);
-			remotes_names = new GenericArray<string> ();
 			try {
 				installation = new Flatpak.Installation.system ();
 			} catch (Error e) {
@@ -493,18 +491,9 @@ namespace Pamac {
 			return app_id;
 		}
 
-		public void get_remotes_names (ref GenericArray<unowned string> names) {
-			GenericArray<unowned Flatpak.Remote> remotes = list_enabled_remotes ();
-			lock (pkgs_cache) {
-				foreach (unowned Flatpak.Remote remote in remotes) {
-					unowned string remote_name = remote.get_name ();
-					uint index;
-					if (!remotes_names.find_with_equal_func (remote_name, str_equal, out index)) {
-						remotes_names.add (remote_name);
-						index = remotes_names.length - 1;
-					}
-					names.add (remotes_names[index]);
-				}
+		public void get_remotes_names (ref GenericArray<string> names) {
+			foreach (unowned Flatpak.Remote remote in list_enabled_remotes ()) {
+				names.add (remote.get_name ());
 			}
 		}
 
@@ -528,8 +517,8 @@ namespace Pamac {
 		}
 
 		// lock (pkgs_cache) must be held
-		unowned FlatpakPackageLinked? get_or_create_pkg (string id) {
-			unowned FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
+		FlatpakPackageLinked? get_or_create_pkg (string id) {
+			FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
 			if (pkg != null || installation == null) {
 				return pkg;
 			}
@@ -568,7 +557,7 @@ namespace Pamac {
 			return pkg;
 		}
 
-		public void get_installed_flatpaks (ref GenericArray<unowned FlatpakPackage> pkgs) {
+		public void get_installed_flatpaks (ref GenericArray<FlatpakPackage> pkgs) {
 			if (installation == null) {
 				return;
 			}
@@ -579,7 +568,7 @@ namespace Pamac {
 					foreach (unowned Flatpak.InstalledRef installed_ref in installed_apps) {
 						unowned string origin = installed_ref.get_origin ();
 						string id = "%s/%s".printf (origin, installed_ref.format_ref ());
-						unowned FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
+						FlatpakPackageLinked? pkg = pkgs_cache.lookup (id);
 						if (pkg == null) {
 							var new_pkg = new FlatpakPackageLinked (installed_ref, null, apps_table.lookup (id), appstream_dirs.lookup (origin));
 							pkg = new_pkg;
@@ -616,7 +605,7 @@ namespace Pamac {
 			}
 		}
 
-		public unowned FlatpakPackage? get_flatpak_by_app_id (string app_id) {
+		public FlatpakPackage? get_flatpak_by_app_id (string app_id) {
 			wait_loaded ();
 			lock (pkgs_cache) {
 				unowned string? id = app_ids_table.lookup (normalize_app_id (app_id));
@@ -627,14 +616,14 @@ namespace Pamac {
 			}
 		}
 
-		public unowned FlatpakPackage? get_flatpak (string id) {
+		public FlatpakPackage? get_flatpak (string id) {
 			wait_loaded ();
 			lock (pkgs_cache) {
 				return get_or_create_pkg (id);
 			}
 		}
 
-		public void search_flatpaks (string search_string, ref GenericArray<unowned FlatpakPackage> pkgs) {
+		public void search_flatpaks (string search_string, ref GenericArray<FlatpakPackage> pkgs) {
 			string[] tokens = get_search_tokens (search_string.split (" "));
 			if (tokens.length == 0) {
 				return;
@@ -647,7 +636,7 @@ namespace Pamac {
 				unowned AppStream.Component as_app;
 				while (iter.next (out id, out as_app)) {
 					if (as_app.search_matches_all (stemmed_tokens) > 0 || id_matches_all (as_app.get_id (), tokens)) {
-						unowned FlatpakPackage? pkg = get_or_create_pkg (id);
+						FlatpakPackage? pkg = get_or_create_pkg (id);
 						if (pkg != null) {
 							pkgs.add (pkg);
 						}
@@ -656,7 +645,7 @@ namespace Pamac {
 			}
 		}
 
-		public void get_category_flatpaks (string category, ref GenericArray<unowned FlatpakPackage> pkgs) {
+		public void get_category_flatpaks (string category, ref GenericArray<FlatpakPackage> pkgs) {
 			wait_loaded ();
 			lock (pkgs_cache) {
 				if (category == "Featured") {
@@ -665,7 +654,7 @@ namespace Pamac {
 						if (id == null) {
 							continue;
 						}
-						unowned FlatpakPackage? pkg = get_or_create_pkg (id);
+						FlatpakPackage? pkg = get_or_create_pkg (id);
 						if (pkg != null) {
 							pkgs.add (pkg);
 						}
@@ -679,7 +668,7 @@ namespace Pamac {
 				var iter = HashTableIter<string, AppStream.Component> (category_apps);
 				unowned string id;
 				while (iter.next (out id, null)) {
-					unowned FlatpakPackage? pkg = get_or_create_pkg (id);
+					FlatpakPackage? pkg = get_or_create_pkg (id);
 					if (pkg != null) {
 						pkgs.add (pkg);
 					}

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import gi
-gi.require_version('Pamac', '11')
+gi.require_version('Pamac', '12')
 from gi.repository import GLib, Pamac
 
 def on_emit_action(transaction, action, data):
@@ -37,7 +37,7 @@ def on_transaction_finished_callback(source_object, result, user_data):
 
 def run_transaction():
 	# /!\ the transaction will run without confirmation /!\
-	# you need to override Transaction.ask_confirmation() method
+	# you need to override Transaction.ask_commit() method
 	# in order to implement your own confirmation step
 	transaction.add_pkg_to_install("pkgname")
 	transaction.run_async(on_transaction_finished_callback, None)
