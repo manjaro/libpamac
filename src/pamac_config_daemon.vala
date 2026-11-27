@@ -27,10 +27,10 @@ namespace Pamac {
 		public bool support_appstream { get; private set; }
 		public bool enable_appstream { get; set; }
 		PluginLoader<AppstreamPlugin> appstream_plugin_loader;
-		public bool support_snap { get; set; }
+		public bool support_snap { get; private set; }
 		public bool enable_snap { get; set; }
 		PluginLoader<SnapPlugin> snap_plugin_loader;
-		public bool support_flatpak{ get; set; }
+		public bool support_flatpak { get; private set; }
 		public bool enable_flatpak { get; set; }
 		public bool check_flatpak_updates { get; set; }
 		PluginLoader<FlatpakPlugin> flatpak_plugin_loader;
@@ -71,7 +71,7 @@ namespace Pamac {
 			if (snap_plugin_loader.load ()) {
 				support_snap = true;
 			}
-			// load snap plugin
+			// load flatpak plugin
 			support_flatpak = false;
 			flatpak_plugin_loader = new PluginLoader<FlatpakPlugin> ("pamac-flatpak");
 			if (flatpak_plugin_loader.load ()) {
@@ -81,25 +81,27 @@ namespace Pamac {
 		}
 
 		public void reload () {
-			enable_appstream = true;
-			enable_snap = false;
-			enable_flatpak = false;
+			enable_appstream = support_appstream;
 			aur_build_dir = "/var/tmp";
 			max_parallel_downloads = 1;
-			offline_upgrade = false;
-			parse_file (conf_path);
-			// limited max_parallel_downloads
-			if (max_parallel_downloads > 10) {
-				max_parallel_downloads = 10;
+			var directives = parse_file (conf_path);
+			enable_snap = support_snap && "EnableSnap" in directives;
+			enable_flatpak = support_flatpak && "EnableFlatpak" in directives;
+			// offline upgrade needs the downloaded updates
+			offline_upgrade = "DownloadUpdates" in directives && "OfflineUpgrade" in directives;
+			unowned string? val = directives.lookup ("BuildDirectory");
+			if (val != null && val != "") {
+				aur_build_dir = val;
 			}
-			if (!support_appstream) {
-				enable_appstream = false;
-			}
-			if (!support_snap) {
-				enable_snap = false;
-			}
-			if (!support_flatpak) {
-				enable_flatpak = false;
+			val = directives.lookup ("MaxParallelDownloads");
+			if (val != null) {
+				uint64 number;
+				if (uint64.try_parse (val, out number)) {
+					// libalpm needs at least one download
+					max_parallel_downloads = number.clamp (1, 10);
+				} else {
+					warning ("ignoring option MaxParallelDownloads: invalid value '%s'", val);
+				}
 			}
 		}
 
@@ -131,403 +133,81 @@ namespace Pamac {
 			return null;
 		}
 
-		void parse_file (string path) {
-			var file = GLib.File.new_for_path (path);
-			if (file.query_exists ()) {
-				try {
-					// Open file for reading and wrap returned FileInputStream into a
-					// DataInputStream, so we can read line by line
-					var dis = new DataInputStream (file.read ());
-					string? line;
-					// Read lines until end of file (null) is reached
-					while ((line = dis.read_line ()) != null) {
-						if (line.length == 0) {
-							continue;
-						}
-						// ignore whole line and end of line comments
-						string[] splitted = line.split ("#", 2);
-						line = splitted[0].strip ();
-						if (line.length == 0) {
-							continue;
-						}
-						splitted = line.split ("=", 2);
-						unowned string key = splitted[0]._strip ();
-						if (key == "BuildDirectory") {
-							if (splitted.length == 2) {
-								aur_build_dir = splitted[1]._strip ();
-							}
-						} else if (key == "EnableSnap") {
-							enable_snap = true;
-						} else if (key == "EnableFlatpak") {
-							enable_flatpak = true;
-						} else if (key == "OfflineUpgrade") {
-							offline_upgrade = true;
-						} else if (key == "MaxParallelDownloads") {
-							if (splitted.length == 2) {
-								unowned string val = splitted[1]._strip ();
-								max_parallel_downloads = uint64.parse (val);
-							}
-						}
+		// directives of the file: key -> value, "" for an option without value
+		static HashTable<string, string> parse_file (string path) {
+			var directives = new HashTable<string, string> (str_hash, str_equal);
+			try {
+				var dis = new DataInputStream (File.new_for_path (path).read ());
+				string? line;
+				while ((line = dis.read_line ()) != null) {
+					// ignore whole line and end of line comments
+					string[] splitted = line.split ("#", 2);
+					line = splitted[0].strip ();
+					if (line.length == 0) {
+						continue;
 					}
-				} catch (GLib.Error e) {
-					warning ("parse_file: %s", e.message);
+					splitted = line.split ("=", 2);
+					string key = splitted[0].strip ();
+					directives.insert (key, splitted.length == 2 ? splitted[1].strip () : "");
 				}
-			} else {
+			} catch (IOError.NOT_FOUND e) {
 				warning ("File '%s' doesn't exist.", path);
+			} catch (Error e) {
+				warning ("%s: %s", path, e.message);
 			}
+			return directives;
 		}
+
+		// the options written by the clients, in the order to add them
+		const string[] BOOLEAN_OPTIONS = {"RemoveUnrequiredDeps", "NoUpdateHideIcon", "EnableDowngrade",
+										"SimpleInstall", "EnableAUR", "KeepBuiltPkgs", "CheckAURUpdates",
+										"CheckAURVCSUpdates", "OnlyRmUninstalled", "DownloadUpdates",
+										"OfflineUpgrade", "EnableSnap", "EnableFlatpak", "CheckFlatpakUpdates"};
+		const string[] UINT64_OPTIONS = {"RefreshPeriod", "KeepNumPackages", "MaxParallelDownloads"};
+		const string[] STRING_OPTIONS = {"BuildDirectory"};
 
 		public void write (HashTable<string,Variant> received_conf) {
 			var expected_types = new HashTable<string, VariantType> (str_hash, str_equal);
-			foreach (unowned string key in new string[] {"RemoveUnrequiredDeps", "EnableDowngrade", "SimpleInstall",
-														"OnlyRmUninstalled", "NoUpdateHideIcon", "EnableAUR",
-														"KeepBuiltPkgs", "EnableSnap", "EnableFlatpak",
-														"CheckFlatpakUpdates", "CheckAURUpdates", "CheckAURVCSUpdates",
-														"DownloadUpdates", "OfflineUpgrade"}) {
+			foreach (unowned string key in BOOLEAN_OPTIONS) {
 				expected_types.insert (key, VariantType.BOOLEAN);
 			}
-			foreach (unowned string key in new string[] {"RefreshPeriod", "KeepNumPackages", "MaxParallelDownloads"}) {
+			foreach (unowned string key in UINT64_OPTIONS) {
 				expected_types.insert (key, VariantType.UINT64);
 			}
-			expected_types.insert ("BuildDirectory", VariantType.STRING);
+			foreach (unowned string key in STRING_OPTIONS) {
+				expected_types.insert (key, VariantType.STRING);
+			}
 			var new_conf = validate_new_conf (received_conf, expected_types);
 			unowned Variant? build_dir = new_conf.lookup ("BuildDirectory");
 			if (build_dir != null && !Path.is_absolute (build_dir.get_string ())) {
 				warning ("ignoring option BuildDirectory: not an absolute path");
 				new_conf.remove ("BuildDirectory");
 			}
-			var file = GLib.File.new_for_path (conf_path);
-			var data = new StringBuilder();
-			if (file.query_exists ()) {
-				try {
-					// Open file for reading and wrap returned FileInputStream into a
-					// DataInputStream, so we can read line by line
-					var dis = new DataInputStream (file.read ());
-					string? line;
-					// Read lines until end of file (null) is reached
-					while ((line = dis.read_line ()) != null) {
-						if (line.length == 0) {
-							data.append ("\n");
-							continue;
-						}
-						unowned Variant variant;
-						if (line.contains ("RemoveUnrequiredDeps")) {
-							if (new_conf.lookup_extended ("RemoveUnrequiredDeps", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("RemoveUnrequiredDeps\n");
-								} else {
-									data.append ("#RemoveUnrequiredDeps\n");
-								}
-								new_conf.remove ("RemoveUnrequiredDeps");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("EnableDowngrade")) {
-							if (new_conf.lookup_extended ("EnableDowngrade", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("EnableDowngrade\n");
-								} else {
-									data.append ("#EnableDowngrade\n");
-								}
-								new_conf.remove ("EnableDowngrade");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("SimpleInstall")) {
-							if (new_conf.lookup_extended ("SimpleInstall", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("SimpleInstall\n");
-								} else {
-									data.append ("#SimpleInstall\n");
-								}
-								new_conf.remove ("SimpleInstall");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("RefreshPeriod")) {
-							if (new_conf.lookup_extended ("RefreshPeriod", null, out variant)) {
-								data.append ("RefreshPeriod = %llu\n".printf (variant.get_uint64 ()));
-								new_conf.remove ("RefreshPeriod");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("KeepNumPackages")) {
-							if (new_conf.lookup_extended ("KeepNumPackages", null, out variant)) {
-								data.append ("KeepNumPackages = %llu\n".printf (variant.get_uint64 ()));
-								new_conf.remove ("KeepNumPackages");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("OnlyRmUninstalled")) {
-							if (new_conf.lookup_extended ("OnlyRmUninstalled", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("OnlyRmUninstalled\n");
-								} else {
-									data.append ("#OnlyRmUninstalled\n");
-								}
-								new_conf.remove ("OnlyRmUninstalled");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("NoUpdateHideIcon")) {
-							if (new_conf.lookup_extended ("NoUpdateHideIcon", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("NoUpdateHideIcon\n");
-								} else {
-									data.append ("#NoUpdateHideIcon\n");
-								}
-								new_conf.remove ("NoUpdateHideIcon");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("EnableAUR")) {
-							if (new_conf.lookup_extended ("EnableAUR", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("EnableAUR\n");
-								} else {
-									data.append ("#EnableAUR\n");
-								}
-								new_conf.remove ("EnableAUR");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("KeepBuiltPkgs")) {
-							if (new_conf.lookup_extended ("KeepBuiltPkgs", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("KeepBuiltPkgs\n");
-								} else {
-									data.append ("#KeepBuiltPkgs\n");
-								}
-								new_conf.remove ("KeepBuiltPkgs");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("EnableSnap")) {
-							if (new_conf.lookup_extended ("EnableSnap", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("EnableSnap\n");
-								} else {
-									data.append ("#EnableSnap\n");
-								}
-								new_conf.remove ("EnableSnap");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("EnableFlatpak")) {
-							if (new_conf.lookup_extended ("EnableFlatpak", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("EnableFlatpak\n");
-								} else {
-									data.append ("#EnableFlatpak\n");
-								}
-								new_conf.remove ("EnableFlatpak");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("CheckFlatpakUpdates")) {
-							if (new_conf.lookup_extended ("CheckFlatpakUpdates", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("CheckFlatpakUpdates\n");
-								} else {
-									data.append ("#CheckFlatpakUpdates\n");
-								}
-								new_conf.remove ("CheckFlatpakUpdates");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("BuildDirectory")) {
-							if (new_conf.lookup_extended ("BuildDirectory", null, out variant)) {
-								data.append ("BuildDirectory = %s\n".printf (variant.get_string ()));
-								new_conf.remove ("BuildDirectory");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("CheckAURUpdates")) {
-							if (new_conf.lookup_extended ("CheckAURUpdates", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("CheckAURUpdates\n");
-								} else {
-									data.append ("#CheckAURUpdates\n");
-								}
-								new_conf.remove ("CheckAURUpdates");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("CheckAURVCSUpdates")) {
-							if (new_conf.lookup_extended ("CheckAURVCSUpdates", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("CheckAURVCSUpdates\n");
-								} else {
-									data.append ("#CheckAURVCSUpdates\n");
-								}
-								new_conf.remove ("CheckAURVCSUpdates");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("DownloadUpdates")) {
-							if (new_conf.lookup_extended ("DownloadUpdates", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("DownloadUpdates\n");
-								} else {
-									data.append ("#DownloadUpdates\n");
-								}
-								new_conf.remove ("DownloadUpdates");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("OfflineUpgrade")) {
-							if (new_conf.lookup_extended ("OfflineUpgrade", null, out variant)) {
-								if (variant.get_boolean ()) {
-									data.append ("OfflineUpgrade\n");
-								} else {
-									data.append ("#OfflineUpgrade\n");
-								}
-								new_conf.remove ("OfflineUpgrade");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else if (line.contains ("MaxParallelDownloads")) {
-							if (new_conf.lookup_extended ("MaxParallelDownloads", null, out variant)) {
-								data.append ("MaxParallelDownloads = %llu\n".printf (variant.get_uint64 ()));
-								new_conf.remove ("MaxParallelDownloads");
-							} else {
-								data.append (line);
-								data.append ("\n");
-							}
-						} else {
-							data.append (line);
-							data.append ("\n");
-						}
-					}
-				} catch (Error e) {
-					// do not write a truncated file
-					warning (e.message);
-					return;
+			// the new lines of the directives to write
+			var new_lines = new HashTable<string, string> (str_hash, str_equal);
+			var keys = new GenericArray<string> ();
+			foreach (unowned string key in BOOLEAN_OPTIONS) {
+				unowned Variant? val = new_conf.lookup (key);
+				if (val != null) {
+					new_lines.insert (key, val.get_boolean () ? key : "#" + key);
 				}
-			} else {
-				warning ("File '%s' doesn't exist", conf_path);
+				keys.add (key);
 			}
-			// create lines for unexisted options
-			if (new_conf.size () != 0) {
-				data.append ("\n");
-				var iter = HashTableIter<string, Variant> (new_conf);
-				unowned string key;
-				unowned Variant val;
-				while (iter.next (out key, out val)) {
-					if (key == "RemoveUnrequiredDeps") {
-						if (val.get_boolean ()) {
-							data.append ("RemoveUnrequiredDeps\n\n");
-						} else {
-							data.append ("#RemoveUnrequiredDeps\n\n");
-						}
-					} else if (key == "EnableDowngrade") {
-						if (val.get_boolean ()) {
-							data.append ("EnableDowngrade\n\n");
-						} else {
-							data.append ("#EnableDowngrade\n\n");
-						}
-					} else if (key == "SimpleInstall") {
-						if (val.get_boolean ()) {
-							data.append ("SimpleInstall\n\n");
-						} else {
-							data.append ("#SimpleInstall\n\n");
-						}
-					} else if (key == "RefreshPeriod") {
-						data.append ("RefreshPeriod = %llu\n\n".printf (val.get_uint64 ()));
-					} else if (key == "KeepNumPackages") {
-						data.append ("KeepNumPackages = %llu\n\n".printf (val.get_uint64 ()));
-					} else if (key == "OnlyRmUninstalled") {
-						if (val.get_boolean ()) {
-							data.append ("OnlyRmUninstalled\n\n");
-						} else {
-							data.append ("#OnlyRmUninstalled\n\n");
-						}
-					} else if (key =="NoUpdateHideIcon") {
-						if (val.get_boolean ()) {
-							data.append ("NoUpdateHideIcon\n\n");
-						} else {
-							data.append ("#NoUpdateHideIcon\n\n");
-						}
-					} else if (key == "EnableAUR") {
-						if (val.get_boolean ()) {
-							data.append ("EnableAUR\n\n");
-						} else {
-							data.append ("#EnableAUR\n\n");
-						}
-					} else if (key == "KeepBuiltPkgs") {
-						if (val.get_boolean ()) {
-							data.append ("KeepBuiltPkgs\n\n");
-						} else {
-							data.append ("#KeepBuiltPkgs\n\n");
-						}
-					} else if (key == "EnableSnap") {
-						if (val.get_boolean ()) {
-							data.append ("EnableSnap\n\n");
-						} else {
-							data.append ("#EnableSnap\n\n");
-						}
-					} else if (key == "EnableFlatpak") {
-						if (val.get_boolean ()) {
-							data.append ("EnableFlatpak\n\n");
-						} else {
-							data.append ("#EnableFlatpak\n\n");
-						}
-					} else if (key == "CheckFlatpakUpdates") {
-						if (val.get_boolean ()) {
-							data.append ("CheckFlatpakUpdates\n\n");
-						} else {
-							data.append ("#CheckFlatpakUpdates\n\n");
-						}
-					} else if (key == "BuildDirectory") {
-						data.append ("BuildDirectory = %s\n\n".printf (val.get_string ()));
-					} else if (key == "CheckAURUpdates") {
-						if (val.get_boolean ()) {
-							data.append ("CheckAURUpdates\n\n");
-						} else {
-							data.append ("#CheckAURUpdates\n\n");
-						}
-					} else if (key == "CheckAURVCSUpdates") {
-						if (val.get_boolean ()) {
-							data.append ("CheckAURVCSUpdates\n\n");
-						} else {
-							data.append ("#CheckAURVCSUpdates\n\n");
-						}
-					} else if (key == "DownloadUpdates") {
-						if (val.get_boolean ()) {
-							data.append ("DownloadUpdates\n\n");
-						} else {
-							data.append ("#DownloadUpdates\n\n");
-						}
-					} else if (key == "OfflineUpgrade") {
-						if (val.get_boolean ()) {
-							data.append ("OfflineUpgrade\n\n");
-						} else {
-							data.append ("#OfflineUpgrade\n\n");
-						}
-					} else if (key == "MaxParallelDownloads") {
-						data.append ("MaxParallelDownloads = %llu\n\n".printf (val.get_uint64 ()));
-					}
+			foreach (unowned string key in UINT64_OPTIONS) {
+				unowned Variant? val = new_conf.lookup (key);
+				if (val != null) {
+					new_lines.insert (key, "%s = %llu".printf (key, val.get_uint64 ()));
 				}
+				keys.add (key);
 			}
-			// write the file
-			write_config_file (file, data.str);
+			foreach (unowned string key in STRING_OPTIONS) {
+				unowned Variant? val = new_conf.lookup (key);
+				if (val != null) {
+					new_lines.insert (key, "%s = %s".printf (key, val.get_string ()));
+				}
+				keys.add (key);
+			}
+			write_config_directives (conf_path, new_lines, keys.data, null);
 		}
 	}
 }

@@ -30,7 +30,10 @@ namespace Pamac {
 		bool _enable_snap;
 		bool _enable_flatpak;
 		bool _check_aur_updates;
+		bool _check_aur_vcs_updates;
+		bool _check_flatpak_updates;
 		bool _download_updates;
+		bool _offline_upgrade;
 
 		public string conf_path { get; construct; }
 		public bool recurse { get; set; }
@@ -106,7 +109,7 @@ namespace Pamac {
 			get {
 				return _support_flatpak;
 			}
-			set {
+			private set {
 				_support_flatpak = value;
 				if (!_support_flatpak) {
 					enable_flatpak = false;
@@ -124,7 +127,14 @@ namespace Pamac {
 				}
 			}
 		}
-		public bool check_flatpak_updates { get; set; }
+		public bool check_flatpak_updates {
+			get {
+				return _check_flatpak_updates;
+			}
+			set {
+				_check_flatpak_updates = _enable_flatpak && value;
+			}
+		}
 		PluginLoader<FlatpakPlugin> flatpak_plugin_loader;
 		public string aur_build_dir { get; set; }
 		public bool check_aur_updates {
@@ -132,13 +142,20 @@ namespace Pamac {
 				return _check_aur_updates;
 			}
 			set {
-				_check_aur_updates = value;
+				_check_aur_updates = _enable_aur && value;
 				if (!_check_aur_updates) {
 					check_aur_vcs_updates = false;
 				}
 			}
 		}
-		public bool check_aur_vcs_updates { get; set; }
+		public bool check_aur_vcs_updates {
+			get {
+				return _check_aur_vcs_updates;
+			}
+			set {
+				_check_aur_vcs_updates = _check_aur_updates && value;
+			}
+		}
 		public bool download_updates {
 			get {
 				return _download_updates;
@@ -150,7 +167,14 @@ namespace Pamac {
 				}
 			}
 		}
-		public bool offline_upgrade { get; set; }
+		public bool offline_upgrade {
+			get {
+				return _offline_upgrade;
+			}
+			set {
+				_offline_upgrade = _download_updates && value;
+			}
+		}
 		public uint64 max_parallel_downloads { get; set; }
 		public uint64 clean_keep_num_pkgs { get;  set; }
 		public bool clean_rm_only_uninstalled { get; set; }
@@ -171,28 +195,12 @@ namespace Pamac {
 			//get environment variables
 			environment_variables_priv = new HashTable<string, string> (str_hash, str_equal);
 			alpm_config = new AlpmConfig ("/etc/pacman.conf");
-			unowned string? variable = Environment.get_variable ("http_proxy");
-			if (variable != null) {
-				environment_variables_priv.insert ("http_proxy", variable);
+			foreach (unowned string name in new string[] {"http_proxy", "https_proxy", "ftp_proxy", "socks_proxy", "no_proxy"}) {
+				unowned string? variable = Environment.get_variable (name);
+				if (variable != null) {
+					environment_variables_priv.insert (name, variable);
+				}
 			}
-			variable = Environment.get_variable ("https_proxy");
-			if (variable != null) {
-				environment_variables_priv.insert ("https_proxy", variable);
-			}
-			variable = Environment.get_variable ("ftp_proxy");
-			if (variable != null) {
-				environment_variables_priv.insert ("ftp_proxy", variable);
-			}
-			variable = Environment.get_variable ("socks_proxy");
-			if (variable != null) {
-				environment_variables_priv.insert ("socks_proxy", variable);
-			}
-			variable = Environment.get_variable ("no_proxy");
-			if (variable != null) {
-				environment_variables_priv.insert ("no_proxy", variable);
-			}
-			// set default option
-			refresh_period = 6;
 			// load aur plugin
 			support_aur = false;
 			aur_plugin_loader = new PluginLoader<AURPlugin> ("pamac-aur");
@@ -231,31 +239,58 @@ namespace Pamac {
 		public void reload () {
 			// alpm config
 			alpm_config.reload ();
-			// set default options
-			recurse = false;
-			keep_built_pkgs = false;
-			enable_downgrade = false;
-			simple_install = false;
+			// set default options, the boolean ones are set from the file below
 			refresh_period = 6;
-			no_update_hide_icon = false;
-			enable_aur = false;
 			enable_appstream = true;
-			enable_snap = false;
-			enable_flatpak = false;
 			aur_build_dir = "/var/tmp";
-			download_updates = false;
 			max_parallel_downloads = 1;
 			clean_keep_num_pkgs = 3;
-			clean_rm_only_uninstalled = false;
-			parse_file (conf_path);
-			// limited max_parallel_downloads
-			if (max_parallel_downloads > 10) {
-				max_parallel_downloads = 10;
+			var directives = parse_file (conf_path);
+			// apply the options after the ones they depend on,
+			// whatever their order in the file
+			recurse = "RemoveUnrequiredDeps" in directives;
+			enable_downgrade = "EnableDowngrade" in directives;
+			simple_install = "SimpleInstall" in directives;
+			clean_rm_only_uninstalled = "OnlyRmUninstalled" in directives;
+			no_update_hide_icon = "NoUpdateHideIcon" in directives;
+			keep_built_pkgs = "KeepBuiltPkgs" in directives;
+			enable_aur = "EnableAUR" in directives;
+			check_aur_updates = "CheckAURUpdates" in directives;
+			check_aur_vcs_updates = "CheckAURVCSUpdates" in directives;
+			enable_snap = "EnableSnap" in directives;
+			enable_flatpak = "EnableFlatpak" in directives;
+			check_flatpak_updates = "CheckFlatpakUpdates" in directives;
+			download_updates = "DownloadUpdates" in directives;
+			offline_upgrade = "OfflineUpgrade" in directives;
+			unowned string? val = directives.lookup ("BuildDirectory");
+			if (val != null && val != "") {
+				aur_build_dir = val;
 			}
-			// check updates at least once a week
-			if (refresh_period > 168) {
-				refresh_period = 168;
+			uint64 number;
+			if (parse_number (directives, "RefreshPeriod", out number)) {
+				// check updates at least once a week
+				refresh_period = uint64.min (number, 168);
 			}
+			if (parse_number (directives, "KeepNumPackages", out number)) {
+				clean_keep_num_pkgs = number;
+			}
+			if (parse_number (directives, "MaxParallelDownloads", out number)) {
+				// libalpm needs at least one download
+				max_parallel_downloads = number.clamp (1, 10);
+			}
+		}
+
+		static bool parse_number (HashTable<string, string> directives, string key, out uint64 number) {
+			number = 0;
+			unowned string? val = directives.lookup (key);
+			if (val == null) {
+				return false;
+			}
+			if (!uint64.try_parse (val, out number)) {
+				warning ("ignoring option %s: invalid value '%s'", key, val);
+				return false;
+			}
+			return true;
 		}
 
 		internal AURPlugin? get_aur_plugin () {
@@ -286,82 +321,29 @@ namespace Pamac {
 			return null;
 		}
 
-		void parse_file (string path) {
-			var file = GLib.File.new_for_path (path);
-			if (file.query_exists ()) {
-				try {
-					// Open file for reading and wrap returned FileInputStream into a
-					// DataInputStream, so we can read line by line
-					var dis = new DataInputStream (file.read ());
-					string? line;
-					// Read lines until end of file (null) is reached
-					while ((line = dis.read_line ()) != null) {
-						if (line.length == 0) {
-							continue;
-						}
-						// ignore whole line and end of line comments
-						string[] splitted = line.split ("#", 2);
-						line = splitted[0].strip ();
-						if (line.length == 0) {
-							continue;
-						}
-						splitted = line.split ("=", 2);
-						unowned string key = splitted[0]._strip ();
-						if (key == "RemoveUnrequiredDeps") {
-							recurse = true;
-						} else if (key == "EnableDowngrade") {
-							enable_downgrade = true;
-						} else if (key == "SimpleInstall") {
-							simple_install = true;
-						} else if (key == "RefreshPeriod") {
-							if (splitted.length == 2) {
-								unowned string val = splitted[1]._strip ();
-								refresh_period = uint64.parse (val);
-							}
-						} else if (key == "KeepNumPackages") {
-							if (splitted.length == 2) {
-								unowned string val = splitted[1]._strip ();
-								clean_keep_num_pkgs = uint64.parse (val);
-							}
-						} else if (key == "OnlyRmUninstalled") {
-							clean_rm_only_uninstalled = true;
-						} else if (key == "NoUpdateHideIcon") {
-							no_update_hide_icon = true;
-						} else if (key == "EnableAUR") {
-							enable_aur = true;
-						} else if (key == "KeepBuiltPkgs") {
-							keep_built_pkgs = true;
-						} else if (key == "EnableSnap") {
-							enable_snap = true;
-						} else if (key == "EnableFlatpak") {
-							enable_flatpak = true;
-						} else if (key == "CheckFlatpakUpdates") {
-							check_flatpak_updates = true;
-						} else if (key == "BuildDirectory") {
-							if (splitted.length == 2) {
-								aur_build_dir = splitted[1]._strip ();
-							}
-						} else if (key == "CheckAURUpdates") {
-							check_aur_updates = true;
-						} else if (key == "CheckAURVCSUpdates") {
-							check_aur_vcs_updates = true;
-						} else if (key == "DownloadUpdates") {
-							download_updates = true;
-						} else if (key == "OfflineUpgrade") {
-							offline_upgrade = true;
-						} else if (key == "MaxParallelDownloads") {
-							if (splitted.length == 2) {
-								unowned string val = splitted[1]._strip ();
-								max_parallel_downloads = uint64.parse (val);
-							}
-						}
+		// directives of the file: key -> value, "" for an option without value
+		static HashTable<string, string> parse_file (string path) {
+			var directives = new HashTable<string, string> (str_hash, str_equal);
+			try {
+				var dis = new DataInputStream (File.new_for_path (path).read ());
+				string? line;
+				while ((line = dis.read_line ()) != null) {
+					// ignore whole line and end of line comments
+					string[] splitted = line.split ("#", 2);
+					line = splitted[0].strip ();
+					if (line.length == 0) {
+						continue;
 					}
-				} catch (Error e) {
-					warning (e.message);
+					splitted = line.split ("=", 2);
+					string key = splitted[0].strip ();
+					directives.insert (key, splitted.length == 2 ? splitted[1].strip () : "");
 				}
-			} else {
+			} catch (IOError.NOT_FOUND e) {
 				warning ("File '%s' doesn't exist.", path);
+			} catch (Error e) {
+				warning ("%s: %s", path, e.message);
 			}
+			return directives;
 		}
 
 		public void save () {
@@ -385,14 +367,22 @@ namespace Pamac {
 			new_pamac_conf.insert ("MaxParallelDownloads", new Variant.uint64 (max_parallel_downloads));
 			new_pamac_conf.insert ("KeepNumPackages", new Variant.uint64 (clean_keep_num_pkgs));
 			new_pamac_conf.insert ("OnlyRmUninstalled", new Variant.boolean (clean_rm_only_uninstalled));
-			new_pamac_conf.insert ("EnableAUR", new Variant.boolean (enable_aur));
-			new_pamac_conf.insert ("KeepBuiltPkgs", new Variant.boolean (keep_built_pkgs));
-			new_pamac_conf.insert ("CheckAURUpdates", new Variant.boolean (check_aur_updates));
-			new_pamac_conf.insert ("CheckAURVCSUpdates", new Variant.boolean (check_aur_vcs_updates));
-			new_pamac_conf.insert ("BuildDirectory", new Variant.string (aur_build_dir));
-			new_pamac_conf.insert ("EnableSnap", new Variant.boolean (enable_snap));
-			new_pamac_conf.insert ("EnableFlatpak", new Variant.boolean (enable_flatpak));
-			new_pamac_conf.insert ("CheckFlatpakUpdates", new Variant.boolean (check_flatpak_updates));
+			// the options of a missing plugin are forced to false:
+			// do not overwrite the ones of the file
+			if (support_aur) {
+				new_pamac_conf.insert ("EnableAUR", new Variant.boolean (enable_aur));
+				new_pamac_conf.insert ("KeepBuiltPkgs", new Variant.boolean (keep_built_pkgs));
+				new_pamac_conf.insert ("CheckAURUpdates", new Variant.boolean (check_aur_updates));
+				new_pamac_conf.insert ("CheckAURVCSUpdates", new Variant.boolean (check_aur_vcs_updates));
+				new_pamac_conf.insert ("BuildDirectory", new Variant.string (aur_build_dir));
+			}
+			if (support_snap) {
+				new_pamac_conf.insert ("EnableSnap", new Variant.boolean (enable_snap));
+			}
+			if (support_flatpak) {
+				new_pamac_conf.insert ("EnableFlatpak", new Variant.boolean (enable_flatpak));
+				new_pamac_conf.insert ("CheckFlatpakUpdates", new Variant.boolean (check_flatpak_updates));
+			}
 			try {
 				system_daemon.start_write_pamac_config (new_pamac_conf);
 			} catch (Error e) {

@@ -105,6 +105,122 @@ void write_config_file (File file, string data) {
 	}
 }
 
+// key of a directive line, also when it is commented: "#IgnorePkg   =" gives "IgnorePkg",
+// null for other lines like "# Pacman won't upgrade packages listed in IgnorePkg"
+string? get_directive_key (string line, out bool commented) {
+	string str = line.strip ();
+	commented = str.has_prefix ("#");
+	if (commented) {
+		str = str.substring (1).strip ();
+	}
+	int end = 0;
+	while (end < str.length && str[end].isalnum ()) {
+		end++;
+	}
+	if (end == 0) {
+		return null;
+	}
+	string rest = str.substring (end).strip ();
+	if (rest.length == 0 || rest.has_prefix ("=")) {
+		return str.substring (0, end);
+	}
+	return null;
+}
+
+// replace the directives of a configuration file by new_lines (key -> new line):
+// the first line of a directive is replaced, its other active lines are commented,
+// the directives not found are added after the last directive.
+// With a section, only the directives of this section are processed
+// and it is created at the beginning of the file if needed.
+// keys gives the order of the added directives.
+void write_config_directives (string path, HashTable<string, string> new_lines, string[] keys, string? section) {
+	if (new_lines.size () == 0) {
+		return;
+	}
+	var file = GLib.File.new_for_path (path);
+	try {
+		var dis = new DataInputStream (file.read ());
+		var lines = new GenericArray<string> ();
+		bool in_section = section == null;
+		string? section_header = section == null ? null : "[%s]".printf (section);
+		// where to add the directives not found: after the last directive of the section
+		int insert_index = -1;
+		var written = new GenericSet<string> (str_hash, str_equal);
+		string? line;
+		while ((line = dis.read_line ()) != null) {
+			string stripped = line.strip ();
+			if (section_header != null && stripped.has_prefix ("[") && stripped.has_suffix ("]")) {
+				in_section = stripped == section_header;
+				lines.add (line);
+				if (in_section) {
+					insert_index = (int) lines.length;
+				}
+				continue;
+			}
+			if (in_section) {
+				bool commented;
+				string? key = get_directive_key (line, out commented);
+				// a comment like "# REPOSITORIES" looks like a commented directive:
+				// only the commented directives to write are recognized
+				if (key != null && (!commented || new_lines.contains (key))) {
+					unowned string? new_line = new_lines.lookup (key);
+					if (new_line == null) {
+						lines.add (line);
+					} else if (!(key in written)) {
+						// replace the first line of the directive
+						lines.add (new_line);
+						written.add (key);
+					} else if (commented) {
+						lines.add (line);
+					} else {
+						// comment the other lines
+						lines.add ("#" + line);
+					}
+					insert_index = (int) lines.length;
+					continue;
+				}
+			}
+			lines.add (line);
+		}
+		// add the directives not found
+		var missing = new GenericArray<string> ();
+		foreach (unowned string key in keys) {
+			unowned string? new_line = new_lines.lookup (key);
+			if (new_line != null && !(key in written)) {
+				missing.add (new_line);
+			}
+		}
+		if (missing.length > 0) {
+			if (insert_index == -1) {
+				if (section_header == null) {
+					// no directive: add them at the end
+					if (lines.length > 0 && lines[lines.length - 1].strip () != "") {
+						lines.add ("");
+					}
+					insert_index = (int) lines.length;
+				} else {
+					missing.insert (0, section_header);
+					missing.add ("");
+					insert_index = 0;
+				}
+			}
+			for (uint i = 0; i < missing.length; i++) {
+				lines.insert (insert_index + (int) i, missing[i]);
+			}
+		}
+		var data = new StringBuilder ();
+		foreach (unowned string l in lines) {
+			data.append (l);
+			data.append_c ('\n');
+		}
+		write_config_file (file, data.str);
+	} catch (IOError.NOT_FOUND e) {
+		warning ("File '%s' doesn't exist.", path);
+	} catch (Error e) {
+		warning (e.message);
+	}
+}
+
 // run a command without shell parsing of its arguments
 int run_command (string[] argv) {
 	int status = 1;
@@ -531,28 +647,6 @@ internal class AlpmConfig {
 		}
 	}
 
-	// key of a directive line, also when it is commented: "#IgnorePkg   =" gives "IgnorePkg",
-	// null for other lines like "# Pacman won't upgrade packages listed in IgnorePkg"
-	static string? get_directive_key (string line, out bool commented) {
-		string str = line.strip ();
-		commented = str.has_prefix ("#");
-		if (commented) {
-			str = str.substring (1).strip ();
-		}
-		int end = 0;
-		while (end < str.length && str[end].isalnum ()) {
-			end++;
-		}
-		if (end == 0) {
-			return null;
-		}
-		string rest = str.substring (end).strip ();
-		if (rest.length == 0 || rest.has_prefix ("=")) {
-			return str.substring (0, end);
-		}
-		return null;
-	}
-
 	public void write (HashTable<string,Variant> received_conf) {
 		var expected_types = new HashTable<string, VariantType> (str_hash, str_equal);
 		expected_types.insert ("IgnorePkg", VariantType.STRING);
@@ -569,82 +663,7 @@ internal class AlpmConfig {
 		if (val != null) {
 			new_lines.insert ("CheckSpace", val.get_boolean () ? "CheckSpace" : "#CheckSpace");
 		}
-		if (new_lines.size () == 0) {
-			return;
-		}
-		var file = GLib.File.new_for_path (conf_path);
-		try {
-			var dis = new DataInputStream (file.read ());
-			var lines = new GenericArray<string> ();
-			bool in_options = false;
-			// where to add the directives not found: after the last directive of [options]
-			int insert_index = -1;
-			var written = new GenericSet<string> (str_hash, str_equal);
-			string? line;
-			while ((line = dis.read_line ()) != null) {
-				string stripped = line.strip ();
-				if (stripped.has_prefix ("[") && stripped.has_suffix ("]")) {
-					in_options = stripped == "[options]";
-					lines.add (line);
-					if (in_options) {
-						insert_index = (int) lines.length;
-					}
-					continue;
-				}
-				if (in_options) {
-					bool commented;
-					string? key = get_directive_key (line, out commented);
-					// a comment like "# REPOSITORIES" looks like a commented directive:
-					// only the commented directives to write are recognized
-					if (key != null && (!commented || new_lines.contains (key))) {
-						unowned string? new_line = new_lines.lookup (key);
-						if (new_line == null) {
-							lines.add (line);
-						} else if (!(key in written)) {
-							// replace the first line of the directive
-							lines.add (new_line);
-							written.add (key);
-						} else if (commented) {
-							lines.add (line);
-						} else {
-							// comment the other lines
-							lines.add ("#" + line);
-						}
-						insert_index = (int) lines.length;
-						continue;
-					}
-				}
-				lines.add (line);
-			}
-			// add the directives not found
-			var missing = new GenericArray<string> ();
-			foreach (unowned string key in new string[] {"IgnorePkg", "CheckSpace"}) {
-				unowned string? new_line = new_lines.lookup (key);
-				if (new_line != null && !(key in written)) {
-					missing.add (new_line);
-				}
-			}
-			if (missing.length > 0) {
-				if (insert_index == -1) {
-					missing.insert (0, "[options]");
-					missing.add ("");
-					insert_index = 0;
-				}
-				for (uint i = 0; i < missing.length; i++) {
-					lines.insert (insert_index + (int) i, missing[i]);
-				}
-			}
-			var data = new StringBuilder ();
-			foreach (unowned string l in lines) {
-				data.append (l);
-				data.append_c ('\n');
-			}
-			write_config_file (file, data.str);
-		} catch (IOError.NOT_FOUND e) {
-			warning ("File '%s' doesn't exist.", conf_path);
-		} catch (Error e) {
-			warning (e.message);
-		}
+		write_config_directives (conf_path, new_lines, {"IgnorePkg", "CheckSpace"}, "options");
 	}
 
 	Alpm.DB.Usage define_usage (string conf_string) {
