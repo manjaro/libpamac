@@ -140,6 +140,10 @@ namespace Pamac {
 				var dis = new DataInputStream (File.new_for_path (path).read ());
 				string? line;
 				while ((line = dis.read_line ()) != null) {
+					// split gives an empty array for an empty line
+					if (line.length == 0) {
+						continue;
+					}
 					// ignore whole line and end of line comments
 					string[] splitted = line.split ("#", 2);
 					line = splitted[0].strip ();
