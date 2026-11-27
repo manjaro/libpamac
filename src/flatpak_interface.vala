@@ -18,12 +18,9 @@
  */
 
 namespace Pamac {
+	// the transactions report their progress to the given sink
 	internal interface FlatpakPlugin : Object {
 		public abstract uint64 refresh_period { get; set; }
-
-		public signal void emit_action_progress (string sender, string action, string status, double progress);
-		public signal void emit_script_output (string sender, string message);
-		public signal void emit_error (string sender, string message, string[] details);
 
 		public abstract bool refresh_appstream_data ();
 		public abstract void load_appstream_data ();
@@ -35,8 +32,9 @@ namespace Pamac {
 		public abstract void get_installed_flatpaks (ref GenericArray<FlatpakPackage> pkgs);
 		public abstract void get_category_flatpaks (string category, ref GenericArray<FlatpakPackage> pkgs);
 		public abstract void get_flatpak_updates (ref GenericArray<FlatpakPackage> pkgs);
-		public abstract bool trans_run (string sender, string[] to_install, string[] to_remove, string[] to_upgrade);
-		public abstract void trans_cancel (string sender);
+		public abstract bool trans_run (TransactionSink sink, string[] to_install, string[] to_remove, string[] to_upgrade);
+		// cancel the transaction if it reports to sink
+		public abstract void trans_cancel (TransactionSink sink);
 		public abstract void refresh ();
 	}
 

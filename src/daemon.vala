@@ -109,38 +109,12 @@ namespace Pamac {
 			} catch (Error e) {
 				warning (e.message);
 			}
+			// the plugins report the progress of their transactions to a DaemonSink
 			if (config.support_snap) {
 				snap_plugin = config.get_snap_plugin ();
-				snap_plugin.emit_action_progress.connect ((sender, action, status, progress) => {
-					emit_action_progress (sender, action, status, progress);
-				});
-				snap_plugin.emit_download_progress.connect ((sender, action, status, progress) => {
-					emit_download_progress (sender, action, status, progress);
-				});
-				snap_plugin.emit_script_output.connect ((sender, message) => {
-					emit_script_output (sender, message);
-				});
-				snap_plugin.emit_error.connect ((sender, message,  details) => {
-					emit_error (sender, message, details);
-				});
-				snap_plugin.start_downloading.connect ((sender) => {
-					start_downloading (sender);
-				});
-				snap_plugin.stop_downloading.connect ((sender) => {
-					stop_downloading (sender);
-				});
 			}
 			if (config.support_flatpak) {
 				flatpak_plugin = config.get_flatpak_plugin ();
-				flatpak_plugin.emit_action_progress.connect ((sender, action, status, progress) => {
-					emit_action_progress (sender, action, status, progress);
-				});
-				flatpak_plugin.emit_script_output.connect ((sender, message) => {
-					emit_script_output (sender, message);
-				});
-				flatpak_plugin.emit_error.connect ((sender, message,  details) => {
-					emit_error (sender, message, details);
-				});
 			}
 		}
 
@@ -672,13 +646,14 @@ namespace Pamac {
 			}
 			string[] to_install_copy = to_install;
 			string[] to_remove_copy = to_remove;
+			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return false;
 				}
 				return yield run_thread ("snap_trans_run", () => {
-					return snap_plugin.trans_run (sender, to_install_copy, to_remove_copy);
+					return snap_plugin.trans_run (sink, to_install_copy, to_remove_copy);
 				});
 			} finally {
 				transaction_finished ();
@@ -690,13 +665,14 @@ namespace Pamac {
 			if (!config.enable_snap) {
 				return false;
 			}
+			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return false;
 				}
 				return yield run_thread ("snap_switch_channel", () => {
-					return snap_plugin.switch_channel (sender, snap_name, snap_channel);
+					return snap_plugin.switch_channel (sink, snap_name, snap_channel);
 				});
 			} finally {
 				release ();
@@ -710,13 +686,14 @@ namespace Pamac {
 			string[] to_install_copy = to_install;
 			string[] to_remove_copy = to_remove;
 			string[] to_upgrade_copy = to_upgrade;
+			var sink = get_sink (sender);
 			hold ();
 			try {
 				if (!(yield check_authorization (sender))) {
 					return false;
 				}
 				return yield run_thread ("flatpak_trans_run", () => {
-					return flatpak_plugin.trans_run (sender, to_install_copy, to_remove_copy, to_upgrade_copy);
+					return flatpak_plugin.trans_run (sink, to_install_copy, to_remove_copy, to_upgrade_copy);
 				});
 			} finally {
 				transaction_finished ();
@@ -733,16 +710,18 @@ namespace Pamac {
 				answer_cond.broadcast ();
 				answer_mutex.unlock ();
 			}
+			// no sink: this client never ran an operation
+			DaemonSink? sink = sinks_table.lookup (sender);
+			if (sink == null) {
+				return;
+			}
 			if (config.enable_snap) {
-				snap_plugin.trans_cancel (sender);
+				snap_plugin.trans_cancel (sink);
 			}
 			if (config.enable_flatpak) {
-				flatpak_plugin.trans_cancel (sender);
+				flatpak_plugin.trans_cancel (sink);
 			}
-			DaemonSink? sink = sinks_table.lookup (sender);
-			if (sink != null) {
-				alpm_utils.trans_cancel (sink);
-			}
+			alpm_utils.trans_cancel (sink);
 		}
 
 		[DBus (no_reply = true)]

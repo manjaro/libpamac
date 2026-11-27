@@ -204,7 +204,23 @@ namespace Pamac {
 		const uint MAX_CACHED_SEARCHES = 50;
 		const int64 ICON_MAX_AGE = TimeSpan.DAY;
 
-		string sender;
+		// receives the progress of the current transaction:
+		// read by trans_cancel from another thread
+		TransactionSink _sink;
+		Mutex sink_mutex;
+		TransactionSink sink {
+			owned get {
+				sink_mutex.lock ();
+				TransactionSink current = _sink;
+				sink_mutex.unlock ();
+				return current;
+			}
+			set {
+				sink_mutex.lock ();
+				_sink = value;
+				sink_mutex.unlock ();
+			}
+		}
 		Snapd.Client client;
 		// caches are protected by their own lock, never held during a request
 		HashTable<string, Snapd.Snap> store_snaps_cache;
@@ -235,6 +251,8 @@ namespace Pamac {
 		}
 
 		construct {
+			sink_mutex = Mutex ();
+			_sink = new NullSink ();
 			client = new Snapd.Client ();
 			store_snaps_cache = new HashTable<string, Snapd.Snap> (str_hash, str_equal);
 			missing_store_snaps = new GenericSet<string> (str_hash, str_equal);
@@ -603,41 +621,25 @@ namespace Pamac {
 			}
 		}
 
-		void do_start_downloading () {
-			start_downloading (sender);
-		}
-
-		void do_stop_downloading () {
-			stop_downloading (sender);
-		}
-
-		void do_emit_action_progress (string action, string status, double progress) {
-			emit_action_progress (sender, action, status, progress);
-		}
-
-		void do_emit_download_progress (string action, string status, double progress) {
-			emit_download_progress (sender, action, status, progress);
-		}
-
-		void do_emit_script_output (string message) {
-			emit_script_output (sender, message);
-		}
-
-		void do_emit_error (string message, string[] details) {
-			emit_error (sender, message, details);
+		void emit_error (string message, string[] details) {
+			var details_array = new GenericArray<string> (details.length);
+			foreach (unowned string detail in details) {
+				details_array.add (detail);
+			}
+			sink.emit_error (message, details_array);
 		}
 
 		// a previous transaction can have been cancelled or have failed during a download
-		void begin_transaction (string sender) {
-			this.sender = sender;
+		void begin_transaction (TransactionSink sink) {
+			this.sink = sink;
 			cancellable.reset ();
 			downloading = false;
 			started_downloads.remove_all ();
 			finished_downloads.remove_all ();
 		}
 
-		public bool trans_run (string sender, string[] to_install, string[] to_remove) {
-			begin_transaction (sender);
+		public bool trans_run (TransactionSink sink, string[] to_install, string[] to_remove) {
+			begin_transaction (sink);
 			foreach (unowned string name in to_remove) {
 				if (!remove (name) || cancellable.is_cancelled ()) {
 					return false;
@@ -667,8 +669,8 @@ namespace Pamac {
 			}
 		}
 
-		public void trans_cancel (string sender) {
-			if (sender == this.sender) {
+		public void trans_cancel (TransactionSink sink) {
+			if (sink == this.sink) {
 				cancellable.cancel ();
 			}
 		}
@@ -687,18 +689,18 @@ namespace Pamac {
 						return true;
 					} catch (Error e) {
 						if (!cancellable.is_cancelled ()) {
-							do_emit_error (dgettext (null, "Snap install error"), {e.message});
+							emit_error (dgettext (null, "Snap install error"), {e.message});
 						}
 					}
 				} else if (!cancellable.is_cancelled ()) {
-					do_emit_error (dgettext (null, "Snap install error"), {e.message});
+					emit_error (dgettext (null, "Snap install error"), {e.message});
 				}
 			}
 			return false;
 		}
 
-		public bool switch_channel (string sender, string name, string channel) {
-			begin_transaction (sender);
+		public bool switch_channel (TransactionSink sink, string name, string channel) {
+			begin_transaction (sink);
 			try {
 				main_action = dgettext (null, "Installing %s").printf ("%s (%s)".printf (name, channel));
 				init_download = true;
@@ -706,7 +708,7 @@ namespace Pamac {
 				return true;
 			} catch (Error e) {
 				if (!cancellable.is_cancelled ()) {
-					do_emit_error (dgettext (null, "Snap switch error"), {e.message});
+					emit_error (dgettext (null, "Snap switch error"), {e.message});
 				}
 			}
 			return false;
@@ -719,7 +721,7 @@ namespace Pamac {
 				return true;
 			} catch (Error e) {
 				if (!cancellable.is_cancelled ()) {
-					do_emit_error (dgettext (null, "Snap remove error"), {e.message});
+					emit_error (dgettext (null, "Snap remove error"), {e.message});
 				}
 			}
 			return false;
@@ -729,7 +731,7 @@ namespace Pamac {
 			var text = new StringBuilder ();
 			double fraction;
 			if (init_download) {
-				do_start_downloading ();
+				sink.start_downloading ();
 				init_download = false;
 				download_rate = 0;
 				rates_nb = 0;
@@ -774,7 +776,7 @@ namespace Pamac {
 			// never display a lower progress
 			current_progress = double.max (fraction, current_progress);
 			current_status = text.str;
-			do_emit_download_progress (current_action, current_status, current_progress);
+			sink.emit_download_progress (current_action, current_status, current_progress);
 		}
 
 		// snapd download task summaries look like: Download snap "name" (rev) from channel "stable",
@@ -846,17 +848,17 @@ namespace Pamac {
 					}
 				} else if (task.status == "Doing" && task.summary != current_details) {
 					current_details = task.summary;
-					do_emit_script_output (current_details);
+					sink.emit_script_output (current_details);
 				}
 			}
 			if (downloading) {
 				emit_download (download_xfered, download_total);
 				if (!downloads_pending) {
 					downloading = false;
-					do_stop_downloading ();
+					sink.stop_downloading ();
 				}
 			} else if (total > 0) {
-				do_emit_action_progress (main_action, "", (double) done / total);
+				sink.emit_action_progress (main_action, "", (double) done / total);
 			}
 		}
 	}

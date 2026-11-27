@@ -235,7 +235,23 @@ namespace Pamac {
 			"com.slack.Slack"
 		};
 
-		string sender;
+		// receives the progress of the current transaction:
+		// read by trans_cancel from another thread
+		TransactionSink _sink;
+		Mutex sink_mutex;
+		TransactionSink sink {
+			owned get {
+				sink_mutex.lock ();
+				TransactionSink current = _sink;
+				sink_mutex.unlock ();
+				return current;
+			}
+			set {
+				sink_mutex.lock ();
+				_sink = value;
+				sink_mutex.unlock ();
+			}
+		}
 		Flatpak.Installation? installation;
 		Cancellable cancellable;
 		// appstream data is loaded in background, see load_appstream_data ()
@@ -269,6 +285,8 @@ namespace Pamac {
 		}
 
 		construct {
+			sink_mutex = Mutex ();
+			_sink = new NullSink ();
 			cancellable = new Cancellable ();
 			search_pool = new AppStream.Pool ();
 			pkgs_cache = new HashTable<string, FlatpakPackageLinked> (str_hash, str_equal);
@@ -703,12 +721,12 @@ namespace Pamac {
 		bool on_add_new_remote (Flatpak.TransactionRemoteReason reason, string from_id, string remote_name, string url) {
 			// additional applications
 			if (reason == Flatpak.TransactionRemoteReason.GENERIC_REPO) {
-				do_emit_script_output ("Configuring %s as new generic remote".printf (url));
+				sink.emit_script_output ("Configuring %s as new generic remote".printf (url));
 				return true;
 			}
 			// runtime deps always make sense
 			if (reason == Flatpak.TransactionRemoteReason.RUNTIME_DEPS) {
-				do_emit_script_output ("Configuring %s as new remote for deps".printf (url));
+				sink.emit_script_output ("Configuring %s as new remote for deps".printf (url));
 				return true;
 			}
 			return false;
@@ -716,7 +734,7 @@ namespace Pamac {
 
 		int on_choose_remote_for_ref (string for_ref, string runtime_ref, [CCode (array_length = false, array_null_terminated = true)] string[] remotes) {
 			// use the first remote
-			do_emit_script_output ("Using %s as provider for %s".printf (remotes[0], runtime_ref));
+			sink.emit_script_output ("Using %s as provider for %s".printf (remotes[0], runtime_ref));
 			return 0;
 		}
 
@@ -738,36 +756,32 @@ namespace Pamac {
 			if (action == null) {
 				return;
 			}
-			do_emit_action_progress (action, progress.get_status (), 0);
+			sink.emit_action_progress (action, progress.get_status (), 0);
 			progress.changed.connect (() => {
 				if (progress.get_is_estimating ()) {
 					return;
 				}
 				if (progress.get_progress () == 100) {
-					do_emit_script_output (progress.get_status ());
-					do_emit_action_progress (action, "", 1);
+					sink.emit_script_output (progress.get_status ());
+					sink.emit_action_progress (action, "", 1);
 				} else {
-					do_emit_action_progress (action, progress.get_status (), (double) progress.get_progress () / 100);
+					sink.emit_action_progress (action, progress.get_status (), (double) progress.get_progress () / 100);
 				}
 			});
 			progress.set_update_frequency (100);
 		}
 
 		bool on_operation_error (Flatpak.TransactionOperation operation, Error error, Flatpak.TransactionErrorDetails detail) {
-			do_emit_script_output (error.message);
+			sink.emit_script_output (error.message);
 			return true;
 		}
 
-		void do_emit_action_progress (string action, string status, double progress) {
-			emit_action_progress (sender, action, status, progress);
-		}
-
-		void do_emit_script_output (string message) {
-			emit_script_output (sender, message);
-		}
-
-		void do_emit_error (string message, string[] details) {
-			emit_error (sender, message, details);
+		void emit_error (string message, string[] details) {
+			var details_array = new GenericArray<string> (details.length);
+			foreach (unowned string detail in details) {
+				details_array.add (detail);
+			}
+			sink.emit_error (message, details_array);
 		}
 
 		static bool valid_ids (string[] ids) {
@@ -780,16 +794,16 @@ namespace Pamac {
 			return true;
 		}
 
-		public bool trans_run (string sender, string[] to_install, string[] to_remove, string[] to_upgrade) {
-			this.sender = sender;
+		public bool trans_run (TransactionSink sink, string[] to_install, string[] to_remove, string[] to_upgrade) {
+			this.sink = sink;
 			cancellable.reset ();
 			if (installation == null) {
-				do_emit_error (dgettext (null, "Flatpak transaction failed"), {"no flatpak installation"});
+				emit_error (dgettext (null, "Flatpak transaction failed"), {"no flatpak installation"});
 				return false;
 			}
 			// ids received from the client must be remote/ref
 			if (!valid_ids (to_install) || !valid_ids (to_remove) || !valid_ids (to_upgrade)) {
-				do_emit_error (dgettext (null, "Flatpak transaction failed"), {"invalid flatpak id"});
+				emit_error (dgettext (null, "Flatpak transaction failed"), {"invalid flatpak id"});
 				return false;
 			}
 			try {
@@ -822,13 +836,13 @@ namespace Pamac {
 				refresh ();
 				return success;
 			} catch (Error e) {
-				do_emit_error (dgettext (null, "Flatpak transaction failed"), {e.message});
+				emit_error (dgettext (null, "Flatpak transaction failed"), {e.message});
 				return false;
 			}
 		}
 
-		public void trans_cancel (string sender) {
-			if (sender == this.sender) {
+		public void trans_cancel (TransactionSink sink) {
+			if (sink == this.sink) {
 				cancellable.cancel ();
 			}
 		}

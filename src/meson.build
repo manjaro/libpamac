@@ -50,7 +50,7 @@ if get_option('enable-snap')
 	snapd = dependency('snapd-glib-2')
 
 	libpamac_snap = library('pamac-snap',
-		sources: ['snap_interface.vala', 'snap_plugin.vala', 'package.vala'],
+		sources: ['snap_interface.vala', 'snap_plugin.vala', 'package.vala', 'transaction_sink.vala'],
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, snapd, gmodule],
@@ -65,7 +65,7 @@ if get_option('enable-flatpak')
 	flatpak = dependency('flatpak')
 
 	libpamac_flatpak = library('pamac-flatpak',
-		sources: ['flatpak_interface.vala', 'appstream_utils.vala', 'flatpak_plugin.vala', 'package.vala'],
+		sources: ['flatpak_interface.vala', 'appstream_utils.vala', 'flatpak_plugin.vala', 'package.vala', 'transaction_sink.vala'],
 		vala_args: common_vala_args,
 		c_args: common_c_args,
 		dependencies: [gio, math, flatpak, appstream, gmodule],

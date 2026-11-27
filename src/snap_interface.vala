@@ -18,14 +18,8 @@
  */
 
 namespace Pamac {
+	// the transactions report their progress to the given sink
 	internal interface SnapPlugin : Object {
-		public signal void emit_action_progress (string sender, string action, string status, double progress);
-		public signal void emit_download_progress (string sender, string action, string status, double progress);
-		public signal void emit_script_output (string sender, string message);
-		public signal void emit_error (string sender, string message, string[] details);
-		public signal void start_downloading (string sender);
-		public signal void stop_downloading (string sender);
-
 		public abstract void search_snaps (string search_string, ref GenericArray<SnapPackage> pkgs);
 		public abstract bool is_installed_snap (string name);
 		public abstract SnapPackage? get_snap (string name);
@@ -33,9 +27,10 @@ namespace Pamac {
 		public abstract void get_installed_snaps (ref GenericArray<SnapPackage> pkgs);
 		public abstract string get_installed_snap_icon (string name) throws Error;
 		public abstract void get_category_snaps (string category, ref GenericArray<SnapPackage> pkgs);
-		public abstract bool trans_run (string sender, string[] to_install, string[] to_remove);
-		public abstract bool switch_channel (string sender, string name, string channel);
-		public abstract void trans_cancel (string sender);
+		public abstract bool trans_run (TransactionSink sink, string[] to_install, string[] to_remove);
+		public abstract bool switch_channel (TransactionSink sink, string name, string channel);
+		// cancel the transaction if it reports to sink
+		public abstract void trans_cancel (TransactionSink sink);
 		public abstract void refresh ();
 	}
 
