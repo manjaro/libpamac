@@ -40,6 +40,10 @@ namespace Pamac {
 		internal unowned MainContext context { get; private set; }
 		internal bool dbs_missing { get; private set; }
 
+		// Emitted in the calling thread before makepkg; UI consumers must marshal
+		// to their main context. Advisory only: this does not authorize execution.
+		public signal void aur_review_ready (string pkgbase, AurReview review);
+
 		public signal void get_updates_progress (uint percent);
 		public signal void emit_warning (string message);
 
@@ -1917,6 +1921,13 @@ namespace Pamac {
 			return cmdline;
 		}
 
+		public AurReview review_build_files (string pkgbase) {
+			string directory = Path.build_filename (get_real_aur_build_dir (), pkgbase);
+			var review = AurReview.from_directory (directory);
+			aur_review_ready (pkgbase, review);
+			return review;
+		}
+
 		public bool regenerate_srcinfo (string pkgname, Cancellable? cancellable = null) {
 			unowned string real_aur_build_dir = get_real_aur_build_dir ();
 			string pkgdir_name = Path.build_filename (real_aur_build_dir, pkgname);
@@ -1937,6 +1948,9 @@ namespace Pamac {
 					warning (e.message);
 				}
 			}
+			// --printsrcinfo sources PKGBUILD, including its top-level commands.
+			// Review the existing inputs before executing any of it.
+			review_build_files (pkgname);
 			// generate .SRCINFO
 			var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE);
 			launcher.set_cwd (pkgdir_name);
@@ -2253,6 +2267,7 @@ namespace Pamac {
 				}
 				File? clone_dir = clone_build_files (aur_infos.packagebase, false, null);
 				if (clone_dir != null) {
+					review_build_files (clone_dir.get_basename ());
 					// get last sources
 					// no output to not pollute checkupdates output
 					var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_SILENCE | SubprocessFlags.STDERR_SILENCE);
