@@ -1620,6 +1620,12 @@ namespace Pamac {
 			}
 		}
 
+		// installed size of the installed version of a package, 0 if it is not installed
+		static uint64 get_local_size (Alpm.Handle? alpm_handle, string pkgname) {
+			unowned Alpm.Package? local_pkg = alpm_handle.localdb.get_pkg (pkgname);
+			return local_pkg == null ? 0 : local_pkg.isize;
+		}
+
 		void get_transaction_summary (Alpm.Handle? alpm_handle, ref TransactionSummary summary) {
 			var checked = new HashTable<string, int> (str_hash, str_equal);
 			// to_install
@@ -1634,18 +1640,29 @@ namespace Pamac {
 					if (!summary.aur_pkgbases_to_build.find_with_equal_func (trans_pkg.pkgbase, str_equal)) {
 						summary.aur_pkgbases_to_build.add (trans_pkg.pkgbase);
 					}
+					SummaryReason reason = SummaryReason.REQUESTED;
+					string? related = null;
 					if (pkg.installed_version == null) {
 						if (!(trans_pkg_name in to_build)) {
 							// it is a new required dep
 							string? top_requiredby = get_top_requiredby (alpm_handle, trans_pkg, checked, false);
 							if (top_requiredby != null) {
+								reason = SummaryReason.DEPENDENCY;
+								related = top_requiredby;
 								pkg.requiredby.add ((owned) top_requiredby);
 							}
 						}
 					}
+					// the size of a package to build is unknown
+					summary.add_item (pkg, reason, related, get_local_size (alpm_handle, trans_pkg_name));
 					summary.to_build.add (pkg);
 				} else {
 					var pkg = initialise_pkg (alpm_handle, trans_pkg);
+					SummaryReason reason = SummaryReason.REQUESTED;
+					string? related = null;
+					uint64 old_installed_size = get_local_size (alpm_handle, trans_pkg_name);
+					summary.download_size += trans_pkg.download_size;
+					summary.installed_size_delta += (int64) trans_pkg.isize - (int64) old_installed_size;
 					if (pkg.installed_version == null) {
 						if (db != null && !(trans_pkg_name in to_install)) {
 							// it is a new required dep or a replace
@@ -1653,6 +1670,8 @@ namespace Pamac {
 							string? top_requiredby = get_top_requiredby (alpm_handle, trans_pkg, checked, true);
 							bool dep_found = top_requiredby != null;
 							if (dep_found) {
+								reason = SummaryReason.DEPENDENCY;
+								related = top_requiredby;
 								pkg.requiredby.add ((owned) top_requiredby);
 							}
 							// 2 - check for replaces
@@ -1660,7 +1679,10 @@ namespace Pamac {
 								unowned Alpm.List<unowned Alpm.Depend> depends_list = trans_pkg.replaces;
 								while (depends_list != null) {
 									string depstring = depends_list.data.compute_string ();
-									if (Alpm.find_satisfier (alpm_handle.localdb.pkgcache, depstring) != null) {
+									unowned Alpm.Package? replaced_pkg = Alpm.find_satisfier (alpm_handle.localdb.pkgcache, depstring);
+									if (replaced_pkg != null) {
+										reason = SummaryReason.REPLACE;
+										related = replaced_pkg.name;
 										pkg.replaces.add (depends_list.data.compute_string ());
 										break;
 									}
@@ -1668,8 +1690,10 @@ namespace Pamac {
 								}
 							}
 						}
+						summary.add_item (pkg, reason, related, old_installed_size);
 						summary.to_install.add (pkg);
 					} else {
+						summary.add_item (pkg, reason, related, old_installed_size);
 						int cmp = Alpm.pkg_vercmp (pkg.version, pkg.installed_version);
 						if (cmp == 1) {
 							summary.to_upgrade.add (pkg);
@@ -1692,12 +1716,16 @@ namespace Pamac {
 				unowned Alpm.Package trans_pkg = pkgs_to_remove.data;
 				unowned string trans_pkg_name = trans_pkg.name;
 				var pkg = initialise_pkg (alpm_handle, trans_pkg);
+				uint64 old_installed_size = trans_pkg.isize;
+				summary.installed_size_delta -= (int64) old_installed_size;
 				// add the reason why trans_pkg must be removed
 				if (trans_pkg_name in to_remove) {
 					// 1 - direct to_remove
+					summary.add_item (pkg, SummaryReason.REQUESTED, null, old_installed_size);
 					summary.to_remove.add (pkg);
 				} else if (trans_pkg_name in required_to_remove) {
 					// 2 - depends on a package to_remove
+					string? related = null;
 					bool dep_found = false;
 					unowned Alpm.Package check_pkg = trans_pkg;
 					while (!dep_found) {
@@ -1710,6 +1738,7 @@ namespace Pamac {
 								if (dep.name in to_remove
 									|| dep.name in conflicts_to_remove) {
 									// found the top depend package
+									related = dep.name;
 									pkg.depends.add (dep.name);
 									dep_found = true;
 								} else {
@@ -1729,9 +1758,11 @@ namespace Pamac {
 							break;
 						}
 					}
+					summary.add_item (pkg, related == null ? SummaryReason.REQUESTED : SummaryReason.DEPENDS_ON_REMOVED, related, old_installed_size);
 					summary.to_remove.add (pkg);
 				} else if (trans_pkg_name in orphans_to_remove) {
 					// 3 - orphans
+					string? related = null;
 					bool dep_found = false;
 					unowned Alpm.Package check_pkg = trans_pkg;
 					while (!dep_found) {
@@ -1741,6 +1772,7 @@ namespace Pamac {
 							string* name = requiredby.data;
 							if (name in to_remove) {
 								// found the top requiredby package
+								related = name;
 								pkg.requiredby.add ((owned) name);
 								dep_found = true;
 							} else {
@@ -1760,15 +1792,19 @@ namespace Pamac {
 							break;
 						}
 					}
+					summary.add_item (pkg, related == null ? SummaryReason.REQUESTED : SummaryReason.ORPHAN, related, old_installed_size);
 					summary.to_remove.add (pkg);
 				} else {
 					// 4 - it is a conflict.
+					string? related = null;
 					bool conflict_found = false;
 					// a - check direct conflict
 					unowned Alpm.List<unowned Alpm.Depend> depends_list = trans_pkg.conflicts;
 					while (depends_list != null) {
 						string depstring = depends_list.data.compute_string ();
-						if (Alpm.find_satisfier (alpm_handle.trans_to_add (), depstring) != null) {
+						unowned Alpm.Package? conflicting_pkg = Alpm.find_satisfier (alpm_handle.trans_to_add (), depstring);
+						if (conflicting_pkg != null) {
+							related = conflicting_pkg.name;
 							pkg.conflicts.add ((owned) depstring);
 							conflict_found = true;
 							break;
@@ -1786,6 +1822,7 @@ namespace Pamac {
 								Alpm.List<unowned Alpm.Package> list = null;
 								list.add (trans_pkg);
 								if (Alpm.find_satisfier (list, depstring) != null) {
+									related = add_pkg.name;
 									pkg.conflicts.add (add_pkg.name);
 									conflict_found = true;
 									break;
@@ -1797,6 +1834,7 @@ namespace Pamac {
 					}
 					// Add it in a separate list because it could be a aur conflict
 					// that must not be explicilty removed.
+					summary.add_item (pkg, SummaryReason.CONFLICT, related, old_installed_size);
 					summary.conflicts_to_remove.add (pkg);
 				}
 				pkgs_to_remove.next ();

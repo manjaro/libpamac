@@ -1082,23 +1082,31 @@ namespace Pamac {
 			var snap_iter = HashTableIter<string, SnapPackage> (snap_to_install);
 			SnapPackage snap_pkg;
 			while (snap_iter.next (null, out snap_pkg)) {
+				summary.add_item (snap_pkg, SummaryReason.REQUESTED, null, 0);
+				summary.download_size += snap_pkg.download_size;
 				summary.to_install.add (snap_pkg);
 			}
 			snap_iter = HashTableIter<string, SnapPackage> (snap_to_remove);
 			while (snap_iter.next (null, out snap_pkg)) {
+				summary.add_item (snap_pkg, SummaryReason.REQUESTED, null, snap_pkg.installed_size);
 				summary.to_remove.add (snap_pkg);
 			}
 			var flatpak_iter = HashTableIter<string, FlatpakPackage> (flatpak_to_install);
 			FlatpakPackage flatpak_pkg;
 			while (flatpak_iter.next (null, out flatpak_pkg)) {
+				summary.add_item (flatpak_pkg, SummaryReason.REQUESTED, null, 0);
+				summary.download_size += flatpak_pkg.download_size;
 				summary.to_install.add (flatpak_pkg);
 			}
 			flatpak_iter = HashTableIter<string, FlatpakPackage> (flatpak_to_remove);
 			while (flatpak_iter.next (null, out flatpak_pkg)) {
+				summary.add_item (flatpak_pkg, SummaryReason.REQUESTED, null, flatpak_pkg.installed_size);
 				summary.to_remove.add (flatpak_pkg);
 			}
 			flatpak_iter = HashTableIter<string, FlatpakPackage> (flatpak_to_upgrade);
 			while (flatpak_iter.next (null, out flatpak_pkg)) {
+				summary.add_item (flatpak_pkg, SummaryReason.REQUESTED, null, flatpak_pkg.installed_size);
+				summary.download_size += flatpak_pkg.download_size;
 				summary.to_upgrade.add (flatpak_pkg);
 			}
 		}

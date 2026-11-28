@@ -78,7 +78,7 @@ namespace Pamac {
 		// make name-version-1-any.pkg.tar in the repository dir, returns its path.
 		// It installs /opt/test/<name>.bin of size_kb random KiB,
 		// install_script is the content of its .INSTALL file
-		public string add_package (string name, string version, uint size_kb, string? install_script = null) throws Error {
+		public string add_package (string name, string version, uint size_kb, string? install_script = null, string[] depends = {}) throws Error {
 			string pkgdir = Path.build_filename (build_dir, "%s-%s".printf (name, version));
 			string optdir = Path.build_filename (pkgdir, "opt", "test");
 			DirUtils.create_with_parents (optdir, 0755);
@@ -93,6 +93,9 @@ namespace Pamac {
 			pkginfo.append ("packager = pamac tests\n");
 			pkginfo.append ("size = %s\n".printf (((uint64) size_kb * 1024).to_string ()));
 			pkginfo.append ("arch = any\n");
+			foreach (unowned string depend in depends) {
+				pkginfo.append ("depend = %s\n".printf (depend));
+			}
 			FileUtils.set_contents (Path.build_filename (pkgdir, ".PKGINFO"), pkginfo.str);
 			string pkg_path = Path.build_filename (repo_dir, "%s-%s-1-any.pkg.tar".printf (name, version));
 			// .PKGINFO first, libalpm reads it first

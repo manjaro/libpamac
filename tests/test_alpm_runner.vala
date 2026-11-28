@@ -60,6 +60,43 @@ namespace Pamac {
 		run_async_test ((cb) => set_pkgreason.begin (cb), (res) => set_pkgreason.end (res));
 	}
 
+	// the summary gives the reason and the old size of each package, and the totals
+	void test_transaction_summary () {
+		var alpm_utils = env.create_alpm_utils ();
+		var to_install = new GenericSet<string?> (str_hash, str_equal);
+		to_install.add ("testapp");
+		var to_remove = new GenericSet<string?> (str_hash, str_equal);
+		to_remove.add ("testsmall");
+		var empty = new GenericSet<string?> (str_hash, str_equal);
+		var summary = new TransactionSummary ();
+		GenericArray<string> unresolvables;
+		assert (alpm_utils.trans_check_prepare (new NullSink (), new Cancellable (), false, false, false, 0,
+												to_install, to_remove, empty, empty, empty, empty, empty,
+												ref summary, out unresolvables));
+		assert (summary.to_install.length == 2);
+		assert (summary.to_remove.length == 1);
+		foreach (unowned Package pkg in summary.to_install) {
+			SummaryItem? item = summary.get_item (pkg);
+			assert (item != null);
+			assert (item.old_installed_size == 0);
+			if (pkg.name == "testapp") {
+				assert (item.reason == SummaryReason.REQUESTED);
+				assert (item.related == null);
+			} else {
+				assert (pkg.name == "testother");
+				assert (item.reason == SummaryReason.DEPENDENCY);
+				assert (item.related == "testapp");
+			}
+		}
+		SummaryItem? removed = summary.get_item (summary.to_remove[0]);
+		assert (removed.reason == SummaryReason.REQUESTED);
+		assert (removed.old_installed_size == 4 * 1024);
+		// two packages of 4 KiB installed, one of 4 KiB removed
+		assert (summary.installed_size_delta == 4 * 1024);
+		// not in the cache
+		assert (summary.download_size > 0);
+	}
+
 	// only regular files directly in a cache dir are removed
 	async void clean_cache () throws Error {
 		string in_cache = Path.build_filename (env.cache_dir, "old-1.0-1-any.pkg.tar");
@@ -254,11 +291,13 @@ namespace Pamac {
 		env.add_package ("testsmall", "1.0", 4);
 		env.add_package ("testbig", "1.0", 4);
 		env.add_package ("testother", "1.0", 4);
+		env.add_package ("testapp", "1.0", 4, null, {"testother"});
 		// added to the repository by test_cancel_download
 		env.add_package ("testbig", "2.0", 40960);
 		env.repo_add ({Path.build_filename (env.repo_dir, "testsmall-1.0-1-any.pkg.tar"),
 						Path.build_filename (env.repo_dir, "testbig-1.0-1-any.pkg.tar"),
-						Path.build_filename (env.repo_dir, "testother-1.0-1-any.pkg.tar")});
+						Path.build_filename (env.repo_dir, "testother-1.0-1-any.pkg.tar"),
+						Path.build_filename (env.repo_dir, "testapp-1.0-1-any.pkg.tar")});
 		string script = Path.build_filename (Environment.get_variable ("PAMAC_TEST_SRCDIR") ?? ".", "slow_server.py");
 		string server_url = env.start_slow_server (script);
 		big_package_url = server_url + "/testbig-2.0-1-any.pkg.tar";
@@ -291,6 +330,7 @@ int main (string[] args) {
 	}
 	Test.add_func ("/alpm_runner/refresh_and_install", Pamac.test_refresh_and_install);
 	Test.add_func ("/alpm_runner/set_pkgreason", Pamac.test_set_pkgreason);
+	Test.add_func ("/alpm_runner/transaction_summary", Pamac.test_transaction_summary);
 	Test.add_func ("/alpm_runner/clean_cache", Pamac.test_clean_cache);
 	Test.add_func ("/alpm_runner/clean_build_files", Pamac.test_clean_build_files);
 	Test.add_func ("/alpm_runner/cancel_download", Pamac.test_cancel_download);

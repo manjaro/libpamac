@@ -1488,7 +1488,37 @@ namespace Pamac {
 		internal AURPackageStatic () {}
 	}
 
+	// why a package is in a transaction summary
+	public enum SummaryReason {
+		// explicitly requested, or part of a system upgrade
+		REQUESTED,
+		// new dependency of the related package
+		DEPENDENCY,
+		// replaces the related package
+		REPLACE,
+		// removed because it conflicts with the related package
+		CONFLICT,
+		// removed because it depends on the related package which is removed
+		DEPENDS_ON_REMOVED,
+		// removed because it is no longer required since the related package is removed
+		ORPHAN
+	}
+
+	public class SummaryItem : Object {
+		public Package pkg { get; internal set; }
+		public SummaryReason reason { get; internal set; default = SummaryReason.REQUESTED; }
+		// the package which explains the reason, null for REQUESTED
+		public string? related { get; internal set; }
+		// installed size of the version currently installed, 0 if it is not installed
+		public uint64 old_installed_size { get; internal set; }
+
+		internal SummaryItem (Package pkg, SummaryReason reason, string? related, uint64 old_installed_size) {
+			Object (pkg: pkg, reason: reason, related: related, old_installed_size: old_installed_size);
+		}
+	}
+
 	public class TransactionSummary : Object {
+		HashTable<string, SummaryItem> items = new HashTable<string, SummaryItem> (str_hash, str_equal);
 		public GenericArray<Package> to_install { get; internal set; default = new GenericArray<Package> (); }
 		public GenericArray<Package> to_upgrade { get; internal set; default = new GenericArray<Package> (); }
 		public GenericArray<Package> to_downgrade { get; internal set; default = new GenericArray<Package> (); }
@@ -1498,8 +1528,21 @@ namespace Pamac {
 		public GenericArray<Package> to_build { get; internal set; default = new GenericArray<Package> (); }
 		public GenericArray<string> aur_pkgbases_to_build { internal get; internal set; default = new GenericArray<string> (); }
 		public GenericArray<string> to_load { internal get; internal set; default = new GenericArray<string> (); }
+		// sum of the download sizes of the packages to install, upgrade, downgrade and reinstall
+		public uint64 download_size { get; internal set; }
+		// change of the disk space used by the alpm packages, the packages to build are not counted
+		public int64 installed_size_delta { get; internal set; }
 
 		internal TransactionSummary () {}
+
+		// details about a package of the summary, null if the package is not in the summary
+		public SummaryItem? get_item (Package pkg) {
+			return items.lookup (pkg.id);
+		}
+
+		internal void add_item (Package pkg, SummaryReason reason, string? related, uint64 old_installed_size) {
+			items.replace (pkg.id, new SummaryItem (pkg, reason, related, old_installed_size));
+		}
 	}
 
 	public class Updates : Object {
