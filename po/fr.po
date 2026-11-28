@@ -399,15 +399,15 @@ msgstr "Aucun(e)"
 
 #: src/alpm_package.vala
 msgid "MD5 Sum"
-msgstr ""
+msgstr "Somme MD5"
 
 #: src/alpm_package.vala
 msgid "SHA-256 Sum"
-msgstr ""
+msgstr "Somme SHA-256"
 
 #: src/alpm_package.vala
 msgid "Signature"
-msgstr ""
+msgstr "Signature"
 
 #: src/alpm_utils.vala
 msgid "Failed to initialize alpm library"
@@ -1287,7 +1287,7 @@ msgstr "Délai d’attente expiré"
 
 #: src/flatpak_plugin.vala
 msgid "Flatpak transaction failed"
-msgstr ""
+msgstr "La transaction Flatpak a échoué"
 
 #: src/manager_window.vala
 msgid "No package found"
@@ -1407,72 +1407,72 @@ msgstr "La fenêtre sera fermée à la fin de la transaction"
 
 #: src/pgp_key.vala
 msgid "Fingerprint"
-msgstr ""
+msgstr "Empreinte"
 
 #: src/pgp_key.vala
 msgid "Owner"
-msgstr ""
+msgstr "Propriétaire"
 
 #: src/pgp_key.vala
 msgid "Algorithm"
-msgstr ""
+msgstr "Algorithme"
 
 #: src/pgp_key.vala
 msgid "Creation date"
-msgstr ""
+msgstr "Date de création"
 
 #: src/pgp_key.vala
 msgid "Expiration date"
-msgstr ""
+msgstr "Date d’expiration"
 
 #: src/pgp_key.vala
 msgid "Never"
-msgstr ""
+msgstr "Jamais"
 
 #: src/pgp_key.vala
 msgid "Unknown keyserver"
-msgstr ""
+msgstr "Serveur de clés inconnu"
 
 #: src/pgp_key.vala
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: src/pgp_key.vala
 msgid "Required by"
-msgstr ""
+msgstr "Requis par"
 
 #: src/pgp_key.vala
 #, c-format
 msgid "%s build files (validpgpkeys)"
-msgstr ""
+msgstr "fichiers de construction de %s (validpgpkeys)"
 
 #: src/pgp_key.vala
 msgid "This key has been revoked by its owner"
-msgstr ""
+msgstr "Cette clé a été révoquée par son propriétaire"
 
 #: src/pgp_key.vala
 msgid "This key has expired"
-msgstr ""
+msgstr "Cette clé a expiré"
 
 #: src/pgp_key.vala
 msgid "This key is disabled on the keyserver"
-msgstr ""
+msgstr "Cette clé est désactivée sur le serveur de clés"
 
 #: src/pgp_key.vala
 #, c-format
 msgid "%u keys match %s on the keyserver, only the first one is shown"
-msgstr ""
+msgstr "%u clés correspondent à %s sur le serveur de clés, seule la première est affichée"
 
 #: src/pgp_key.vala
 #, c-format
 msgid "The key found on the keyserver does not match the requested key %s"
-msgstr ""
+msgstr "La clé trouvée sur le serveur de clés ne correspond pas à la clé demandée %s"
 
 #: src/pgp_key.vala
 msgid ""
 "Keyservers do not verify key owners: compare the fingerprint with the one "
 "published by the upstream project before trusting this key"
-msgstr ""
+msgstr "Les serveurs de clés ne vérifient pas les propriétaires des clés : comparez l’empreinte avec celle publiée par le projet en amont avant de faire confiance à cette clé"
 
 #: src/preferences_dialog.vala
 msgid "every 3 hours"
@@ -1588,7 +1588,7 @@ msgstr "La clé PGP %1$s est nécessaire pour vérifier les fichiers source de %
 
 #: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Import the PGP key"
-msgstr ""
+msgstr "Importer la clé PGP"
 
 #: src/transaction-cli.vala src/transaction-gtk.vala
 #, c-format
@@ -1761,11 +1761,11 @@ msgstr "Impossible de construire %s"
 
 #: src/transaction_interface_daemon.vala
 msgid "The transaction may still be running in the background"
-msgstr ""
+msgstr "La transaction est peut-être encore en cours en arrière-plan"
 
 #: src/transaction_interface_daemon.vala
 msgid "Connection to the daemon was lost"
-msgstr ""
+msgstr "La connexion au démon a été perdue"
 
 #: src/tray.vala
 msgid "_Quit"
