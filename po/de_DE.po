@@ -1355,6 +1355,10 @@ msgstr "Letzte Aktualisierung"
 msgid "Transaction successfully finished"
 msgstr "Vorgang erfolgreich abgeschlossen"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1641,6 +1645,13 @@ msgstr "Das Snap-Paket %s wurde ohne Verwendung der Systemisolation erstellt"
 #, c-format
 msgid "Install %s anyway"
 msgstr "Installiere %s trotzdem"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

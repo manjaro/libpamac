@@ -1346,6 +1346,10 @@ msgstr "Laaste verversing "
 msgid "Transaction successfully finished"
 msgstr "Transaksie suksesvol voltooi"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1632,6 +1636,13 @@ msgstr " snap %s is gepubliseer met behulp van klassieke opsluiting"
 #, c-format
 msgid "Install %s anyway"
 msgstr "Installeer %s in elk geval "
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

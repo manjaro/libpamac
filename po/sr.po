@@ -1355,6 +1355,10 @@ msgstr ""
 msgid "Transaction successfully finished"
 msgstr "Трансакција успешно обављена"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1641,6 +1645,13 @@ msgstr "Ovaj snap %s je objavljen korišćenjem klasičnog ograničenja"
 #, c-format
 msgid "Install %s anyway"
 msgstr "Instaliraj %s u svakom slučaju"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

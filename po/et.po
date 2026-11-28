@@ -1351,6 +1351,10 @@ msgstr "Viimatine värskendus"
 msgid "Transaction successfully finished"
 msgstr "Tehingud edukalt lõpetatud"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1637,6 +1641,13 @@ msgstr "Snap %s avaldati klassikalise kitsendusega"
 #, c-format
 msgid "Install %s anyway"
 msgstr "Paigalda %s siiski"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

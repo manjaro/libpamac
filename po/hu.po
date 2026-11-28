@@ -1370,6 +1370,10 @@ msgstr "Utoljára frissítve"
 msgid "Transaction successfully finished"
 msgstr "A tranzakció sikeresen végrehajtódott"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1656,6 +1660,13 @@ msgstr "A(z) %s snap csomagot klasszikus korlátozással tették közzé"
 #, c-format
 msgid "Install %s anyway"
 msgstr "A(z) %s telepítése mindenképp"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

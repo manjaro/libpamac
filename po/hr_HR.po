@@ -366,6 +366,10 @@ msgstr ""
 msgid "Transaction successfully finished"
 msgstr ""
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/transaction.vala
 msgid "Preparing"
 msgstr ""
@@ -503,6 +507,13 @@ msgstr ""
 #: src/transaction-gtk.vala
 #, c-format
 msgid "Install %s anyway"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
 msgstr ""
 
 #: src/transaction-gtk.vala src/tray.vala

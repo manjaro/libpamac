@@ -1369,6 +1369,10 @@ msgstr "Dernière actualisation"
 msgid "Transaction successfully finished"
 msgstr "Transaction terminée avec succès"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr "La fenêtre sera fermée à la fin de la transaction"
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1655,6 +1659,16 @@ msgstr "Le snap %s a été publié en utilisant le confinement classique"
 #, c-format
 msgid "Install %s anyway"
 msgstr "Installer %s quand même"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
+"Il peut donc effectuer des modifications arbitraires du système en dehors du "
+"bac à sable de sécurité dans lequel les snaps sont habituellement confinés, "
+"ce qui peut mettre votre système en danger"
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

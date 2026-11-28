@@ -1368,6 +1368,10 @@ msgstr "Posledné obnovenie"
 msgid "Transaction successfully finished"
 msgstr "Transakcia bola úspešná"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1654,6 +1658,13 @@ msgstr "Snap balík %sbol vydaný s použitím klasického obmedzenia"
 #, c-format
 msgid "Install %s anyway"
 msgstr "Nainštalovať balík %s napriek tomu"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

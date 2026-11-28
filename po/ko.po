@@ -1353,6 +1353,10 @@ msgstr "마지막 새로고침"
 msgid "Transaction successfully finished"
 msgstr "트랜잭션이 성공적으로 완료되었습니다"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1639,6 +1643,13 @@ msgstr "Snap %s은(는) 클래식 제한 모드로 배포되었습니다"
 #, c-format
 msgid "Install %s anyway"
 msgstr "무조건 %s 설치하기"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"

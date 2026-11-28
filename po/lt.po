@@ -1362,6 +1362,10 @@ msgstr "Paskutinis įkėlimas iš naujo"
 msgid "Transaction successfully finished"
 msgstr "Operacija sėkmingai užbaigta"
 
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
+msgstr ""
+
 #: src/pgp_key.vala
 msgid "Fingerprint"
 msgstr ""
@@ -1648,6 +1652,13 @@ msgstr "Snap %s buvo paskelbtas naudojant klasikinį izoliavimą"
 #, c-format
 msgid "Install %s anyway"
 msgstr "Vis tiek įdiegti %s"
+
+#: src/transaction-gtk.vala
+msgid ""
+"It thus may perform arbitrary system changes outside of the security "
+"sandbox that snaps are usually confined to, which may put your system at "
+"risk"
+msgstr ""
 
 #: src/transaction.vala
 msgid "Refreshing mirrors list"
