@@ -1,7 +1,7 @@
 /*
  *  pactree.vala - a simple dependency tree viewer translated in Vala
  *
- *  Copyright (C) 2014-2015  Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2014-2026  Guillaume Benoit <guillaume@manjaro.org>
  *  Copyright (c) 2010-2011 Pacman Development Team <pacman-dev@archlinux.org>
  *
  *  This program is free software; you can redistribute it and/or modify
