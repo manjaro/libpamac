@@ -27,7 +27,15 @@ namespace Pamac {
 		uint16 _updates_nb;
 		string[] _updates_list;
 		public uint16 updates_nb { get { return _updates_nb; } }
+		// "name  installed_version -> version", or "name  version" for a replacer or a flatpak
 		public string[] updates_list { get { return _updates_list; } }
+		public uint16 repos_updates_nb { get; private set; }
+		public uint16 aur_updates_nb { get; private set; }
+		public uint16 flatpak_updates_nb { get; private set; }
+		// size of the updates which are not downloaded yet, the AUR packages are not counted
+		public uint64 download_size { get; private set; }
+		// an update, like a kernel one, will need a restart
+		public bool reboot_required { get; private set; }
 		public uint64 refresh_period { get { return config.refresh_period; } }
 		public bool no_update_hide_icon { get { return config.no_update_hide_icon; } }
 
@@ -55,26 +63,21 @@ namespace Pamac {
 			config.reload ();
 			if (config.refresh_period != 0) {
 				// get updates
-				string[] cmds = {"pamac-checkupdates"};
+				string[] cmds = {"pamac-checkupdates", "--details"};
 				message ("check updates");
 				try {
 					var process = new Subprocess.newv (cmds, SubprocessFlags.STDOUT_PIPE);
 					// read the output while the process runs: waiting for its end
 					// first blocks it as soon as the pipe buffer is full
 					process.communicate_utf8_async.begin (null, null, (obj, res) => {
-						_updates_nb = 0;
-						_updates_list = {};
+						reset_updates ();
 						try {
 							string? output;
 							process.communicate_utf8_async.end (res, out output, null);
 							// status 100 means updates are available
 							if (process.get_if_exited () && process.get_exit_status () == 100 && output != null) {
-								// count lines
 								foreach (unowned string line in output.split ("\n")) {
-									if (line.length > 0) {
-										_updates_nb++;
-										_updates_list += line;
-									}
+									add_update (line);
 								}
 							}
 						} catch (Error e) {
@@ -89,6 +92,50 @@ namespace Pamac {
 				updates_available (_updates_nb);
 			}
 			lock_monitor.changed.connect (on_lock_changed);
+		}
+
+		void reset_updates () {
+			_updates_nb = 0;
+			_updates_list = {};
+			repos_updates_nb = 0;
+			aur_updates_nb = 0;
+			flatpak_updates_nb = 0;
+			download_size = 0;
+			reboot_required = false;
+		}
+
+		void add_update (string line) {
+			string source;
+			string name;
+			string? installed_version;
+			string version;
+			uint64 size;
+			if (!parse_update_details (line, out source, out name, out installed_version, out version, out size)) {
+				return;
+			}
+			_updates_nb++;
+			if (installed_version == null) {
+				_updates_list += "%s  %s".printf (name, version);
+			} else {
+				_updates_list += "%s  %s -> %s".printf (name, installed_version, version);
+			}
+			download_size += size;
+			switch (source) {
+				case "repo":
+					repos_updates_nb++;
+					break;
+				case "aur":
+					aur_updates_nb++;
+					break;
+				case "flatpak":
+					flatpak_updates_nb++;
+					break;
+				default:
+					break;
+			}
+			if (source != "flatpak" && package_needs_reboot (name)) {
+				reboot_required = true;
+			}
 		}
 
 		void on_lock_changed (File src, File? dest, FileMonitorEvent event_type) {

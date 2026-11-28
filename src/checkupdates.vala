@@ -17,7 +17,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-	public int checkupdates () {
+	// with details, print the lines parsed by UpdatesChecker, see parse_update_details in utils.vala
+	void print_update (bool details, string source, string name, string? installed_version, string version, uint64 download_size) {
+		if (details) {
+			stdout.printf ("%s\t%s\t%s\t%s\t%s\n", source, name, installed_version ?? "", version, download_size.to_string ());
+		} else if (installed_version != null) {
+			stdout.printf ("%s  %s -> %s\n", name, installed_version, version);
+		} else {
+			stdout.printf ("%s  %s\n", name, version);
+		}
+	}
+
+	public int checkupdates (bool details) {
 		var config = new Pamac.Config ("/etc/pamac.conf");
 		config.enable_appstream = false;
 		config.enable_snap = false;
@@ -48,29 +59,24 @@
 				loop.run ();
 			}
 			foreach (unowned Pamac.AlpmPackage pkg in updates.repos_updates) {
-				if (pkg.installed_version != null) {
-					stdout.printf ("%s  %s -> %s\n", pkg.name, pkg.installed_version, pkg.version);
-				} else {
-					// it's a replacer
-					stdout.printf ("%s  %s\n", pkg.name, pkg.version);
-				}
+				// a replacer has no installed version
+				print_update (details, "repo", pkg.name, pkg.installed_version, pkg.version, pkg.download_size);
 			}
 			foreach (unowned Pamac.AURPackage pkg in updates.aur_updates) {
-				stdout.printf ("%s  %s -> %s\n", pkg.name, pkg.installed_version, pkg.version);
+				print_update (details, "aur", pkg.name, pkg.installed_version, pkg.version, 0);
 			}
 			foreach (unowned Pamac.FlatpakPackage pkg in updates.flatpak_updates) {
 				unowned string? app_name = pkg.app_name;
-				if (app_name == null) {
-					stdout.printf ("%s  %s\n", pkg.name, pkg.version);
-				} else {
-					stdout.printf ("%s  %s\n", app_name, pkg.version);
-				}
+				// the installed version is not printed for flatpaks
+				print_update (details, "flatpak", app_name ?? pkg.name, null, pkg.version, pkg.download_size);
 			}
 			// special status when updates are available
 			return 100;
 		}
 	}
 
-	public int main () {
-		return checkupdates ();
+	public int main (string[] args) {
+		// --details: machine readable output for UpdatesChecker
+		bool details = args.length > 1 && args[1] == "--details";
+		return checkupdates (details);
 	}

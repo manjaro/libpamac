@@ -32,6 +32,10 @@ msgstr ""
 msgid "Updates Available"
 msgstr "Përditësime të disponueshme"
 
+#: src/tray.vala
+msgid "A restart will be required"
+msgstr ""
+
 #: data/gnome-shell/pamac-updates@manjaro.org/extension.js
 #: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
 msgid "Details"

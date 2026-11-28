@@ -98,4 +98,41 @@ namespace Pamac {
 		}
 		return repos;
 	}
+
+	// the package needs a restart to be used
+	internal bool package_needs_reboot (string name) {
+		// kernels and their modules or firmwares: "linux", "linux-lts", "linux612-nvidia", "linux-firmware"…
+		if (/^linux[0-9]*(?:-.+)?$/.match (name)) {
+			// headers and docs are not loaded
+			return !name.has_suffix ("-headers") && !name.has_suffix ("-docs");
+		}
+		const string[] PREFIXES = {"nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
+		foreach (unowned string prefix in PREFIXES) {
+			if (name.has_prefix (prefix)) {
+				return true;
+			}
+		}
+		return "mesa" in name || "wayland" in name || name == "cryptsetup" || name.has_suffix ("-ucode");
+	}
+
+	// parse a line printed by pamac-checkupdates --details:
+	// source ("repo", "aur" or "flatpak"), name, installed version (empty for a replacer),
+	// version and download size separated by tabs
+	internal bool parse_update_details (string line, out string source, out string name, out string? installed_version,
+										out string version, out uint64 download_size) {
+		source = "";
+		name = "";
+		installed_version = null;
+		version = "";
+		download_size = 0;
+		string[] fields = line.split ("\t");
+		if (fields.length != 5 || fields[1] == "") {
+			return false;
+		}
+		source = fields[0];
+		name = fields[1];
+		installed_version = fields[2] == "" ? null : fields[2];
+		version = fields[3];
+		return uint64.try_parse (fields[4], out download_size);
+	}
 }

@@ -57,6 +57,10 @@ msgstr "Twój system jest w pełni zaktualizowany"
 msgid "Updates Available"
 msgstr "Aktualizacje są dostępne"
 
+#: src/tray.vala
+msgid "A restart will be required"
+msgstr ""
+
 #: data/gnome-shell/pamac-updates@manjaro.org/extension.js
 #: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
 msgid "Details"

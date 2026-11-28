@@ -1634,7 +1634,7 @@ namespace Pamac {
 				unowned Alpm.Package trans_pkg = pkgs_to_add.data;
 				unowned Alpm.DB? db = trans_pkg.db;
 				unowned string trans_pkg_name = trans_pkg.name;
-				if (pkg_needs_reboot (trans_pkg_name)) {
+				if (package_needs_reboot (trans_pkg_name)) {
 					summary.requires_reboot = true;
 				}
 				if (db != null && db.name == "pamac_aur") {
@@ -1844,25 +1844,10 @@ namespace Pamac {
 			}
 		}
 
-		internal static bool pkg_needs_reboot (string name) {
-			// kernels and their modules or firmwares: "linux", "linux-lts", "linux612-nvidia", "linux-firmware"…
-			if (/^linux[0-9]*(?:-.+)?$/.match (name)) {
-				// headers and docs are not loaded
-				return !name.has_suffix ("-headers") && !name.has_suffix ("-docs");
-			}
-			const string[] PREFIXES = {"nvidia-", "lib32-nvidia-", "systemd", "xf86-", "xorg-"};
-			foreach (unowned string prefix in PREFIXES) {
-				if (name.has_prefix (prefix)) {
-					return true;
-				}
-			}
-			return "mesa" in name || "wayland" in name || name == "cryptsetup" || name.has_suffix ("-ucode");
-		}
-
 		bool need_reboot (Alpm.Handle? alpm_handle) {
 			unowned Alpm.List<unowned Alpm.Package> to_add = alpm_handle.trans_to_add ();
 			while (to_add != null) {
-				if (pkg_needs_reboot (to_add.data.name)) {
+				if (package_needs_reboot (to_add.data.name)) {
 					return true;
 				}
 				to_add.next ();

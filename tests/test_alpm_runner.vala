@@ -103,14 +103,6 @@ namespace Pamac {
 		assert (!summary.requires_reboot);
 	}
 
-	void test_package_needs_reboot () {
-		assert (AlpmJob.pkg_needs_reboot ("linux"));
-		assert (AlpmJob.pkg_needs_reboot ("linux612-nvidia"));
-		assert (AlpmJob.pkg_needs_reboot ("intel-ucode"));
-		assert (!AlpmJob.pkg_needs_reboot ("linux-headers"));
-		assert (!AlpmJob.pkg_needs_reboot ("testapp"));
-	}
-
 	// only regular files directly in a cache dir are removed
 	async void clean_cache () throws Error {
 		string in_cache = Path.build_filename (env.cache_dir, "old-1.0-1-any.pkg.tar");
@@ -345,7 +337,6 @@ int main (string[] args) {
 	Test.add_func ("/alpm_runner/refresh_and_install", Pamac.test_refresh_and_install);
 	Test.add_func ("/alpm_runner/set_pkgreason", Pamac.test_set_pkgreason);
 	Test.add_func ("/alpm_runner/transaction_summary", Pamac.test_transaction_summary);
-	Test.add_func ("/alpm_runner/package_needs_reboot", Pamac.test_package_needs_reboot);
 	Test.add_func ("/alpm_runner/clean_cache", Pamac.test_clean_cache);
 	Test.add_func ("/alpm_runner/clean_build_files", Pamac.test_clean_build_files);
 	Test.add_func ("/alpm_runner/cancel_download", Pamac.test_cancel_download);

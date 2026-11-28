@@ -556,6 +556,10 @@ msgstr ""
 msgid "Updates Available"
 msgstr ""
 
+#: src/tray.vala
+msgid "A restart will be required"
+msgstr ""
+
 #: src/tray.vala src/manager_window.vala src/cli.vala
 msgid "Your system is up-to-date"
 msgstr ""

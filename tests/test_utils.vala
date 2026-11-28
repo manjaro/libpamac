@@ -129,6 +129,29 @@ namespace Pamac {
 		assert (string.joinv (",", request.to_remove) == "b");
 	}
 
+	void test_package_needs_reboot () {
+		assert (package_needs_reboot ("linux"));
+		assert (package_needs_reboot ("linux612-nvidia"));
+		assert (package_needs_reboot ("intel-ucode"));
+		assert (!package_needs_reboot ("linux-headers"));
+		assert (!package_needs_reboot ("firefox"));
+	}
+
+	void test_update_details () {
+		string source;
+		string name;
+		string? installed_version;
+		string version;
+		uint64 download_size;
+		assert (parse_update_details ("repo\tlinux\t6.12-1\t6.12-2\t123456789012", out source, out name, out installed_version, out version, out download_size));
+		assert (source == "repo" && name == "linux" && installed_version == "6.12-1" && version == "6.12-2");
+		assert (download_size == 123456789012);
+		// a replacer has no installed version
+		assert (parse_update_details ("repo\tnewpkg\t\t1.0-1\t0", out source, out name, out installed_version, out version, out download_size));
+		assert (installed_version == null);
+		assert (!parse_update_details ("linux  6.12-1 -> 6.12-2", out source, out name, out installed_version, out version, out download_size));
+	}
+
 	void test_parse_official_repos () {
 		var defaults = parse_official_repos (null);
 		assert ("core" in defaults);
@@ -161,5 +184,7 @@ int main (string[] args) {
 	Test.add_func ("/transaction_request/invalid_values", Pamac.test_request_invalid_values);
 	Test.add_func ("/transaction_request/set_to_strv", Pamac.test_set_to_strv);
 	Test.add_func ("/utils/parse_official_repos", Pamac.test_parse_official_repos);
+	Test.add_func ("/utils/package_needs_reboot", Pamac.test_package_needs_reboot);
+	Test.add_func ("/utils/update_details", Pamac.test_update_details);
 	return Test.run ();
 }

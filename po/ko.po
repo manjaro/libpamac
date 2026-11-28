@@ -47,6 +47,10 @@ msgstr "사용자의 시스템이 최신 상태입니다"
 msgid "Updates Available"
 msgstr "사용 가능한 업데이트"
 
+#: src/tray.vala
+msgid "A restart will be required"
+msgstr ""
+
 #: data/gnome-shell/pamac-updates@manjaro.org/extension.js
 #: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
 msgid "Details"
