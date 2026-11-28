@@ -100,7 +100,7 @@ namespace Pamac {
 	}
 
 	// the package needs a restart to be used
-	internal bool package_needs_reboot (string name) {
+	public bool package_needs_reboot (string name) {
 		// kernels and their modules or firmwares: "linux", "linux-lts", "linux612-nvidia", "linux-firmware"…
 		if (/^linux[0-9]*(?:-.+)?$/.match (name)) {
 			// headers and docs are not loaded
