@@ -42,7 +42,7 @@ msgstr "Vaš sistem je posodobljen"
 msgid "Updates Available"
 msgstr "Na voljo so posodobitve"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr "Omogoči posodobitev na starejšo različico"
 msgid "Ignored upgrades"
 msgstr "Prezrte nadgradnje"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Iz tretje roke"
 
@@ -629,7 +629,7 @@ msgstr "Zagon po-prenosnih spojev (hooks)"
 msgid "Error while running hooks"
 msgstr "Napaka pri zaganjanju spojev (hooks)"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -641,7 +641,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -787,6 +787,12 @@ msgstr "izpiši seznam paketov, ki so bili nameščeni kot odvisnosti, a niso ve
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "seznam paketov, ki niso bili najdeni v repozitorijih"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -966,6 +972,12 @@ msgstr "ne išči posodobitev v AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "izpiši le eno vrstico za posamično posodobitev"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

@@ -47,7 +47,7 @@ msgstr "사용자의 시스템이 최신 상태입니다"
 msgid "Updates Available"
 msgstr "사용 가능한 업데이트"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -304,7 +304,7 @@ msgstr "다운그레이드 사용 가능"
 msgid "Ignored upgrades"
 msgstr "무시된 업그레이드"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "서드 파티"
 
@@ -634,7 +634,7 @@ msgstr "후속 트랜잭션 후크 실행하는 중"
 msgid "Error while running hooks"
 msgstr "후크 실행 중 오류 발생"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -646,7 +646,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -786,6 +786,12 @@ msgstr "종속성으로 설치되었지만 설치된 패키지에 더 이상 필
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "저장소에서 찾을 수 없는 패키지를 나열합니다"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -965,6 +971,12 @@ msgstr "AUR에서 업데이트를 확인하지 않습니다"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "업데이트당 한 줄만 인쇄하기"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

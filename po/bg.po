@@ -40,7 +40,7 @@ msgstr "Вашата система е актуална"
 msgid "Updates Available"
 msgstr "Налични са обновявания"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -297,7 +297,7 @@ msgstr "Позволи към по-ниска версия"
 msgid "Ignored upgrades"
 msgstr "Пренебрегнати надграждания"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Трета страна"
 
@@ -627,7 +627,7 @@ msgstr "Изпълнение на post-transaction hooks"
 msgid "Error while running hooks"
 msgstr "Грешка при изпълнение на куки"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -639,7 +639,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -781,6 +781,12 @@ msgstr "показване на пакетите, които са инстали
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "списък на пакети, които не са намерени в хранилищата"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -960,6 +966,12 @@ msgstr "да не се проверява за обновявания в AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "отпечатване по един ред на обновяване"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

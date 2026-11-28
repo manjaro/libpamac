@@ -35,7 +35,7 @@ msgstr ""
 msgid "Updates Available"
 msgstr ""
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr ""
 msgid "Ignored upgrades"
 msgstr ""
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr ""
 
@@ -622,7 +622,7 @@ msgstr ""
 msgid "Error while running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -775,6 +775,12 @@ msgstr ""
 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
 msgstr ""
 
 #: src/cli.vala
@@ -954,6 +960,12 @@ msgstr ""
 
 #: src/cli.vala
 msgid "only print one line per update"
+msgstr ""
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
 msgstr ""
 
 #: src/cli.vala

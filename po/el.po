@@ -53,7 +53,7 @@ msgstr "Το σύστημα σας είναι ενημερωμένο"
 msgid "Updates Available"
 msgstr "Διαθέσιμες ενημερώσεις"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -310,7 +310,7 @@ msgstr "Να επιτρέπεται η υποβάθμιση"
 msgid "Ignored upgrades"
 msgstr "Αγνόηση αναβάθμισης"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Άλλων"
 
@@ -640,7 +640,7 @@ msgstr "Εκτελούνται hooks μετά τη διεργασία"
 msgid "Error while running hooks"
 msgstr "Σφάλμα κατά την εκτέλεση hooks"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -652,7 +652,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -794,6 +794,12 @@ msgstr "εμφάνιση των εγκατεστημένων πακέτων ως
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "εμφάνιση πακέτων που δεν βρέθηκαν στα αποθετήρια"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -973,6 +979,12 @@ msgstr "να μην γίνεται έλεγχος για ενημερώσεις 
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "εμφάνιση μόνο μίας γραμμής ανά ενημέρωση"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

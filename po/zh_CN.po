@@ -55,7 +55,7 @@ msgstr "系统为最新状态"
 msgid "Updates Available"
 msgstr "更新可用"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -312,7 +312,7 @@ msgstr "启用降级"
 msgid "Ignored upgrades"
 msgstr "忽略更新"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "第三方"
 
@@ -642,7 +642,7 @@ msgstr "正在运行后处理挂钩"
 msgid "Error while running hooks"
 msgstr "运行钩子时出错"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -654,7 +654,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -794,6 +794,12 @@ msgstr "列出已安装的但不再被任何已安装的包依赖的软件包"
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "列出在仓库中未找到的包"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -973,6 +979,12 @@ msgstr "不在 AUR 中检查更新"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "每行仅打印一条更新"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

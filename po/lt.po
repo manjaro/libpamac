@@ -35,7 +35,7 @@ msgstr "Jūsų sistemoje įdiegti visi paskiausi atnaujinimai"
 msgid "Updates Available"
 msgstr "Yra prieinami atnaujinimai"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr "Įjungti sendinimą"
 msgid "Ignored upgrades"
 msgstr "Nepaisomi naujinimai"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr ""
 
@@ -622,7 +622,7 @@ msgstr "Vykdomos po-operacijos gaudyklės"
 msgid "Error while running hooks"
 msgstr "Klaida vykdant gaudykles"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -780,6 +780,12 @@ msgstr "išvardyti paketus, kurie buvo įdiegti kaip priklausomybės, tačiau da
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "išvardyti paketus, kurių nebuvo rasta saugyklose"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -959,6 +965,12 @@ msgstr "netikrinti, ar yra atnaujinimų AUR saugykloje"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "kiekvienam atnaujinimui išvesti po vieną eilutę"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

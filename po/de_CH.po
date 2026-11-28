@@ -33,7 +33,7 @@ msgstr "Ihr System ist aktuell"
 msgid "Updates Available"
 msgstr "Aktualisierungen verfügbar"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -290,7 +290,7 @@ msgstr "Die Installation vorheriger Paketversionen aktivieren"
 msgid "Ignored upgrades"
 msgstr "Ignorierte Upgrades"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Drittanbieter"
 
@@ -620,7 +620,7 @@ msgstr "Starte Post-Transaction-Hooks"
 msgid "Error while running hooks"
 msgstr "Ein Fehler trat auf beim Ausführen von Hooks"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -632,7 +632,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -774,6 +774,12 @@ msgstr "Pakete auflisten, die als Abhängigkeiten installiert wurden, aber nicht
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "Pakete auflisten, die nicht in den Softwarequellen gefunden wurden"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -953,6 +959,12 @@ msgstr "Nicht im AUR nach Aktualisierungen suchen"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "nur eine Zeile pro Aktualisierung anzeigen"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

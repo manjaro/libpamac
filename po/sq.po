@@ -35,7 +35,7 @@ msgstr ""
 msgid "Updates Available"
 msgstr "Përditësime të disponueshme"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr "Mundëso uljen në gradë"
 msgid "Ignored upgrades"
 msgstr "Përditësimet e injoruara"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Pala e tretë"
 
@@ -622,7 +622,7 @@ msgstr "Duke lëshuar grepat e pas-transaksionit"
 msgid "Error while running hooks"
 msgstr "Gabim gjatë ekzekutimit të grepave"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -776,6 +776,12 @@ msgstr "listo paketat që janë instaluar si varësi por nuk kërkohen më nga n
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "listo paketat që nuk u gjetën në repozitorë"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -955,6 +961,12 @@ msgstr "mos kontrolloni për përditësime në AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "vetëm printo një rresht për përditësim"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

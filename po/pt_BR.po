@@ -69,7 +69,7 @@ msgstr "O sistema está atualizado"
 msgid "Updates Available"
 msgstr "Atualizações disponíveis"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -326,7 +326,7 @@ msgstr "Habilitar downgrade"
 msgid "Ignored upgrades"
 msgstr "Atualizações ignoradas"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Terceiros"
 
@@ -656,7 +656,7 @@ msgstr "Rodando ganchos pós-transacionais"
 msgid "Error while running hooks"
 msgstr "Erro na execução do(s) hook(s)"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -668,7 +668,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -812,6 +812,12 @@ msgstr "listar pacotes que foram instalados como dependências mas não são mai
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "listar pacotes que não encontrados nos repositórios"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -991,6 +997,12 @@ msgstr "não procurar atualizações no AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "somente imprimir uma linha por atualização"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

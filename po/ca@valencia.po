@@ -33,7 +33,7 @@ msgstr "El sistema està actualitzat."
 msgid "Updates Available"
 msgstr "Actualitzacions disponibles"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -290,7 +290,7 @@ msgstr "Habilita la desactualització"
 msgid "Ignored upgrades"
 msgstr "Actualitzacions ignorades"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "De tercers"
 
@@ -620,7 +620,7 @@ msgstr "Executant els ganxos de post-transacció"
 msgid "Error while running hooks"
 msgstr "Error en executar els ganxos"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -632,7 +632,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -774,6 +774,12 @@ msgstr "llista els paquets instal·lats com a dependència però que ja no són 
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "llista els paquets que no s'han trobat als repositoris"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -953,6 +959,12 @@ msgstr "no comproves si hi ha actualitzacions a l'AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "imprimix només una línia per cada actualització"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

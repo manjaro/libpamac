@@ -49,7 +49,7 @@ msgstr "Je systeem is up-to-date"
 msgid "Updates Available"
 msgstr "Updates beschikbaar"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -306,7 +306,7 @@ msgstr "Afwaarderen inschakelen"
 msgid "Ignored upgrades"
 msgstr "Genegeerde upgrades"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Derde partijen"
 
@@ -636,7 +636,7 @@ msgstr "Bezig met uitvoeren van afhandelingen van overdracht"
 msgid "Error while running hooks"
 msgstr "Fout tijdens uitvoeren van hooks"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -648,7 +648,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -790,6 +790,12 @@ msgstr "pakketten opsommen die geïnstalleerd zijn als afhankelijkheden maar nie
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "pakketten opsommen die niet zijn aangetroffen in de pakketbronnen"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -969,6 +975,12 @@ msgstr "Voer geen update controle uit voor pakketten uit de AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "slechts één regel per update tonen"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

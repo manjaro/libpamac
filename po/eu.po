@@ -42,7 +42,7 @@ msgstr "Zure sistema eguneratuta dago"
 msgid "Updates Available"
 msgstr "Eguneraketak eskuragarri"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr "Gaitu bertsio-zaharketa"
 msgid "Ignored upgrades"
 msgstr "Ezikusitako eguneraketak"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Hirugarrenekoak"
 
@@ -629,7 +629,7 @@ msgstr "Transakzio osteko kakoak exekutatzen"
 msgid "Error while running hooks"
 msgstr "Errorea amuak exekutatzerakoan"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -641,7 +641,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -783,6 +783,12 @@ msgstr "zerrendatu menpekotasun bezala instalatu ziren baina jada beharrezkoak e
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "zerrendatu biltegietan aurkitu ez diren paketeak"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -962,6 +968,12 @@ msgstr "ez bilatu eguneraketarik AURen"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "eguneraketa bakoitzeko bakarrik lerro bat inprimatu"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

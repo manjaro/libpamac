@@ -33,7 +33,7 @@ msgstr ""
 msgid "Updates Available"
 msgstr "अपडेटहरू उपलब्ध छन्"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -290,7 +290,7 @@ msgstr "डाउनग्रेड सक्षम गर्नुहोस्"
 msgid "Ignored upgrades"
 msgstr "बेवास्ता गरिएका अपग्रेडहरू"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "तेस्रो पक्ष"
 
@@ -620,7 +620,7 @@ msgstr "पोस्ट-लेनदेन हुकहरू चलिरहे
 msgid "Error while running hooks"
 msgstr "हुक चलाउँदा त्रुटि"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -632,7 +632,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -774,6 +774,12 @@ msgstr "सूची प्याकेजहरू जुन निर्भर
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "सूची प्याकेजहरू जुन भण्डारहरूमा फेला परेनन्"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -953,6 +959,12 @@ msgstr "AUR मा अद्यावधिकहरू जाँच नगर�
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "प्रति अपडेट मात्र एक लाइन छाप्नुहोस्"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

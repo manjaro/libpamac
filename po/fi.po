@@ -52,7 +52,7 @@ msgstr "Järjestelmäsi on ajan tasalla"
 msgid "Updates Available"
 msgstr "Päivityksiä saatavilla"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -309,7 +309,7 @@ msgstr "Ota vanhentaminen käyttöön"
 msgid "Ignored upgrades"
 msgstr "Ohitetut päivitykset"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Kolmas osapuoli"
 
@@ -639,7 +639,7 @@ msgstr "Suoritetaan asennuksen jälkeiset työt"
 msgid "Error while running hooks"
 msgstr "Virhe suorittaessa töitä"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -651,7 +651,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -793,6 +793,12 @@ msgstr "luettele paketit jotka olivat asennetut riippuvaisuuksina mutta jotka ei
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "luettele paketit joita ei löytynyt ohjelmavarastoista"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -972,6 +978,12 @@ msgstr "älä tarkista AUR päivityksiä"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "tulosta vain yksi rivi päivitystä kohden"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

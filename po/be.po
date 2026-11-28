@@ -35,7 +35,7 @@ msgstr ""
 msgid "Updates Available"
 msgstr "Ёсць абнаўленні"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr "Уключыць вяртанне да папярэдніх версій
 msgid "Ignored upgrades"
 msgstr "Абнаўленні, якія ігнаруюцца"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Іншыя крыніцы"
 
@@ -622,7 +622,7 @@ msgstr "Запуск постапрацоўнікаў"
 msgid "Error while running hooks"
 msgstr "Падчас запуску апрацоўнікаў адбылася памылка"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -780,6 +780,12 @@ msgstr "спіс пакункаў, што ўсталяваныя як залеж
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "спіс пакункаў, не знойдзеных у рэпазіторыях"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -959,6 +965,12 @@ msgstr "не правяраць наяўнасць абнаўленняў у AUR
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "выводзіць толькі адзін радок для кожнага абнаўлення"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

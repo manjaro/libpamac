@@ -49,7 +49,7 @@ msgstr "Votre système est à jour"
 msgid "Updates Available"
 msgstr "Mises à jour disponibles"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr "Un redémarrage sera nécessaire"
 
@@ -306,7 +306,7 @@ msgstr "Autoriser le retour à une version antérieure"
 msgid "Ignored upgrades"
 msgstr "Mises à niveau ignorées"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Tierce partie"
 
@@ -636,7 +636,7 @@ msgstr "Exécution des crochets de post-transaction"
 msgid "Error while running hooks"
 msgstr "Erreur lors de l’exécution des crochets"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr "Téléchargement des paquets"
 
@@ -648,7 +648,7 @@ msgstr "Traitement des paquets"
 msgid "Running hooks"
 msgstr "Exécution des crochets"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr "Construction des paquets"
 
@@ -792,6 +792,12 @@ msgstr "liste les paquets installés en tant que dépendances mais qui ne sont p
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "liste les paquets installés qui ne sont pas disponibles dans les dépôts"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr "liste les paquets installés depuis des dépôts non officiels, voir OfficialRepos dans pamac.conf"
 
 #: src/cli.vala
 msgid ""
@@ -971,6 +977,12 @@ msgstr "ne pas vérifier les mises à jour dans AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "afficher une ligne par mise à jour"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr "afficher une ligne par mise à jour avec des champs séparés par des tabulations : source, nom, version installée, version et taille de téléchargement"
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

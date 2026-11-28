@@ -44,7 +44,7 @@ msgstr ""
 msgid "Updates Available"
 msgstr "به‌روز‌رسانی موجود است"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -301,7 +301,7 @@ msgstr "فعال کردن به عقب برگرداندن"
 msgid "Ignored upgrades"
 msgstr ""
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr ""
 
@@ -631,7 +631,7 @@ msgstr ""
 msgid "Error while running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -643,7 +643,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -785,6 +785,12 @@ msgstr "لیست کردن بسته‌هایی که به عنوان یک وابس
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "لیست کردن بسته‌هایی که در مخازن پیدا نشدند"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -964,6 +970,12 @@ msgstr "به‌روز‌رسانی‌ها از AUR بررسی نشوند"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "به ازای هر به‌روزرسانی فقط یک سطر چاپ شود"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

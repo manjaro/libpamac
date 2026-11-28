@@ -54,7 +54,7 @@ msgstr ""
 msgid "Updates Available"
 msgstr "Pembaruan Tersedia"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -311,7 +311,7 @@ msgstr "Bolehkan penurunan"
 msgid "Ignored upgrades"
 msgstr "Penurunan yang diabaikan"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Pihak Ketiga"
 
@@ -641,7 +641,7 @@ msgstr "Menjalankan kaitan paska-transaksi"
 msgid "Error while running hooks"
 msgstr "Terdapat kesalahan saat menjalankan kaitan"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -653,7 +653,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -793,6 +793,12 @@ msgstr "tampilkan daftar paket yang terpasang sebagai dependensi tetapi tidak la
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "tampilkan daftar paket yang tidak ditemukan di dalam repositori"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -972,6 +978,12 @@ msgstr "jangan periksa pembaruan di AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "hanya tampilkan satu baris per pembaruan"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

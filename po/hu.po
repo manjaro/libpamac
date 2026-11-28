@@ -57,7 +57,7 @@ msgstr "A rendszer naprakész"
 msgid "Updates Available"
 msgstr "Frissítések érhetők el"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -314,7 +314,7 @@ msgstr "Visszafejlesztés engedélyezése"
 msgid "Ignored upgrades"
 msgstr "Mellőzött frissítések"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Harmadik féltől származó"
 
@@ -644,7 +644,7 @@ msgstr "Tranzakció utáni horgok futtatása"
 msgid "Error while running hooks"
 msgstr "Hiba a horgok futtatásakor"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -656,7 +656,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -798,6 +798,12 @@ msgstr "listázza azokat a csomagokat, amelyek függőségként lettek telepítv
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "a tárolókban nem található csomagok listázása"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -977,6 +983,12 @@ msgstr "ne ellenőrizzen frissítéseket az AUR-ban"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "frissítésenként csak egy sort írjon ki"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

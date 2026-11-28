@@ -41,7 +41,7 @@ msgstr "Váš systém je aktuálny"
 msgid "Updates Available"
 msgstr "Sú dostupné aktualizácie"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -298,7 +298,7 @@ msgstr "Povoliť návrat k starším verziám balíkov"
 msgid "Ignored upgrades"
 msgstr "Ignorované aktualizácie"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Tretie strany"
 
@@ -628,7 +628,7 @@ msgstr "Spúšťajú sa potransakčné háčiky"
 msgid "Error while running hooks"
 msgstr "Chyba počas spúšťania háčikov"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -640,7 +640,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -786,6 +786,12 @@ msgstr "vypísať balíky, ktoré boli nainštalované ako závislosť ale už n
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "vypísať balíky, ktoré sa nenašli v repozitároch"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -965,6 +971,12 @@ msgstr "nekontrolovať aktualizácie v AUR"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "pre každú aktualizáciu vypísať len jeden riadok"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"

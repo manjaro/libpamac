@@ -38,7 +38,7 @@ msgstr ""
 msgid "Updates Available"
 msgstr "Uuendused saadaval"
 
-#: src/tray.vala
+#: src/cli.vala src/transaction-cli.vala src/tray.vala
 msgid "A restart will be required"
 msgstr ""
 
@@ -295,7 +295,7 @@ msgstr "Luba vanemad versioonid"
 msgid "Ignored upgrades"
 msgstr "Ignoreeritud täiendused"
 
-#: resources/preferences_dialog.ui
+#: resources/preferences_dialog.ui src/cli.vala src/transaction-cli.vala
 msgid "Third Party"
 msgstr "Kolmas osapool"
 
@@ -625,7 +625,7 @@ msgstr "Käivitan järel-tehingu kinnitusi"
 msgid "Error while running hooks"
 msgstr "Kinnituste käivitamisel esines viga"
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Downloading packages"
 msgstr ""
 
@@ -637,7 +637,7 @@ msgstr ""
 msgid "Running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Building packages"
 msgstr ""
 
@@ -779,6 +779,12 @@ msgstr "loetle paketid, mis paigaldati sõltuvustena aga pole enam vajalikud mis
 #: src/cli.vala
 msgid "list packages that were not found in the repositories"
 msgstr "loetle paketid, mida ei leidu hoidlates"
+
+#: src/cli.vala
+msgid ""
+"list installed packages from repositories which are not official, see "
+"OfficialRepos in pamac.conf"
+msgstr ""
 
 #: src/cli.vala
 msgid ""
@@ -958,6 +964,12 @@ msgstr "ära kontrolli AURist uuendusi"
 #: src/cli.vala
 msgid "only print one line per update"
 msgstr "prindi vaid üks rida uuenduse kohta"
+
+#: src/cli.vala
+msgid ""
+"print one tab separated line per update: source, name, installed version, "
+"version and download size"
+msgstr ""
 
 #: src/cli.vala
 msgid "also check development packages updates (use with --aur)"
