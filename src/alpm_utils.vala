@@ -1634,6 +1634,9 @@ namespace Pamac {
 				unowned Alpm.Package trans_pkg = pkgs_to_add.data;
 				unowned Alpm.DB? db = trans_pkg.db;
 				unowned string trans_pkg_name = trans_pkg.name;
+				if (pkg_needs_reboot (trans_pkg_name)) {
+					summary.requires_reboot = true;
+				}
 				if (db != null && db.name == "pamac_aur") {
 					// it is a aur pkg to build
 					var pkg = initialise_pkg (alpm_handle, trans_pkg);
@@ -1841,7 +1844,7 @@ namespace Pamac {
 			}
 		}
 
-		static bool pkg_needs_reboot (string name) {
+		internal static bool pkg_needs_reboot (string name) {
 			// kernels and their modules or firmwares: "linux", "linux-lts", "linux612-nvidia", "linux-firmware"…
 			if (/^linux[0-9]*(?:-.+)?$/.match (name)) {
 				// headers and docs are not loaded

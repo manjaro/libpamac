@@ -1532,6 +1532,8 @@ namespace Pamac {
 		public uint64 download_size { get; internal set; }
 		// change of the disk space used by the alpm packages, the packages to build are not counted
 		public int64 installed_size_delta { get; internal set; }
+		// a package which needs a restart to be used, like a kernel, will be installed or upgraded
+		public bool requires_reboot { get; internal set; }
 
 		internal TransactionSummary () {}
 

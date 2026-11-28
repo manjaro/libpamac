@@ -73,6 +73,11 @@ namespace Pamac {
 		public bool install_as_explicit { get; set; }
 		public bool no_refresh { get; set; }
 
+		// a restart is required to use the packages installed by the last successful run
+		public bool reboot_required { get; private set; }
+		// the summary of the committed transaction requires a reboot
+		bool pending_reboot;
+
 		public signal void emit_action (string action);
 		public signal void emit_action_progress (string action, string status, double progress);
 		public signal void emit_download_progress (string action, string status, double progress);
@@ -956,6 +961,8 @@ namespace Pamac {
 				return false;
 			}
 			bool success = true;
+			reboot_required = false;
+			pending_reboot = false;
 			if (sysupgrading ||
 				to_install.length > 0 ||
 				to_remove.length > 0 ||
@@ -988,6 +995,7 @@ namespace Pamac {
 					database.refresh ();
 				}
 				if (success) {
+					reboot_required = !dry_run && pending_reboot;
 					emit_action (dgettext (null, "Transaction successfully finished") + ".");
 				}
 				// do not keep anything for the next transaction, e.g. after a dry run
@@ -1514,6 +1522,9 @@ namespace Pamac {
 						request.ignorepkgs = set_to_strv (ignorepkgs);
 						request.overwrite_files = set_to_strv (overwrite_files);
 						success = yield transaction_interface.trans_run (request);
+						if (success && summary.requires_reboot) {
+							pending_reboot = true;
+						}
 					} catch (Error e) {
 						report_daemon_error ("trans_run", e);
 						success = false;
@@ -1537,6 +1548,10 @@ namespace Pamac {
 					// clone build files and check signatures
 					if (!(yield prepare_build_files (summary.aur_pkgbases_to_build))) {
 						return false;
+					}
+					// the built packages are installed later if the build succeeds
+					if (summary.requires_reboot) {
+						pending_reboot = true;
 					}
 					// get_authorization here before building
 					return yield get_authorization_async ();
