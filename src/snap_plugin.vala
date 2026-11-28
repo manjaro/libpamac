@@ -347,16 +347,18 @@ namespace Pamac {
 			}
 		}
 
-		public void search_snaps (string search_string, ref GenericArray<SnapPackage> pkgs) {
+		public void search_snaps (string search_string, ref GenericArray<SnapPackage> pkgs, Cancellable? cancellable) {
 			GenericArray<unowned Snapd.Snap>? found;
 			lock (search_snaps_cache) {
 				found = search_snaps_cache.lookup (search_string);
 			}
 			if (found == null) {
 				try {
-					found = client.find_sync (Snapd.FindFlags.SCOPE_WIDE, search_string, null, null);
+					found = client.find_sync (Snapd.FindFlags.SCOPE_WIDE, search_string, null, cancellable);
 				} catch (Error e) {
-					warning (e.message);
+					if (!(e is IOError.CANCELLED)) {
+						warning (e.message);
+					}
 					return;
 				}
 				lock (search_snaps_cache) {

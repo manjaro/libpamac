@@ -25,7 +25,7 @@ namespace Pamac {
 		public abstract bool refresh_appstream_data ();
 		public abstract void load_appstream_data ();
 		public abstract void get_remotes_names (ref GenericArray<string> remotes_names);
-		public abstract void search_flatpaks (string search_string, ref GenericArray<FlatpakPackage> pkgs);
+		public abstract void search_flatpaks (string search_string, ref GenericArray<FlatpakPackage> pkgs, Cancellable? cancellable);
 		public abstract bool is_installed_flatpak (string name);
 		public abstract FlatpakPackage? get_flatpak_by_app_id (string app_id);
 		public abstract FlatpakPackage? get_flatpak (string id);

@@ -641,7 +641,7 @@ namespace Pamac {
 			}
 		}
 
-		public void search_flatpaks (string search_string, ref GenericArray<FlatpakPackage> pkgs) {
+		public void search_flatpaks (string search_string, ref GenericArray<FlatpakPackage> pkgs, Cancellable? cancellable) {
 			string[] tokens = get_search_tokens (search_string.split (" "));
 			if (tokens.length == 0) {
 				return;
@@ -653,6 +653,9 @@ namespace Pamac {
 				unowned string id;
 				unowned AppStream.Component as_app;
 				while (iter.next (out id, out as_app)) {
+					if (cancellable != null && cancellable.is_cancelled ()) {
+						return;
+					}
 					if (as_app.search_matches_all (stemmed_tokens) > 0 || id_matches_all (as_app.get_id (), tokens)) {
 						FlatpakPackage? pkg = get_or_create_pkg (id);
 						if (pkg != null) {

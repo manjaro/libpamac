@@ -1120,6 +1120,10 @@ namespace Pamac {
 			return result;
 		}
 
+		static bool is_cancelled (Cancellable? cancellable) {
+			return cancellable != null && cancellable.is_cancelled ();
+		}
+
 		// packages found in sync dbs, without duplicates
 		Alpm.List<unowned Alpm.Package> search_sync_dbs_only (SearchTerms search_terms) {
 			Alpm.List<unowned Alpm.Package> syncpkgs = null;
@@ -1184,11 +1188,20 @@ namespace Pamac {
 			}
 		}
 
-		void search_installed_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs) {
+		void search_installed_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs, Cancellable? cancellable) {
 			alpm_lock.acquire ();
 			try {
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				Alpm.List<unowned Alpm.Package> result = search_local_db (search_string);
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				add_appstream_results (ref result, search_string.split (" "), true, false);
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				initialise_pkgs (result, ref pkgs);
 			} finally {
 				alpm_lock.release ();
@@ -1198,16 +1211,17 @@ namespace Pamac {
 		public GenericArray<AlpmPackage> search_installed_pkgs (string search_string) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AlpmPackage> ();
-			search_installed_pkgs_real (search_string_down, ref pkgs);
+			search_installed_pkgs_real (search_string_down, ref pkgs, null);
 			return pkgs;
 		}
 
-		public async GenericArray<AlpmPackage> search_installed_pkgs_async (string search_string) {
+		// returns null if cancellable is cancelled
+		public async GenericArray<AlpmPackage>? search_installed_pkgs_async (string search_string, Cancellable? cancellable = null) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("search_installed_pkgs", () => {
-					search_installed_pkgs_real (search_string_down, ref pkgs);
+					search_installed_pkgs_real (search_string_down, ref pkgs, cancellable);
 					context.invoke (search_installed_pkgs_async.callback);
 					return 0;
 				});
@@ -1215,14 +1229,27 @@ namespace Pamac {
 			} catch (Error e) {
 				warning (e.message);
 			}
+			if (is_cancelled (cancellable)) {
+				// the GTask returns null when its cancellable is cancelled
+				return null;
+			}
 			return pkgs;
 		}
 
-		void search_repos_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs) {
+		void search_repos_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs, Cancellable? cancellable) {
 			alpm_lock.acquire ();
 			try {
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				Alpm.List<unowned Alpm.Package> result = search_sync_dbs (search_string);
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				add_appstream_results (ref result, search_string.split (" "), false, true);
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				initialise_pkgs (result, ref pkgs);
 			} finally {
 				alpm_lock.release ();
@@ -1232,22 +1259,27 @@ namespace Pamac {
 		public GenericArray<AlpmPackage> search_repos_pkgs (string search_string) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AlpmPackage> ();
-			search_repos_pkgs_real (search_string_down, ref pkgs);
+			search_repos_pkgs_real (search_string_down, ref pkgs, null);
 			return pkgs;
 		}
 
-		public async GenericArray<AlpmPackage> search_repos_pkgs_async (string search_string) {
+		// returns null if cancellable is cancelled
+		public async GenericArray<AlpmPackage>? search_repos_pkgs_async (string search_string, Cancellable? cancellable = null) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("search_repos_pkgs", () => {
-					search_repos_pkgs_real (search_string_down, ref pkgs);
+					search_repos_pkgs_real (search_string_down, ref pkgs, cancellable);
 					context.invoke (search_repos_pkgs_async.callback);
 					return 0;
 				});
 				yield;
 			} catch (Error e) {
 				warning (e.message);
+			}
+			if (is_cancelled (cancellable)) {
+				// the GTask returns null when its cancellable is cancelled
+				return null;
 			}
 			return pkgs;
 		}
@@ -1280,11 +1312,20 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		void search_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs) {
+		void search_pkgs_real (string search_string, ref GenericArray<AlpmPackage> pkgs, Cancellable? cancellable) {
 			alpm_lock.acquire ();
 			try {
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				Alpm.List<unowned Alpm.Package> result = search_all_dbs (search_string);
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				add_appstream_results (ref result, search_string.split (" "), true, true);
+				if (is_cancelled (cancellable)) {
+					return;
+				}
 				initialise_pkgs (result, ref pkgs);
 			} finally {
 				alpm_lock.release ();
@@ -1294,16 +1335,17 @@ namespace Pamac {
 		public GenericArray<AlpmPackage> search_pkgs (string search_string) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AlpmPackage> ();
-			search_pkgs_real (search_string_down, ref pkgs);
+			search_pkgs_real (search_string_down, ref pkgs, null);
 			return pkgs;
 		}
 
-		public async GenericArray<AlpmPackage> search_pkgs_async (string search_string) {
+		// returns null if cancellable is cancelled
+		public async GenericArray<AlpmPackage>? search_pkgs_async (string search_string, Cancellable? cancellable = null) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AlpmPackage> ();
 			try {
 				new Thread<int>.try ("search_pkgs", () => {
-					search_pkgs_real (search_string_down, ref pkgs);
+					search_pkgs_real (search_string_down, ref pkgs, cancellable);
 					context.invoke (search_pkgs_async.callback);
 					return 0;
 				});
@@ -1311,11 +1353,21 @@ namespace Pamac {
 			} catch (Error e) {
 				warning (e.message);
 			}
+			if (is_cancelled (cancellable)) {
+				// the GTask returns null when its cancellable is cancelled
+				return null;
+			}
 			return pkgs;
 		}
 
-		void search_aur_pkgs_real (string search_string, ref GenericArray<AURPackage> pkgs) {
+		void search_aur_pkgs_real (string search_string, ref GenericArray<AURPackage> pkgs, Cancellable? cancellable) {
+			if (is_cancelled (cancellable)) {
+				return;
+			}
 			var aur_infos_list = aur_plugin.search (search_string);
+			if (is_cancelled (cancellable)) {
+				return;
+			}
 			alpm_lock.acquire ();
 			try {
 				foreach (unowned AURInfos aur_infos in aur_infos_list) {
@@ -1338,18 +1390,19 @@ namespace Pamac {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AURPackage> ();
 			if (config.enable_aur) {
-				search_aur_pkgs_real (search_string_down, ref pkgs);
+				search_aur_pkgs_real (search_string_down, ref pkgs, null);
 			}
 			return pkgs;
 		}
 
-		public async GenericArray<AURPackage> search_aur_pkgs_async (string search_string) {
+		// returns null if cancellable is cancelled
+		public async GenericArray<AURPackage>? search_aur_pkgs_async (string search_string, Cancellable? cancellable = null) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<AURPackage> ();
 			if (config.enable_aur) {
 				try {
 					new Thread<int>.try ("search_aur_pkgs", () => {
-						search_aur_pkgs_real (search_string_down, ref pkgs);
+						search_aur_pkgs_real (search_string_down, ref pkgs, cancellable);
 						context.invoke (search_aur_pkgs_async.callback);
 						return 0;
 					});
@@ -1357,6 +1410,10 @@ namespace Pamac {
 				} catch (Error e) {
 					warning (e.message);
 				}
+			}
+			if (is_cancelled (cancellable)) {
+				// the GTask returns null when its cancellable is cancelled
+				return null;
 			}
 			return pkgs;
 		}
@@ -2577,13 +2634,14 @@ namespace Pamac {
 			return updates;
 		}
 
-		public async GenericArray<SnapPackage> search_snaps_async (string search_string) {
+		// returns null if cancellable is cancelled
+		public async GenericArray<SnapPackage>? search_snaps_async (string search_string, Cancellable? cancellable = null) {
 			string search_string_down = search_string.down ();
 			var pkgs = new GenericArray<SnapPackage> ();
 			if (config.enable_snap) {
 				try {
 					new Thread<int>.try ("search_snaps", () => {
-						snap_plugin.search_snaps (search_string_down, ref pkgs);
+						snap_plugin.search_snaps (search_string_down, ref pkgs, cancellable);
 						context.invoke (search_snaps_async.callback);
 						return 0;
 					});
@@ -2591,6 +2649,10 @@ namespace Pamac {
 				} catch (Error e) {
 					warning (e.message);
 				}
+			}
+			if (is_cancelled (cancellable)) {
+				// the GTask returns null when its cancellable is cancelled
+				return null;
 			}
 			return pkgs;
 		}
@@ -2723,13 +2785,14 @@ namespace Pamac {
 			return pkgs;
 		}
 
-		public async GenericArray<FlatpakPackage> search_flatpaks_async (string search_string) {
+		// returns null if cancellable is cancelled
+		public async GenericArray<FlatpakPackage>? search_flatpaks_async (string search_string, Cancellable? cancellable = null) {
 			var pkgs = new GenericArray<FlatpakPackage> ();
 			if (config.enable_flatpak) {
 				string search_string_down = search_string.down ();
 				try {
 					new Thread<int>.try ("search_flatpaks", () => {
-						flatpak_plugin.search_flatpaks (search_string_down, ref pkgs);
+						flatpak_plugin.search_flatpaks (search_string_down, ref pkgs, cancellable);
 						context.invoke (search_flatpaks_async.callback);
 						return 0;
 					});
@@ -2737,6 +2800,10 @@ namespace Pamac {
 				} catch (Error e) {
 					warning (e.message);
 				}
+			}
+			if (is_cancelled (cancellable)) {
+				// the GTask returns null when its cancellable is cancelled
+				return null;
 			}
 			return pkgs;
 		}

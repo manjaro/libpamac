@@ -20,7 +20,7 @@
 namespace Pamac {
 	// the transactions report their progress to the given sink
 	internal interface SnapPlugin : Object {
-		public abstract void search_snaps (string search_string, ref GenericArray<SnapPackage> pkgs);
+		public abstract void search_snaps (string search_string, ref GenericArray<SnapPackage> pkgs, Cancellable? cancellable);
 		public abstract bool is_installed_snap (string name);
 		public abstract SnapPackage? get_snap (string name);
 		public abstract SnapPackage? get_snap_by_app_id (string app_id);
