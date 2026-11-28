@@ -9,6 +9,7 @@ resources/progress_dialog.ui
 resources/transaction_sum_dialog.ui
 resources/updates_dialog.ui
 src/alpm_package.vala
+src/alpm_runner.vala
 src/alpm_utils.vala
 src/aur_plugin.vala
 src/cli.vala
@@ -25,5 +26,4 @@ src/transaction-cli.vala
 src/transaction-gtk.vala
 src/transaction.vala
 src/transaction_interface_daemon.vala
-src/transaction_interface_root.vala
 src/tray.vala

@@ -31,10 +31,6 @@ msgstr ""
 msgid "Updates Available"
 msgstr ""
 
-#: src/tray.vala
-msgid "A restart will be required"
-msgstr ""
-
 #: data/gnome-shell/pamac-updates@manjaro.org/extension.js
 #: resources/manager_window.ui resources/progress_dialog.ui src/tray.vala
 msgid "Details"
@@ -127,6 +123,7 @@ msgid "Groups"
 msgstr ""
 
 #: resources/manager_window.ui src/manager_window.vala src/transaction-gtk.vala
+#: src/tray.vala
 msgid "Repositories"
 msgstr ""
 
@@ -292,7 +289,7 @@ msgstr ""
 
 #: resources/preferences_dialog.ui src/alpm_package.vala src/alpm_utils.vala
 #: src/cli.vala src/database.vala src/manager_window.vala
-#: src/transaction-gtk.vala
+#: src/transaction-gtk.vala src/tray.vala
 msgid "AUR"
 msgstr ""
 
@@ -320,7 +317,7 @@ msgid "Build directory"
 msgstr ""
 
 #: resources/preferences_dialog.ui src/manager_window.vala
-#: src/transaction-gtk.vala
+#: src/transaction-gtk.vala src/tray.vala
 msgid "Flatpak"
 msgstr ""
 
@@ -387,6 +384,18 @@ msgstr ""
 
 #: src/alpm_package.vala
 msgid "Signature"
+msgstr ""
+
+#: src/alpm_runner.vala
+msgid "Waiting for another package manager to quit"
+msgstr ""
+
+#: src/alpm_runner.vala src/alpm_utils.vala src/transaction.vala
+msgid "Transaction cancelled"
+msgstr ""
+
+#: src/alpm_runner.vala
+msgid "Timeout expired"
 msgstr ""
 
 #: src/alpm_utils.vala
@@ -616,22 +625,6 @@ msgstr ""
 msgid "Error while running hooks"
 msgstr ""
 
-#: src/transaction-gtk.vala
-msgid "Downloading packages"
-msgstr ""
-
-#: src/transaction-gtk.vala
-msgid "Processing packages"
-msgstr ""
-
-#: src/transaction-gtk.vala
-msgid "Running hooks"
-msgstr ""
-
-#: src/transaction-gtk.vala
-msgid "Building packages"
-msgstr ""
-
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu second remaining"
@@ -649,11 +642,6 @@ msgstr[1] ""
 #: src/alpm_utils.vala src/cli.vala src/database-gtk.vala
 #: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Error"
-msgstr ""
-
-#: src/alpm_utils.vala src/daemon.vala src/transaction.vala
-#: src/transaction_interface_root.vala
-msgid "Transaction cancelled"
 msgstr ""
 
 #: src/alpm_utils.vala src/snap_plugin.vala
@@ -1239,14 +1227,6 @@ msgstr ""
 msgid "Authentication failed"
 msgstr ""
 
-#: src/daemon.vala src/transaction_interface_root.vala
-msgid "Waiting for another package manager to quit"
-msgstr ""
-
-#: src/daemon.vala src/transaction_interface_root.vala
-msgid "Timeout expired"
-msgstr ""
-
 #: src/flatpak_plugin.vala
 msgid "Flatpak transaction failed"
 msgstr ""
@@ -1265,6 +1245,10 @@ msgstr ""
 
 #: src/manager_window.vala
 msgid "A Package Manager with Alpm, AUR, Flatpak and Snap support"
+msgstr ""
+
+#: src/manager_window.vala
+msgid "The window will be closed at the end of the transaction"
 msgstr ""
 
 #: src/manager_window.vala src/transaction-cli.vala src/transaction-gtk.vala
@@ -1360,10 +1344,6 @@ msgstr ""
 
 #: src/manager_window.vala src/transaction.vala
 msgid "Transaction successfully finished"
-msgstr ""
-
-#: src/manager_window.vala
-msgid "The window will be closed at the end of the transaction"
 msgstr ""
 
 #: src/pgp_key.vala
@@ -1511,6 +1491,18 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+#: src/snap_plugin.vala
+msgid "Snap install error"
+msgstr ""
+
+#: src/snap_plugin.vala
+msgid "Snap switch error"
+msgstr ""
+
+#: src/snap_plugin.vala
+msgid "Snap remove error"
+msgstr ""
+
 #: src/transaction-cli.vala src/transaction-gtk.vala
 #, c-format
 msgid "Choose optional dependencies for %s"
@@ -1604,7 +1596,7 @@ msgstr ""
 msgid "To remove"
 msgstr ""
 
-#: src/transaction-cli.vala
+#: src/transaction-cli.vala src/transaction-gtk.vala
 msgid "Total installed size"
 msgstr ""
 
@@ -1620,6 +1612,22 @@ msgstr ""
 #: src/transaction-cli.vala src/transaction-gtk.vala
 #, c-format
 msgid "Edit %s build files"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Downloading packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Processing packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Running hooks"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Building packages"
 msgstr ""
 
 #: src/transaction-gtk.vala
@@ -1649,15 +1657,14 @@ msgid "The snap %s was published using classic confinement"
 msgstr ""
 
 #: src/transaction-gtk.vala
-#, c-format
-msgid "Install %s anyway"
+msgid ""
+"It thus may perform arbitrary system changes outside of the security sandbox "
+"that snaps are usually confined to, which may put your system at risk"
 msgstr ""
 
 #: src/transaction-gtk.vala
-msgid ""
-"It thus may perform arbitrary system changes outside of the security "
-"sandbox that snaps are usually confined to, which may put your system at "
-"risk"
+#, c-format
+msgid "Install %s anyway"
 msgstr ""
 
 #: src/transaction.vala
@@ -1727,6 +1734,10 @@ msgstr ""
 
 #: src/tray.vala
 msgid "_Quit"
+msgstr ""
+
+#: src/tray.vala
+msgid "A restart will be required"
 msgstr ""
 
 #: resources/manager_window.ui
