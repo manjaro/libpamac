@@ -508,6 +508,11 @@ namespace Pamac {
 			return pkgs;
 		}
 
+		// the repository is one of the distribution, see OfficialRepos in pamac.conf
+		public bool is_official_repo (string repo) {
+			return repo in config.official_repos;
+		}
+
 		public bool should_hold (string pkgname) {
 			alpm_lock.acquire ();
 			try {

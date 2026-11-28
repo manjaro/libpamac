@@ -86,4 +86,16 @@ namespace Pamac {
 		}
 		return result;
 	}
+
+	// the value of OfficialRepos in pamac.conf, the repositories of Arch Linux and Manjaro if null
+	internal GenericSet<string?> parse_official_repos (string? value) {
+		var repos = new GenericSet<string?> (str_hash, str_equal);
+		string names = value ?? "core extra multilib core-testing extra-testing multilib-testing";
+		foreach (unowned string name in names.split (" ")) {
+			if (name != "") {
+				repos.add (name);
+			}
+		}
+		return repos;
+	}
 }

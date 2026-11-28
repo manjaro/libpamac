@@ -137,6 +137,8 @@ namespace Pamac {
 		}
 		PluginLoader<FlatpakPlugin> flatpak_plugin_loader;
 		public string aur_build_dir { get; set; }
+		// the repositories of the distribution, the others are added by the user
+		public GenericSet<string?> official_repos { get; private set; }
 		public bool check_aur_updates {
 			get {
 				return _check_aur_updates;
@@ -246,6 +248,7 @@ namespace Pamac {
 			max_parallel_downloads = 1;
 			clean_keep_num_pkgs = 3;
 			var directives = parse_file (conf_path);
+			official_repos = parse_official_repos (directives.lookup ("OfficialRepos"));
 			// apply the options after the ones they depend on,
 			// whatever their order in the file
 			recurse = "RemoveUnrequiredDeps" in directives;

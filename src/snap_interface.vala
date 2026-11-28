@@ -39,6 +39,7 @@ namespace Pamac {
 		public abstract string? publisher { get; }
 		public abstract string? confined { get; }
 		public abstract GenericArray<string> channels { get; }
+		public override PackageSource source { get { return PackageSource.SNAP; } }
 
 		internal SnapPackage () {}
 	}

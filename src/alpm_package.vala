@@ -19,6 +19,19 @@
 
 namespace Pamac {
 	public abstract class AlpmPackage : Package {
+		public override PackageSource source {
+			get {
+				unowned string? pkg_repo = repo;
+				if (pkg_repo == null) {
+					return PackageSource.LOCAL;
+				}
+				// installed packages found in the AUR have the AUR as repo
+				if (pkg_repo == dgettext (null, "AUR")) {
+					return PackageSource.AUR;
+				}
+				return PackageSource.REPO;
+			}
+		}
 		// AlpmPackage
 		public abstract DateTime? build_date { get; }
 		public abstract string? packager { get; }
@@ -861,6 +874,7 @@ namespace Pamac {
 	}
 
 	public abstract class AURPackage : AlpmPackage {
+		public override PackageSource source { get { return PackageSource.AUR; } }
 		public abstract string? packagebase { get; internal set; }
 		public abstract string? maintainer { get; }
 		public abstract double popularity { get; }

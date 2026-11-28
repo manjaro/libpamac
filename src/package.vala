@@ -18,6 +18,18 @@
  */
 
 namespace Pamac {
+	// where a package comes from
+	public enum PackageSource {
+		// a repository of the pacman configuration
+		REPO,
+		// the AUR
+		AUR,
+		// an installed or loaded package found neither in the repositories nor in the AUR
+		LOCAL,
+		SNAP,
+		FLATPAK
+	}
+
 	public abstract class Package : Object {
 		public abstract string name { get; internal set; }
 		public abstract string id { get; internal set; }
@@ -36,6 +48,7 @@ namespace Pamac {
 		public abstract uint64 download_size { get; }
 		public abstract DateTime? install_date { get; }
 		public abstract GenericArray<string> screenshots { get; }
+		public virtual PackageSource source { get { return PackageSource.LOCAL; } }
 
 		internal Package () {}
 	}

@@ -39,6 +39,8 @@ namespace Pamac {
 	}
 
 	public abstract class FlatpakPackage : Package {
+		public override PackageSource source { get { return PackageSource.FLATPAK; } }
+
 		internal FlatpakPackage () {}
 	}
 }

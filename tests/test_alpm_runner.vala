@@ -76,6 +76,7 @@ namespace Pamac {
 		assert (summary.to_install.length == 2);
 		assert (summary.to_remove.length == 1);
 		foreach (unowned Package pkg in summary.to_install) {
+			assert (pkg.source == PackageSource.REPO);
 			SummaryItem? item = summary.get_item (pkg);
 			assert (item != null);
 			assert (item.old_installed_size == 0);

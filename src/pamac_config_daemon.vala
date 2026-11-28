@@ -22,6 +22,7 @@ namespace Pamac {
 		public string conf_path { get; construct; }
 		public uint64 refresh_period { get; set; }
 		public bool support_aur { get; private set; }
+		public GenericSet<string?> official_repos { get; private set; }
 		public bool enable_aur { get; set; }
 		PluginLoader<AURPlugin> aur_plugin_loader;
 		public bool support_appstream { get; private set; }
@@ -85,6 +86,7 @@ namespace Pamac {
 			aur_build_dir = "/var/tmp";
 			max_parallel_downloads = 1;
 			var directives = parse_file (conf_path);
+			official_repos = parse_official_repos (directives.lookup ("OfficialRepos"));
 			enable_snap = support_snap && "EnableSnap" in directives;
 			enable_flatpak = support_flatpak && "EnableFlatpak" in directives;
 			// offline upgrade needs the downloaded updates

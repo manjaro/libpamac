@@ -129,6 +129,18 @@ namespace Pamac {
 		assert (string.joinv (",", request.to_remove) == "b");
 	}
 
+	void test_parse_official_repos () {
+		var defaults = parse_official_repos (null);
+		assert ("core" in defaults);
+		assert ("extra" in defaults);
+		assert ("multilib" in defaults);
+		assert (!("community" in defaults));
+		var repos = parse_official_repos (" myrepo  other ");
+		assert (repos.length == 2);
+		assert ("myrepo" in repos);
+		assert ("other" in repos);
+	}
+
 	void test_set_to_strv () {
 		var set = new GenericSet<string?> (str_hash, str_equal);
 		assert (set_to_strv (set).length == 0);
@@ -148,5 +160,6 @@ int main (string[] args) {
 	Test.add_func ("/transaction_request/defaults", Pamac.test_request_defaults);
 	Test.add_func ("/transaction_request/invalid_values", Pamac.test_request_invalid_values);
 	Test.add_func ("/transaction_request/set_to_strv", Pamac.test_set_to_strv);
+	Test.add_func ("/utils/parse_official_repos", Pamac.test_parse_official_repos);
 	return Test.run ();
 }
