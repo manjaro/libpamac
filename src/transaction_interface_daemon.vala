@@ -170,6 +170,11 @@ namespace Pamac {
 					sink.emit_hook_progress (action, details, status, progress);
 				}
 			});
+			system_daemon.emit_transaction_progress.connect ((sender, step, current, total) => {
+				if (sender == this.sender) {
+					sink.emit_transaction_progress (step, current, total);
+				}
+			});
 			system_daemon.emit_script_output.connect ((sender, message) => {
 				if (sender == this.sender) {
 					sink.emit_script_output (message);

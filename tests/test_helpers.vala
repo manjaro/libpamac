@@ -84,6 +84,11 @@ namespace Pamac {
 			record ("hook_progress", details);
 		}
 
+		// e.g. "transaction_progress: 1 2/3" for the processing of the second of three packages
+		public void emit_transaction_progress (uint step, uint64 current, uint64 total) {
+			record ("transaction_progress", "%u %s/%s".printf (step, current.to_string (), total.to_string ()));
+		}
+
 		public void emit_script_output (string message) {
 			record ("script_output", message);
 		}

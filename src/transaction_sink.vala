@@ -18,6 +18,18 @@
  */
 
 namespace Pamac {
+	// the steps of a transaction reported by Transaction.emit_transaction_progress
+	public enum TransactionStep {
+		// current and total are bytes of the downloaded packages
+		DOWNLOADING,
+		// current and total are packages installed, upgraded or removed
+		PROCESSING,
+		// current and total are hooks
+		RUNNING_HOOKS,
+		// current and total are AUR packages to build
+		BUILDING
+	}
+
 	// receives the progress of an operation.
 	// The methods are called from worker threads (alpm callbacks)
 	// or from the main thread: an implementation must be thread-safe
@@ -27,6 +39,8 @@ namespace Pamac {
 		public abstract void emit_action_progress (string action, string status, double progress);
 		public abstract void emit_download_progress (string action, string status, double progress);
 		public abstract void emit_hook_progress (string action, string details, string status, double progress);
+		// step is a TransactionStep, an uint to be sent with D-Bus
+		public abstract void emit_transaction_progress (uint step, uint64 current, uint64 total);
 		public abstract void emit_script_output (string message);
 		public abstract void emit_warning (string message);
 		public abstract void emit_error (string message, GenericArray<string> details);
@@ -46,6 +60,7 @@ namespace Pamac {
 		public void emit_action_progress (string action, string status, double progress) {}
 		public void emit_download_progress (string action, string status, double progress) {}
 		public void emit_hook_progress (string action, string details, string status, double progress) {}
+		public void emit_transaction_progress (uint step, uint64 current, uint64 total) {}
 		public void emit_script_output (string message) {}
 		public void emit_warning (string message) {}
 		public void emit_error (string message, GenericArray<string> details) {}

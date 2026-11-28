@@ -82,6 +82,8 @@ namespace Pamac {
 		public signal void emit_action_progress (string action, string status, double progress);
 		public signal void emit_download_progress (string action, string status, double progress);
 		public signal void emit_hook_progress (string action, string details, string status, double progress);
+		// the progress of the current step of the transaction, see TransactionStep for the units
+		public signal void emit_transaction_progress (TransactionStep step, uint64 current, uint64 total);
 		public signal void emit_script_output (string message);
 		public signal void emit_warning (string message);
 		public signal void emit_error (string message, GenericArray<string> details);
@@ -1913,8 +1915,12 @@ namespace Pamac {
 			}
 			var built_pkgs = new HashTable<string, string> (str_hash, str_equal);
 			var to_install_as_dep_array = new GenericArray<string> ();
+			uint builds_total = to_build_queue.length;
+			uint builds_done = 0;
 			while (to_build_queue.length > 0) {
 				string pkgname = to_build_queue.pop_head ();
+				builds_done++;
+				emit_transaction_progress (TransactionStep.BUILDING, builds_done, builds_total);
 				build_cancellable.reset ();
 				var built_pkgs_path = new GenericArray<string> ();
 				unowned string real_aur_build_dir = database.get_real_aur_build_dir ();
@@ -2194,6 +2200,14 @@ namespace Pamac {
 			Transaction t = transaction;
 			invoke (() => {
 				t.emit_hook_progress (action, details, status, progress);
+				return false;
+			});
+		}
+
+		public void emit_transaction_progress (uint step, uint64 current, uint64 total) {
+			Transaction t = transaction;
+			invoke (() => {
+				t.emit_transaction_progress ((TransactionStep) step, current, total);
 				return false;
 			});
 		}

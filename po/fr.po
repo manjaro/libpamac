@@ -632,6 +632,22 @@ msgstr "Exécution des crochets de post-transaction"
 msgid "Error while running hooks"
 msgstr "Erreur lors de l’exécution des crochets"
 
+#: src/transaction-gtk.vala
+msgid "Downloading packages"
+msgstr "Téléchargement des paquets"
+
+#: src/transaction-gtk.vala
+msgid "Processing packages"
+msgstr "Traitement des paquets"
+
+#: src/transaction-gtk.vala
+msgid "Running hooks"
+msgstr "Exécution des crochets"
+
+#: src/transaction-gtk.vala
+msgid "Building packages"
+msgstr "Construction des paquets"
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu second remaining"

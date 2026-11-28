@@ -51,6 +51,7 @@ namespace Pamac {
 		public signal void emit_action_progress (string sender, string action, string status, double progress);
 		public signal void emit_download_progress (string sender, string action, string status, double progress);
 		public signal void emit_hook_progress (string sender, string action, string details, string status, double progress);
+		public signal void emit_transaction_progress (string sender, uint step, uint64 current, uint64 total);
 		public signal void emit_script_output (string sender, string message);
 		public signal void emit_warning (string sender, string message);
 		public signal void emit_error (string sender, string message, string[] details);

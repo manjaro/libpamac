@@ -2292,6 +2292,7 @@ namespace Pamac {
 					// e.g. 1/1 after the install of 1 package
 					current_progress = (double) int.parse (details[2]) / int.parse (details[3]);
 					current_status = "%s/%s".printf (details[2], details[3]);
+					sink.emit_transaction_progress (TransactionStep.RUNNING_HOOKS, uint64.parse (details[2]), uint64.parse (details[3]));
 					// the description of the hook, else its name
 					unowned string hook = details[1] != "" ? details[1] : details[0];
 					sink.emit_hook_progress (current_action, hook, current_status, current_progress);
@@ -2325,6 +2326,10 @@ namespace Pamac {
 					break;
 			}
 			string status = "%u/%u".printf (current_target, n_targets);
+			if (progress <= 4 && status != current_status) {
+				// a new package is installed, upgraded or removed
+				sink.emit_transaction_progress (TransactionStep.PROCESSING, current_target, n_targets);
+			}
 			bool changed = false;
 			if (fraction != current_progress) {
 				current_progress = fraction;
@@ -2423,6 +2428,10 @@ namespace Pamac {
 				last_download_progress_action = current_action;
 				last_download_progress_value = current_progress;
 				sink.emit_download_progress (current_action, current_status, current_progress);
+				if (total_download != 0) {
+					// packages download, not a single file like a database
+					sink.emit_transaction_progress (TransactionStep.DOWNLOADING, uint64.min (xfered, total_download), total_download);
+				}
 			}
 		}
 

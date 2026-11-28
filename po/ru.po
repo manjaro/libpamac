@@ -649,6 +649,22 @@ msgstr "Выполняются обработчики post-transaction"
 msgid "Error while running hooks"
 msgstr "Ошибка при выполнении обработчиков"
 
+#: src/transaction-gtk.vala
+msgid "Downloading packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Processing packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Running hooks"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Building packages"
+msgstr ""
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu second remaining"

@@ -638,6 +638,22 @@ msgstr "正在运行后处理挂钩"
 msgid "Error while running hooks"
 msgstr "运行钩子时出错"
 
+#: src/transaction-gtk.vala
+msgid "Downloading packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Processing packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Running hooks"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Building packages"
+msgstr ""
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu second remaining"

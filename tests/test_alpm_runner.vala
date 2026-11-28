@@ -43,6 +43,10 @@ namespace Pamac {
 		assert_operation (yield runner.trans_run (client_a, install_request ({"testsmall", "testbig"})), sink_a, "install");
 		assert (env.root_file_exists ("opt/test/testsmall.bin"));
 		assert (env.root_file_exists ("opt/test/testbig.bin"));
+		// structured progress of the downloads, of each package and of the hooks
+		assert (sink_a.has ("transaction_progress", "%u ".printf (TransactionStep.DOWNLOADING)));
+		assert (sink_a.has ("transaction_progress", "%u 1/2".printf (TransactionStep.PROCESSING)));
+		assert (sink_a.has ("transaction_progress", "%u 2/2".printf (TransactionStep.PROCESSING)));
 	}
 
 	void test_refresh_and_install () {

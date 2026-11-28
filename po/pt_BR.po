@@ -652,6 +652,22 @@ msgstr "Rodando ganchos pós-transacionais"
 msgid "Error while running hooks"
 msgstr "Erro na execução do(s) hook(s)"
 
+#: src/transaction-gtk.vala
+msgid "Downloading packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Processing packages"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Running hooks"
+msgstr ""
+
+#: src/transaction-gtk.vala
+msgid "Building packages"
+msgstr ""
+
 #: src/alpm_utils.vala src/snap_plugin.vala
 #, c-format
 msgid "About %lu second remaining"
